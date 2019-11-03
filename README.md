@@ -45,4 +45,4 @@ Here we will follow a bottom-up approach as suggested by the OpenPose [Paper](ht
 - Nadin-Katrin Apel
 - Johannes Horn
 - Nandor Babina
-- Jonas
+- Jonas Vogelsang
