@@ -102,3 +102,7 @@ venv.bak/
 
 # mypy
 .mypy_cache/
+.history/
+*/Data/Frames/
+*/Data/KeyPoints/
+*/Data/Videos/
