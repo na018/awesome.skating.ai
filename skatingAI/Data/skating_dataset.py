@@ -77,12 +77,18 @@ def get_pose_kp(pose_json):
     people = []
 
     for person in pose_json.people:
-        people.append(person['pose_keypoints_2d'])
+        p = np.array(person['pose_keypoints_2d'])
+        # reshape to (x,y,score)
+        p = p.reshape((-1, 3))
+        # delete not needed score
+        p = p[:, :2]
+        people.append(p)
 
     return np.array(people)
 
 
 def get_batch(dataset, batch_size=1):
+    # todo: add functionality to split batches to equal sizes
     batches = []
     for _ in range(batch_size):
         batches.append(random.choice(dataset))
