@@ -41,42 +41,35 @@ def check_empty_frames():
         j = 0
 
         print('\n'*5, '-'*100)
-        for idx, frame in enumerate(frames):
+        if len(empty_frames > 0):
+            size = frames[0].shape[:2]
+            out_ef = cv2.VideoWriter(
+                f"{path}/Data/EmptyFrames/{ds_name}.avi", cv2.VideoWriter_fourcc(*'DIVX'), 15, size)
+            out_rf = cv2.VideoWriter(
+                f"{path}/Data/ResultingFrames/{ds_name}.avi", cv2.VideoWriter_fourcc(*'DIVX'), 15, size)
 
-            if len(empty_frames) == 0:
-                continue
+            for idx, frame in enumerate(frames):
 
-            if idx > empty_frames[-1][1]:
-                continue
+                if idx > empty_frames[-1][1]:
+                    continue
 
-            print(
-                f"{[idx]}-{ds_name}: Search for empty_frame at index {empty_frames[j][1]}")
-            if idx == empty_frames[j][1]:
-                cv2.imwrite(
-                    f"{path}/Data/EmptyFrames/{empty_frames[j][0]}_{idx}.jpg", frame)
-                j += 1
-            else:
-                cv2.imwrite(
-                    f"{path}/Data/ResultingFrames/{empty_frames[j][0]}_{idx}.jpg", frame)
+                print(
+                    f"{[idx]}-{ds_name}: Search for empty_frame at index {empty_frames[j][1]}")
 
+                if idx == empty_frames[j][1]:
+                    cv2.imwrite(
+                        f"{path}/Data/EmptyFrames/{empty_frames[j][0]}_{idx}.jpg", frame)
+                    out_ef.write(frame)
+                    j += 1
+                else:
+                    cv2.imwrite(
+                        f"{path}/Data/ResultingFrames/{empty_frames[j][0]}_{idx}.jpg", frame)
+                    out_rf.write(frame)
+
+                out_ef.release()
+                out_rf.release()
         print(
             f"Successfully parsed {ds_name}\nFound {len(empty_frames)} empty frames.")
-
-
-def save_frames_to_video():
-    img_array = []
-    for filename in Path(f"{path}/Data/EmptyFrames/").glob("*.jpg"):
-        img = cv2.imread(str(filename))
-        height, width, layers = img.shape
-        size = (width, height)
-        img_array.append(img)
-
-    out = cv2.VideoWriter(
-        'EmptyFrames.avi', cv2.VideoWriter_fourcc(*'DIVX'), 15, size)
-
-    for i in range(len(img_array)):
-        out.write(img_array[i])
-    out.release()
 
 
 def get_data_names():
