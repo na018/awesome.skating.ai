@@ -1,4 +1,4 @@
-from skatingAI.Data.skating_dataset import get_dataset, get_dataset_flat, get_batch, check_empty_frames
+from skatingAI.Data.skating_dataset import get_dataset, get_dataset_flat, get_batch, check_empty_frames, save_frames_to_video
 if __name__ == "__main__":
     batch_size = 5
 
@@ -7,6 +7,7 @@ if __name__ == "__main__":
     #ds_x, ds_y = get_dataset_flat()
     print('\n'*5)
     print('-'*100)
-    check_empty_frames()
+    # check_empty_frames()
+    save_frames_to_video()
     #print(ds_x.shape, ds_y.shape)
     #print(f"You've got {len(batches)} random batches")

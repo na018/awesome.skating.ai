@@ -39,17 +39,18 @@ def check_empty_frames():
         _, empty_frames = get_keypoints(ds_name, check_empty_frames=True)
         frames = get_frames(ds_name)
         j = 0
-        
+
         print('\n'*5, '-'*100)
         for idx, frame in enumerate(frames):
-            
-            if len(empty_frames)==0:
+
+            if len(empty_frames) == 0:
                 continue
-            
+
             if idx > empty_frames[-1][1]:
                 continue
-                
-            print(f"{[idx]}-{ds_name}: Search for empty_frame at index {empty_frames[j][1]}")
+
+            print(
+                f"{[idx]}-{ds_name}: Search for empty_frame at index {empty_frames[j][1]}")
             if idx == empty_frames[j][1]:
                 cv2.imwrite(
                     f"{path}/Data/EmptyFrames/{empty_frames[j][0]}_{idx}.jpg", frame)
@@ -57,11 +58,25 @@ def check_empty_frames():
             else:
                 cv2.imwrite(
                     f"{path}/Data/ResultingFrames/{empty_frames[j][0]}_{idx}.jpg", frame)
-            
-            
 
         print(
             f"Successfully parsed {ds_name}\nFound {len(empty_frames)} empty frames.")
+
+
+def save_frames_to_video():
+    img_array = []
+    for filename in Path(f"{path}/Data/ResultingFrames/").glob("*.jpg"):
+        img = cv2.imread(str(filename))
+        height, width, layers = img.shape
+        size = (width, height)
+        img_array.append(img)
+
+    out = cv2.VideoWriter(
+        'ResultingFrames.avi', cv2.VideoWriter_fourcc(*'DIVX'), 15, size)
+
+    for i in range(len(img_array)):
+        out.write(img_array[i])
+    out.release()
 
 
 def get_data_names():
