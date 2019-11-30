@@ -41,12 +41,12 @@ def check_empty_frames():
         j = 0
 
         print('\n'*5, '-'*100)
-        if len(empty_frames > 0):
-            size = frames[0].shape[:2]
+        if len(empty_frames) > 0:
+            height, width, _ = frames[0].shape
             out_ef = cv2.VideoWriter(
-                f"{path}/Data/EmptyFrames/{ds_name}.avi", cv2.VideoWriter_fourcc(*'DIVX'), 15, size)
+                f"{path}/Data/EmptyFrames/videos/{ds_name}.avi", cv2.VideoWriter_fourcc(*'DIVX'), 15, (width, height))
             out_rf = cv2.VideoWriter(
-                f"{path}/Data/ResultingFrames/{ds_name}.avi", cv2.VideoWriter_fourcc(*'DIVX'), 15, size)
+                f"{path}/Data/ResultingFrames/videos/{ds_name}.avi", cv2.VideoWriter_fourcc(*'DIVX'), 15, (width, height))
 
             for idx, frame in enumerate(frames):
 
@@ -58,16 +58,16 @@ def check_empty_frames():
 
                 if idx == empty_frames[j][1]:
                     cv2.imwrite(
-                        f"{path}/Data/EmptyFrames/{empty_frames[j][0]}_{idx}.jpg", frame)
+                        f"{path}/Data/EmptyFrames/images/{empty_frames[j][0]}_{idx}.jpg", frame)
                     out_ef.write(frame)
                     j += 1
                 else:
                     cv2.imwrite(
-                        f"{path}/Data/ResultingFrames/{empty_frames[j][0]}_{idx}.jpg", frame)
+                        f"{path}/Data/ResultingFrames/images/{empty_frames[j][0]}_{idx}.jpg", frame)
                     out_rf.write(frame)
 
-                out_ef.release()
-                out_rf.release()
+            out_ef.release()
+            out_rf.release()
         print(
             f"Successfully parsed {ds_name}\nFound {len(empty_frames)} empty frames.")
 

@@ -1,4 +1,4 @@
-from skatingAI.Data.skating_dataset import get_dataset, get_dataset_flat, get_batch, check_empty_frames, save_frames_to_video
+from skatingAI.Data.skating_dataset import get_dataset, get_dataset_flat, get_batch, check_empty_frames
 if __name__ == "__main__":
     batch_size = 5
 
