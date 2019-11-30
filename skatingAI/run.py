@@ -5,6 +5,8 @@ if __name__ == "__main__":
     #ds = get_dataset()
     #batches = get_batch(ds, batch_size)
     #ds_x, ds_y = get_dataset_flat()
+    print('\n'*5)
+    print('-'*100)
     check_empty_frames()
     #print(ds_x.shape, ds_y.shape)
     #print(f"You've got {len(batches)} random batches")
