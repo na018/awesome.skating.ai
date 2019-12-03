@@ -27,13 +27,13 @@ def get_pose_kp(pose_json):
 
 def normalize_kp(kp, height, width):
 
-    kp_0 = kp[0]
-    kp_1 = kp[1]
+    kp_0 = kp[0]  # x (width)
+    kp_1 = kp[1]  # y(height)
 
-    if kp_0 >= height:
-        kp_0 = height - 1
-    if kp_1 >= width:
-        kp_1 = width-1
+    if kp_1 >= height:
+        kp_1 = height - 1
+    if kp_0 >= width:
+        kp_0 = width-1
 
     return int(kp_0), int(kp_1)
 
@@ -132,7 +132,8 @@ def kp2img(kp, img):
 
     height, width = img.shape
     for idx, kp in enumerate(kp):
-        kp_0, kp_1 = normalize_kp(kp, height, width)
+        radius = 5
+        kp_0, kp_1 = normalize_kp(kp, height-radius, width-radius)
 
         color = 255
         if kp[2] < 0.9:
@@ -140,7 +141,7 @@ def kp2img(kp, img):
         if kp[2] < 0.5:
             color = 5
 
-        rr, cc = circle(kp_1, kp_0, 5)
+        rr, cc = circle(kp_1, kp_0, radius)
         img[rr, cc] = color
 
     return img
@@ -186,7 +187,8 @@ def analyze_images():
         if scores is not None:
 
             for _i, _score in enumerate(scores):
-                df_scores.loc[_i] = [f"{frame[0]}_{frames_ns[_i]}", *_score]
+                df_scores.loc[idx +
+                              _i] = [f"{frame[0]}_{frames_ns[_i]}", *_score]
 
             df_max_scores.loc[idx] = [frame[0], *max_scores]
         else:
