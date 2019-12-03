@@ -2,9 +2,9 @@ from skatingAI.Data.skating_dataset import get_dataset, get_dataset_flat, get_ba
 if __name__ == "__main__":
     batch_size = 5
 
-    #ds = get_dataset()
+    #ds = get_dataset(20)
     ds = get_dataset_flat()
-    #batches = get_batch(ds, batch_size)
+    batches = get_batch(ds, batch_size)
     #ds_x, ds_y = get_dataset_flat()
     # check_empty_frames()
     # save_frames_to_video()

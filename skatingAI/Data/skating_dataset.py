@@ -8,14 +8,16 @@ import random
 path = os.getcwd()
 
 
-def get_dataset():
+def get_dataset(batch_size=200):
     ds_names = get_data_names()
     ds = []
 
     for ds_name in ds_names:
-        y_data = get_keypoints(ds_name)
-        x_data = get_frames(ds_name)
-        ds.append([x_data, y_data])
+        ds_x, ds_y = delete_empty_frames(
+            get_frames(ds_name), get_keypoints(ds_name, check_empty_frames=True))
+
+        batches = create_batches_of_equal_size(ds_x, ds_y, batch_size)
+        [ds.append(batch) for batch in batches]
 
     return ds
 
@@ -26,8 +28,10 @@ def get_dataset_flat():
     ds_y = []
 
     for ds_name in ds_names:
-        ds_x.append(get_frames(ds_name))
-        ds_y.append(get_keypoints(ds_name))
+        x, y = delete_empty_frames(get_frames(
+            ds_name), get_keypoints(ds_name, check_empty_frames=True))
+        ds_x.append(x)
+        ds_y.append(y)
 
     return np.array(ds_x), np.array(ds_y)
 
@@ -72,6 +76,15 @@ def check_empty_frames():
             f"Successfully parsed {ds_name}\nFound {len(empty_frames)} empty frames.")
 
 
+def delete_empty_frames(frames=[], kp_empty=()):
+    keypoints, empty_frames = kp_empty
+    if len(empty_frames) > 0:
+        keypoints = np.delete(keypoints, empty_frames[:, 1], 0)
+        frames = np.delete(frames, empty_frames[:, 1], 0)
+
+    return frames, keypoints
+
+
 def get_data_names():
     dirpath = Path(f"{path}/Data/KeyPoints")
 
@@ -93,7 +106,7 @@ def get_keypoints(ds_name, check_empty_frames=False):
         ds_kp.append(people)
 
     if check_empty_frames:
-        return np.array(ds_kp), empty_frames
+        return np.array(ds_kp), np.array(empty_frames)
 
     return np.array(ds_kp)
 
@@ -124,8 +137,6 @@ def vid2frames(video_path):
 def get_pose_kp(pose_json):
     people = []
 
-    # todo: check if no people were detected -> then delete frame + kp
-    # keep track how many people in subsequent frames could not be detected and analyze frames
     for person in pose_json.people:
         p = np.array(person['pose_keypoints_2d'])
         # reshape to (x,y,score)
@@ -137,9 +148,13 @@ def get_pose_kp(pose_json):
     return np.array(people)
 
 
-def get_batch(dataset, batch_size=1):
-    # todo: add functionality to split batches to equal sizes
-    batches = []
-    for _ in range(batch_size):
-        batches.append(random.choice(dataset))
-    return batches
+def create_batches_of_equal_size(x, y, batch_size):
+    ds = []
+    for i in range(0, len(x), batch_size):
+        ds.append([x[i:i+batch_size:], y[i:i+batch_size:]])
+
+    return ds
+
+
+def get_batch(dataset, amount=1):
+    return random.choices(dataset, k=amount)
