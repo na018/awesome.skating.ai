@@ -6,23 +6,9 @@ from pathlib import Path
 import random
 from skimage.draw import circle
 from skatingAI.Data.BODY_25_model import BODY_25
-from skatingAI.Data.skating_dataset import get_data_names
+from skatingAI.Data.skating_dataset import get_data_names, get_pose_kp
 
 path = f"{Path.cwd()}/Data"
-print(path)
-
-
-def get_pose_kp(pose_json):
-
-    people = []
-
-    for person in pose_json.people:
-        p = np.array(person['pose_keypoints_2d'])
-        # reshape to (x,y,score)
-        p = p.reshape((-1, 3))
-        people.append(p)
-
-    return np.array(people)
 
 
 def normalize_kp(kp, height, width):
@@ -130,16 +116,22 @@ def find_subsequent_frames(name, frame_n, max_frame_amount=2, score_bound=18):
 
 def kp2img(kp, img):
 
-    height, width = img.shape
+    if len(img.shape) == 2:
+        height, width = img.shape
+        color = 255
+    else:
+        height, width, rgb = img.shape
+        color = np.array([255, 255, 255])
+
     for idx, kp in enumerate(kp):
         radius = 5
         kp_0, kp_1 = normalize_kp(kp, height-radius, width-radius)
 
-        color = 255
-        if kp[2] < 0.9:
-            color = 200
-        if kp[2] < 0.5:
-            color = 5
+        if len(kp) == 3:
+            if kp[2] < 0.9:
+                color -= 50
+            if kp[2] < 0.5:
+                color -= 100
 
         rr, cc = circle(kp_1, kp_0, radius)
         img[rr, cc] = color
@@ -153,19 +145,11 @@ def add_keypoints_img(name, frame_n, img):
     kp_path = str(list(Path(
         f"{path}/KeyPoints/{name}").glob(f"{name}*0{frame_n}_keypoints.json"))[0])
 
-    people_kp = get_pose_kp(pd.read_json(kp_path))
-    max_person_score = 0
-    person_kps = np.array([[0, 0, 0]])
+    focus_person_kp = get_pose_kp(pd.read_json(kp_path), show_score=True)
 
-    for _person_kps in people_kp:
+    img = kp2img(focus_person_kp, img)
 
-        # find person in focus (person with max score)
-        if np.sum(_person_kps[:, 2]) > max_person_score:
-            max_person_score = np.sum(_person_kps[:, 2])
-            img = kp2img(_person_kps, img)
-            person_kps = _person_kps
-
-    return img, person_kps[:, :2], person_kps[:, 2]
+    return img, focus_person_kp[:, :2], focus_person_kp[:, 2]
 
 
 def analyze_images():
@@ -201,4 +185,4 @@ def analyze_images():
     df_max_scores.to_csv(f"{Path.cwd()}/Analysis_kp/max_scores.csv")
 
 
-analyze_images()
+# analyze_images()

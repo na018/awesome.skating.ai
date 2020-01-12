@@ -5,6 +5,7 @@ import numpy as np
 import pandas as pd
 import random
 
+
 path = os.getcwd()
 
 
@@ -91,19 +92,21 @@ def get_data_names():
     return [x.name for x in dirpath.iterdir() if x.is_dir()]
 
 
-def get_keypoints(ds_name, check_empty_frames=False):
+def get_keypoints(ds_name, check_empty_frames=False, show_score=False):
     ds_path = Path(f"{path}/Data/KeyPoints/{ds_name}")
     kp_json_paths = [x for x in ds_path.iterdir() if x.is_file()]
+    kp_json_paths = sorted(kp_json_paths)
     ds_kp = []
     empty_frames = []
 
     for idx, file_kp in enumerate(kp_json_paths):
-        people = get_pose_kp(pd.read_json(file_kp.read_text()))
+        focus_person = get_pose_kp(
+            pd.read_json(file_kp.read_text()), show_score)
 
-        if len(people) == 0:
+        if focus_person.shape == (1, 3):
             empty_frames.append([ds_name, idx])
 
-        ds_kp.append(people)
+        ds_kp.append(focus_person)
 
     if check_empty_frames:
         return np.array(ds_kp), np.array(empty_frames)
@@ -134,18 +137,23 @@ def vid2frames(video_path):
     return frames
 
 
-def get_pose_kp(pose_json):
+def get_pose_kp(pose_json, show_score=False):
     people = []
+    focus_person = np.zeros((1, 3))
 
     for person in pose_json.people:
         p = np.array(person['pose_keypoints_2d'])
         # reshape to (x,y,score)
         p = p.reshape((-1, 3))
-        # delete not needed score
-        p = p[:, : 2]
-        people.append(p)
 
-    return np.array(people)
+        if np.sum(p[:, 2]) > np.sum(focus_person[:, 2]):
+            focus_person = p
+
+    # delete not needed score
+    if not show_score:
+        focus_person = focus_person[:, : 2]
+
+    return focus_person
 
 
 def create_batches_of_equal_size(x, y, batch_size):
