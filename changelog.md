@@ -10,6 +10,17 @@
 
 ---
 
+## 2019-01-12 [Status Report]: XSens Motion Capture Dataset
+
+- record mocap data with XSens in the ice rink
+- research and experiment wit XSens data
+  - create avatar and integrate Makehuman plugin into blender
+  - create simple 3d test-scene and experiment with mocap data settings
+  - write script to get 2d locations of keypoints equal to the Openpose dataset
+  - analyze keypoints in rendered video
+
+---
+
 ## 2019-12-03 [Status Report]: Analyze Figure Ice Skating Dataset
 
 - find figure ice skating videos for labeling:
