@@ -1,4 +1,10 @@
 {
     "files.autoSave": "onWindowChange",
-    "python.pythonPath": "venv/bin/python"
+    "python.pythonPath": "venv/bin/python",
+    "python.linting.pylintEnabled": true,
+    "python.linting.enabled": true,
+    "python.terminal.activateEnvironment": true,
+    "python.linting.pylintArgs": [
+        "--extension-pkg-whitelist=cv2"
+    ]
 }
