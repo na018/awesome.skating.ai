@@ -1,6 +1,6 @@
 FROM nvidia/cuda:10.0-cudnn7-devel-ubuntu18.04
 
-ENV DEBIAN_FRONTEND=noninteractive
+#ENV DEBIAN_FRONTEND=noninteractive
 
 RUN apt-get -y update
 RUN apt-get install -y --no-install-recommends \
@@ -21,6 +21,7 @@ RUN apt-get install -y --no-install-recommends \
       libgflags-dev \
       protobuf-compiler \
       python-dev \
+      python3.6-dev \
       python3\
       python3-pip
 
@@ -41,24 +42,26 @@ RUN pip install --user \
       opencv-python \
       matplotlib \
       Pillow \
-      pycocotools \
       scikit-image \
       scipy \
+      keras \
+      IPython \
       wheel
+
+RUN pip3.6 install pycocotools
 
 RUN mkdir skatingAI
 
 WORKDIR skatingAI
 
-COPY utils .
-COPY nets .
-COPY run.py .
-COPY __init__.py .
-# RUN mkdir Data && \
-#  cd Data && \
-#  wget http://images.cocodataset.org/zips/train2017.zip && \
-#  wget http://images.cocodataset.org/annotations/annotations_trainval2017.zip && \
-#  unzip train2017 && unzip annotations_trainval2017.zip
+COPY ../utils .
+COPY ../nets .
+COPY ../run.py .
+COPY ../__init__.py .
+RUN mkdir Data && mkdir Data/coco && mkdir Data/coco/img && \
+ cd Data/coco/img && wget http://images.cocodataset.org/zips/train2017.zip && unzip train2017 && \
+ cd Data/coco && wget http://images.cocodataset.org/annotations/annotations_trainval2017.zip && \
+ unzip annotations_trainval2017.zip
 
 
 

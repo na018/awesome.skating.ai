@@ -48,7 +48,7 @@ def create_hrnet_large(input_shape=None, weight_decay=0., batch_momentum=0.9, ba
     block_m = stride_up(block_m, 2, name="bm")
     #block_m = tf.keras.backend.resize_volumes(he)(block_m)
 
-    block_m = layers.Cropping2D(cropping=((1, 0), (0, 0)),
+    block_m = layers.Cropping2D(cropping=((0,1), (0, 0)),
                             input_shape=(427, 640, 64))(block_m)
 
     concat = layers.concatenate([block_l, block_m])

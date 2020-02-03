@@ -1,5 +1,6 @@
 from enum import Enum
 import numpy as np
+import tensorflow as tf
 from tensorflow import keras, summary, newaxis
 from keras import backend as K
 from IPython.display import clear_output
@@ -43,35 +44,7 @@ class CocoPart(Enum):
     Background = 18
 
 
-def get_random_images(batch_size=8, buffer_size=100, width=640, height=427):
-    train_x = []
-    train_y = []
-
-    print('# get random images', buffer_size * batch_size)
-    i = 0
-    while i < buffer_size*batch_size:
-        randomImg = imgIds[np.random.randint(0, len(imgIds))]
-        coco_img = coco.loadImgs([randomImg])[0]
-        if coco_img['width'] == width and coco_img['height'] == height:
-            annIds = coco.getAnnIds(imgIds=coco_img['id'], iscrowd=None)
-            anns = coco.loadAnns(annIds)
-            kps = []
-            for ann in anns:
-                kp = np.array(ann.get('keypoints')).reshape((-1, 3))[:, :2].reshape(-1,2)
-                kps.append(kp)
-
-            img = cv2.imread(f"Data/coco/imgs/train2017/{coco_img['file_name']}")
-            if img is not None:
-                train_y.append(create_image_mask(tuple(zip(*kps))).astype('float32'))
-                train_x.append(img.astype('float32') / 255)
-                i += 1
-
-            print(i)
-
-    return train_x, train_y
-
-
-def create_image_mask(kps, width=427, height=640):
+def create_image_mask(kps, width=640, height=427):
     img = np.zeros((height, width, 3))
     for i, kp in enumerate(kps):
           for j, p in enumerate(kp):
@@ -80,6 +53,33 @@ def create_image_mask(kps, width=427, height=640):
 
     # blur image smoothly
     return img
+
+def get_random_train_image(amount, width=640, height=427):
+    i=0
+    while i < amount:
+        kps=[]
+
+        img = None
+        while img is None:
+            randomImg = imgIds[np.random.randint(0, len(imgIds))]
+            coco_img = coco.loadImgs([randomImg])[0]
+
+            if coco_img['width'] == width and coco_img['height'] == height:
+                annIds = coco.getAnnIds(imgIds=coco_img['id'], iscrowd=None)
+                anns = coco.loadAnns(annIds)
+                kps = []
+
+                for ann in anns:
+                    kp = np.array(ann.get('keypoints')).reshape((-1, 3))[:, :2].reshape(-1,2)
+                    kps.append(kp)
+
+                img = cv2.imread(f"Data/coco/imgs/train2017/{coco_img['file_name']}")
+
+
+        mask = create_image_mask(tuple(zip(*kps))).astype('float32') /255
+        img = img.astype('float32') / 255
+        yield img, mask
+        i += 1
 
 class DisplayCallback(keras.callbacks.Callback):
     def __init__(self, model, sample_image, sample_mask, file_writer, epochs=5):
@@ -99,17 +99,46 @@ class DisplayCallback(keras.callbacks.Callback):
         self.model.save_weights(
             f"{Path.cwd()}/ckpt/hrnet-{epoch}.ckpt")
 
-        for i, img in enumerate([self.sample_image[newaxis, ...], self.model.predict(self.sample_image[newaxis, ...])]):
-            summary.image(f"Training_{epoch}", img, step=i)
+        # for i, img in enumerate([self.sample_image[newaxis, ...], self.model.predict(self.sample_image[newaxis, ...])]):
+        #     summary.image(f"Training_{epoch}", img, step=i)
 
-        # tf.summary.image(f"Training_{epoch}", [
-        #                  self.sample_image, self.sample_mask, self.model.predict(self.sample_image[tf.newaxis, ...])], step=0)
+        tf.summary.image(f"Training_{epoch}", [
+                         self.sample_image, self.sample_mask, self.model.predict(self.sample_image[tf.newaxis, ...])], step=0)
 
         print(f"\nSimple Prediction after epoch {epoch+1}")
 
     def on_train_end(self, logs=None):
+        clear_output(wait=True)
         print('train_end')
-        K.clear_session()
+       # K.clear_session()
         print(f"\n\n{'='*100}\nSuccessfully trained {self.epochs} epochs.\n" +
               f"For evaluation (loss/ accuracy) please run \n${' '*5}`tensorboard --logdir {Path.cwd()}/logs`\n" +
               f"and open your webbrowser at `http://localhost:6006`\n")
+
+
+def calculate_loss(model_history, epochs):
+    loss = model_history.history['loss']
+    val_loss = model_history.history['val_loss']
+
+    epochs = range(epochs)
+
+    plt.figure()
+    plt.plot(epochs, loss, 'r', label='Training loss')
+    plt.plot(epochs, val_loss, 'bo', label='Validation loss')
+    plt.title('Training and Validation Loss')
+    plt.xlabel('Epoch')
+    plt.ylabel('Loss Value')
+    plt.ylim([0, 1])
+    plt.legend()
+
+
+    plt.show()
+    plt.savefig('training_loss.png')
+
+
+
+
+
+
+
+
