@@ -1,9 +1,7 @@
 import tensorflow as tf
 
-tf.compat.v1.disable_eager_execution()
 layers = tf.keras.layers
 
-tf.compat.v1.disable_eager_execution()
 
 BN_MOMENTUM = 0.01
 
@@ -28,7 +26,7 @@ def stride_up(inputs: tf.Tensor, block_nr=1, k=4, f=64, name="block") -> tf.Tens
                                   name=f"{name}_{block_nr}_stride_up")(inputs)
 
 
-def create_hrnet_large(input_shape=None, weight_decay=0., batch_momentum=0.9, batch_shape=None, keypoints=34, block_amount=3) -> tf.Tensor:
+def create_hrnet_large(input_shape=None, weight_decay=0., batch_momentum=0.9, batch_shape=None, block_amount=3, output_channels=18) -> tf.Tensor:
 
     if batch_shape:
         img_input = tf.keras.Input(batch_shape=batch_shape)
@@ -48,8 +46,8 @@ def create_hrnet_large(input_shape=None, weight_decay=0., batch_momentum=0.9, ba
     block_m = stride_up(block_m, 2, name="bm")
     #block_m = tf.keras.backend.resize_volumes(he)(block_m)
 
-    block_m = layers.Cropping2D(cropping=((0,1), (0, 0)),
-                            input_shape=(427, 640, 64))(block_m)
+    # block_m = layers.Cropping2D(cropping=((0,1), (0, 0)),
+    #                         input_shape=(427, 640, 64))(block_m)
 
     concat = layers.concatenate([block_l, block_m])
 
@@ -64,14 +62,14 @@ def create_hrnet_large(input_shape=None, weight_decay=0., batch_momentum=0.9, ba
         block_m = conv3x3_block(block_m, 3, name="bm")
         block_m = stride_up(block_m, 3, name="bm")
 
-        block_m = layers.Cropping2D(cropping=((1, 0), (0, 0)),
-                                    input_shape=(427, 640, 64))(block_m)
+        # block_m = layers.Cropping2D(cropping=((1, 0), (0, 0)),
+        #                             input_shape=(427, 640, 64))(block_m)
 
         block_s = conv3x3_block(block_s, 3, name="bs")
         block_s = stride_up(block_s, 3, k=8, name="bs1")
 
-        block_s = layers.Cropping2D(cropping=((2, 3), (0, 0)),
-                                     input_shape=(427, 640, 64))(block_s)
+        # block_s = layers.Cropping2D(cropping=((2, 3), (0, 0)),
+        #                              input_shape=(427, 640, 64))(block_s)
 
         concat = layers.concatenate([block_l, block_m, block_s])
 
@@ -97,7 +95,7 @@ def create_hrnet_large(input_shape=None, weight_decay=0., batch_momentum=0.9, ba
 
     # output 427x640x2x34
 
-    outputs = layers.Conv2D(filters=3, kernel_size=3, activation='relu', padding="same", name=f"output")(concat)
+    outputs = layers.Conv2D(filters=output_channels, kernel_size=3, activation='relu', padding="same", name=f"output")(concat)
 
     model = tf.keras.Model(inputs=[img_input], outputs=[outputs])
 
