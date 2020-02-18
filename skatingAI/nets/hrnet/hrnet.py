@@ -26,7 +26,7 @@ def stride_up(inputs: tf.Tensor, block_nr=1, k=4, f=64, name="block") -> tf.Tens
                                   name=f"{name}_{block_nr}_stride_up")(inputs)
 
 
-def create_hrnet_large(input_shape=None, weight_decay=0., batch_momentum=0.9, batch_shape=None, block_amount=3, output_channels=18) -> tf.Tensor:
+def create_hrnet_large(input_shape=None, weight_decay=0., batch_momentum=0.9, batch_shape=None, block_amount=3, output_channels=15) -> tf.Tensor:
 
     if batch_shape:
         img_input = tf.keras.Input(batch_shape=batch_shape)

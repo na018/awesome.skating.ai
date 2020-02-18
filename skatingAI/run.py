@@ -6,7 +6,7 @@ layers = tf.keras.layers
 
 from skatingAI.nets.hrnet.hrnet import create_hrnet_large
 from skatingAI.utils.utils import get_video_batches, DisplayCallback
-tf.compat.v1.enable_eager_execution()
+#tf.compat.v1.enable_eager_execution()
 
 
 
@@ -14,10 +14,10 @@ tf.compat.v1.enable_eager_execution()
 if __name__ == "__main__":
     keypoint_count = 17
     dimensions = 2
-    batch_size=1
-    buffer_size=600
-    epoch_steps=18
-    epochs=3
+    batch_size=3
+    buffer_size=1000
+    epoch_steps=12
+    epochs=128
     # width=640
     # height=427
     width=640
@@ -28,12 +28,12 @@ if __name__ == "__main__":
 
 
     train_dataset = tf.data.Dataset.from_generator(get_video_batches,output_types=(tf.float32, tf.float32),
-                                             output_shapes = ((None, 480, 640, 3),(None, 480, 640, 1)))
+                                             output_shapes = ((batch_size, 480, 640, 3),(batch_size, 480, 640, 1)), args=[batch_size,epoch_steps, epochs])
     test_dataset = tf.data.Dataset.from_generator(get_video_batches,output_types=(tf.float32, tf.float32),
-                                             output_shapes = ((None, 480, 640, 3),(None, 480, 640, 1)))
+                                             output_shapes = ((batch_size, 480, 640, 3),(batch_size, 480, 640, 1)), args=[batch_size, epoch_steps, epochs])
 
     for image, mask in train_dataset.take(1):
-        sample_image, sample_mask = image, mask
+        sample_image, sample_mask = image[0], mask[0]
 
 
     #
@@ -49,11 +49,11 @@ if __name__ == "__main__":
     #     sample_image, sample_mask = image, mask
 
     print('# create hrnet')
-    model = create_hrnet_large(input_shape=(height,width, 3,))
+    model = create_hrnet_large(input_shape=(height,width, 3,), output_channels=15)
 
     #optimizer = tf.keras.optimizers.Adam(learning_rate=0.01, amsgrad=True)
     optimizer = tf.keras.optimizers.Adam(learning_rate=0.01, epsilon=1e-8, amsgrad=True)
-    model.compile(optimizer=optimizer, loss=tf.keras.losses.KLDivergence(), metrics=['accuracy'])
+    model.compile(optimizer='sgd', loss=tf.keras.losses.MSE, metrics=['accuracy'])
     model.summary()
     tf.keras.utils.plot_model(
         model, to_file='nadins_hrnet_1.png', show_shapes=True, expand_nested=False)
