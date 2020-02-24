@@ -1,7 +1,6 @@
 import tensorflow as tf
-import tensorflow_datasets as tfds
+
 from pathlib import Path
-from tensorflow.python import debug as tf_debug
 layers = tf.keras.layers
 
 from skatingAI.nets.hrnet.hrnet import create_hrnet_large
@@ -28,9 +27,9 @@ if __name__ == "__main__":
 
 
     train_dataset = tf.data.Dataset.from_generator(get_video_batches,output_types=(tf.float32, tf.float32),
-                                             output_shapes = ((batch_size, 480, 640, 3),(batch_size, 480, 640, 1)), args=[batch_size,epoch_steps, epochs])
+                                             output_shapes = ((batch_size, 480, 640, 3),(batch_size, 480, 640, 1)), args=[batch_size])
     test_dataset = tf.data.Dataset.from_generator(get_video_batches,output_types=(tf.float32, tf.float32),
-                                             output_shapes = ((batch_size, 480, 640, 3),(batch_size, 480, 640, 1)), args=[batch_size, epoch_steps, epochs])
+                                             output_shapes = ((batch_size, 480, 640, 3),(batch_size, 480, 640, 1)), args=[batch_size])
 
     for image, mask in train_dataset.take(1):
         sample_image, sample_mask = image[0], mask[0]
