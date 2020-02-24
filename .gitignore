@@ -108,3 +108,9 @@ venv.bak/
 */Data/Videos/
 */Data/EmptyFrames/
 */Data/ResultingFrames/
+*/Data/3dhuman/processed/*
+*/Data/3dhuman/rgb/*
+*/Data/3dhuman/segmentation_body/*
+*/Data/3dhuman/segmentation_clothes/*
+*/ckpt
+*/logs
