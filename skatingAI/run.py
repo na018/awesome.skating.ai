@@ -16,7 +16,7 @@ if __name__ == "__main__":
     batch_size=3
     buffer_size=1000
     epoch_steps=12
-    epochs=128
+    epochs=8
     # width=640
     # height=427
     width=640
@@ -27,9 +27,9 @@ if __name__ == "__main__":
 
 
     train_dataset = tf.data.Dataset.from_generator(get_video_batches,output_types=(tf.float32, tf.float32),
-                                             output_shapes = ((batch_size, 480, 640, 3),(batch_size, 480, 640, 1)), args=[batch_size])
+                                             output_shapes = ((None, 480, 640, 3),(None, 480, 640, 1)), args=[batch_size])
     test_dataset = tf.data.Dataset.from_generator(get_video_batches,output_types=(tf.float32, tf.float32),
-                                             output_shapes = ((batch_size, 480, 640, 3),(batch_size, 480, 640, 1)), args=[batch_size])
+                                             output_shapes = ((None, 480, 640, 3),(None, 480, 640, 1)), args=[batch_size])
 
     for image, mask in train_dataset.take(1):
         sample_image, sample_mask = image[0], mask[0]

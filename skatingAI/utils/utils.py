@@ -22,7 +22,7 @@ def get_video_batches(batch_size):
         mask_shape = np.array(mask.shape)
         mask = mask.reshape((*mask_shape, -1))
 
-        randoms = np.random.randint(video.shape[0], size=batch_size)
+        randoms = np.random.randint(video.shape[0], size=1)
         video = video[randoms, :]
 
         mask = mask[randoms, :]
