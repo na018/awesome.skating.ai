@@ -86,9 +86,11 @@ class DisplayCallback(object):
         for i, img in enumerate(display_imgs):
             plt.subplot(1, 3, i + 1)
             plt.title(title[i])
-            if show_img:
-                plt.imshow(tf.keras.preprocessing.image.array_to_img(display_imgs[i]))
+            plt.draw()
+            plt.imshow(tf.keras.preprocessing.image.array_to_img(display_imgs[i]))
 
+        if show_img:
+            plt.show()
         fig.savefig(f"{path}/img_train/{epoch}_train.png")
 
         summary_images = tf.constant([self.sample_image.numpy(), mask2rgb(self.sample_mask), mask2rgb(predicted_mask)])
