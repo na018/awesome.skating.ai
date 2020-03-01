@@ -1,33 +1,12 @@
+from pathlib import Path
+
 import numpy as np
 import tensorflow as tf
-from tensorflow import keras, summary, newaxis
 from keras import backend as K
-import itertools
-from pathlib import Path
-import random
-import os
-
-from skimage import draw
 from matplotlib import pyplot as plt
+from tensorflow import keras, summary
 
 path = Path.cwd()
-amount_of_files = len(next(os.walk(f"{path}/Data/3dhuman/processed/numpy/rgbs"))[2])
-
-
-def get_video_batches(batch_size):
-    for i in itertools.count(1):
-        counter = int(random.random() * 394) + 1
-        video = np.load(f"{path}/Data/3dhuman/processed/numpy/rgbbs/{counter}.npz")['arr_0']
-        mask = np.load(f"{path}/Data/3dhuman/processed/numpy/masks/{counter}.npz")['arr_0']
-        mask_shape = np.array(mask.shape)
-        mask = mask.reshape((*mask_shape, -1))
-
-        randoms = np.random.randint(video.shape[0], size=1)
-        video = video[randoms, :]
-
-        mask = mask[randoms, :]
-        print(f"[{i}]",'*'*100,f"[{counter}]-yield")
-        yield video, mask
 
 
 def create_mask(pred_mask):
@@ -68,7 +47,21 @@ def mask2rgb(mask):
     return body_mask
 
 
-class DisplayCallback(keras.callbacks.Callback):
+def set_gpus():
+    gpus = tf.config.experimental.list_physical_devices('GPU')
+    if gpus:
+        # Restrict TensorFlow to only use the first GPU
+        try:
+            tf.config.experimental.set_visible_devices(gpus[3], 'GPU')
+            tf.config.experimental.set_visible_devices(gpus[2], 'GPU')
+            logical_gpus = tf.config.experimental.list_logical_devices('GPU')
+            print(len(gpus), "Physical GPUs,", len(logical_gpus), "Logical GPU")
+        except RuntimeError as e:
+            # Visible devices must be set before GPUs have been initialized
+            print(e)
+
+
+class DisplayCallback(object):
     def __init__(self, model, sample_image, sample_mask, file_writer, epochs=5):
         self.sample_image = sample_image
         self.sample_mask = sample_mask
@@ -76,11 +69,8 @@ class DisplayCallback(keras.callbacks.Callback):
         self.epochs = epochs
         self.file_writer = file_writer
 
-    def on_epoch_end(self, epoch, logs=None, show_img=False):
+    def on_epoch_end(self, epoch, loss, accuracy, show_img=False):
         print('epoch_end')
-
-        # clear_output(wait=True)
-        print("after clear output")
 
         self.model.save_weights(
             f"{Path.cwd()}/ckpt/hrnet-{epoch}.ckpt")
@@ -99,16 +89,18 @@ class DisplayCallback(keras.callbacks.Callback):
             if show_img:
                 plt.imshow(tf.keras.preprocessing.image.array_to_img(display_imgs[i]))
 
-        fig.savefig(f"{epoch}_train.png")
+        fig.savefig(f"{path}/img_train/{epoch}_train.png")
 
         summary_images = tf.constant([self.sample_image.numpy(), mask2rgb(self.sample_mask), mask2rgb(predicted_mask)])
         summary_images = tf.cast(summary_images, tf.uint8)
 
         tf.summary.image(f"{epoch}_training", summary_images, step=epoch, max_outputs=3)
+        tf.summary.scalar('loss', loss, step=epoch)
+        tf.summary.scalar('accuracy', accuracy, step=epoch)
 
         print(f"\nSimple Prediction after epoch {epoch + 1}")
 
-    def on_train_end(self, logs=None):
+    def on_train_end(self):
         # clear_output(wait=True)
         print('train_end')
         # K.clear_session()
