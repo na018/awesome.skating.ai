@@ -1,5 +1,5 @@
 from pathlib import Path
-
+from typing import List
 import numpy as np
 import tensorflow as tf
 from keras import backend as K
@@ -47,7 +47,7 @@ def mask2rgb(mask):
     return body_mask
 
 
-def set_gpus():
+def set_gpus() -> tf.distribute.MirroredStrategy:
     gpus = tf.config.experimental.list_physical_devices('GPU')
     if gpus:
         # Restrict TensorFlow to only use the first GPU
@@ -56,10 +56,16 @@ def set_gpus():
             tf.config.experimental.set_visible_devices(gpus[2], 'GPU')
             logical_gpus = tf.config.experimental.list_logical_devices('GPU')
             print(len(gpus), "Physical GPUs,", len(logical_gpus), "Logical GPU")
+            strategy = tf.distribute.MirroredStrategy()
+            return strategy
         except RuntimeError as e:
             # Visible devices must be set before GPUs have been initialized
             print(e)
 
+class Metric(object):
+    def __init__(self, name: str, metric: tf.keras.metrics):
+        self.name = name
+        self.metric = metric
 
 class DisplayCallback(object):
     def __init__(self, model, sample_image, sample_mask, file_writer, epochs=5):
@@ -69,7 +75,7 @@ class DisplayCallback(object):
         self.epochs = epochs
         self.file_writer = file_writer
 
-    def on_epoch_end(self, epoch, loss, accuracy, show_img=False):
+    def on_epoch_end(self, epoch: int, loss:float, metrics: List[Metric], show_img=False):
         print('epoch_end')
 
         self.model.save_weights(
@@ -98,7 +104,9 @@ class DisplayCallback(object):
 
         tf.summary.image(f"{epoch}_training", summary_images, step=epoch, max_outputs=3)
         tf.summary.scalar('loss', loss, step=epoch)
-        tf.summary.scalar('accuracy', accuracy, step=epoch)
+
+        for i, item in enumerate(metrics):
+            tf.summary.scalar(item.name, item.metric, step=epoch)
 
         print(f"\nSimple Prediction after epoch {epoch + 1}")
 

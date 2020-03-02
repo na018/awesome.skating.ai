@@ -6,9 +6,11 @@ BN_MOMENTUM = 0.01
 
 class HRNet(object):
 
-    def __init__(self, input_shape, output_channels=15):
+    def __init__(self, input_shape, output_channels=15, block_amount=3):
         self.inputs = tf.keras.Input(shape=input_shape, name='images')
         self.output_channels = output_channels
+        self.model = self._build_model(block_amount)
+        self.outputs = None
 
     # noinspection PyDefaultArgument
     def conv3x3_block(self, inputs: tf.Tensor, block_nr=1, filter_counts=[32, 64, 128, 258], name="block") -> tf.Tensor:
@@ -29,7 +31,7 @@ class HRNet(object):
         return layers.Conv2DTranspose(f, k, strides=k, activation='relu', padding="same",
                                       name=f"{name}_{block_nr}_stride_up")(inputs)
 
-    def build_model(self, block_amount=3) -> tf.keras.Model:
+    def _build_model(self, block_amount=3) -> tf.keras.Model:
 
         # --------------first-block-------------------#
         block_l = self.conv3x3_block(self.inputs, name="bl")
@@ -88,9 +90,21 @@ class HRNet(object):
 
         # output 427x640x2x34
 
-        outputs = layers.Conv2D(filters=self.output_channels, kernel_size=3, activation='relu', padding="same",
+        self.outputs = layers.Conv2D(filters=self.output_channels, kernel_size=3, activation='relu', padding="same",
                                 name=f"output")(concat)
 
-        model = tf.keras.Model(inputs=self.inputs, outputs=outputs)
+        model = tf.keras.Model(inputs=self.inputs, outputs=self.outputs)
 
         return model
+
+    # # Define custom loss
+    # def custom_loss(self, x, y, training):
+    #
+    #     y_pred = self.model(x, training=training)
+    #
+    #     # Create a loss function that adds the MSE loss to the mean of all squared activations of a specific layer
+    #     def loss(y_true, y_pred):
+    #         return K.mean(K.square(y_pred - y_true) + K.square(layer), axis=-1)
+    #
+    #     # Return a function
+    #     return loss
