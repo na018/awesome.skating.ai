@@ -38,7 +38,7 @@ class DsGenerator(object):
             random_frame: Frame = tf.convert_to_tensor((video[random_frame_n] / 255), tf.float32)
             random_mask: Mask = tf.convert_to_tensor((mask[random_frame_n]), tf.float32)
 
-            print(f"[{i}] load new pair")
+            # print(f"[{i}] load new pair")
 
             yield {'frame': random_frame, 'mask': random_mask}
 

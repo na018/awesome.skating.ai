@@ -5,12 +5,12 @@ import numpy as np
 
 from skatingAI.nets.hrnet.hrnet import HRNet
 from skatingAI.utils.DsGenerator import DsGenerator
-from skatingAI.utils.utils import DisplayCallback, set_gpus, Metric
+from skatingAI.utils.utils import DisplayCallback, set_gpus, Metric, Logger
 
 if __name__ == "__main__":
     batch_size = 3
     prefetch_batch_buffer = 1
-    epoch_steps = 12
+    epoch_steps = 64
     epoch_log_n = epoch_steps // 2
     epochs = 256
 
@@ -27,11 +27,12 @@ if __name__ == "__main__":
     train_ds = generator.buid_iterator(img_shape, batch_size, prefetch_batch_buffer)
     iter = train_ds.as_numpy_iterator()
 
-    if strategy:
-        with strategy.scope():
-            model = HRNet(img_shape).model
-    else:
-        model = HRNet(img_shape).model
+    # if strategy:
+    #     with strategy.scope():
+    #         model = HRNet(img_shape).model
+    # else:
+    #     model = HRNet(img_shape).model
+    model = HRNet(img_shape).model
     model.summary()
     tf.keras.utils.plot_model(
         model, to_file='nadins_hrnet_1.png', show_shapes=True, expand_nested=False)
@@ -48,13 +49,16 @@ if __name__ == "__main__":
     file_writer = tf.summary.create_file_writer(f"{Path.cwd()}/logs/metrics")
     file_writer.set_as_default()
     progress_tracker = DisplayCallback(model, sample_frame, sample_mask, file_writer, epochs)
+    logger=Logger(log=True)
 
     for epoch in range(epochs):
-        print(f"Start of epoch {epoch}")
+        logger.log(message=f"Start of epoch {epoch}", block=True)
         train_acc_metric_custom = 0
 
         for step in range(epoch_steps):
+            logger.log(message=f"Step {step}", block=True)
             batch = next(iter)
+            logger.log(message=f"got batch")
 
             with tf.GradientTape() as tape:
                 logits = model(batch['frame'], training=True)
@@ -62,10 +66,12 @@ if __name__ == "__main__":
                 max_logits = tf.argmax(logits, axis=-1)
                 max_logits = max_logits[..., tf.newaxis]
                 #loss_value = tf.convert_to_tensor(np.sum(batch['mask']!=max_logits.numpy())/ max_logits.numpy().size, tf.float16)
-
+            logger.log(message=f"Calculated Logits & loss value")
             grads = tape.gradient(loss_value, model.trainable_weights)
+            logger.log(message=f"Calculated Grads")
 
             optimizer.apply_gradients(zip(grads, model.trainable_weights))
+            logger.log(message=f"Optimized gradients")
             max_logits = tf.argmax(logits, axis=-1)
             max_logits = max_logits[..., tf.newaxis]
             train_acc_metric_custom += np.sum(batch['mask']==max_logits.numpy()) / max_logits.numpy().size
@@ -75,8 +81,8 @@ if __name__ == "__main__":
 
 
             if step % epoch_log_n == 0:
-                print(f"Training loss (for one batch) at step {step}: {loss_value:#.2f}")
-                print(f"Seen so far: {(step + 1) * batch_size} samples")
+                logger.log(f"Training loss (for one batch) at step {step}: {loss_value:#.2f}")
+                logger.log(f"Seen so far: {(step + 1) * batch_size} samples")
 
         progress_tracker.on_epoch_end(epoch,
                                       loss=round(float(loss_value), 2),
@@ -90,3 +96,4 @@ if __name__ == "__main__":
         # train_true_pos_metric.reset_states()
 
     progress_tracker.on_train_end()
+    logger.log_end()

@@ -1,5 +1,6 @@
 from pathlib import Path
 from typing import List
+import time
 import numpy as np
 import tensorflow as tf
 from keras import backend as K
@@ -61,6 +62,36 @@ def set_gpus() -> tf.distribute.MirroredStrategy:
         except RuntimeError as e:
             # Visible devices must be set before GPUs have been initialized
             print(e)
+class Timer(object):
+    def __init__(self):
+        self._time_start = time.perf_counter()
+        self._moment = time.perf_counter()
+
+    def get_moment(self) -> float:
+        duration = time.perf_counter() - self._moment
+        self._moment = time.perf_counter()
+
+        return duration
+
+    def total_time(self) -> float:
+        return time.perf_counter() - self._time_start
+
+class Logger(object):
+    def __init__(self, log=True):
+        self._log = log
+        self._Timer = Timer()
+
+    def log(self, message: str, block=False) -> float:
+        if self._log:
+            if block:
+                print('*'*100)
+            print(f"[{self._Timer.get_moment():#.2f}s] {message}")
+        return self._Timer.get_moment()
+
+    def log_end(self):
+        print('*' * 100)
+        print(f"Complete execution duration: {self._Timer.total_time()/60:#.2f} minutes")
+
 
 class Metric(object):
     def __init__(self, name: str, metric: tf.keras.metrics):
@@ -76,24 +107,24 @@ class DisplayCallback(object):
         self.file_writer = file_writer
 
     def on_epoch_end(self, epoch: int, loss:float, metrics: List[Metric], show_img=False):
-        print('epoch_end')
 
         self.model.save_weights(
             f"{Path.cwd()}/ckpt/hrnet-{epoch}.ckpt")
-        print('saved weights')
 
         predicted_mask = create_mask(self.model.predict(self.sample_image[tf.newaxis, ...])[0])
 
         K.clear_session()
         fig = plt.figure(figsize=(15, 15))
         title = ['Input Image', 'True Mask', 'Predicted Mask']
-        display_imgs = [self.sample_image, self.sample_mask, predicted_mask]
+        display_imgs = [self.sample_image.numpy(),
+                        tf.keras.preprocessing.image.array_to_img(self.sample_mask),
+                        tf.keras.preprocessing.image.array_to_img(predicted_mask)]
 
         for i, img in enumerate(display_imgs):
             plt.subplot(1, 3, i + 1)
             plt.title(title[i])
             plt.draw()
-            plt.imshow(tf.keras.preprocessing.image.array_to_img(display_imgs[i]))
+            plt.imshow(display_imgs[i])
 
         if show_img:
             plt.show()
@@ -108,7 +139,6 @@ class DisplayCallback(object):
         for i, item in enumerate(metrics):
             tf.summary.scalar(item.name, item.metric, step=epoch)
 
-        print(f"\nSimple Prediction after epoch {epoch + 1}")
 
     def on_train_end(self):
         # clear_output(wait=True)
