@@ -36,7 +36,7 @@ class DsGenerator(object):
             random_frame_n: int = random.randint(0, video.shape[0] - 1)
 
             random_frame: Frame = tf.convert_to_tensor((video[random_frame_n] / 255), tf.float32)
-            random_mask: Mask = tf.convert_to_tensor((mask[random_frame_n]), tf.float32)
+            random_mask: Mask = tf.convert_to_tensor((mask[random_frame_n]), tf.int32)
 
             # print(f"[{i}] load new pair")
 
@@ -45,8 +45,8 @@ class DsGenerator(object):
     def buid_iterator(self, img_shape=(480, 640, 3), batch_size: int = 10,
                       prefetch_batch_buffer: int = 5) -> tf.data.Dataset:
         dataset = tf.data.Dataset.from_generator(self.get_next_pair,
-                                                 output_types={'frame': tf.float32, 'mask': tf.float32})
-        # output_shapes = ({'frame':None, *img_shape),(None, *img_shape)))
+                                                 output_types={'frame': tf.float32, 'mask': tf.int32})
+
         dataset = dataset.batch(batch_size)
         dataset = dataset.prefetch(prefetch_batch_buffer)
 
