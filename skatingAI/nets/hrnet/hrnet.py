@@ -1,8 +1,10 @@
 import tensorflow as tf
+import tensorflow.keras.backend as K
 
 layers = tf.keras.layers
 
 BN_MOMENTUM = 0.01
+
 
 class HRNet(object):
 
@@ -13,12 +15,17 @@ class HRNet(object):
         self.outputs = None
 
     # noinspection PyDefaultArgument
-    def conv3x3_block(self, inputs: tf.Tensor, block_nr=1, filter_counts=[32, 64, 128, 258], name="block") -> tf.Tensor:
+    def conv3x3_block(self, inputs: tf.Tensor,
+                      block_nr=1,
+                      filter_counts=[32, 64, 128, 258],
+                      name="block") -> tf.Tensor:
         bn = tf.identity(inputs)
         for i, filter in enumerate(filter_counts):
-            conv = layers.Conv2D(64, kernel_size=3, activation='relu', padding="same",
-                                 name=f"{name}_{block_nr}_conv_{i}")(
-                bn)
+            conv = layers.Conv2D(64,
+                                 kernel_size=3,
+                                 activation='relu',
+                                 padding="same",
+                                 name=f"{name}_{block_nr}_conv_{i}")(bn)
             bn = layers.BatchNormalization(momentum=BN_MOMENTUM, name=f"{name}_{block_nr}_bn_{i}")(conv)
 
         return bn
@@ -90,21 +97,11 @@ class HRNet(object):
 
         # output 427x640x2x34
 
-        self.outputs = layers.Conv2D(filters=self.output_channels, kernel_size=3, activation='relu', padding="same",
-                                name=f"output")(concat)
+        self.outputs = layers.Conv2D(filters=self.output_channels, kernel_size=3,
+                                     activation='softmax',
+                                     padding="same",
+                                     name=f"output")(concat)
 
         model = tf.keras.Model(inputs=self.inputs, outputs=self.outputs)
 
         return model
-
-    # # Define custom loss
-    # def custom_loss(self, x, y, training):
-    #
-    #     y_pred = self.model(x, training=training)
-    #
-    #     # Create a loss function that adds the MSE loss to the mean of all squared activations of a specific layer
-    #     def loss(y_true, y_pred):
-    #         return K.mean(K.square(y_pred - y_true) + K.square(layer), axis=-1)
-    #
-    #     # Return a function
-    #     return loss
