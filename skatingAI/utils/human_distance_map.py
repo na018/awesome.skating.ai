@@ -57,7 +57,7 @@ class HumanDistanceMap(object):
 
     def _matrix_formatations(self, distance_map):
         distance_map = np.array(distance_map)
-        distance_map = distance_map / distance_map.max()
+        distance_map = np.round((1- distance_map / distance_map.size).astype(np.float16),2)
         distance_map = np.insert(distance_map, (0), 1, axis=0)
         distance_map = np.insert(distance_map, (0), 1, axis=1)
         distance_map[0, 0] = 0
