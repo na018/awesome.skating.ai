@@ -68,13 +68,13 @@ def set_gpus() -> tf.distribute.MirroredStrategy:
     if gpus:
         # Restrict TensorFlow to only use the first GPU
         try:
-            tf.config.experimental.set_visible_devices(gpus[3], 'GPU')
+            #tf.config.experimental.set_visible_devices(gpus[3], 'GPU')
             tf.config.experimental.set_visible_devices(gpus[2], 'GPU')
             logical_gpus = tf.config.experimental.list_logical_devices('GPU')
             Logger().log(f"{len(gpus)} Physical GPUs {len(logical_gpus)} Logical GPU", block=True)
 
-            strategy = tf.distribute.MirroredStrategy()
-            return strategy
+            # strategy = tf.distribute.MirroredStrategy()
+            # return strategy
         except RuntimeError as e:
             # Visible devices must be set before GPUs have been initialized
             print(e)

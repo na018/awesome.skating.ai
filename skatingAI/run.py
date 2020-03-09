@@ -12,14 +12,12 @@ from skatingAI.utils.losses import GeneralisedWassersteinDiceLoss
 if __name__ == "__main__":
     batch_size = 3
     prefetch_batch_buffer = 1
-    epoch_steps = 64
-    epoch_log_n = epoch_steps // 2
+    epoch_steps = 32
+    epoch_log_n = 5
     epochs = 512
 
-    strategy = set_gpus()
-    strategy = None
+    set_gpus()
 
-    Logger().log(message=strategy)
     generator = DsGenerator()
 
     sample_pair = next(generator.get_next_pair())
@@ -29,20 +27,11 @@ if __name__ == "__main__":
     img_shape = sample_frame.shape
     n_classes = np.max(sample_mask) + 1
 
-    if strategy:
-        batch_size *= strategy.num_replicas_in_sync
-
     train_ds = generator.buid_iterator(img_shape, batch_size, prefetch_batch_buffer)
     iter = train_ds.as_numpy_iterator()
 
-    if strategy:
-        train_ds = strategy.experimental_distribute_dataset(train_ds)
 
-    if strategy:
-        with strategy.scope():
-            hrnet = HRNet(img_shape, n_classes)
-    else:
-        hrnet = HRNet(img_shape, n_classes)
+    hrnet = HRNet(img_shape, n_classes)
 
 
     model = hrnet.model
@@ -98,7 +87,7 @@ if __name__ == "__main__":
             #     logger.log(f"Training loss (for one batch) at step {step}: {tf.reduce_sum(loss_value).numpy():#.2f}")
             #     logger.log(f"Seen so far: {(step + 1) * batch_size} samples")
 
-        if epoch % 10 == 0:
+        if epoch % epoch_log_n == 0:
             progress_tracker.on_epoch_end(epoch,
                                           loss=round(tf.reduce_sum(loss_value).numpy(), 2),
                                           metrics=[
