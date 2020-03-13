@@ -1,22 +1,31 @@
 import tensorflow as tf
+import tensorflow.keras.backend as K
 
 layers = tf.keras.layers
 
 BN_MOMENTUM = 0.01
 
+
 class HRNet(object):
 
-    def __init__(self, input_shape, output_channels=15):
+    def __init__(self, input_shape, output_channels=15, block_amount=3):
         self.inputs = tf.keras.Input(shape=input_shape, name='images')
         self.output_channels = output_channels
+        self.model = self._build_model(block_amount)
+        self.outputs = None
 
     # noinspection PyDefaultArgument
-    def conv3x3_block(self, inputs: tf.Tensor, block_nr=1, filter_counts=[32, 64, 128, 258], name="block") -> tf.Tensor:
+    def conv3x3_block(self, inputs: tf.Tensor,
+                      block_nr=1,
+                      filter_counts=[32, 64, 128, 258],
+                      name="block") -> tf.Tensor:
         bn = tf.identity(inputs)
         for i, filter in enumerate(filter_counts):
-            conv = layers.Conv2D(64, kernel_size=3, activation='relu', padding="same",
-                                 name=f"{name}_{block_nr}_conv_{i}")(
-                bn)
+            conv = layers.Conv2D(64,
+                                 kernel_size=3,
+                                 activation='relu',
+                                 padding="same",
+                                 name=f"{name}_{block_nr}_conv_{i}")(bn)
             bn = layers.BatchNormalization(momentum=BN_MOMENTUM, name=f"{name}_{block_nr}_bn_{i}")(conv)
 
         return bn
@@ -29,7 +38,7 @@ class HRNet(object):
         return layers.Conv2DTranspose(f, k, strides=k, activation='relu', padding="same",
                                       name=f"{name}_{block_nr}_stride_up")(inputs)
 
-    def build_model(self, block_amount=3) -> tf.keras.Model:
+    def _build_model(self, block_amount=3) -> tf.keras.Model:
 
         # --------------first-block-------------------#
         block_l = self.conv3x3_block(self.inputs, name="bl")
@@ -88,9 +97,11 @@ class HRNet(object):
 
         # output 427x640x2x34
 
-        outputs = layers.Conv2D(filters=self.output_channels, kernel_size=3, activation='relu', padding="same",
-                                name=f"output")(concat)
+        self.outputs = layers.Conv2D(filters=self.output_channels, kernel_size=3,
+                                     activation='softmax',
+                                     padding="same",
+                                     name=f"output")(concat)
 
-        model = tf.keras.Model(inputs=self.inputs, outputs=outputs)
+        model = tf.keras.Model(inputs=self.inputs, outputs=self.outputs)
 
         return model
