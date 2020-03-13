@@ -9,8 +9,143 @@
 > Since this research focuses on the detection of keypoints in figure ice skating, further considerations must be taken in mind: people in the background should not be detected, but only the person in focus for later analysis. The question there is, how to get the corespondent training data.
 
 ---
+## 2018-03-05
+```python
+batch_size = 3
+prefetch_batch_buffer = 1
+epoch_steps = 64
+epoch_log_n = 5
+epochs = 555
 
-## 2019-01-12 [Status Report]: XSens Motion Capture Dataset
+# commit 0e94f118304b10505a6a004538392432a0194e22
+
+```    
+amount of training data: 43.944
+## 2020-03-01 [Status Report]: Create Custom Training Loop (first step)
+
+- Solve problems with Tensorflow 2:
+    - tries to use available GPUs out-of-the box if configured correctly otherwise falls back to CPU
+    - [official docker container](https://www.tensorflow.org/install/docker) from documentation uses Python 2 
+    - try out multiple containers and find [tensorflow/tensorflow:latest-devel-gpu-py3](https://hub.docker.com/r/tensorflow/tensorflow/tags)
+     to work with GPUs and Python 3 as expected
+- create Python Generator function for loading the image data and not running out of memory
+- cleanup code to use classes and type information
+- create custom training loop
+- integrate tensorboard logging information
+- create HRNetwork with 3 building blocks for the body segmentation task: [Model Architecture](#custom-hrnet-model)
+
+### Analysis initial test training
+
+The [Prediction](#predition-after-last-epoch) after the 64th epoch shows compared to 
+the [prediction](#predition-after-2nd-epoch), that the network learns to categorize the pixel data better to the different
+classes after some epochs. At the beginning the prediction shows a variegated picture with multiple class predictions, 
+with preceding epochs this prediction becomes clearer and less scattered.
+
+However, the prediction at the end seems to target the torso as main class, 
+probably because it's pixels appears most often in the picture. 
+Therefore, the hyperparameters and loss functions must be further refined for getting decent training results.
+
+This behavior is reflected by the loss and accuracy graphs.
+The [accuracy graph](#accuracy-plot) starts to flatten after the 35th episode and reassembles 
+a logarithmic graph which converges to 0.94. It rises rather quickly however, the result is not the desired body segmentation.
+Here accuracy is probably the wrong metric. *(Experiments will follow)*
+
+The [loss graph](#loss-plot) starts to flatten already after the 30th episode and does not improve much until the last 
+episode. The difference is only about 0.03.
+Here as well experiments with the hyperparameters and loss function must be conducted.
+
+**Training configuration:**
+```
+batch_size = 3
+prefetch_batch_buffer = 1
+epoch_steps = 32
+epoch_log_n = epoch_steps // 2
+epochs = 64
+
+optimizer = tf.keras.optimizers.SGD(learning_rate=1e-3)
+loss_fn = tf.keras.losses.SparseCategoricalCrossentropy(from_logits=True)
+```
+
+#### Loss Plot
+![HRNet Model Architecture](skatingAI/docs/img/loss_custom_train_00.png)  
+#### Accuracy Plot
+![HRNet Model Architecture](skatingAI/docs/img/accuracy_custom_train_00.png)  
+#### Predition after 2nd epoch
+![HRNet Model Architecture](skatingAI/docs/img/custom_train_00_2_train.png)  
+#### Predition after last epoch
+![HRNet Model Architecture](skatingAI/docs/img/custom_train_00_63_train.png)  
+### Custom HRNet Model
+![HRNet Model Architecture](skatingAI/docs/img/nadins_hrnet_1.png)
+------
+
+## 2020-02-14 [Status Report]: Preprocess 3DHuman Dataset
+
+- request access to dataset
+- for initial testing purposes: 
+    - download first woman batch *(including different female characters and 70 actions)*
+        - segmentation_body: as label for the body segmentation task
+        - segmentation_clothes : label for avatar clothes
+        - rgb : as input image data 
+- preprocessing:
+    - cleanup segmentation body include clear labels 
+        - convert rgb to classes [0;14] 
+        - remove in-between pixels
+        - ref. [table: body segmentation class labels](#body-segmentation-class-labels)
+    - store frames beloning to one action in one compressed numpy **.npz** file to save memory and speedup trainig
+    - remove background from rgb data by using segmentation_clothes *(idea: level 1 training)*
+
+### Body segmentation class labels 
+
+| class | name     | pixel color     |
+| ----- | -------- | --------------- |
+| 0     | bg       | [153,153,153]   |
+| 1     | Head     | [128,64,0]      |
+| 2     | RUpArm   | [128, 0, 128]   |
+| 3     | RForeArm | [128, 128, 255] |
+| 4     | RHand    | [255, 128, 128] |
+| 5     | LUpArm   | [0, 0, 255]     |
+| 6     | LForeArm | [128, 128, 0]   |
+| 7     | LHand    | [0, 128, 0]     |
+| 8     | torso    | [128, 0, 0]     |
+| 9     | RThigh   | [128, 255, 128] |
+| 10    | RLowLeg  | [255, 255, 128] |
+| 11    | RFoot    | [255, 0, 255]   |
+| 12    | LThigh   | [0, 128, 128]   |
+| 13    | LLowLeg  | [0, 0, 128]     |
+| 14    | LFoot    | [255, 128, 0]   |
+
+
+
+---
+
+## 2020-02-07 [Status Report]: Refine Ressearch
+
+- discuss paper with Johannes Theodoridis
+- Result: 
+    - combine [HRNet](https://arxiv.org/pdf/1908.07919) pose recognition instead of PAF from 
+    [STAF](https://arxiv.org/pdf/1811.11975) with Keypoint Recognition
+    - implement step-wise
+
+---
+
+## 2020-02-07 [Status Report]: XSens Motion Capture Record
+
+- plan new Motion Record in ice rink
+- Problems:
+    - skater injured
+    - substitute skater is in competition preparation and has not enough time for decent recording
+- Result: 
+    - Recording must be repeated
+    - new scheduled recording on march 6th
+- find substitute dataset to work with:
+    - [3DPEOPLE DATASET](https://cv.iri.upc-csic.es/)
+    - similar approach with blender and Motion capturing
+    - will be used for creating the initial training
+
+
+---
+
+## 2020-01-12 [Status Report]: XSens Motion Capture Dataset
 
 - record mocap data with XSens in the ice rink
 - research and experiment wit XSens data

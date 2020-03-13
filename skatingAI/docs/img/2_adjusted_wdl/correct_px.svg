@@ -1,0 +1,281 @@
+<svg viewBox="0 0 1709.6876220703125 400.0000305175781" xmlns="http://www.w3.org/2000/svg">
+    <g>
+        <g>
+            <g>
+                <g>
+                    <g>
+                        <line x1="94" y1="378" x2="89" y2="378" style="visibility: inherit;" fill="rgb(0, 0, 0)"
+                              stroke="rgb(204, 204, 204)" stroke-width="1px"></line>
+                        <line x1="94" y1="340.2" x2="89" y2="340.2" style="visibility: inherit;" fill="rgb(0, 0, 0)"
+                              stroke="rgb(204, 204, 204)" stroke-width="1px"></line>
+                        <line x1="94" y1="302.4" x2="89" y2="302.4" style="visibility: inherit;" fill="rgb(0, 0, 0)"
+                              stroke="rgb(204, 204, 204)" stroke-width="1px"></line>
+                        <line x1="94" y1="264.6" x2="89" y2="264.6" style="visibility: inherit;" fill="rgb(0, 0, 0)"
+                              stroke="rgb(204, 204, 204)" stroke-width="1px"></line>
+                        <line x1="94" y1="226.79999999999998" x2="89" y2="226.79999999999998"
+                              style="visibility: inherit;" fill="rgb(0, 0, 0)" stroke="rgb(204, 204, 204)"
+                              stroke-width="1px"></line>
+                        <line x1="94" y1="189" x2="89" y2="189" style="visibility: inherit;" fill="rgb(0, 0, 0)"
+                              stroke="rgb(204, 204, 204)" stroke-width="1px"></line>
+                        <line x1="94" y1="151.20000000000002" x2="89" y2="151.20000000000002"
+                              style="visibility: inherit;" fill="rgb(0, 0, 0)" stroke="rgb(204, 204, 204)"
+                              stroke-width="1px"></line>
+                        <line x1="94" y1="113.40000000000003" x2="89" y2="113.40000000000003"
+                              style="visibility: inherit;" fill="rgb(0, 0, 0)" stroke="rgb(204, 204, 204)"
+                              stroke-width="1px"></line>
+                        <line x1="94" y1="75.59999999999997" x2="89" y2="75.59999999999997" style="visibility: inherit;"
+                              fill="rgb(0, 0, 0)" stroke="rgb(204, 204, 204)" stroke-width="1px"></line>
+                        <line x1="94" y1="37.80000000000001" x2="89" y2="37.80000000000001" style="visibility: inherit;"
+                              fill="rgb(0, 0, 0)" stroke="rgb(204, 204, 204)" stroke-width="1px"></line>
+                        <line x1="94" y1="0" x2="89" y2="0" style="visibility: inherit;" fill="rgb(0, 0, 0)"
+                              stroke="rgb(204, 204, 204)" stroke-width="1px"></line>
+                    </g>
+                    <g transform="translate(84, 0)">
+                        <text x="0" y="378" dx="0em" dy="0.3em"
+                              style="text-anchor: end; visibility: hidden; font-family: &quot;Helvetica Neue&quot;, sans-serif; font-size: 12px; font-weight: 200;"
+                              fill="rgb(50, 49, 63)" stroke="none" stroke-width="1px">1.55e+5
+                        </text>
+                        <text x="0" y="340.2" dx="0em" dy="0.3em"
+                              style="text-anchor: end; visibility: inherit; font-family: &quot;Helvetica Neue&quot;, sans-serif; font-size: 12px; font-weight: 200;"
+                              fill="rgb(50, 49, 63)" stroke="none" stroke-width="1px">1.6e+5
+                        </text>
+                        <text x="0" y="302.4" dx="0em" dy="0.3em"
+                              style="text-anchor: end; visibility: inherit; font-family: &quot;Helvetica Neue&quot;, sans-serif; font-size: 12px; font-weight: 200;"
+                              fill="rgb(50, 49, 63)" stroke="none" stroke-width="1px">1.65e+5
+                        </text>
+                        <text x="0" y="264.6" dx="0em" dy="0.3em"
+                              style="text-anchor: end; visibility: inherit; font-family: &quot;Helvetica Neue&quot;, sans-serif; font-size: 12px; font-weight: 200;"
+                              fill="rgb(50, 49, 63)" stroke="none" stroke-width="1px">1.7e+5
+                        </text>
+                        <text x="0" y="226.79999999999998" dx="0em" dy="0.3em"
+                              style="text-anchor: end; visibility: inherit; font-family: &quot;Helvetica Neue&quot;, sans-serif; font-size: 12px; font-weight: 200;"
+                              fill="rgb(50, 49, 63)" stroke="none" stroke-width="1px">1.75e+5
+                        </text>
+                        <text x="0" y="189" dx="0em" dy="0.3em"
+                              style="text-anchor: end; visibility: inherit; font-family: &quot;Helvetica Neue&quot;, sans-serif; font-size: 12px; font-weight: 200;"
+                              fill="rgb(50, 49, 63)" stroke="none" stroke-width="1px">1.8e+5
+                        </text>
+                        <text x="0" y="151.20000000000002" dx="0em" dy="0.3em"
+                              style="text-anchor: end; visibility: inherit; font-family: &quot;Helvetica Neue&quot;, sans-serif; font-size: 12px; font-weight: 200;"
+                              fill="rgb(50, 49, 63)" stroke="none" stroke-width="1px">1.85e+5
+                        </text>
+                        <text x="0" y="113.40000000000003" dx="0em" dy="0.3em"
+                              style="text-anchor: end; visibility: inherit; font-family: &quot;Helvetica Neue&quot;, sans-serif; font-size: 12px; font-weight: 200;"
+                              fill="rgb(50, 49, 63)" stroke="none" stroke-width="1px">1.9e+5
+                        </text>
+                        <text x="0" y="75.59999999999997" dx="0em" dy="0.3em"
+                              style="text-anchor: end; visibility: inherit; font-family: &quot;Helvetica Neue&quot;, sans-serif; font-size: 12px; font-weight: 200;"
+                              fill="rgb(50, 49, 63)" stroke="none" stroke-width="1px">1.95e+5
+                        </text>
+                        <text x="0" y="37.80000000000001" dx="0em" dy="0.3em"
+                              style="text-anchor: end; visibility: inherit; font-family: &quot;Helvetica Neue&quot;, sans-serif; font-size: 12px; font-weight: 200;"
+                              fill="rgb(50, 49, 63)" stroke="none" stroke-width="1px">2e+5
+                        </text>
+                        <text x="0" y="0" dx="0em" dy="0.3em"
+                              style="text-anchor: end; visibility: hidden; font-family: &quot;Helvetica Neue&quot;, sans-serif; font-size: 12px; font-weight: 200;"
+                              fill="rgb(50, 49, 63)" stroke="none" stroke-width="1px">2.05e+5
+                        </text>
+                    </g>
+                    <line x1="94" y1="0" x2="94" y2="378" fill="rgb(0, 0, 0)" stroke="rgb(204, 204, 204)"
+                          stroke-width="1px"></line>
+                </g>
+            </g>
+            <g transform="translate(94, 0)" clip-path="url(#clip_0)">
+                <clipPath id="clip_0">
+                    <rect width="1615" height="377"></rect>
+                </clipPath>
+                <g>
+                    <g>
+                        <g>
+                            <line x1="0" y1="0" x2="0" y2="378" fill="rgb(0, 0, 0)" stroke="rgb(60, 60, 60)"
+                                  stroke-width="1px" opacity="0.25"></line>
+                            <line x1="124.28384615384617" y1="0" x2="124.28384615384617" y2="378" fill="rgb(0, 0, 0)"
+                                  stroke="rgb(60, 60, 60)" stroke-width="1px" opacity="0.25"></line>
+                            <line x1="248.56769230769234" y1="0" x2="248.56769230769234" y2="378" fill="rgb(0, 0, 0)"
+                                  stroke="rgb(60, 60, 60)" stroke-width="1px" opacity="0.25"></line>
+                            <line x1="372.8515384615385" y1="0" x2="372.8515384615385" y2="378" fill="rgb(0, 0, 0)"
+                                  stroke="rgb(60, 60, 60)" stroke-width="1px" opacity="0.25"></line>
+                            <line x1="497.1353846153847" y1="0" x2="497.1353846153847" y2="378" fill="rgb(0, 0, 0)"
+                                  stroke="rgb(60, 60, 60)" stroke-width="1px" opacity="0.25"></line>
+                            <line x1="621.4192307692308" y1="0" x2="621.4192307692308" y2="378" fill="rgb(0, 0, 0)"
+                                  stroke="rgb(60, 60, 60)" stroke-width="1px" opacity="0.25"></line>
+                            <line x1="745.703076923077" y1="0" x2="745.703076923077" y2="378" fill="rgb(0, 0, 0)"
+                                  stroke="rgb(60, 60, 60)" stroke-width="1px" opacity="0.25"></line>
+                            <line x1="869.9869230769231" y1="0" x2="869.9869230769231" y2="378" fill="rgb(0, 0, 0)"
+                                  stroke="rgb(60, 60, 60)" stroke-width="1px" opacity="0.25"></line>
+                            <line x1="994.2707692307694" y1="0" x2="994.2707692307694" y2="378" fill="rgb(0, 0, 0)"
+                                  stroke="rgb(60, 60, 60)" stroke-width="1px" opacity="0.25"></line>
+                            <line x1="1118.5546153846153" y1="0" x2="1118.5546153846153" y2="378" fill="rgb(0, 0, 0)"
+                                  stroke="rgb(60, 60, 60)" stroke-width="1px" opacity="0.25"></line>
+                            <line x1="1242.8384615384616" y1="0" x2="1242.8384615384616" y2="378" fill="rgb(0, 0, 0)"
+                                  stroke="rgb(60, 60, 60)" stroke-width="1px" opacity="0.25"></line>
+                            <line x1="1367.1223076923077" y1="0" x2="1367.1223076923077" y2="378" fill="rgb(0, 0, 0)"
+                                  stroke="rgb(60, 60, 60)" stroke-width="1px" opacity="0.25"></line>
+                            <line x1="1491.406153846154" y1="0" x2="1491.406153846154" y2="378" fill="rgb(0, 0, 0)"
+                                  stroke="rgb(60, 60, 60)" stroke-width="1px" opacity="0.25"></line>
+                            <line x1="1615.69" y1="0" x2="1615.69" y2="378" fill="rgb(0, 0, 0)" stroke="rgb(60, 60, 60)"
+                                  stroke-width="1px" opacity="0.25"></line>
+                        </g>
+                        <g>
+                            <line x1="0" y1="378" x2="1615.69" y2="378" fill="rgb(0, 0, 0)" stroke="rgb(60, 60, 60)"
+                                  stroke-width="1px" opacity="0.25"></line>
+                            <line x1="0" y1="340.2" x2="1615.69" y2="340.2" fill="rgb(0, 0, 0)" stroke="rgb(60, 60, 60)"
+                                  stroke-width="1px" opacity="0.25"></line>
+                            <line x1="0" y1="302.4" x2="1615.69" y2="302.4" fill="rgb(0, 0, 0)" stroke="rgb(60, 60, 60)"
+                                  stroke-width="1px" opacity="0.25"></line>
+                            <line x1="0" y1="264.6" x2="1615.69" y2="264.6" fill="rgb(0, 0, 0)" stroke="rgb(60, 60, 60)"
+                                  stroke-width="1px" opacity="0.25"></line>
+                            <line x1="0" y1="226.79999999999998" x2="1615.69" y2="226.79999999999998"
+                                  fill="rgb(0, 0, 0)" stroke="rgb(60, 60, 60)" stroke-width="1px" opacity="0.25"></line>
+                            <line x1="0" y1="189" x2="1615.69" y2="189" fill="rgb(0, 0, 0)" stroke="rgb(60, 60, 60)"
+                                  stroke-width="1px" opacity="0.25"></line>
+                            <line x1="0" y1="151.20000000000002" x2="1615.69" y2="151.20000000000002"
+                                  fill="rgb(0, 0, 0)" stroke="rgb(60, 60, 60)" stroke-width="1px" opacity="0.25"></line>
+                            <line x1="0" y1="113.40000000000003" x2="1615.69" y2="113.40000000000003"
+                                  fill="rgb(0, 0, 0)" stroke="rgb(60, 60, 60)" stroke-width="1px" opacity="0.25"></line>
+                            <line x1="0" y1="75.59999999999997" x2="1615.69" y2="75.59999999999997" fill="rgb(0, 0, 0)"
+                                  stroke="rgb(60, 60, 60)" stroke-width="1px" opacity="0.25"></line>
+                            <line x1="0" y1="37.80000000000001" x2="1615.69" y2="37.80000000000001" fill="rgb(0, 0, 0)"
+                                  stroke="rgb(60, 60, 60)" stroke-width="1px" opacity="0.25"></line>
+                            <line x1="0" y1="0" x2="1615.69" y2="0" fill="rgb(0, 0, 0)" stroke="rgb(60, 60, 60)"
+                                  stroke-width="1px" opacity="0.25"></line>
+                        </g>
+                    </g>
+                </g>
+                <g>
+                    <g>
+                        <line x1="0" y1="1549.8" x2="1615.69" y2="1549.8" fill="rgb(0, 0, 0)"
+                              stroke="rgb(153, 153, 153)" stroke-width="1.5px"></line>
+                    </g>
+                </g>
+                <g>
+                    <g>
+                        <line x1="124.28384615384617" y1="0" x2="124.28384615384617" y2="378" fill="rgb(0, 0, 0)"
+                              stroke="rgb(153, 153, 153)" stroke-width="1.5px"></line>
+                    </g>
+                </g>
+                <g>
+                    <g>
+                        <g>
+                            <g>
+                                <g>
+                                    <path stroke="rgb(255, 112, 67)" stroke-width="2px"
+                                          d="M186.42576923076925,385.07308026418036L198.85415384615388,325.79658834804525L211.28253846153848,285.6768856559682L223.7109230769231,259.6919123518642L236.1393076923077,222.61517028154216L248.56769230769234,204.9241694661333L260.99607692307694,175.3331387552044L273.42446153846157,171.60676621544144L285.8528461538462,152.49128772351293L298.2812307692308,142.39071735001295L310.7096153846154,135.68934902796212L323.13800000000003,136.57711035892132L335.56638461538466,129.3327713526871L347.99476923076924,125.44867889731646L360.42315384615387,127.02008715098984L372.8515384615385,126.14066079807114L385.2799230769231,128.44693829991942L397.70830769230776,118.50616010414535L410.1366923076923,107.96998125148849L422.56507692307696,107.78996087976861L434.99346153846153,100.56433052963519L447.4218461538462,94.50077954079836L459.8502307692308,88.3639562888822L472.2786153846154,97.86533465838988L484.707,101.01536695035236L497.1353846153847,110.5891750176221L509.56376923076925,104.22107511104775L521.9921538461539,101.95060248286671L534.4205384615385,96.61845613190042L546.8489230769231,95.05950353351739L559.2773076923077,102.02221327422893L571.7056923076924,97.60564254633016L584.1340769230769,106.09793575317178L596.5624615384615,105.55890826915441L608.9908461538462,98.33855859384033L621.4192307692308,101.20754659632945L633.8476153846154,109.78422979133637L646.2760000000001,106.5808050984993L658.7043846153846,114.51268361759355L671.1327692307693,112.74875468998295L683.5611538461538,111.44935576620821L695.9895384615385,109.48785998414013L708.4179230769231,116.22123197098256L720.8463076923077,100.98459045488949L733.2746923076924,103.65065623686803L745.703076923077,106.12304602048226L758.1314615384615,99.58811894009642L770.5598461538463,100.00964559552119L782.9882307692308,102.7475094943166L795.4166153846155,103.50716619020568L807.845,101.55434492150897L820.2733846153845,99.41685812279582L832.7017692307692,98.42546296134509L845.1301538461539,95.01160446570401L857.5585384615385,98.18265795407234L869.9869230769231,94.18676542357633L882.4153076923077,96.37603874621868L894.8436923076924,103.68611768263418L907.272076923077,106.82190444218418L919.7004615384616,107.03283064634132L932.1288461538461,114.62867768862287L944.5572307692308,111.18494104202153L956.9856153846155,109.60670690487751L969.414,102.64959058351354L981.8423846153846,99.58311194525896L994.2707692307694,97.61499257788324L1006.6991538461539,97.01347174247593L1019.1275384615385,94.46945399690532L1031.5559230769231,94.32941907354666L1043.9843076923078,93.58858239924376L1056.4126923076924,88.75951437316547L1068.841076923077,88.73936691789072L1081.2694615384614,94.17575079279806L1093.6978461538463,88.24440915740877L1106.126230769231,86.85955313543599L1118.5546153846153,86.48381339764768L1130.983,91.5954947030001L1143.4113846153848,83.77015950040158L1155.8397692307692,87.06835731115245L1168.2681538461538,88.98975922250361L1180.6965384615385,89.42270180222738L1193.124923076923,76.30158009975565L1205.5533076923077,79.76287894468254L1217.9816923076924,85.93229511151748L1230.410076923077,87.53917342631456L1242.8384615384616,85.62004106081554L1255.2668461538462,90.36319745079163L1267.6952307692309,86.88826858059309L1280.1236153846153,81.67272479287743L1292.5520000000001,79.49267793332865L1304.9803846153848,85.36359438470942L1317.4087692307692,86.32430615289707L1329.8371538461538,91.86537017195457L1342.2655384615387,93.29900565669135L1354.693923076923,95.37828151186989L1367.1223076923077,92.6894184368029L1379.5506923076923,98.69964973603174L1391.979076923077,84.32660361444164L1404.4074615384616,90.37049742318396L1416.8358461538462,98.31075928653752L1429.2642307692308,94.66198819817856L1441.6926153846155,100.83296981803113L1454.121,97.50212414289854L1466.5493846153847,88.57241782510528L1478.9777692307691,89.64950759618887"
+                                          style="fill: none;" fill="none"></path>
+                                </g>
+                            </g>
+                        </g>
+                    </g>
+                    <g opacity="0.2">
+                        <g>
+                            <g>
+                                <g>
+                                    <path stroke="rgb(255, 112, 67)" stroke-width="2px"
+                                          d="M136.71223076923079,529.9106400000001L149.1406153846154,303.48864000000003L161.56900000000002,227.99447999999998L173.99738461538462,193.16556L186.42576923076925,202.7214L198.85415384615388,131.00724L211.28253846153848,142.95203999999998L223.7109230769231,161.39844000000002L236.1393076923077,75.43367999999998L248.56769230769234,131.95224L260.99607692307694,49.46508L273.42446153846157,155.358L285.8528461538462,67.44276000000002L298.2812307692308,96.70751999999999L310.7096153846154,104.97059999999999L323.13800000000003,140.6916L335.56638461538466,95.45256L347.99476923076924,107.14788000000004L360.42315384615387,134.46971999999997L372.8515384615385,121.95035999999999L385.2799230769231,139.482L397.70830769230776,70.77672000000001L410.1366923076923,57.236760000000004L422.56507692307696,106.92108000000002L434.99346153846153,65.62079999999997L447.4218461538462,65.12939999999998L459.8502307692308,58.597560000000044L472.2786153846154,144.00287999999998L484.707,116.32571999999999L497.1353846153847,157.15728000000001L509.56376923076925,73.22616L521.9921538461539,90.89388000000002L534.4205384615385,70.64064000000002L546.8489230769231,87.46163999999999L559.2773076923077,135.9666L571.7056923076924,76.06871999999998L584.1340769230769,147.51828000000003L596.5624615384615,102.92939999999999L608.9908461538462,63.11088000000001L621.4192307692308,115.20684L633.8476153846154,151.63848L646.2760000000001,90.9468L658.7043846153846,153.22608000000002L671.1327692307693,104.13900000000001L683.5611538461538,105.10667999999998L695.9895384615385,99.91296L708.4179230769231,149.09076L720.8463076923077,26.603639999999984L733.2746923076924,116.66592000000003L745.703076923077,118.19304L758.1314615384615,67.68468000000001L770.5598461538463,102.06756000000001L782.9882307692308,116.11403999999999L795.4166153846155,107.21591999999998L807.845,92.02031999999997L820.2733846153845,88.9812L832.7017692307692,93.58524L845.1301538461539,78.34428000000003L857.5585384615385,113.66460000000001L869.9869230769231,74.67768000000001L882.4153076923077,107.06472000000002L894.8436923076924,139.37616000000003L907.272076923077,122.13180000000003L919.7004615384616,108.06263999999999L932.1288461538461,151.71408000000002L944.5572307692308,94.37148000000002L956.9856153846155,101.90124000000003L969.414,68.68259999999998L981.8423846153846,84.61152000000004L994.2707692307694,88.00596000000002L1006.6991538461539,94.07664L1019.1275384615385,82.04867999999999L1031.5559230769231,93.64571999999998L1043.9843076923078,89.97156000000001L1056.4126923076924,65.18232L1068.841076923077,88.64100000000002L1081.2694615384614,120.71807999999999L1093.6978461538463,59.28552000000002L1106.126230769231,80.09820000000002L1118.5546153846153,84.64931999999999L1130.983,116.55251999999996L1143.4113846153848,45.56412L1155.8397692307692,103.17131999999998L1168.2681538461538,98.37072L1180.6965384615385,91.53648000000004L1193.124923076923,12.239640000000009L1205.5533076923077,96.66215999999997L1217.9816923076924,116.05356L1230.410076923077,95.38452000000001L1242.8384615384616,76.25016L1255.2668461538462,113.52096L1267.6952307692309,69.92244L1280.1236153846153,56.20860000000005L1292.5520000000001,68.84891999999996L1304.9803846153848,114.02748000000003L1317.4087692307692,91.01483999999999L1329.8371538461538,118.91879999999998L1342.2655384615387,100.29852L1354.693923076923,105.53003999999999L1367.1223076923077,79.56144L1379.5506923076923,128.04372L1391.979076923077,14.152320000000032L1404.4074615384616,119.87892L1416.8358461538462,137.07791999999998L1429.2642307692308,76.8474L1441.6926153846155,130.96188L1454.121,81.23975999999999L1466.5493846153847,44.974440000000016L1478.9777692307691,94.90823999999998"
+                                          style="fill: none;" fill="none"></path>
+                                </g>
+                            </g>
+                        </g>
+                    </g>
+                </g>
+            </g>
+            <g transform="translate(94, 378)" clip-path="url(#clip_1)">
+                <clipPath id="clip_1">
+                    <rect width="1615" height="21"></rect>
+                </clipPath>
+                <g>
+                    <g>
+                        <line x1="0" y1="0" x2="0" y2="5" style="visibility: inherit;" fill="rgb(0, 0, 0)"
+                              stroke="rgb(204, 204, 204)" stroke-width="1px"></line>
+                        <line x1="124.28384615384617" y1="0" x2="124.28384615384617" y2="5" style="visibility: inherit;"
+                              fill="rgb(0, 0, 0)" stroke="rgb(204, 204, 204)" stroke-width="1px"></line>
+                        <line x1="248.56769230769234" y1="0" x2="248.56769230769234" y2="5" style="visibility: inherit;"
+                              fill="rgb(0, 0, 0)" stroke="rgb(204, 204, 204)" stroke-width="1px"></line>
+                        <line x1="372.8515384615385" y1="0" x2="372.8515384615385" y2="5" style="visibility: inherit;"
+                              fill="rgb(0, 0, 0)" stroke="rgb(204, 204, 204)" stroke-width="1px"></line>
+                        <line x1="497.1353846153847" y1="0" x2="497.1353846153847" y2="5" style="visibility: inherit;"
+                              fill="rgb(0, 0, 0)" stroke="rgb(204, 204, 204)" stroke-width="1px"></line>
+                        <line x1="621.4192307692308" y1="0" x2="621.4192307692308" y2="5" style="visibility: inherit;"
+                              fill="rgb(0, 0, 0)" stroke="rgb(204, 204, 204)" stroke-width="1px"></line>
+                        <line x1="745.703076923077" y1="0" x2="745.703076923077" y2="5" style="visibility: inherit;"
+                              fill="rgb(0, 0, 0)" stroke="rgb(204, 204, 204)" stroke-width="1px"></line>
+                        <line x1="869.9869230769231" y1="0" x2="869.9869230769231" y2="5" style="visibility: inherit;"
+                              fill="rgb(0, 0, 0)" stroke="rgb(204, 204, 204)" stroke-width="1px"></line>
+                        <line x1="994.2707692307694" y1="0" x2="994.2707692307694" y2="5" style="visibility: inherit;"
+                              fill="rgb(0, 0, 0)" stroke="rgb(204, 204, 204)" stroke-width="1px"></line>
+                        <line x1="1118.5546153846153" y1="0" x2="1118.5546153846153" y2="5" style="visibility: inherit;"
+                              fill="rgb(0, 0, 0)" stroke="rgb(204, 204, 204)" stroke-width="1px"></line>
+                        <line x1="1242.8384615384616" y1="0" x2="1242.8384615384616" y2="5" style="visibility: inherit;"
+                              fill="rgb(0, 0, 0)" stroke="rgb(204, 204, 204)" stroke-width="1px"></line>
+                        <line x1="1367.1223076923077" y1="0" x2="1367.1223076923077" y2="5" style="visibility: inherit;"
+                              fill="rgb(0, 0, 0)" stroke="rgb(204, 204, 204)" stroke-width="1px"></line>
+                        <line x1="1491.406153846154" y1="0" x2="1491.406153846154" y2="5" style="visibility: inherit;"
+                              fill="rgb(0, 0, 0)" stroke="rgb(204, 204, 204)" stroke-width="1px"></line>
+                        <line x1="1615.69" y1="0" x2="1615.69" y2="5" style="visibility: inherit;" fill="rgb(0, 0, 0)"
+                              stroke="rgb(204, 204, 204)" stroke-width="1px"></line>
+                    </g>
+                    <g transform="translate(0, 8)">
+                        <text x="0" y="0" dx="0em" dy="0.95em"
+                              style="text-anchor: middle; visibility: hidden; font-family: &quot;Helvetica Neue&quot;, sans-serif; font-size: 12px; font-weight: 200;"
+                              fill="rgb(50, 49, 63)" stroke="none" stroke-width="1px">-50
+                        </text>
+                        <text x="124.28384615384617" y="0" dx="0em" dy="0.95em"
+                              style="text-anchor: middle; visibility: inherit; font-family: &quot;Helvetica Neue&quot;, sans-serif; font-size: 12px; font-weight: 200;"
+                              fill="rgb(50, 49, 63)" stroke="none" stroke-width="1px">0
+                        </text>
+                        <text x="248.56769230769234" y="0" dx="0em" dy="0.95em"
+                              style="text-anchor: middle; visibility: inherit; font-family: &quot;Helvetica Neue&quot;, sans-serif; font-size: 12px; font-weight: 200;"
+                              fill="rgb(50, 49, 63)" stroke="none" stroke-width="1px">50
+                        </text>
+                        <text x="372.8515384615385" y="0" dx="0em" dy="0.95em"
+                              style="text-anchor: middle; visibility: inherit; font-family: &quot;Helvetica Neue&quot;, sans-serif; font-size: 12px; font-weight: 200;"
+                              fill="rgb(50, 49, 63)" stroke="none" stroke-width="1px">100
+                        </text>
+                        <text x="497.1353846153847" y="0" dx="0em" dy="0.95em"
+                              style="text-anchor: middle; visibility: inherit; font-family: &quot;Helvetica Neue&quot;, sans-serif; font-size: 12px; font-weight: 200;"
+                              fill="rgb(50, 49, 63)" stroke="none" stroke-width="1px">150
+                        </text>
+                        <text x="621.4192307692308" y="0" dx="0em" dy="0.95em"
+                              style="text-anchor: middle; visibility: inherit; font-family: &quot;Helvetica Neue&quot;, sans-serif; font-size: 12px; font-weight: 200;"
+                              fill="rgb(50, 49, 63)" stroke="none" stroke-width="1px">200
+                        </text>
+                        <text x="745.703076923077" y="0" dx="0em" dy="0.95em"
+                              style="text-anchor: middle; visibility: inherit; font-family: &quot;Helvetica Neue&quot;, sans-serif; font-size: 12px; font-weight: 200;"
+                              fill="rgb(50, 49, 63)" stroke="none" stroke-width="1px">250
+                        </text>
+                        <text x="869.9869230769231" y="0" dx="0em" dy="0.95em"
+                              style="text-anchor: middle; visibility: inherit; font-family: &quot;Helvetica Neue&quot;, sans-serif; font-size: 12px; font-weight: 200;"
+                              fill="rgb(50, 49, 63)" stroke="none" stroke-width="1px">300
+                        </text>
+                        <text x="994.2707692307694" y="0" dx="0em" dy="0.95em"
+                              style="text-anchor: middle; visibility: inherit; font-family: &quot;Helvetica Neue&quot;, sans-serif; font-size: 12px; font-weight: 200;"
+                              fill="rgb(50, 49, 63)" stroke="none" stroke-width="1px">350
+                        </text>
+                        <text x="1118.5546153846153" y="0" dx="0em" dy="0.95em"
+                              style="text-anchor: middle; visibility: inherit; font-family: &quot;Helvetica Neue&quot;, sans-serif; font-size: 12px; font-weight: 200;"
+                              fill="rgb(50, 49, 63)" stroke="none" stroke-width="1px">400
+                        </text>
+                        <text x="1242.8384615384616" y="0" dx="0em" dy="0.95em"
+                              style="text-anchor: middle; visibility: inherit; font-family: &quot;Helvetica Neue&quot;, sans-serif; font-size: 12px; font-weight: 200;"
+                              fill="rgb(50, 49, 63)" stroke="none" stroke-width="1px">450
+                        </text>
+                        <text x="1367.1223076923077" y="0" dx="0em" dy="0.95em"
+                              style="text-anchor: middle; visibility: inherit; font-family: &quot;Helvetica Neue&quot;, sans-serif; font-size: 12px; font-weight: 200;"
+                              fill="rgb(50, 49, 63)" stroke="none" stroke-width="1px">500
+                        </text>
+                        <text x="1491.406153846154" y="0" dx="0em" dy="0.95em"
+                              style="text-anchor: middle; visibility: inherit; font-family: &quot;Helvetica Neue&quot;, sans-serif; font-size: 12px; font-weight: 200;"
+                              fill="rgb(50, 49, 63)" stroke="none" stroke-width="1px">550
+                        </text>
+                        <text x="1615.69" y="0" dx="0em" dy="0.95em"
+                              style="text-anchor: middle; visibility: hidden; font-family: &quot;Helvetica Neue&quot;, sans-serif; font-size: 12px; font-weight: 200;"
+                              fill="rgb(50, 49, 63)" stroke="none" stroke-width="1px">600
+                        </text>
+                    </g>
+                    <line x1="0" y1="0" x2="1615.69" y2="0" fill="rgb(0, 0, 0)" stroke="rgb(204, 204, 204)"
+                          stroke-width="1px"></line>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

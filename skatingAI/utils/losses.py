@@ -1,12 +1,10 @@
-import tensorflow.keras.backend as K
 import numpy as np
 import tensorflow as tf
+import tensorflow.keras.backend as K
 from tensorflow.python.framework import ops
 from tensorflow.python.keras.utils import losses_utils
 
 from skatingAI.utils.human_distance_map import HumanDistanceMap
-
-
 
 
 class GeneralisedWassersteinDiceLoss(tf.keras.losses.Loss):
@@ -25,6 +23,7 @@ class GeneralisedWassersteinDiceLoss(tf.keras.losses.Loss):
         super(tf.keras.losses.Loss, self)
         self.reduction = losses_utils.loss_reduction.ReductionV2.AUTO
         self.name = "GeneralisedWassersteinDiceLoss"
+        self._allow_sum_over_batch_size = True
         self.n_classes = n_classes
         self.y_true: tf.int32 = None
         self.y_pred: tf.float32 = None
