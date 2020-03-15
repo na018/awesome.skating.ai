@@ -1,10 +1,14 @@
-from pathlib import Path
-from PIL import Image
-import cv2
 import os
+from pathlib import Path
+
+import cv2
 import numpy as np
+from PIL import Image
+
+from skatingAI.utils.utils import BodyParts, segmentation_class_colors, body_part_classes
 
 path = Path.cwd()
+
 
 # for x in os.walk(path):
 #     print(x)
@@ -72,7 +76,7 @@ def save_np_video(img_paths, FileName):
 
     counter = FileName.get_name()
     print(counter)
-    if counter > 202:
+    if counter < 203:
 
         for img_pth in img_paths:
             # img_rgb = cv2.imread(img_pth)
@@ -93,33 +97,16 @@ def save_np_video(img_paths, FileName):
         np.savez_compressed(f"{path}/processed/numpy/masks/{counter}",img_masks)
 
 
-def get_segmentation_body():
-  return {
-    'bg': [153,153,153],
-    'Head': [128,64,0],
-    'RUpArm': [128, 0, 128],
-    'RForeArm': [128, 128, 255],
-    'RHand': [255, 128, 128],
-    'LUpArm': [0, 0, 255],
-    'LForeArm': [128, 128, 0],
-    'LHand': [0, 128, 0],
-    'torso': [128, 0, 0],
-    'RThigh': [128, 255, 128],
-    'RLowLeg': [255, 255, 128],
-    'RFoot': [255, 0, 255],
-    'LThigh': [0, 128, 128],
-    'LLowLeg':  [0, 0, 128],
-    'LFoot':[255, 128, 0]
-    }
+
 
 def create_mask(img_pth):
     img = np.asarray(Image.open(img_pth).convert('RGB'))
     body_mask = np.zeros(img.shape[:2])
-    sb = get_segmentation_body()
-    sb.pop('bg', None)
+    sb = {**segmentation_class_colors}
+    sb.pop(BodyParts.bg.name)
 
-    for i, key in enumerate(sb.values()):
-        body_mask[(img == key).all(axis=2)] = i+1
+    for i, key in enumerate(sb):
+        body_mask[(img == sb[key]).all(axis=2)] = body_part_classes[key]
 
     return body_mask.astype(np.uint8)
 

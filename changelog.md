@@ -17,7 +17,7 @@ epoch_steps = 64
 epoch_log_n = 5
 epochs = 555
 
-# commit 0e94f118304b10505a6a004538392432a0194e22
+# commit 7b9a3da54dca8ecbde3e51876880a60b8ad610fa
 
 ```    
 amount of training data: 43.944

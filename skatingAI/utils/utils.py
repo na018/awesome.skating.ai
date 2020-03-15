@@ -1,12 +1,13 @@
+import time
+from enum import Enum
 from pathlib import Path
 from typing import List
-import time
+
 import numpy as np
 import tensorflow as tf
 from keras import backend as K
 from matplotlib import pyplot as plt
 from tensorflow import keras, summary
-from enum import Enum
 
 path = Path.cwd()
 
@@ -33,23 +34,42 @@ class BodyParts(Enum):
     LLowLeg = 13
     LFoot = 14
 
+
+body_part_classes = {
+    BodyParts.bg.name: 0,
+    BodyParts.Head.name: 1,
+    BodyParts.RUpArm.name: 2,
+    BodyParts.RForeArm.name: 3,
+    BodyParts.RHand.name: 4,
+    BodyParts.LUpArm.name: 2,
+    BodyParts.LForeArm.name: 3,
+    BodyParts.LHand.name: 4,
+    BodyParts.torso.name: 5,
+    BodyParts.RThigh.name: 6,
+    BodyParts.RLowLeg.name: 7,
+    BodyParts.RFoot.name: 8,
+    BodyParts.LThigh.name: 6,
+    BodyParts.LLowLeg.name: 7,
+    BodyParts.LFoot.name: 8
+}
+
 segmentation_class_colors = {
-        BodyParts.bg.name: [153, 153, 153],
-        BodyParts.Head.name: [128, 64, 0],
-        BodyParts.RUpArm.name: [128, 0, 128],
-        BodyParts.RForeArm.name: [128, 128, 255],
-        BodyParts.RHand.name: [255, 128, 128],
-        BodyParts.LUpArm.name: [0, 0, 255],
-        BodyParts.LForeArm.name: [128, 128, 0],
-        BodyParts.LHand.name: [0, 128, 0],
-        BodyParts.torso.name: [128, 0, 0],
-        BodyParts.RThigh.name: [128, 255, 128],
-        BodyParts.RLowLeg.name: [255, 255, 128],
-        BodyParts.RFoot.name: [255, 0, 255],
-        BodyParts.RThigh.name: [0, 128, 128],
-        BodyParts.RLowLeg.name: [0, 0, 128],
-        BodyParts.RFoot: [255, 128, 0]
-    }
+    BodyParts.bg.name: [153, 153, 153],
+    BodyParts.Head.name: [128, 64, 0],
+    BodyParts.RUpArm.name: [128, 0, 128],
+    BodyParts.RForeArm.name: [128, 128, 255],
+    BodyParts.RHand.name: [255, 128, 128],
+    BodyParts.LUpArm.name: [0, 0, 255],
+    BodyParts.LForeArm.name: [128, 128, 0],
+    BodyParts.LHand.name: [0, 128, 0],
+    BodyParts.torso.name: [128, 0, 0],
+    BodyParts.RThigh.name: [128, 255, 128],
+    BodyParts.RLowLeg.name: [255, 255, 128],
+    BodyParts.RFoot.name: [255, 0, 255],
+    BodyParts.LThigh.name: [0, 128, 128],
+    BodyParts.LLowLeg.name: [0, 0, 128],
+    BodyParts.LFoot.name: [255, 128, 0]
+}
 
 
 def mask2rgb(mask):
@@ -63,12 +83,12 @@ def mask2rgb(mask):
     return body_mask
 
 
-def set_gpus() -> tf.distribute.MirroredStrategy:
+def set_gpus():
     gpus = tf.config.experimental.list_physical_devices('GPU')
     if gpus:
         # Restrict TensorFlow to only use the first GPU
         try:
-            #tf.config.experimental.set_visible_devices(gpus[3], 'GPU')
+            # tf.config.experimental.set_visible_devices(gpus[3], 'GPU')
             tf.config.experimental.set_visible_devices(gpus[2], 'GPU')
             logical_gpus = tf.config.experimental.list_logical_devices('GPU')
             Logger().log(f"{len(gpus)} Physical GPUs {len(logical_gpus)} Logical GPU", block=True)
