@@ -17,7 +17,7 @@ Mask = NewType('Mask', np.ndarray)
 class DsGenerator(object):
 
     def __init__(self):
-        self.video_path_rgbs: str = f"{Path.cwd()}/Data/3dhuman/processed/numpy/rgbbs/"
+        self.video_path_rgbs: str = f"{Path.cwd()}/Data/3dhuman/processed/numpy/rgbb/"
         self.video_path_masks: str = f"{Path.cwd()}/Data/3dhuman/processed/numpy/masks/"
         self.video_amount: int = len(next(os.walk(self.video_path_masks))[2])
         self.seen_samples = 0

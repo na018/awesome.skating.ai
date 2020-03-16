@@ -66,8 +66,8 @@ segmentation_class_colors = {
     BodyParts.RThigh.name: [128, 255, 128],
     BodyParts.RLowLeg.name: [255, 255, 128],
     BodyParts.RFoot.name: [255, 0, 255],
-    BodyParts.LThigh.name: [0, 128, 128],
-    BodyParts.LLowLeg.name: [0, 0, 128],
+    BodyParts.LThigh.name: [0, 0, 128],
+    BodyParts.LLowLeg.name: [0, 128, 128],
     BodyParts.LFoot.name: [255, 128, 0]
 }
 

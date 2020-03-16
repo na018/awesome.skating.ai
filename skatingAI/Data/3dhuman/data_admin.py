@@ -5,6 +5,7 @@ from typing import List
 
 import cv2
 import numpy as np
+from PIL import Image
 
 from skatingAI.utils.utils import BodyParts, segmentation_class_colors, body_part_classes
 
@@ -65,11 +66,12 @@ class DataAdmin(object):
         download_chunk_url = f"{self.dataset_url + label}/{file_name}"
         save_url = f"{self.path_processed_dir}/{file_name}"
 
-        print(f"start to download {download_chunk_url} to {save_url}")
-        print("this may take a while...")
-        proc = subprocess.Popen(["wget", '-q', download_chunk_url, '-O', save_url])
-        n = proc.wait()
-        print(f"downloaded: {i}")
+        if not os.path.exists(save_url):
+            print(f"start to download {download_chunk_url} to {save_url}")
+            print("this may take a while...")
+            proc = subprocess.Popen(["wget", '-q', download_chunk_url, '-O', save_url])
+            n = proc.wait()
+            print(f"downloaded: {i}")
         # extract chunk
         os.system(f"tar -xzf {save_url} -C {self.path_processed_dir}")
 
@@ -96,7 +98,8 @@ class DataAdmin(object):
             segmentation_clothes_path = file.replace(f"rgb", 'segmentation_clothes')
 
             rgb_img = cv2.imread(name)
-            segmentation_body_img = self._preprocess_img2classes(cv2.imread(segmentation_body_path))
+            segmentation_body_img = self._preprocess_img2classes(
+                np.asarray(Image.open(segmentation_body_path).convert('RGB')))
             segmentation_clothes_img = cv2.imread(segmentation_clothes_path)
             rgbb_img = self._create_rgbb(rgb_img, segmentation_clothes_img)
 
@@ -105,11 +108,12 @@ class DataAdmin(object):
             all_imgs['masks'].append(segmentation_body_img)
 
         for img_sequence in all_imgs:
-            np.savez_compressed(f"{self.path_processed_dir}/numpy/{img_sequence}/{self.file_count}")
+            np.savez_compressed(f"{self.path_processed_dir}/numpy/{img_sequence}/{self.file_count}",
+                                all_imgs[img_sequence])
 
         self.file_count += 1
 
-        print("saved", file_names[0].split('/')[-2], 'mask and rgb as compressed npz.')
+        print(f"{self.file_count} saved {file_names[0].split('/')[-2]} mask and rgb as compressed npz.")
 
         return all_imgs
 
