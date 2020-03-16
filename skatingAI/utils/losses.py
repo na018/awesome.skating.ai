@@ -27,7 +27,7 @@ class GeneralisedWassersteinDiceLoss(tf.keras.losses.Loss):
         self.n_classes = n_classes
         self.y_true: tf.int32 = None
         self.y_pred: tf.float32 = None
-        self.weighed_map = HumanDistanceMap().weighted_distances
+        self.weighted_map = HumanDistanceMap().weighted_distances
         self.correct_predictions = 0
         self.correct_body_part_pred = 0
         self.body_part_px_n = 0
@@ -65,7 +65,7 @@ class GeneralisedWassersteinDiceLoss(tf.keras.losses.Loss):
 
         for i, row in enumerate(y_true[0]):
             sum.append(
-                tf.multiply(tf.abs(tf.subtract(row, y_pred[i])), self.weighed_map[tf.argmax(row, axis=-1)]))
+                tf.multiply(tf.abs(tf.subtract(row, y_pred[i])), self.weighted_map[tf.argmax(row, axis=-1)]))
 
         return tf.add_n(sum)
 

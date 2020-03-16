@@ -17,13 +17,13 @@ Mask = NewType('Mask', np.ndarray)
 class DsGenerator(object):
 
     def __init__(self):
-        self.video_path_rgbs: str = f"{Path.cwd()}/Data/3dhuman/processed/numpy/rgbb/"
-        self.video_path_masks: str = f"{Path.cwd()}/Data/3dhuman/processed/numpy/masks/"
+        self.video_path_rgbs: str = f"{Path.cwd()}/Data/3dhuman/processed/numpy/rgbb"
+        self.video_path_masks: str = f"{Path.cwd()}/Data/3dhuman/processed/numpy/masks"
         self.video_amount: int = len(next(os.walk(self.video_path_masks))[2])
         self.seen_samples = 0
 
     def _get_random_video_mask_pair(self) -> Tuple[Video, VideoMask]:
-        random_n: int = int(random.randint(1, self.video_amount))
+        random_n: int = int(random.randint(0, self.video_amount - 1))
         video: np.ndarray = np.load(f"{self.video_path_rgbs}/{random_n}.npz")['arr_0']
         mask: np.ndarray = np.load(f"{self.video_path_masks}/{random_n}.npz")['arr_0']
         mask_shape: np.ndarray = np.array(mask.shape)

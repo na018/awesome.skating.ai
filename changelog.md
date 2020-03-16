@@ -9,6 +9,20 @@
 > Since this research focuses on the detection of keypoints in figure ice skating, further considerations must be taken in mind: people in the background should not be detected, but only the person in focus for later analysis. The question there is, how to get the corespondent training data.
 
 ---
+new net:
+```
+Total params: 754,473
+Trainable params: 752,937
+Non-trainable params: 1,536
+```
+
+old: 
+```
+Total params: 4,545,231
+Trainable params: 4,542,159
+Non-trainable params: 3,072
+```
+
 ## 2018-03-05
 ```python
 batch_size = 3

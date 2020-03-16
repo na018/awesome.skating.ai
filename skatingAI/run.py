@@ -1,20 +1,20 @@
+from datetime import datetime
 from pathlib import Path
 
-import tensorflow as tf
 import numpy as np
-from datetime import datetime
+import tensorflow as tf
 
 from skatingAI.nets.hrnet.hrnet import HRNet
 from skatingAI.utils.DsGenerator import DsGenerator
-from skatingAI.utils.utils import DisplayCallback, set_gpus, Metric, Logger
 from skatingAI.utils.losses import GeneralisedWassersteinDiceLoss
+from skatingAI.utils.utils import DisplayCallback, set_gpus, Metric, Logger
 
 if __name__ == "__main__":
     batch_size = 3
     prefetch_batch_buffer = 1
-    epoch_steps = 64
+    epoch_steps = 128
     epoch_log_n = 5
-    epochs = 555
+    epochs = 550
 
     set_gpus()
 
@@ -36,7 +36,7 @@ if __name__ == "__main__":
     model.summary()
     # model.load_weights('./ckpt/hrnet-255.ckpt')
     tf.keras.utils.plot_model(
-        model, to_file='nadins_hrnet_1.png', show_shapes=True, expand_nested=False)
+        model, to_file='nadins_hrnet_2.png', show_shapes=True, expand_nested=False)
 
     # optimizer = tf.keras.optimizers.Adam(learning_rate=0.01, epsilon=1e-8, amsgrad=True)
     optimizer = tf.keras.optimizers.SGD(learning_rate=1e-4)

@@ -1,4 +1,5 @@
 import numpy as np
+
 from skatingAI.utils.utils import BodyParts
 
 
@@ -9,18 +10,11 @@ class HumanDistanceMap(object):
             BodyParts.RUpArm.name: [BodyParts.torso.name, BodyParts.RForeArm.name],
             BodyParts.RForeArm.name: [BodyParts.RUpArm.name, BodyParts.RHand.name],
             BodyParts.RHand.name: [BodyParts.RForeArm.name],
-            BodyParts.LUpArm.name: [BodyParts.torso.name, BodyParts.LForeArm.name],
-            BodyParts.LForeArm.name: [BodyParts.LUpArm.name, BodyParts.LHand.name],
-            BodyParts.LHand.name: [BodyParts.LForeArm.name],
-            BodyParts.torso.name: [BodyParts.Head.name, BodyParts.LUpArm.name, BodyParts.RUpArm.name,
-                                   BodyParts.LThigh.name,
+            BodyParts.torso.name: [BodyParts.Head.name, BodyParts.RUpArm.name,
                                    BodyParts.RThigh.name],
             BodyParts.RThigh.name: [BodyParts.RLowLeg.name, BodyParts.torso.name],
             BodyParts.RLowLeg.name: [BodyParts.RFoot.name, BodyParts.RThigh.name],
             BodyParts.RFoot.name: [BodyParts.RThigh.name],
-            BodyParts.LThigh.name: [BodyParts.torso.name, BodyParts.LLowLeg.name],
-            BodyParts.LLowLeg.name: [BodyParts.LFoot.name, BodyParts.LThigh.name],
-            BodyParts.LFoot.name: [BodyParts.LThigh.name]
         }
         self.weighted_distances = self._build_matrix()
 
@@ -57,7 +51,8 @@ class HumanDistanceMap(object):
 
     def _matrix_formatations(self, distance_map):
         distance_map = np.array(distance_map)
-        distance_map = np.round((1- distance_map / distance_map.size).astype(np.float16),2)
+        distance_map = (1 - distance_map / (distance_map.shape[0] + distance_map.shape[0] / 2)).astype(np.float16)
+        distance_map[distance_map == 1] = 0
         distance_map = np.insert(distance_map, (0), 1, axis=0)
         distance_map = np.insert(distance_map, (0), 1, axis=1)
         distance_map[0, 0] = 0
