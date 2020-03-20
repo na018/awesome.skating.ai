@@ -4,17 +4,17 @@ from pathlib import Path
 import numpy as np
 import tensorflow as tf
 
-from skatingAI.nets.hrnet.hrnet import HRNet
+from skatingAI.nets.hrnet.v4 import HRNet
 from skatingAI.utils.DsGenerator import DsGenerator
 from skatingAI.utils.losses import GeneralisedWassersteinDiceLoss
 from skatingAI.utils.utils import DisplayCallback, set_gpus, Metric, Logger
 
 if __name__ == "__main__":
-    batch_size = 3
+    batch_size = 2
     prefetch_batch_buffer = 1
-    epoch_steps = 128
+    epoch_steps = 32
     epoch_log_n = 5
-    epochs = 550
+    epochs = 100
 
     set_gpus()
 
@@ -36,7 +36,7 @@ if __name__ == "__main__":
     model.summary()
     # model.load_weights('./ckpt/hrnet-255.ckpt')
     tf.keras.utils.plot_model(
-        model, to_file='nadins_hrnet_2.png', show_shapes=True, expand_nested=False)
+        model, to_file='nadins_hrnet_4.png', show_shapes=True, expand_nested=False)
 
     # optimizer = tf.keras.optimizers.Adam(learning_rate=0.01, epsilon=1e-8, amsgrad=True)
     optimizer = tf.keras.optimizers.SGD(learning_rate=1e-4)
