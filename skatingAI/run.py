@@ -10,11 +10,11 @@ from skatingAI.utils.losses import GeneralisedWassersteinDiceLoss
 from skatingAI.utils.utils import DisplayCallback, set_gpus, Metric, Logger
 
 if __name__ == "__main__":
-    batch_size = 2
+    batch_size = 3
     prefetch_batch_buffer = 1
-    epoch_steps = 32
+    epoch_steps = 64
     epoch_log_n = 5
-    epochs = 100
+    epochs = 555
 
     set_gpus()
 
@@ -34,7 +34,7 @@ if __name__ == "__main__":
 
     model = hrnet.model
     model.summary()
-    # model.load_weights('./ckpt/hrnet-255.ckpt')
+    model.load_weights('./ckpt/hrnet-85.ckpt')
     tf.keras.utils.plot_model(
         model, to_file='nadins_hrnet_4.png', show_shapes=True, expand_nested=False)
 

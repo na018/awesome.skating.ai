@@ -36,14 +36,14 @@ class HRNet(object):
                              name=f"{name}_{block_nr}_conv_stride_down")(
             inputs)
 
-    def stride_up(self, inputs: tf.Tensor, block_nr=1, k=5, f=36, name="block") -> tf.Tensor:
-        return layers.Conv2DTranspose(f, k, strides=k, activation='relu', padding="same",
+    def stride_up(self, inputs: tf.Tensor, block_nr=1, k=5, f=36, activation='relu', name="block") -> tf.Tensor:
+        return layers.Conv2DTranspose(f, k, strides=k, activation=activation, padding="same",
                                       name=f"{name}_{block_nr}_conv_stride_up")(inputs)
 
     def _build_model(self, block_amount=3) -> tf.keras.Model:
         # --------------first-block-------------------#
         input = self.stride_down(self.inputs, k=2, f=9, name="input")
-        input2 = self.stride_down(self.inputs, k=2, f=1, name="input2")
+        # input2 = self.stride_down(self.inputs, k=2, f=1, name="input2")
         block_l = self.conv3x3_block(input, filter_counts=[9], name="bl")
 
         # --------------second-block-------------------#
@@ -86,11 +86,11 @@ class HRNet(object):
 
         concat = layers.concatenate([block_l, block_m, block_s, block_xs])
 
-        concat = self.stride_up(concat, 5, k=2, f=9, name="bl_concat")
-        self.outputs = layers.Conv2D(filters=self.output_channels, kernel_size=3,
-                                     activation='softmax',
-                                     padding="same",
-                                     name=f"conv_output")(concat)
+        self.outputs = self.stride_up(concat, 5, k=2, f=9, activation="softmax", name="conv_output")
+        # self.outputs = layers.Conv2D(filters=self.output_channels, kernel_size=3,
+        #                              activation='relu',
+        #                              padding="same",
+        #                              name=f"conv_output")(concat)
 
         model = tf.keras.Model(inputs=self.inputs, outputs=self.outputs)
 
