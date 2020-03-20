@@ -1,7 +1,6 @@
 import numpy as np
 import tensorflow as tf
 import tensorflow.keras.backend as K
-from tensorflow.python.framework import ops
 from tensorflow.python.keras.utils import losses_utils
 
 from skatingAI.utils.human_distance_map import HumanDistanceMap
@@ -31,6 +30,7 @@ class GeneralisedWassersteinDiceLoss(tf.keras.losses.Loss):
         self.correct_predictions = 0
         self.correct_body_part_pred = 0
         self.body_part_px_n = 0
+        self.multiplicator = 10
 
     def call(self, y_true: tf.int32, y_pred: tf.float32):
         self.y_true = y_true
@@ -58,15 +58,24 @@ class GeneralisedWassersteinDiceLoss(tf.keras.losses.Loss):
         self.correct_body_part_pred = np.sum(tf.multiply(body_part_px, correct_predictions))
 
         y_true = tf.one_hot(y_true.astype(np.int32), self.n_classes, axis=-1)
-        y_pred = ops.convert_to_tensor(self.y_pred)[0]
+        y_pred = self.y_pred
 
+        delta = []
 
-        sum = []
+        for i, true_img in enumerate(y_true):
+            delta.append(
+                tf.multiply(tf.abs(tf.subtract(y_pred[i], true_img)),
+                            self.weighted_map[tf.argmax(true_img, axis=-1)]) * self.multiplicator)
 
-        for i, row in enumerate(y_true[0]):
-            sum.append(
-                tf.multiply(tf.abs(tf.subtract(row, y_pred[i])), self.weighted_map[tf.argmax(row, axis=-1)]))
+        wrong = np.zeros(y_true.shape, dtype=np.float32)
+        wrong += ((self.body_part_px_n - self.correct_body_part_pred) / self.body_part_px_n) * self.multiplicator
 
-        return tf.add_n(sum)
+        return tf.add_n([
+            tf.multiply(
+                tf.square(
+                    tf.subtract(y_true, y_pred)
+                ),
+                [1., 0.8, 0.8, 0.8, 0.75, 0.9, 0.8, 0.8, 0.75]
+            ), delta, wrong])
 
 # source https://github.com/imatge-upc/segmentation_DLMI/
