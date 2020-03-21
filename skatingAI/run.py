@@ -94,7 +94,7 @@ if __name__ == "__main__":
                                               Metric(metric=loss_fn.correct_body_part_pred.astype(np.float32),
                                                      name='correct_body_part_px'),
                                               Metric(metric=(
-                                                      loss_fn.correct_body_part_pred / loss_fn.body_part_px_n)
+                                                      loss_fn.correct_body_part_pred / loss_fn.body_part_px_n_pred)
                                                      .astype(np.float32),
                                                      name='accuracy_body_part'),
                                               Metric(metric=train_acc_metric.result(), name='accuracy'),

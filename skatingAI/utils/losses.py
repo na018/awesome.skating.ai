@@ -29,7 +29,9 @@ class GeneralisedWassersteinDiceLoss(tf.keras.losses.Loss):
         self.weighted_map = HumanDistanceMap().weighted_distances
         self.correct_predictions = 0
         self.correct_body_part_pred = 0
-        self.body_part_px_n = 0
+        self.body_part_px_n_pred = 0
+        self.body_part_px_n_true = 0
+        self.body_part_FNR = 0
         self.multiplicator = 10
 
     def call(self, y_true: tf.int32, y_pred: tf.float32):
@@ -53,9 +55,13 @@ class GeneralisedWassersteinDiceLoss(tf.keras.losses.Loss):
         correct_predictions = tf.cast(tf.math.equal(y_pred, y_true[0]), dtype=tf.int8)
         self.correct_predictions = np.sum(correct_predictions)
 
-        body_part_px = tf.cast(tf.math.greater(y_pred, np.zeros(y_pred.shape)), dtype=tf.int8)
-        self.body_part_px_n = np.sum(body_part_px)
-        self.correct_body_part_pred = np.sum(tf.multiply(body_part_px, correct_predictions))
+        body_part_px_pred = tf.cast(tf.math.greater(y_pred, np.zeros(y_pred.shape)), dtype=tf.int8)
+        self.body_part_px_n_pred = np.sum(body_part_px_pred)
+        self.correct_body_part_pred = np.sum(tf.multiply(body_part_px_pred, correct_predictions))
+
+        body_part_px_true = tf.cast(tf.math.greater(y_true, np.zeros(y_true.shape)), dtype=tf.int8)
+        self.body_part_px_n_true = np.sum(body_part_px_true)
+        self.body_part_FNR = (self.body_part_px_n_pred - self.correct_body_part_pred) / self.body_part_px_n_true
 
         y_true = tf.one_hot(y_true.astype(np.int32), self.n_classes, axis=-1)
         y_pred = self.y_pred
@@ -68,7 +74,7 @@ class GeneralisedWassersteinDiceLoss(tf.keras.losses.Loss):
                             self.weighted_map[tf.argmax(true_img, axis=-1)]) * self.multiplicator)
 
         wrong = np.zeros(y_true.shape, dtype=np.float32)
-        wrong += ((self.body_part_px_n - self.correct_body_part_pred) / self.body_part_px_n) * self.multiplicator
+        wrong += self.body_part_FNR * self.multiplicator
 
         return tf.add_n([
             tf.multiply(
