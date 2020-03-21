@@ -7,7 +7,7 @@ import numpy as np
 import tensorflow as tf
 from matplotlib import pyplot as plt
 
-from skatingAI.nets.hrnet import v0, v1, v2, v3, v4, v5
+from skatingAI.nets.hrnet import v0, v1, v2, v3, v4, v5, v6
 from skatingAI.nets.hrnet.v2 import HRNet
 from skatingAI.utils.DsGenerator import Frame, Mask
 
@@ -24,6 +24,7 @@ class Evaluater():
             'v3': v3.HRNet,
             'v4': v4.HRNet,
             'v5': v5.HRNet,
+            'v6': v6.HRNet,
         }
         self.HRNet: HRNet = versions[hrnet_version]
 
