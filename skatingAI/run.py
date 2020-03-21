@@ -6,7 +6,6 @@ import tensorflow as tf
 
 from skatingAI.nets.hrnet.v5 import HRNet
 from skatingAI.utils.DsGenerator import DsGenerator
-from skatingAI.utils.losses import GeneralisedWassersteinDiceLoss
 from skatingAI.utils.utils import DisplayCallback, set_gpus, Metric, Logger
 
 if __name__ == "__main__":
@@ -36,12 +35,12 @@ if __name__ == "__main__":
     model.summary()
     # model.load_weights('./ckpt/hrnet-85.ckpt')
     tf.keras.utils.plot_model(
-        model, to_file='nadins_hrnet_5.png', show_shapes=True, expand_nested=False)
+        model, to_file='nadins_hrnet_5.png', show_shapes=True, expand_nested=True)
 
     # optimizer = tf.keras.optimizers.Adam(learning_rate=0.01, epsilon=1e-8, amsgrad=True)
     optimizer = tf.keras.optimizers.SGD(learning_rate=1e-4)
-    # loss_fn = tf.keras.losses.SparseCategoricalCrossentropy(from_logits=True)
-    loss_fn = GeneralisedWassersteinDiceLoss(n_classes)
+    loss_fn = tf.keras.losses.SparseCategoricalCrossentropy(from_logits=True)
+    # loss_fn = GeneralisedWassersteinDiceLoss(n_classes)
 
     train_acc_metric = tf.keras.metrics.Accuracy()
     train_acc_metric_custom = 0
@@ -89,14 +88,6 @@ if __name__ == "__main__":
             progress_tracker.on_epoch_end(epoch,
                                           loss=round(tf.reduce_sum(loss_value).numpy(), 2),
                                           metrics=[
-                                              Metric(metric=loss_fn.correct_predictions.astype(np.float32),
-                                                     name='correct_px'),
-                                              Metric(metric=loss_fn.correct_body_part_pred.astype(np.float32),
-                                                     name='correct_body_part_px'),
-                                              Metric(metric=(
-                                                      loss_fn.correct_body_part_pred / loss_fn.body_part_px_n_pred)
-                                                     .astype(np.float32),
-                                                     name='accuracy_body_part'),
                                               Metric(metric=train_acc_metric.result(), name='accuracy'),
                                           ],  # , train_rec_metric.result(), train_true_pos_metric.result(),
                                           show_img=False)
