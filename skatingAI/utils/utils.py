@@ -89,7 +89,7 @@ def set_gpus():
         # Restrict TensorFlow to only use the first GPU
         try:
             # tf.config.experimental.set_visible_devices(gpus[3], 'GPU')
-            tf.config.experimental.set_visible_devices(gpus[2], 'GPU')
+            tf.config.experimental.set_visible_devices(gpus[1], 'GPU')
             logical_gpus = tf.config.experimental.list_logical_devices('GPU')
             Logger().log(f"{len(gpus)} Physical GPUs {len(logical_gpus)} Logical GPU", block=True)
 
@@ -149,7 +149,7 @@ class DisplayCallback(object):
     def on_epoch_end(self, epoch: int, loss: float, metrics: List[Metric], show_img=False):
 
         self.model.save_weights(
-            f"{Path.cwd()}/ckpt/hrnet-{epoch}.ckpt")
+            f"{Path.cwd()}/ckpt2/hrnet-{epoch}.ckpt")
 
         predicted_mask = create_mask(self.model.predict(self.sample_image[tf.newaxis, ...])[0])
 
@@ -168,7 +168,7 @@ class DisplayCallback(object):
 
         if show_img:
             plt.show()
-        fig.savefig(f"{path}/img_train/{epoch}_train.png")
+        fig.savefig(f"{path}/img_train2/{epoch}_train.png")
 
         summary_images = [self.sample_image, mask2rgb(self.sample_mask), mask2rgb(predicted_mask)]
         #summary_images = tf.cast(summary_images, tf.uint8)
