@@ -1,3 +1,4 @@
+import argparse
 import math
 import os
 from typing import Tuple
@@ -6,15 +7,15 @@ import numpy as np
 import tensorflow as tf
 from matplotlib import pyplot as plt
 
-from skatingAI.nets.hrnet import v0, v1, v2, v3, v4
+from skatingAI.nets.hrnet import v0, v1, v2, v3, v4, v5
 from skatingAI.nets.hrnet.v2 import HRNet
 from skatingAI.utils.DsGenerator import Frame, Mask
 
 
 class Evaluater():
     def __init__(self, weight_counter=5, hrnet_version='v2', name='', subfolder=''):
-        self.dir_img_eval = f"{os.getcwd()}/evaluate/img/{hrnet_version}_{weight_counter}_{name}"
-        self.weight_path = f"{os.getcwd()}/ckpt/{subfolder}hrnet-{weight_counter}.ckpt"
+        self.dir_img_eval = f"{os.getcwd()}/skatingAI/evaluate/img/{hrnet_version}_{weight_counter}_{name}"
+        self.weight_path = f"{os.getcwd()}/skatingAI/ckpt/{subfolder}hrnet-{weight_counter}.ckpt"
 
         versions = {
             'v0': v0.HRNet,
@@ -22,6 +23,7 @@ class Evaluater():
             'v2': v2.HRNet,
             'v3': v3.HRNet,
             'v4': v4.HRNet,
+            'v5': v5.HRNet,
         }
         self.HRNet: HRNet = versions[hrnet_version]
 
@@ -31,8 +33,8 @@ class Evaluater():
             raise AssertionError(f"{self.dir_img_eval} already exists. Please add a unique name.")
 
     def _get_frame(self, video_n=1, frame_n=1) -> Tuple[Frame, Mask]:
-        video_path_rgbs: str = f"{os.getcwd()}/Data/3dhuman/processed/numpy/rgbb"
-        mask_path: str = f"{os.getcwd()}/Data/3dhuman/processed/numpy/masks"
+        video_path_rgbs: str = f"{os.getcwd()}/skatingAI/Data/3dhuman/processed/numpy/rgbb"
+        mask_path: str = f"{os.getcwd()}/skatingAI/Data/3dhuman/processed/numpy/masks"
         frame: np.ndarray = np.load(f"{video_path_rgbs}/{video_n}.npz")['arr_0'][frame_n]
         mask: np.ndarray = np.load(f"{mask_path}/{video_n}.npz")['arr_0'][frame_n]
         return frame, mask
@@ -97,4 +99,12 @@ class Evaluater():
                 # plt.show()
 
 
-Evaluater(weight_counter=90, hrnet_version='v3', name="").show_featuremaps()
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser(
+        description='Evaluate featuremaps of trained model')
+    parser.add_argument('--wcounter', default=550, help='Number of weight')
+    parser.add_argument('--v', default='v5', help='version of hrnet')
+    parser.add_argument('--name', default='0', help='unique name to save images in')
+    args = parser.parse_args()
+
+    Evaluater(weight_counter=args.wcounter, hrnet_version=args.v, name=args.name).show_featuremaps()
