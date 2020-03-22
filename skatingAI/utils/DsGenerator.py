@@ -16,11 +16,13 @@ Mask = NewType('Mask', np.ndarray)
 
 class DsGenerator(object):
 
-    def __init__(self):
+    def __init__(self, resize_shape):
         self.video_path_rgbs: str = f"{Path.cwd()}/Data/3dhuman/processed/numpy/rgbb"
         self.video_path_masks: str = f"{Path.cwd()}/Data/3dhuman/processed/numpy/masks"
         self.video_amount: int = len(next(os.walk(self.video_path_masks))[2])
         self.seen_samples = 0
+        if resize_shape:
+            self.resize_shape = resize_shape
 
     def _get_random_video_mask_pair(self) -> Tuple[Video, VideoMask]:
         random_n: int = int(random.randint(0, self.video_amount - 1))
@@ -45,6 +47,10 @@ class DsGenerator(object):
 
             random_frame: Frame = tf.convert_to_tensor((video[random_frame_n] / 255), tf.float32)
             random_mask: Mask = tf.convert_to_tensor((mask[random_frame_n]), tf.int32)
+
+            if self.resize_shape:
+                random_frame = tf.image.resize(random_frame, size=self.resize_shape)
+                random_mask = tf.image.resize(random_mask, size=self.resize_shape)
 
             self.seen_samples += 1
 

@@ -13,9 +13,9 @@ from skatingAI.utils.DsGenerator import Frame, Mask
 
 
 class Evaluater():
-    def __init__(self, weight_counter=5, hrnet_version='v2', name='', subfolder=''):
-        self.dir_img_eval = f"{os.getcwd()}/skatingAI/evaluate/img/{hrnet_version}_{weight_counter}_{name}"
-        self.weight_path = f"{os.getcwd()}/skatingAI/ckpt/{subfolder}hrnet-{weight_counter}.ckpt"
+    def __init__(self, weight_counter=5, hrnet_version='v2', name='', subfolder='', c=''):
+        self.dir_img_eval = f"{os.getcwd()}/skatingAI/evaluate/img{c}/{hrnet_version}_{weight_counter}_{name}"
+        self.weight_path = f"{os.getcwd()}/skatingAI/ckpt{c}/{subfolder}hrnet-{weight_counter}.ckpt"
 
         versions = {
             'v0': v0.HRNet,
@@ -25,6 +25,7 @@ class Evaluater():
             'v4': v4.HRNet,
             'v5': v5.HRNet,
             'v6': v6.HRNet,
+            'v7': v6.HRNet,
         }
         self.HRNet: HRNet = versions[hrnet_version]
 
@@ -52,7 +53,7 @@ class Evaluater():
         for i, layer in enumerate(hrnet.model.layers):
             print(layer.name)
 
-            if 'conv' in layer.name or 'output' in layer.name or 'stride' in layer.name or 'concat' in layer.name:
+            if 'conv' in layer.name or 'output' in layer.name or 'add' in layer.name or 'concat' in layer.name:
                 model = tf.keras.models.Model(inputs=hrnet.model.inputs, outputs=hrnet.model.layers[i].output)
 
                 for layer in model.layers:
@@ -105,6 +106,7 @@ if __name__ == "__main__":
         description='Evaluate featuremaps of trained model')
     parser.add_argument('--wcounter', default=550, help='Number of weight')
     parser.add_argument('--v', default='v5', help='version of hrnet')
+    parser.add_argument('--c', default='', help='gpu number the net has trained on')
     parser.add_argument('--name', default='0', help='unique name to save images in')
     args = parser.parse_args()
 

@@ -5,7 +5,7 @@ from pathlib import Path
 import numpy as np
 import tensorflow as tf
 
-from skatingAI.nets.hrnet.v6 import HRNet
+from skatingAI.nets.hrnet.v7 import HRNet
 from skatingAI.utils.DsGenerator import DsGenerator
 from skatingAI.utils.losses import GeneralisedWassersteinDiceLoss
 from skatingAI.utils.utils import DisplayCallback, set_gpus, Metric, Logger
@@ -14,17 +14,18 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(
         description='Train nadins awesome network :)')
     parser.add_argument('--gpu', default=1, help='Which gpu shoud I use?')
+    parser.add_argument('--name', default="v7", help='Name for training')
     args = parser.parse_args()
 
     batch_size = 3
     prefetch_batch_buffer = 1
     epoch_steps = 64
-    epoch_log_n = 1
-    epochs = 555
+    epoch_log_n = 5
+    epochs = 5555
 
     set_gpus(int(args.gpu))
 
-    generator = DsGenerator()
+    generator = DsGenerator(resize_shape=(240, 320))
 
     sample_pair = next(generator.get_next_pair())
     sample_frame = sample_pair['frame']
@@ -36,13 +37,13 @@ if __name__ == "__main__":
     train_ds = generator.buid_iterator(img_shape, batch_size, prefetch_batch_buffer)
     iter = train_ds.as_numpy_iterator()
 
-    hrnet = HRNet(img_shape, n_classes)
+    hrnet = HRNet(img_shape, int(n_classes))
 
     model = hrnet.model
     model.summary()
     # model.load_weights('./ckpt/hrnet-85.ckpt')
     tf.keras.utils.plot_model(
-        model, to_file='nadins_hrnet_6.png', show_shapes=True, expand_nested=True)
+        model, to_file='nadins_hrnet_7.png', show_shapes=True, expand_nested=True)
 
     # optimizer = tf.keras.optimizers.Adam(learning_rate=0.01, epsilon=1e-8, amsgrad=True)
     optimizer = tf.keras.optimizers.SGD(learning_rate=1e-4)
@@ -55,9 +56,9 @@ if __name__ == "__main__":
     # train_true_pos_metric = tf.keras.metrics.TruePositives()
 
     file_writer = tf.summary.create_file_writer(
-        f"{Path.cwd()}/logs/metrics/{datetime.now().strftime('%Y_%m_%d__%H_%M')}")
+        f"{Path.cwd()}/logs/metrics/{args.name}/{datetime.now().strftime('%Y_%m_%d__%H_%M')}")
     file_writer.set_as_default()
-    progress_tracker = DisplayCallback(model, sample_frame, sample_mask, file_writer, epochs)
+    progress_tracker = DisplayCallback(model, sample_frame, sample_mask, file_writer, epochs, args.gpu)
     logger = Logger(log=False)
     log2 = Logger(log=True)
 
@@ -106,8 +107,8 @@ if __name__ == "__main__":
                                               Metric(metric=train_acc_metric.result(), name='accuracy'),
                                           ],
                                           show_img=False)
+            log2.log(message=f"Seen images: {generator.seen_samples}", block=True)
         train_acc_metric.reset_states()
-
 
     progress_tracker.on_train_end()
     logger.log_end()
