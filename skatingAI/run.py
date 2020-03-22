@@ -5,7 +5,7 @@ from pathlib import Path
 import numpy as np
 import tensorflow as tf
 
-from skatingAI.nets.hrnet.v7 import HRNet
+from skatingAI.nets.mobilenet.v0 import UNet
 from skatingAI.utils.DsGenerator import DsGenerator
 from skatingAI.utils.losses import GeneralisedWassersteinDiceLoss
 from skatingAI.utils.utils import DisplayCallback, set_gpus, Metric, Logger
@@ -13,8 +13,8 @@ from skatingAI.utils.utils import DisplayCallback, set_gpus, Metric, Logger
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(
         description='Train nadins awesome network :)')
-    parser.add_argument('--gpu', default=1, help='Which gpu shoud I use?')
-    parser.add_argument('--name', default="v7", help='Name for training')
+    parser.add_argument('--gpu', default=2, help='Which gpu shoud I use?')
+    parser.add_argument('--name', default="m_unet", help='Name for training')
     args = parser.parse_args()
 
     batch_size = 3
@@ -37,13 +37,15 @@ if __name__ == "__main__":
     train_ds = generator.buid_iterator(img_shape, batch_size, prefetch_batch_buffer)
     iter = train_ds.as_numpy_iterator()
 
-    hrnet = HRNet(img_shape, int(n_classes))
+    unet = UNet(img_shape, int(n_classes))
 
-    model = hrnet.model
+    model = unet.model
     model.summary()
     # model.load_weights('./ckpt/hrnet-85.ckpt')
     tf.keras.utils.plot_model(
-        model, to_file='nadins_hrnet_7.png', show_shapes=True, expand_nested=True)
+        model, to_file='mobile_net_v0_e.png', show_shapes=True, expand_nested=True)
+    tf.keras.utils.plot_model(
+        model, to_file='mobile_net_v0.png', show_shapes=True, expand_nested=False)
 
     # optimizer = tf.keras.optimizers.Adam(learning_rate=0.01, epsilon=1e-8, amsgrad=True)
     optimizer = tf.keras.optimizers.SGD(learning_rate=1e-4)
