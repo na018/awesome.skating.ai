@@ -7,15 +7,14 @@ import numpy as np
 import tensorflow as tf
 from matplotlib import pyplot as plt
 
-from skatingAI.nets import mobilenet
 from skatingAI.nets.hrnet import v0, v1, v2, v3, v4, v5, v6, v7
-from skatingAI.nets.hrnet.v2 import HRNet
+from skatingAI.nets.mobilenet import v0 as mobilenetv0
 from skatingAI.utils.DsGenerator import Frame, Mask
 
 
 class Evaluater():
-    def __init__(self, weight_counter=5, hrnet_version='v2', name='', subfolder='', c=''):
-        self.dir_img_eval = f"{os.getcwd()}/skatingAI/evaluate/img{c}/{hrnet_version}_{weight_counter}_{name}"
+    def __init__(self, weight_counter=5, nn_version='v2', name='', subfolder='', c=''):
+        self.dir_img_eval = f"{os.getcwd()}/skatingAI/evaluate/img/{nn_version}_{weight_counter}_{name}"
         self.weight_path = f"{os.getcwd()}/skatingAI/ckpt{c}/{subfolder}hrnet-{weight_counter}.ckpt"
 
         versions = {
@@ -27,9 +26,9 @@ class Evaluater():
             'v5': v5.HRNet,
             'v6': v6.HRNet,
             'v7': v7.HRNet,
-            'u0': mobilenet.v0.UNet,
+            'u0': mobilenetv0.MobileNetV2,
         }
-        self.HRNet: HRNet = versions[hrnet_version]
+        self.NN = versions[nn_version]
 
         if not os.path.exists(self.dir_img_eval):
             os.makedirs(self.dir_img_eval)
@@ -48,7 +47,7 @@ class Evaluater():
         img_shape = frame.shape
         n_classes = np.max(mask) + 1
 
-        hrnet = self.HRNet(img_shape, n_classes)
+        hrnet = self.NN(img_shape, n_classes)
         print(hrnet.model.summary())
         hrnet.model.load_weights(self.weight_path)
 
@@ -106,10 +105,10 @@ class Evaluater():
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(
         description='Evaluate featuremaps of trained model')
-    parser.add_argument('--wcounter', default=550, help='Number of weight')
-    parser.add_argument('--v', default='v5', help='version of hrnet')
-    parser.add_argument('--c', default='', help='gpu number the net has trained on')
+    parser.add_argument('--wcounter', default=1795, help='Number of weight')
+    parser.add_argument('--v', default='v7', help='version of hrnet')
+    parser.add_argument('--c', default='1', help='gpu number the net has trained on')
     parser.add_argument('--name', default='0', help='unique name to save images in')
     args = parser.parse_args()
 
-    Evaluater(weight_counter=args.wcounter, hrnet_version=args.v, name=args.name).show_featuremaps()
+    Evaluater(weight_counter=args.wcounter, nn_version=args.v, name=args.name, c=args.c).show_featuremaps()

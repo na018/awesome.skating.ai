@@ -32,7 +32,7 @@ class GeneralisedWassersteinDiceLoss(tf.keras.losses.Loss):
         self.body_part_px_n_pred = 0
         self.body_part_px_n_true = 0
         self.body_part_FNR = 0
-        self.multiplicator = 10
+        self.multiplicator = 1
 
     def call(self, y_true: tf.int32, y_pred: tf.float32):
         self.y_true = y_true
@@ -52,7 +52,7 @@ class GeneralisedWassersteinDiceLoss(tf.keras.losses.Loss):
 
         y_true = np.reshape(self.y_true, self.y_true.shape[:-1])
         y_pred = tf.argmax(self.y_pred[0], axis=-1, output_type=tf.int32)
-        correct_predictions = tf.cast(tf.math.equal(y_pred, y_true[0]), dtype=tf.int8)
+        correct_predictions = tf.cast(tf.math.equal(y_pred, y_true), dtype=tf.int8)
         self.correct_predictions = np.sum(correct_predictions)
 
         body_part_px_pred = tf.cast(tf.math.greater(y_pred, np.zeros(y_pred.shape)), dtype=tf.int8)
@@ -73,15 +73,9 @@ class GeneralisedWassersteinDiceLoss(tf.keras.losses.Loss):
                 tf.multiply(tf.abs(tf.subtract(y_pred[i], true_img)),
                             self.weighted_map[tf.argmax(true_img, axis=-1)]) * self.multiplicator)
 
-        wrong = np.zeros(y_true.shape, dtype=np.float32)
-        wrong += self.body_part_FNR * self.multiplicator
-
         return tf.add_n([
-            tf.multiply(
-                tf.square(
-                    tf.subtract(y_true, y_pred)
-                ),
-                [1., 0.8, 0.8, 0.8, 0.75, 0.9, 0.8, 0.8, 0.75]
-            ), delta, wrong])
+            tf.abs(
+                tf.subtract(y_true, y_pred)
+            ), delta])
 
 # source https://github.com/imatge-upc/segmentation_DLMI/

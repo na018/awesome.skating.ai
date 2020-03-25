@@ -1,11 +1,15 @@
 import argparse
+from collections import namedtuple
+
+ArgsNamespace = namedtuple('ArgNamespace', ['gpu', 'name', 'wcounter'])
+
 from datetime import datetime
 from pathlib import Path
 
 import numpy as np
 import tensorflow as tf
 
-from skatingAI.nets.mobilenet.v0 import UNet
+from skatingAI.nets.hrnet.v7 import HRNet
 from skatingAI.utils.DsGenerator import DsGenerator
 from skatingAI.utils.losses import GeneralisedWassersteinDiceLoss
 from skatingAI.utils.utils import DisplayCallback, set_gpus, Metric, Logger
@@ -13,9 +17,10 @@ from skatingAI.utils.utils import DisplayCallback, set_gpus, Metric, Logger
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(
         description='Train nadins awesome network :)')
-    parser.add_argument('--gpu', default=2, help='Which gpu shoud I use?')
+    parser.add_argument('--gpu', default=1, help='Which gpu shoud I use?')
     parser.add_argument('--name', default="m_unet", help='Name for training')
-    args = parser.parse_args()
+    parser.add_argument('--wcounter', default=1795, help='Weight counter')
+    args: ArgsNamespace = parser.parse_args()
 
     batch_size = 3
     prefetch_batch_buffer = 1
@@ -34,21 +39,23 @@ if __name__ == "__main__":
     img_shape = sample_frame.shape
     n_classes = np.max(sample_mask) + 1
 
-    train_ds = generator.buid_iterator(img_shape, batch_size, prefetch_batch_buffer)
+    train_ds = generator.build_iterator(img_shape, batch_size, prefetch_batch_buffer)
     iter = train_ds.as_numpy_iterator()
 
-    unet = UNet(img_shape, int(n_classes))
+    hrnet = HRNet(img_shape, int(n_classes))
 
-    model = unet.model
+    model = hrnet.model
     model.summary()
-    # model.load_weights('./ckpt/hrnet-85.ckpt')
+    model.load_weights(f"./ckpt{args.gpu}/hrnet-{args.wcounter}.ckpt")
     tf.keras.utils.plot_model(
-        model, to_file='mobile_net_v0_e.png', show_shapes=True, expand_nested=True)
+        model, to_file='nadins_hrnet_v7_e.png', show_shapes=True, expand_nested=True)
     tf.keras.utils.plot_model(
-        model, to_file='mobile_net_v0.png', show_shapes=True, expand_nested=False)
+        model, to_file='nadins_hrnet_v7.png', show_shapes=True, expand_nested=False)
+    lr_start = 0.001
+    optimizer_decay = 0.01
 
-    # optimizer = tf.keras.optimizers.Adam(learning_rate=0.01, epsilon=1e-8, amsgrad=True)
-    optimizer = tf.keras.optimizers.SGD(learning_rate=1e-4)
+    # optimizer = tf.keras.optimizers.Adam(learning_rate=1e-4, epsilon=1e-8, amsgrad=True)
+    optimizer = tf.keras.optimizers.SGD(learning_rate=lr_start, momentum=0.9, decay=optimizer_decay, nesterov=True)
     # loss_fn = tf.keras.losses.SparseCategoricalCrossentropy(from_logits=True)
     loss_fn = GeneralisedWassersteinDiceLoss(n_classes)
 
@@ -64,7 +71,7 @@ if __name__ == "__main__":
     logger = Logger(log=False)
     log2 = Logger(log=True)
 
-    for epoch in range(epochs):
+    for epoch in range(args.wcounter, epochs):
         log2.log(message=f"Start of epoch {epoch}", block=True)
         train_acc_metric_custom = 0
 
@@ -95,6 +102,9 @@ if __name__ == "__main__":
             #     logger.log(f"Seen so far: {(step + 1) * batch_size} samples")
 
         if epoch % epoch_log_n == 0:
+            lr = lr_start * (1. / (1. + optimizer_decay * (epoch - args.wcounter) * epoch_steps))
+            log2.log(message=f"Learning Rate: [{lr}]    loss: [{loss_value}]", block=False)
+
             progress_tracker.on_epoch_end(epoch,
                                           loss=round(tf.reduce_sum(loss_value).numpy(), 2),
                                           metrics=[
@@ -107,6 +117,7 @@ if __name__ == "__main__":
                                                      .astype(np.float32),
                                                      name='accuracy_body_part'),
                                               Metric(metric=train_acc_metric.result(), name='accuracy'),
+                                              Metric(metric=lr, name='learning_rate'),
                                           ],
                                           show_img=False)
             log2.log(message=f"Seen images: {generator.seen_samples}", block=True)

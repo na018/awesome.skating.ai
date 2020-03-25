@@ -56,8 +56,8 @@ class DsGenerator(object):
 
             yield {'frame': random_frame, 'mask': random_mask}
 
-    def buid_iterator(self, img_shape=(480, 640, 3), batch_size: int = 10,
-                      prefetch_batch_buffer: int = 5) -> tf.data.Dataset:
+    def build_iterator(self, img_shape=(480, 640, 3), batch_size: int = 10,
+                       prefetch_batch_buffer: int = 5) -> tf.data.Dataset:
         dataset = tf.data.Dataset.from_generator(self.get_next_pair,
                                                  output_types={'frame': tf.float32, 'mask': tf.int32})
 
