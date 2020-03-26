@@ -51,8 +51,8 @@ if __name__ == "__main__":
         model, to_file='nadins_hrnet_v7_e.png', show_shapes=True, expand_nested=True)
     tf.keras.utils.plot_model(
         model, to_file='nadins_hrnet_v7.png', show_shapes=True, expand_nested=False)
-    lr_start = 0.001
-    optimizer_decay = 0.01
+    lr_start = 0.1
+    optimizer_decay = 0.001
 
     # optimizer = tf.keras.optimizers.Adam(learning_rate=1e-4, epsilon=1e-8, amsgrad=True)
     optimizer = tf.keras.optimizers.SGD(learning_rate=lr_start, momentum=0.9, decay=optimizer_decay, nesterov=True)
@@ -106,7 +106,7 @@ if __name__ == "__main__":
             log2.log(message=f"Learning Rate: [{lr}]    loss: [{loss_value}]", block=False)
 
             progress_tracker.on_epoch_end(epoch,
-                                          loss=round(tf.reduce_sum(loss_value).numpy(), 2),
+                                          loss=tf.reduce_sum(loss_value).numpy(),
                                           metrics=[
                                               Metric(metric=loss_fn.correct_predictions.astype(np.float32),
                                                      name='correct_px'),
