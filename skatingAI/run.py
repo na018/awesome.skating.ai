@@ -48,7 +48,7 @@ if __name__ == "__main__":
     model.summary()
     if int(args.wcounter) != -1:
         model.load_weights(f"./ckpt{args.gpu}/hrnet-{args.wcounter}.ckpt")
-        wcounter = args.wcounter
+        wcounter = int(args.wcounter)
     else:
         wcounter = 0
     tf.keras.utils.plot_model(
