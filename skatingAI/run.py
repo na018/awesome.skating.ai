@@ -18,8 +18,8 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(
         description='Train nadins awesome network :)')
     parser.add_argument('--gpu', default=1, help='Which gpu shoud I use?')
-    parser.add_argument('--name', default="m_unet", help='Name for training')
-    parser.add_argument('--wcounter', default=1795, help='Weight counter')
+    parser.add_argument('--name', default="hrnet_v7", help='Name for training')
+    parser.add_argument('--wcounter', default=2600, help='Weight counter')
     args: ArgsNamespace = parser.parse_args()
 
     batch_size = 3
