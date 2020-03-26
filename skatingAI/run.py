@@ -1,7 +1,7 @@
 import argparse
 from collections import namedtuple
 
-ArgsNamespace = namedtuple('ArgNamespace', ['gpu', 'name', 'wcounter'])
+ArgsNamespace = namedtuple('ArgNamespace', ['gpu', 'name', 'wcounter', 'lr', 'decay'])
 
 from datetime import datetime
 from pathlib import Path
@@ -19,7 +19,9 @@ if __name__ == "__main__":
         description='Train nadins awesome network :)')
     parser.add_argument('--gpu', default=1, help='Which gpu shoud I use?')
     parser.add_argument('--name', default="hrnet_v7", help='Name for training')
-    parser.add_argument('--wcounter', default=2600, help='Weight counter')
+    parser.add_argument('--wcounter', default=2930, help='Weight counter')
+    parser.add_argument('--lr', default=0.1, help='Initial learning rate')
+    parser.add_argument('--dacay', default=0.0001, help='learning rate decay')
     args: ArgsNamespace = parser.parse_args()
 
     batch_size = 3
@@ -55,8 +57,8 @@ if __name__ == "__main__":
         model, to_file=f'nadins_{args.name}_e.png', show_shapes=True, expand_nested=True)
     tf.keras.utils.plot_model(
         model, to_file=f'nadins_{args.name}.png', show_shapes=True, expand_nested=False)
-    lr_start = 0.1
-    optimizer_decay = 0.001
+    lr_start = int(args.lr)
+    optimizer_decay = int(args.decay)
 
     # optimizer = tf.keras.optimizers.Adam(learning_rate=1e-4, epsilon=1e-8, amsgrad=True)
     optimizer = tf.keras.optimizers.SGD(learning_rate=lr_start, momentum=0.9, decay=optimizer_decay, nesterov=True)
