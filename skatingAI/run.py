@@ -46,11 +46,15 @@ if __name__ == "__main__":
 
     model = hrnet.model
     model.summary()
-    model.load_weights(f"./ckpt{args.gpu}/hrnet-{args.wcounter}.ckpt")
+    if int(args.wcounter) != -1:
+        model.load_weights(f"./ckpt{args.gpu}/hrnet-{args.wcounter}.ckpt")
+        wcounter = args.wcounter
+    else:
+        wcounter = 0
     tf.keras.utils.plot_model(
-        model, to_file='nadins_hrnet_v7_e.png', show_shapes=True, expand_nested=True)
+        model, to_file=f'nadins_{args.name}_e.png', show_shapes=True, expand_nested=True)
     tf.keras.utils.plot_model(
-        model, to_file='nadins_hrnet_v7.png', show_shapes=True, expand_nested=False)
+        model, to_file=f'nadins_{args.name}.png', show_shapes=True, expand_nested=False)
     lr_start = 0.1
     optimizer_decay = 0.001
 
@@ -71,7 +75,7 @@ if __name__ == "__main__":
     logger = Logger(log=False)
     log2 = Logger(log=True)
 
-    for epoch in range(args.wcounter, epochs):
+    for epoch in range(wcounter, epochs):
         log2.log(message=f"Start of epoch {epoch}", block=True)
         train_acc_metric_custom = 0
 
@@ -102,7 +106,7 @@ if __name__ == "__main__":
             #     logger.log(f"Seen so far: {(step + 1) * batch_size} samples")
 
         if epoch % epoch_log_n == 0:
-            lr = lr_start * (1. / (1. + optimizer_decay * (epoch - args.wcounter) * epoch_steps))
+            lr = lr_start * (1. / (1. + optimizer_decay * (epoch - wcounter) * epoch_steps))
             log2.log(message=f"Learning Rate: [{lr}]    loss: [{loss_value}]", block=False)
 
             progress_tracker.on_epoch_end(epoch,
