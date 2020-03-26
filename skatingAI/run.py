@@ -109,7 +109,7 @@ if __name__ == "__main__":
 
         if epoch % epoch_log_n == 0:
             lr = lr_start * (1. / (1. + optimizer_decay * (epoch - wcounter) * epoch_steps))
-            log2.log(message=f"Learning Rate: [{lr}]    loss: [{loss_value}]", block=False)
+            log2.log(message=f"Learning Rate: [{lr}]    loss: [{loss_value.numpy()}]", block=False)
 
             progress_tracker.on_epoch_end(epoch,
                                           loss=tf.reduce_sum(loss_value).numpy(),
