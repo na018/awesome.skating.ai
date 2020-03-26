@@ -21,7 +21,7 @@ if __name__ == "__main__":
     parser.add_argument('--name', default="hrnet_v7", help='Name for training')
     parser.add_argument('--wcounter', default=2930, help='Weight counter')
     parser.add_argument('--lr', default=0.1, help='Initial learning rate')
-    parser.add_argument('--dacay', default=0.0001, help='learning rate decay')
+    parser.add_argument('--decay', default=0.0001, help='learning rate decay')
     args: ArgsNamespace = parser.parse_args()
 
     batch_size = 3
