@@ -6,7 +6,7 @@ from tensorflow.python.keras.utils import losses_utils
 from skatingAI.utils.human_distance_map import HumanDistanceMap
 
 
-class GeneralisedWassersteinDiceLoss(tf.keras.losses.Loss):
+class CILoss(tf.keras.losses.Loss):
     """calculates the Generalised Wasserstein Dice Loss
 
     defined in Fidon, L. et. al. (2017) Generalised Wasserstein Dice Score for Imbalanced
@@ -38,9 +38,9 @@ class GeneralisedWassersteinDiceLoss(tf.keras.losses.Loss):
         self.y_true = y_true
         self.y_pred = y_pred
 
-        return self._generalised_wasserstein_dice_loss()
+        return self._class_inbalance_loss()
 
-    def _generalised_wasserstein_dice_loss(self) -> tf.float32:
+    def _class_inbalance_loss(self) -> tf.float32:
         """ calculate the pixel-wise Wasserstein distance
 
         distance between the :prediction and :ground_truth with respect

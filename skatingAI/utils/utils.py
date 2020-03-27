@@ -159,9 +159,23 @@ class LearningRateScheduler(tf.keras.callbacks.Callback):
 
 
 class Metric(object):
-    def __init__(self, name: str, metric: tf.keras.metrics):
+    def __init__(self, name: str, value=None):
         self.name = name
-        self.metric = metric
+        self.value = value
+        self.metrics = []
+
+    def append(self, value: float):
+        self.metrics.append(value)
+
+    def get_median(self, reset: bool = True):
+        if self.value:
+            median = self.value
+        else:
+            median = np.median(self.metrics)
+        if reset:
+            self.metrics = []
+
+        return median
 
 
 class DisplayCallback(object):
@@ -204,7 +218,7 @@ class DisplayCallback(object):
         tf.summary.scalar('loss', loss, step=epoch)
 
         for i, item in enumerate(metrics):
-            tf.summary.scalar(item.name, item.metric, step=epoch)
+            tf.summary.scalar(item.name, item.get_median(), step=epoch)
 
     def on_train_end(self):
         # clear_output(wait=True)
