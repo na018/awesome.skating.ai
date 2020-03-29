@@ -31,12 +31,13 @@ class MainLoop(object):
 
     def __init__(self, GPU: int, NAME: str, W_COUNTER: int, optimizer: str, LR_START: float, OPTIMIZER_DECAY: float,
                  BATCH_SIZE=3,
-                 PREFETCH_BATCH_BUFFER=1, EPOCH_STEPS=64, EPOCHS=5555, EPOCH_LOG_N=5):
+                 PREFETCH_BATCH_BUFFER=1, EPOCH_STEPS=64, EPOCHS=5555, EPOCH_LOG_N=5, EPOCH_SGD_PLATEAUCHECK=50):
         self.BATCHSIZE: int = BATCH_SIZE
         self.PREFETCH_BATCH_BUFFER: int = PREFETCH_BATCH_BUFFER
         self.EPOCH_STEPS: int = EPOCH_STEPS
         self.EPOCHS: int = EPOCHS
         self.EPOCH_LOG_N: int = EPOCH_LOG_N
+        self.EPOCH_SGD_PLATEAUCHECK: int = EPOCH_SGD_PLATEAUCHECK
 
         self.GPU: int = GPU
         self.NAME: str = NAME
@@ -44,6 +45,7 @@ class MainLoop(object):
         self.LR_START: float = LR_START
         self.OPTIMIZER_DECAY: int = OPTIMIZER_DECAY
         self.optimizer = optimizer
+        self.step_custom_lr = 0
 
         self.N_CLASS: int = 9
         self.IMG_SHAPE: Tuple[int] = (240, 320, 3)
@@ -89,7 +91,7 @@ class MainLoop(object):
     def _get_optimizer(self):
 
         if self.optimizer == "adam":
-            optimizer = tf.keras.optimizers.Adam(learning_rate=1e-4, epsilon=1e-8, amsgrad=True)
+            optimizer = tf.keras.optimizers.Adam(learning_rate=self.LR_START, epsilon=1e-8, amsgrad=True)  # 0.001
         elif self.optimizer == "nadam":
             optimizer = tf.keras.optimizers.Nadam(learning_rate=self.LR_START, beta_1=0.9, beta_2=0.999, epsilon=1e-07)
         else:
@@ -110,23 +112,26 @@ class MainLoop(object):
         return file_writer, progress_tracker, log1, log2
 
     def _calculate_metrics(self):
-        self.metric_acc.append(self.loss_fn.correct_predictions.astype(np.float32))
+        self.metric_correct_px.append(self.loss_fn.correct_predictions.astype(np.float32))
         self.metric_correct_px_body_part.append(self.loss_fn.correct_body_part_pred.astype(np.float32))
         self.metric_acc_body_part.append(
             (self.loss_fn.correct_body_part_pred / self.loss_fn.body_part_px_n_true).astype(np.float32))
         self.metric_loss.append(self.loss_value)
+        self.metric_avg_acc_body_part.append(
+            (self.loss_fn.correct_body_part_pred / self.loss_fn.body_part_px_n_true).astype(np.float32))
 
     def start_train_loop(self):
 
         train_acc_metric = tf.keras.metrics.Accuracy()
         file_writer, progress_tracker, log_v, log2 = self._track_logs()
 
-        self.metric_correct_px, self.metric_correct_px_body_part, self.metric_acc_body_part, self.metric_acc, self.metric_loss = (
+        self.metric_correct_px, self.metric_correct_px_body_part, self.metric_acc_body_part, self.metric_acc, self.metric_loss, self.metric_avg_acc_body_part = (
             Metric('correct_px'),
             Metric('correct_body_part_px'),
             Metric('accuracy_body_part'),
             Metric('accuracy'),
-            Metric('loss')
+            Metric('loss'),
+            Metric('avg_acc_body_part')
         )
 
         for epoch in range(self.W_COUNTER, self.EPOCHS):
@@ -152,11 +157,14 @@ class MainLoop(object):
                 max_logits = max_logits[..., tf.newaxis]
                 train_acc_metric(batch['mask'], max_logits)
                 self._calculate_metrics()
+                self.step_custom_lr += 1
 
             if epoch % self.EPOCH_LOG_N == 0:
-                if self.optimizer in 'nadam':
+                if self.optimizer == 'sgd':
                     lr = self.LR_START * (
                             1. / (1. + self.OPTIMIZER_DECAY * (epoch - self.W_COUNTER) * self.EPOCH_STEPS))
+                elif self.optimizer == 'sgd_clr':
+                    lr = self.LR_START * 1 / (1 + self.OPTIMIZER_DECAY * self.step_custom_lr)
                 else:
                     lr = self.LR_START
                 log2.log(
@@ -176,7 +184,13 @@ class MainLoop(object):
                                               ],
                                               show_img=False)
                 log2.log(message=f"Seen images: {self.generator.seen_samples}", block=True)
-            train_acc_metric.reset_states()
+                train_acc_metric.reset_states()
+
+            if epoch % self.EPOCH_SGD_PLATEAUCHECK and self.optimizer == 'sgd_clr':
+                if self.metric_avg_acc_body_part.is_curve_steep() == False:
+                    self.optimizer == self._get_optimizer()
+                    self.step_custom_lr = 0
+                    print('adjusted optimizer')
 
         progress_tracker.on_train_end()
         log_v.log_end()
@@ -191,9 +205,9 @@ if __name__ == "__main__":
     parser.add_argument('--gpu', default=1, help='Which gpu shoud I use?', type=int)
     parser.add_argument('--name', default="hrnet_v7", help='Name for training')
     parser.add_argument('--wcounter', default=2935, help='Weight counter', type=int)
-    parser.add_argument('--lr', default=0.01, help='Initial learning rate', type=float)
-    parser.add_argument('--decay', default=0.0001, help='learning rate decay', type=float)
-    parser.add_argument('--opt', default="nadam", help='Optimizer [Nadam, SGD]')
+    parser.add_argument('--lr', default=0.1, help='Initial learning rate', type=float)
+    parser.add_argument('--decay', default=0.001, help='learning rate decay', type=float)
+    parser.add_argument('--opt', default="sgd_clr", help='Optimizer [nadam, adam, sgd, sgd_clr]')
     parser.add_argument('--bs', default=3, help='Batch size', type=int)
     parser.add_argument('--steps', default=64, help='Epoch steps', type=int)
     parser.add_argument('--log_n', default=5, help='Epoch steps', type=int)

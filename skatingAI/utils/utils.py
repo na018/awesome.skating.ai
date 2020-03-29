@@ -159,13 +159,33 @@ class LearningRateScheduler(tf.keras.callbacks.Callback):
 
 
 class Metric(object):
-    def __init__(self, name: str, value=None):
+    def __init__(self, name: str, value=None, max_size=None, smooth_weight=0.7, diff=0.05):
         self.name = name
         self.value = value
         self.metrics = []
+        self.smoothed = []
+        self.max_size = max_size
+        self.smooth_weight = smooth_weight
+        self.diff = diff
 
     def append(self, value: float):
+        if self.max_size and (len(self.metrics) - 1) > self.max_size:
+            self.metrics.pop(0)
+
         self.metrics.append(value)
+
+    def expo_smooth_avg(self):
+        last = self.metrics[0]
+        smoothed = []
+        for point in self.metrics:
+            smoothed_val = last * self.smooth_weight + (1 - self.smooth_weight) * point
+            smoothed.append(smoothed_val)
+            last = smoothed_val
+        self.smoothed = smoothed
+
+    def is_curve_steep(self):
+        self.expo_smooth_avg()
+        return self.smoothed[-1] - self.smoothed[0] > self.diff
 
     def get_median(self, reset: bool = True):
         if self.value:
