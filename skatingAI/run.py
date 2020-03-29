@@ -44,7 +44,7 @@ class MainLoop(object):
         self.W_COUNTER: int = W_COUNTER
         self.LR_START: float = LR_START
         self.OPTIMIZER_DECAY: int = OPTIMIZER_DECAY
-        self.optimizer = optimizer
+        self.OPTIMIZER_NAME = optimizer
         self.step_custom_lr = 0
 
         self.N_CLASS: int = 9
@@ -90,9 +90,9 @@ class MainLoop(object):
 
     def _get_optimizer(self):
 
-        if self.optimizer == "adam":
+        if self.OPTIMIZER_NAME == "adam":
             optimizer = tf.keras.optimizers.Adam(learning_rate=self.LR_START, epsilon=1e-8, amsgrad=True)  # 0.001
-        elif self.optimizer == "nadam":
+        elif self.OPTIMIZER_NAME == "nadam":
             optimizer = tf.keras.optimizers.Nadam(learning_rate=self.LR_START, beta_1=0.9, beta_2=0.999, epsilon=1e-07)
         else:
             optimizer = tf.keras.optimizers.SGD(learning_rate=self.LR_START, momentum=0.9, decay=self.OPTIMIZER_DECAY,
@@ -160,10 +160,10 @@ class MainLoop(object):
                 self.step_custom_lr += 1
 
             if epoch % self.EPOCH_LOG_N == 0:
-                if self.optimizer == 'sgd':
+                if self.OPTIMIZER_NAME == 'sgd':
                     lr = self.LR_START * (
                             1. / (1. + self.OPTIMIZER_DECAY * (epoch - self.W_COUNTER) * self.EPOCH_STEPS))
-                elif self.optimizer == 'sgd_clr':
+                elif self.OPTIMIZER_NAME == 'sgd_clr':
                     lr = self.LR_START * 1 / (1 + self.OPTIMIZER_DECAY * self.step_custom_lr)
                 else:
                     lr = self.LR_START
@@ -186,9 +186,9 @@ class MainLoop(object):
                 log2.log(message=f"Seen images: {self.generator.seen_samples}", block=True)
                 train_acc_metric.reset_states()
 
-            if epoch % self.EPOCH_SGD_PLATEAUCHECK and self.optimizer == 'sgd_clr':
+            if epoch % self.EPOCH_SGD_PLATEAUCHECK and self.OPTIMIZER_NAME == 'sgd_clr':
                 if self.metric_avg_acc_body_part.is_curve_steep() == False:
-                    self.optimizer == self._get_optimizer()
+                    self.optimizer = self._get_optimizer()
                     self.step_custom_lr = 0
                     print('adjusted optimizer')
 
