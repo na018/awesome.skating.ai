@@ -14,8 +14,8 @@ from skatingAI.utils.DsGenerator import Frame, Mask
 
 class Evaluater():
     def __init__(self, weight_counter=5, nn_version='v2', name='', subfolder='', c=''):
-        self.dir_img_eval = f"{os.getcwd()}/skatingAI/evaluate/img/{nn_version}_{weight_counter}_{name}"
-        self.weight_path = f"{os.getcwd()}/skatingAI/ckpt{c}/{subfolder}hrnet-{weight_counter}.ckpt"
+        self.dir_img_eval = f"{os.getcwd()}/evaluate/img/{nn_version}_{weight_counter}_{name}"
+        self.weight_path = f"{os.getcwd()}/ckpt{c}/{subfolder}hrnet-{weight_counter}.ckpt"
 
         versions = {
             'v0': v0.HRNet,
@@ -36,8 +36,8 @@ class Evaluater():
             raise AssertionError(f"{self.dir_img_eval} already exists. Please add a unique name.")
 
     def _get_frame(self, video_n=1, frame_n=1) -> Tuple[Frame, Mask]:
-        video_path_rgbs: str = f"{os.getcwd()}/skatingAI/Data/3dhuman/processed/numpy/rgbb"
-        mask_path: str = f"{os.getcwd()}/skatingAI/Data/3dhuman/processed/numpy/masks"
+        video_path_rgbs: str = f"{os.getcwd()}/Data/3dhuman/processed/numpy/rgbb"
+        mask_path: str = f"{os.getcwd()}/Data/3dhuman/processed/numpy/masks"
         frame: np.ndarray = np.load(f"{video_path_rgbs}/{video_n}.npz")['arr_0'][frame_n]
         mask: np.ndarray = np.load(f"{mask_path}/{video_n}.npz")['arr_0'][frame_n]
         return frame, mask
@@ -105,10 +105,10 @@ class Evaluater():
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(
         description='Evaluate featuremaps of trained model')
-    parser.add_argument('--wcounter', default=1795, help='Number of weight')
+    parser.add_argument('--wcounter', default=1595, help='Number of weight')
     parser.add_argument('--v', default='v7', help='version of hrnet')
-    parser.add_argument('--c', default='1', help='gpu number the net has trained on')
-    parser.add_argument('--name', default='0', help='unique name to save images in')
+    parser.add_argument('--c', default='2', help='gpu number the net has trained on')
+    parser.add_argument('--name', default='adam_1595', help='unique name to save images in')
     args = parser.parse_args()
 
     Evaluater(weight_counter=args.wcounter, nn_version=args.v, name=args.name, c=args.c).show_featuremaps()

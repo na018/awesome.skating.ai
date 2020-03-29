@@ -186,7 +186,7 @@ class MainLoop(object):
                 log2.log(message=f"Seen images: {self.generator.seen_samples}", block=True)
                 train_acc_metric.reset_states()
 
-            if epoch % self.EPOCH_SGD_PLATEAUCHECK and self.OPTIMIZER_NAME == 'sgd_clr':
+            if epoch % self.EPOCH_SGD_PLATEAUCHECK == 0 and self.OPTIMIZER_NAME == 'sgd_clr':
                 if self.metric_avg_acc_body_part.is_curve_steep() == False:
                     self.optimizer = self._get_optimizer()
                     self.step_custom_lr = 0
