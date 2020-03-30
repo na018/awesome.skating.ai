@@ -116,8 +116,6 @@ class MainLoop(object):
         self.metric_acc_body_part.append(
             (self.loss_fn.correct_body_part_pred / self.loss_fn.body_part_px_n_true).astype(np.float32))
         self.metric_loss.append(self.loss_value)
-        self.metric_avg_acc_body_part.append(
-            (self.loss_fn.correct_body_part_pred / self.loss_fn.body_part_px_n_true).astype(np.float32))
 
     def start_train_loop(self):
 
@@ -158,6 +156,13 @@ class MainLoop(object):
                 self._calculate_metrics()
                 self.step_custom_lr += 1
 
+            self.metric_avg_acc_body_part.append(self.metric_acc_body_part.get_median(False))
+            if epoch > 0 and epoch % self.EPOCH_SGD_PLATEAUCHECK == 0 and self.OPTIMIZER_NAME == 'sgd_clr':
+                if self.metric_avg_acc_body_part.is_curve_steep() == False:
+                    self.optimizer = self._get_optimizer()
+                    self.step_custom_lr = 0
+                    print('adjusted optimizer')
+
             if epoch % self.EPOCH_LOG_N == 0:
                 if self.OPTIMIZER_NAME == 'sgd':
                     lr = self.LR_START * (
@@ -184,12 +189,6 @@ class MainLoop(object):
                                               show_img=False)
                 log2.log(message=f"Seen images: {self.generator.seen_samples}", block=True)
                 train_acc_metric.reset_states()
-
-            if epoch % self.EPOCH_SGD_PLATEAUCHECK == 0 and self.OPTIMIZER_NAME == 'sgd_clr':
-                if self.metric_avg_acc_body_part.is_curve_steep() == False:
-                    self.optimizer = self._get_optimizer()
-                    self.step_custom_lr = 0
-                    print('adjusted optimizer')
 
         progress_tracker.on_train_end()
         log_v.log_end()
