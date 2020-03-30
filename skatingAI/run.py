@@ -2,7 +2,6 @@ import argparse
 from collections import namedtuple
 from datetime import datetime
 from pathlib import Path
-from typing import Tuple
 
 import numpy as np
 import tensorflow as tf
@@ -43,12 +42,12 @@ class MainLoop(object):
         self.NAME: str = NAME
         self.W_COUNTER: int = W_COUNTER
         self.LR_START: float = LR_START
-        self.OPTIMIZER_DECAY: int = OPTIMIZER_DECAY
+        self.OPTIMIZER_DECAY: float = OPTIMIZER_DECAY
         self.OPTIMIZER_NAME = optimizer
         self.step_custom_lr = 0
 
         self.N_CLASS: int = 9
-        self.IMG_SHAPE: Tuple[int] = (240, 320, 3)
+        self.IMG_SHAPE: [int, int, int] = (240, 320, 3)
 
         set_gpus(GPU)
 
