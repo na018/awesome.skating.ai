@@ -185,8 +185,8 @@ class Metric(object):
 
     def is_curve_steep(self):
         self.expo_smooth_avg()
-        curve_start_avg = np.array(self.smoothed[-1])[5:].mean()
-        curve_end_avg = np.array(self.smoothed[-1])[-5:].mean()
+        curve_start_avg = np.array(self.smoothed)[5:].mean()
+        curve_end_avg = np.array(self.smoothed)[-5:].mean()
         curve_diff = np.abs(curve_start_avg - curve_end_avg)
         print(f"curve_start_avg: [{curve_start_avg}] curve_end_avg: [{curve_end_avg}] diff: [{curve_diff}]")
 
