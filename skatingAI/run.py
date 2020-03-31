@@ -43,7 +43,7 @@ class MainLoop(object):
         self.W_COUNTER: int = W_COUNTER
         self.LR_START: float = LR_START
         self.SGD_CLR_DECAY_RATE = [1e-5, 1e-4, 1e-3, 0.01]
-        self.SGD_CLR_DECAY_COUNTER = 0
+        self.SGD_CLR_DECAY_COUNTER = 3
         self.OPTIMIZER_DECAY: float = OPTIMIZER_DECAY
         self.OPTIMIZER_NAME = optimizer
         self.step_custom_lr = 0
@@ -97,7 +97,7 @@ class MainLoop(object):
             optimizer = tf.keras.optimizers.Nadam(learning_rate=self.LR_START, beta_1=0.9, beta_2=0.999, epsilon=1e-07)
         elif self.OPTIMIZER_NAME == "sgd_clr":
             self.OPTIMIZER_DECAY = self.SGD_CLR_DECAY_RATE[self.SGD_CLR_DECAY_COUNTER]
-            if self.SGD_CLR_DECAY_COUNTER < len(self.SGD_CLR_DECAY_RATE):
+            if self.SGD_CLR_DECAY_COUNTER + 1 < len(self.SGD_CLR_DECAY_RATE):
                 self.SGD_CLR_DECAY_COUNTER += 1
 
             optimizer = tf.keras.optimizers.SGD(learning_rate=self.LR_START, momentum=0.9, decay=self.OPTIMIZER_DECAY,
