@@ -71,7 +71,7 @@ class CILoss(tf.keras.losses.Loss):
         for i, true_img in enumerate(y_true):
             delta.append(
                 tf.multiply(tf.abs(tf.subtract(y_pred[i], true_img)),
-                            self.weighted_map[tf.argmax(true_img, axis=-1)]) * self.multiplicator)
+                            self.weighted_map[tf.argmax(true_img, axis=-1)]) * self.multiplicator + 1e-6)
 
         return tf.add_n([
             tf.abs(

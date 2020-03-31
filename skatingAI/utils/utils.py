@@ -235,6 +235,7 @@ class DisplayCallback(object):
         if show_img:
             plt.show()
         fig.savefig(f"{path}/img_train{self.gpu}/{epoch}_train.png")
+        plt.close('all')
 
         summary_images = [self.sample_image, mask2rgb(self.sample_mask), mask2rgb(predicted_mask)]
         # summary_images = tf.cast(summary_images, tf.uint8)
