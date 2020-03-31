@@ -29,6 +29,7 @@ class MainLoop(object):
      """
 
     def __init__(self, GPU: int, NAME: str, W_COUNTER: int, optimizer: str, LR_START: float, OPTIMIZER_DECAY: float,
+                 BG: bool,
                  BATCH_SIZE=3,
                  PREFETCH_BATCH_BUFFER=1, EPOCH_STEPS=64, EPOCHS=5555, EPOCH_LOG_N=5, EPOCH_SGD_PLATEAUCHECK=50):
         self.BATCHSIZE: int = BATCH_SIZE
@@ -43,7 +44,7 @@ class MainLoop(object):
         self.W_COUNTER: int = W_COUNTER
         self.LR_START: float = LR_START
         self.SGD_CLR_DECAY_RATE = [1e-5, 1e-4, 1e-3, 0.01]
-        self.SGD_CLR_DECAY_COUNTER = 3
+        self.SGD_CLR_DECAY_COUNTER = 0
         self.OPTIMIZER_DECAY: float = OPTIMIZER_DECAY
         self.OPTIMIZER_NAME = optimizer
         self.step_custom_lr = 0
@@ -53,16 +54,16 @@ class MainLoop(object):
 
         set_gpus(GPU)
 
-        self.iter, self.sample_frame, self.sample_mask = self._generate_dataset()
+        self.iter, self.sample_frame, self.sample_mask = self._generate_dataset(BG)
         self.model = self._get_model()
         self.optimizer = self._get_optimizer()
 
         self.loss_fn = CILoss(self.N_CLASS)
 
-    def _generate_dataset(self):
+    def _generate_dataset(self, BG: bool):
         self.generator = DsGenerator(resize_shape=(240, 320))
 
-        sample_pair = next(self.generator.get_next_pair())
+        sample_pair = next(self.generator.get_next_pair(BG))
 
         self.IMG_SHAPE = sample_pair['frame'].shape
         self.N_CLASS = np.max(sample_pair['mask']).astype(int) + 1
@@ -170,7 +171,7 @@ class MainLoop(object):
                 if self.metric_avg_acc_body_part.is_curve_steep() == False:
                     self.optimizer = self._get_optimizer()
                     self.step_custom_lr = 0
-                    print('adjusted optimizer')
+                    log2.log('adjusted optimizer')
 
             if epoch % self.EPOCH_LOG_N == 0:
                 if self.OPTIMIZER_NAME == 'sgd':
@@ -205,20 +206,21 @@ class MainLoop(object):
 
 if __name__ == "__main__":
     ArgsNamespace = namedtuple('ArgNamespace',
-                               ['gpu', 'name', 'wcounter', 'lr', 'decay', 'opt', 'bs', 'steps', 'log_n'])
+                               ['gpu', 'name', 'wcounter', 'lr', 'decay', 'opt', 'bs', 'steps', 'log_n', 'bg'])
 
     parser = argparse.ArgumentParser(
         description='Train nadins awesome network :)')
     parser.add_argument('--gpu', default=1, help='Which gpu shoud I use?', type=int)
     parser.add_argument('--name', default="hrnet_v7", help='Name for training')
-    parser.add_argument('--wcounter', default=2935, help='Weight counter', type=int)
+    parser.add_argument('--wcounter', default=-1, help='Weight counter', type=int)
     parser.add_argument('--lr', default=0.1, help='Initial learning rate', type=float)
     parser.add_argument('--decay', default=0.001, help='learning rate decay', type=float)
     parser.add_argument('--opt', default="sgd_clr", help='Optimizer [nadam, adam, sgd, sgd_clr]')
     parser.add_argument('--bs', default=3, help='Batch size', type=int)
     parser.add_argument('--steps', default=64, help='Epoch steps', type=int)
     parser.add_argument('--log_n', default=5, help='Epoch steps', type=int)
+    parser.add_argument('--bg', default=True, help='Use training images with background', type=bool)
     args: ArgsNamespace = parser.parse_args()
 
-    MainLoop(args.gpu, args.name, args.wcounter, args.opt, args.lr, args.decay, BATCH_SIZE=args.bs,
+    MainLoop(args.gpu, args.name, args.wcounter, args.opt, args.lr, args.decay, args.bg, BATCH_SIZE=args.bs,
              EPOCH_STEPS=args.steps, EPOCH_LOG_N=args.log_n).start_train_loop()
