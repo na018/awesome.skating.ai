@@ -206,7 +206,7 @@ class MainLoop(object):
 
 if __name__ == "__main__":
     ArgsNamespace = namedtuple('ArgNamespace',
-                               ['gpu', 'name', 'wcounter', 'lr', 'decay', 'opt', 'bs', 'steps', 'log_n', 'bg'])
+                               ['gpu', 'name', 'wcounter', 'lr', 'decay', 'opt', 'bs', 'steps','epochs', 'log_n', 'bg'])
 
     parser = argparse.ArgumentParser(
         description='Train nadins awesome network :)')
@@ -218,9 +218,10 @@ if __name__ == "__main__":
     parser.add_argument('--opt', default="sgd_clr", help='Optimizer [nadam, adam, sgd, sgd_clr]')
     parser.add_argument('--bs', default=3, help='Batch size', type=int)
     parser.add_argument('--steps', default=64, help='Epoch steps', type=int)
+    parser.add_argument('--epochs', default=64, help='Epochs', type=int)
     parser.add_argument('--log_n', default=5, help='Epoch steps', type=int)
     parser.add_argument('--bg', default=True, help='Use training images with background', type=bool)
     args: ArgsNamespace = parser.parse_args()
 
     MainLoop(args.gpu, args.name, args.wcounter, args.opt, args.lr, args.decay, args.bg, BATCH_SIZE=args.bs,
-             EPOCH_STEPS=args.steps, EPOCH_LOG_N=args.log_n).start_train_loop()
+             EPOCH_STEPS=args.steps,EPOCHS=ars.epochs, EPOCH_LOG_N=args.log_n).start_train_loop()
