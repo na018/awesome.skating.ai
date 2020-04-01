@@ -31,11 +31,11 @@
     - create weighed map according to a calculated graph with the relative body part distances
 - reduce classes to 9
 - add automatic dataset download and processing including saving in numpy compressed files
-```math
-\theta = y_t(x) -y_p(x);\  
-\delta = \theta * \Mu[argmax(y_t)];\  
-L = \sum_{i=0}^{n}\theta_i + \delta_i;
-```
+
+- <img src="https://latex.codecogs.com/svg.latex?\Large&space;\theta=y_t(x)-y_p(x);" />
+- <img src="https://latex.codecogs.com/svg.latex?\Large&space;\delta = \theta * \Mu[argmax(y_t)];" />  
+- <img src="https://latex.codecogs.com/svg.latex?\Large&space;L = \sum_{i=0}^{n}\theta_i + \delta_i;" />
+
     
    ![Loss Calculation](skatingAI/docs/img/random/loss_calculation.png)  
     - the new loss increased training efficiency a lot (exact results will be included later)
@@ -47,8 +47,25 @@ L = \sum_{i=0}^{n}\theta_i + \delta_i;
     - code refactoring & improvement
     - evaluation of best performing net HRNet with Adam optimizer after epoch 1595 [v7_1595_adam_1595_mask](skatingAI/evaluate/img/v7_1595_adam_1595_mask)
 - evalutate different optimizers, learning rates & learning rate adjustments
+#### Accuracy of different used optimizers
+> red: adam; learning rate: 0.01  
+> orange: nadam; learning rate: 0.01  
+>blue: sgd  learning rate: 0.1  
+>green: sgd with custom decay (increase on plateau; decrease with variable decay)  
+>light blue: sgd with custom decay of 0.001  
+>
+**Accuracy:**
+![accuracy_all](skatingAI/docs/img/v7/accuracy_all.svg)
+**Relation of correct body part pixel to all body part pixel**
+![accuracy_body_part_all](skatingAI/docs/img/v7/accuracy_body_part_all.svg)
+**Comparison of loss**
+![loss](skatingAI/docs/img/v7/loss_all.svg)
+**Learning Rates of SGD and SGD with custom loss**
+![lr](skatingAI/docs/img/v7/learning_rate.svg)
+**Comparison of SGD and custom decay/ learning rates**
+![loss](skatingAI/docs/img/v7/loss.svg)
 
-amount of training data: 43.944
+
 ## 2020-03-01 [Status Report]: Create Custom Training Loop (first step)
 
 - Solve problems with Tensorflow 2:
