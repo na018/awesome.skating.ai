@@ -224,4 +224,4 @@ if __name__ == "__main__":
     args: ArgsNamespace = parser.parse_args()
 
     MainLoop(args.gpu, args.name, args.wcounter, args.opt, args.lr, args.decay, args.bg, BATCH_SIZE=args.bs,
-             EPOCH_STEPS=args.steps,EPOCHS=ars.epochs, EPOCH_LOG_N=args.log_n).start_train_loop()
+             EPOCH_STEPS=args.steps,EPOCHS=args.epochs, EPOCH_LOG_N=args.log_n).start_train_loop()
