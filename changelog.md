@@ -9,31 +9,45 @@
 > Since this research focuses on the detection of keypoints in figure ice skating, further considerations must be taken in mind: people in the background should not be detected, but only the person in focus for later analysis. The question there is, how to get the corespondent training data.
 
 ---
-new net:
-```
-Total params: 754,473
-Trainable params: 752,937
-Non-trainable params: 1,536
-```
 
-old: 
+
+## 2018-04-01 [Status Report]: Improve Custom Training Loop, Evaluation, Loss Function
+#### Learned Mask:
+   ![Loss Calculation](skatingAI/evaluate/img/v7_1595_adam_1595_mask/0_predicted_mask_0_ouputs.png)  
+#### Learned Classes
+   ![Loss Calculation](skatingAI/evaluate/img/v7_1595_adam_1595_mask/155_output.png)  
+- experiment with different net structures
+    - try to train faster/ less memory
+        - strided-down/-up convolution architecure: result converges worse
+        - rescale in dataset generator: works far better (graphs will be included later)
+    - u-net with mobilenetv2 as base (not able to learn body parts)
+    - u-net as base for HRNet (converges worse than just HRNet and is slower)
+    - improve HRNet with filter amount and layer amount according to evaluation analysis of layers
+        - combine add and concat of layers
+        - always add the intital Input layer to concat/ add
+        - performs best
+    ![HRNet Model Architecture](skatingAI/hrnet_v8.png)  
+- create new custom loss function for Class Inbalance
+    - create weighed map according to a calculated graph with the relative body part distances
+- reduce classes to 9
+- add automatic dataset download and processing including saving in numpy compressed files
+```math
+\theta = y_t(x) -y_p(x);\  
+\delta = \theta * \Mu[argmax(y_t)];\  
+L = \sum_{i=0}^{n}\theta_i + \delta_i;
 ```
-Total params: 4,545,231
-Trainable params: 4,542,159
-Non-trainable params: 3,072
-```
+    
+   ![Loss Calculation](skatingAI/docs/img/random/loss_calculation.png)  
+    - the new loss increased training efficiency a lot (exact results will be included later)
+    
+ - improve evaluation
+    - add functionality to test different net architectures 
+    - add simple save functionality
+    - show predicted images additionally to featuremaps of layers
+    - code refactoring & improvement
+    - evaluation of best performing net HRNet with Adam optimizer after epoch 1595 [v7_1595_adam_1595_mask](skatingAI/evaluate/img/v7_1595_adam_1595_mask)
+- evalutate different optimizers, learning rates & learning rate adjustments
 
-## 2018-03-05
-```python
-batch_size = 3
-prefetch_batch_buffer = 1
-epoch_steps = 64
-epoch_log_n = 5
-epochs = 555
-
-# commit 7b9a3da54dca8ecbde3e51876880a60b8ad610fa
-
-```    
 amount of training data: 43.944
 ## 2020-03-01 [Status Report]: Create Custom Training Loop (first step)
 
