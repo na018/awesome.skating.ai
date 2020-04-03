@@ -18,16 +18,16 @@
    ![Loss Calculation](skatingAI/evaluate/img/v7_1595_adam_1595_mask/155_output.png)  
 - experiment with different net structures
     - try to train faster/ less memory
-        - strided-down/-up convolution architecure: result converges worse
+        - strided-down/-up convolution architecture: result converges worse
         - rescale in dataset generator: works far better (graphs will be included later)
     - u-net with mobilenetv2 as base (not able to learn body parts)
     - u-net as base for HRNet (converges worse than just HRNet and is slower)
     - improve HRNet with filter amount and layer amount according to evaluation analysis of layers
         - combine add and concat of layers
-        - always add the intital Input layer to concat/ add
+        - always add the initial Input layer to concat/ add
         - performs best
     ![HRNet Model Architecture](skatingAI/hrnet_v8.png)  
-- create new custom loss function for Class Inbalance
+- create new custom loss function for Class Imbalance
     - create weighed map according to a calculated graph with the relative body part distances
 - reduce classes to 9
 - add automatic dataset download and processing including saving in numpy compressed files
@@ -43,10 +43,10 @@
  - improve evaluation
     - add functionality to test different net architectures 
     - add simple save functionality
-    - show predicted images additionally to featuremaps of layers
+    - show predicted images additionally to feature maps of layers
     - code refactoring & improvement
     - evaluation of best performing net HRNet with Adam optimizer after epoch 1595 [v7_1595_adam_1595_mask](skatingAI/evaluate/img/v7_1595_adam_1595_mask)
-- evalutate different optimizers, learning rates & learning rate adjustments
+- evaluate different optimizers, learning rates & learning rate adjustments
 #### Accuracy of different used optimizers
 > red: adam; learning rate: 0.01  
 > orange: nadam; learning rate: 0.01  
