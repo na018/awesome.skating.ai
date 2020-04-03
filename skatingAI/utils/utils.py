@@ -1,12 +1,13 @@
+import time
+from enum import Enum
 from pathlib import Path
 from typing import List
-import time
+
 import numpy as np
 import tensorflow as tf
 from keras import backend as K
 from matplotlib import pyplot as plt
 from tensorflow import keras, summary
-from enum import Enum
 
 path = Path.cwd()
 
@@ -15,6 +16,7 @@ def create_mask(pred_mask):
     pred_mask = tf.argmax(pred_mask, axis=-1)
     pred_mask = pred_mask[..., tf.newaxis]
     return pred_mask
+
 
 class BodyParts(Enum):
     bg = 0
@@ -33,23 +35,42 @@ class BodyParts(Enum):
     LLowLeg = 13
     LFoot = 14
 
+
+body_part_classes = {
+    BodyParts.bg.name: 0,
+    BodyParts.Head.name: 1,
+    BodyParts.RUpArm.name: 2,
+    BodyParts.RForeArm.name: 3,
+    BodyParts.RHand.name: 4,
+    BodyParts.LUpArm.name: 2,
+    BodyParts.LForeArm.name: 3,
+    BodyParts.LHand.name: 4,
+    BodyParts.torso.name: 5,
+    BodyParts.RThigh.name: 6,
+    BodyParts.RLowLeg.name: 7,
+    BodyParts.RFoot.name: 8,
+    BodyParts.LThigh.name: 6,
+    BodyParts.LLowLeg.name: 7,
+    BodyParts.LFoot.name: 8
+}
+
 segmentation_class_colors = {
-        BodyParts.bg.name: [153, 153, 153],
-        BodyParts.Head.name: [128, 64, 0],
-        BodyParts.RUpArm.name: [128, 0, 128],
-        BodyParts.RForeArm.name: [128, 128, 255],
-        BodyParts.RHand.name: [255, 128, 128],
-        BodyParts.LUpArm.name: [0, 0, 255],
-        BodyParts.LForeArm.name: [128, 128, 0],
-        BodyParts.LHand.name: [0, 128, 0],
-        BodyParts.torso.name: [128, 0, 0],
-        BodyParts.RThigh.name: [128, 255, 128],
-        BodyParts.RLowLeg.name: [255, 255, 128],
-        BodyParts.RFoot.name: [255, 0, 255],
-        BodyParts.RThigh.name: [0, 128, 128],
-        BodyParts.RLowLeg.name: [0, 0, 128],
-        BodyParts.RFoot: [255, 128, 0]
-    }
+    BodyParts.bg.name: [153, 153, 153],
+    BodyParts.Head.name: [128, 64, 0],
+    BodyParts.RUpArm.name: [128, 0, 128],
+    BodyParts.RForeArm.name: [128, 128, 255],
+    BodyParts.RHand.name: [255, 128, 128],
+    BodyParts.LUpArm.name: [0, 0, 255],
+    BodyParts.LForeArm.name: [128, 128, 0],
+    BodyParts.LHand.name: [0, 128, 0],
+    BodyParts.torso.name: [128, 0, 0],
+    BodyParts.RThigh.name: [128, 255, 128],
+    BodyParts.RLowLeg.name: [255, 255, 128],
+    BodyParts.RFoot.name: [255, 0, 255],
+    BodyParts.LThigh.name: [0, 0, 128],
+    BodyParts.LLowLeg.name: [0, 128, 128],
+    BodyParts.LFoot.name: [255, 128, 0]
+}
 
 
 def mask2rgb(mask):
@@ -63,13 +84,13 @@ def mask2rgb(mask):
     return body_mask
 
 
-def set_gpus() -> tf.distribute.MirroredStrategy:
+def set_gpus(version: int):
     gpus = tf.config.experimental.list_physical_devices('GPU')
     if gpus:
         # Restrict TensorFlow to only use the first GPU
         try:
-            #tf.config.experimental.set_visible_devices(gpus[3], 'GPU')
-            tf.config.experimental.set_visible_devices(gpus[2], 'GPU')
+            # tf.config.experimental.set_visible_devices(gpus[3], 'GPU')
+            tf.config.experimental.set_visible_devices(gpus[version], 'GPU')
             logical_gpus = tf.config.experimental.list_logical_devices('GPU')
             Logger().log(f"{len(gpus)} Physical GPUs {len(logical_gpus)} Logical GPU", block=True)
 
@@ -112,24 +133,89 @@ class Logger(object):
         print(f"Complete execution duration: {self._Timer.total_time() / 60:#.2f} minutes")
 
 
+class LearningRateScheduler(tf.keras.callbacks.Callback):
+    """Learning rate scheduler which sets the learning rate according to schedule.
+
+    Arguments:
+        schedule: a function that takes an epoch index
+            (integer, indexed from 0) and current learning rate
+            as inputs and returns a new learning rate as output (float).
+    """
+
+    def __init__(self, schedule):
+        super(LearningRateScheduler, self).__init__()
+        self.schedule = schedule
+
+    def on_epoch_begin(self, epoch, logs=None):
+        if not hasattr(self.model.optimizer, 'lr'):
+            raise ValueError('Optimizer must have a "lr" attribute.')
+        # Get the current learning rate from model's optimizer.
+        lr = float(tf.keras.backend.get_value(self.model.optimizer.lr))
+        # Call schedule function to get the scheduled learning rate.
+        scheduled_lr = self.schedule(epoch, lr)
+        # Set the value back to the optimizer before this epoch starts
+        tf.keras.backend.set_value(self.model.optimizer.lr, scheduled_lr)
+        print('\nEpoch %05d: Learning rate is %6.4f.' % (epoch, scheduled_lr))
+
+
 class Metric(object):
-    def __init__(self, name: str, metric: tf.keras.metrics):
+    def __init__(self, name: str, value=None, max_size=None, smooth_weight=0.7, diff=0.02):
         self.name = name
-        self.metric = metric
+        self.value = value
+        self.metrics = []
+        self.smoothed = []
+        self.max_size = max_size
+        self.smooth_weight = smooth_weight
+        self.diff = diff
+
+    def append(self, value: float):
+        if self.max_size and (len(self.metrics) - 1) > self.max_size:
+            self.metrics.pop(0)
+
+        self.metrics.append(value)
+
+    def expo_smooth_avg(self):
+        last = self.metrics[0]
+        smoothed = []
+        for point in self.metrics:
+            smoothed_val = last * self.smooth_weight + (1 - self.smooth_weight) * point
+            smoothed.append(smoothed_val)
+            last = smoothed_val
+        self.smoothed = smoothed
+
+    def is_curve_steep(self):
+        self.expo_smooth_avg()
+        curve_start_avg = np.array(self.smoothed)[5:].mean()
+        curve_end_avg = np.array(self.smoothed)[-5:].mean()
+        curve_diff = np.abs(curve_start_avg - curve_end_avg)
+        print(f"curve_start_avg: [{curve_start_avg}] curve_end_avg: [{curve_end_avg}] diff: [{curve_diff}]")
+
+        return curve_diff > self.diff
+
+    def get_median(self, reset: bool = True):
+        if self.value:
+            median = self.value
+        else:
+            median = np.median(self.metrics)
+        if reset:
+            self.metrics = []
+
+        return median
 
 
 class DisplayCallback(object):
-    def __init__(self, model, sample_image, sample_mask, file_writer, epochs=5):
+    def __init__(self, model, sample_image, sample_mask, file_writer, epochs=5, gpu: int = 1):
         self.sample_image = sample_image
         self.sample_mask = sample_mask
         self.model = model
         self.epochs = epochs
         self.file_writer = file_writer
+        self.gpu = gpu
 
     def on_epoch_end(self, epoch: int, loss: float, metrics: List[Metric], show_img=False):
 
         self.model.save_weights(
-            f"{Path.cwd()}/ckpt/hrnet-{epoch}.ckpt")
+            f"{Path.cwd()}/ckpt{self.gpu}/hrnet-{epoch}.ckpt")
 
         predicted_mask = create_mask(self.model.predict(self.sample_image[tf.newaxis, ...])[0])
 
@@ -148,16 +234,17 @@ class DisplayCallback(object):
 
         if show_img:
             plt.show()
-        fig.savefig(f"{path}/img_train/{epoch}_train.png")
+        fig.savefig(f"{path}/img_train{self.gpu}/{epoch}_train.png")
+        plt.close('all')
 
         summary_images = [self.sample_image, mask2rgb(self.sample_mask), mask2rgb(predicted_mask)]
-        #summary_images = tf.cast(summary_images, tf.uint8)
+        # summary_images = tf.cast(summary_images, tf.uint8)
 
         tf.summary.image(f"{epoch}_training", summary_images, step=epoch, max_outputs=3)
         tf.summary.scalar('loss', loss, step=epoch)
 
         for i, item in enumerate(metrics):
-            tf.summary.scalar(item.name, item.metric, step=epoch)
+            tf.summary.scalar(item.name, item.get_median(), step=epoch)
 
     def on_train_end(self):
         # clear_output(wait=True)

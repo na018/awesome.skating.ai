@@ -16,15 +16,22 @@ Mask = NewType('Mask', np.ndarray)
 
 class DsGenerator(object):
 
-    def __init__(self):
-        self.video_path_rgbs: str = f"{Path.cwd()}/Data/3dhuman/processed/numpy/rgbbs/"
-        self.video_path_masks: str = f"{Path.cwd()}/Data/3dhuman/processed/numpy/masks/"
+    def __init__(self, resize_shape):
+        self.video_path_rgbbs: str = f"{Path.cwd()}/Data/3dhuman/processed/numpy/rgbb"
+        self.video_path_rgbs: str = f"{Path.cwd()}/Data/3dhuman/processed/numpy/rgb"
+        self.video_path_masks: str = f"{Path.cwd()}/Data/3dhuman/processed/numpy/masks"
         self.video_amount: int = len(next(os.walk(self.video_path_masks))[2])
         self.seen_samples = 0
+        if resize_shape:
+            self.resize_shape = resize_shape
 
-    def _get_random_video_mask_pair(self) -> Tuple[Video, VideoMask]:
-        random_n: int = int(random.randint(1, self.video_amount))
-        video: np.ndarray = np.load(f"{self.video_path_rgbs}/{random_n}.npz")['arr_0']
+    def _get_random_video_mask_pair(self, rgb=False) -> Tuple[Video, VideoMask]:
+        random_n: int = int(random.randint(0, self.video_amount - 1))
+        if rgb:
+            video: np.ndarray = np.load(f"{self.video_path_rgbs}/{random_n}.npz")['arr_0']
+        else:
+            video: np.ndarray = np.load(f"{self.video_path_rgbbs}/{random_n}.npz")['arr_0']
+
         mask: np.ndarray = np.load(f"{self.video_path_masks}/{random_n}.npz")['arr_0']
         mask_shape: np.ndarray = np.array(mask.shape)
         mask: np.ndarray = mask.reshape((*mask_shape, -1))
@@ -34,24 +41,28 @@ class DsGenerator(object):
     def get_image_amount(self) -> int:
         img_couner = 0
         for i in range(self.video_amount):
-            img_couner += np.load(f"{self.video_path_rgbs}/{i + 1}.npz")['arr_0'].shape[0]
+            img_couner += np.load(f"{self.video_path_rgbbs}/{i + 1}.npz")['arr_0'].shape[0]
 
         return img_couner
 
-    def get_next_pair(self) -> Tuple[Frame, Mask]:
+    def get_next_pair(self, rgb: bool = False) -> Tuple[Frame, Mask]:
         for i in itertools.count(1):
-            video, mask = self._get_random_video_mask_pair()
+            video, mask = self._get_random_video_mask_pair(rgb)
             random_frame_n: int = random.randint(0, video.shape[0] - 1)
 
             random_frame: Frame = tf.convert_to_tensor((video[random_frame_n] / 255), tf.float32)
             random_mask: Mask = tf.convert_to_tensor((mask[random_frame_n]), tf.int32)
 
+            if self.resize_shape:
+                random_frame = tf.image.resize(random_frame, size=self.resize_shape)
+                random_mask = tf.image.resize(random_mask, size=self.resize_shape)
+
             self.seen_samples += 1
 
             yield {'frame': random_frame, 'mask': random_mask}
 
-    def buid_iterator(self, img_shape=(480, 640, 3), batch_size: int = 10,
-                      prefetch_batch_buffer: int = 5) -> tf.data.Dataset:
+    def build_iterator(self, img_shape=(480, 640, 3), batch_size: int = 10,
+                       prefetch_batch_buffer: int = 5) -> tf.data.Dataset:
         dataset = tf.data.Dataset.from_generator(self.get_next_pair,
                                                  output_types={'frame': tf.float32, 'mask': tf.int32})
 

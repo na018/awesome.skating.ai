@@ -9,18 +9,63 @@
 > Since this research focuses on the detection of keypoints in figure ice skating, further considerations must be taken in mind: people in the background should not be detected, but only the person in focus for later analysis. The question there is, how to get the corespondent training data.
 
 ---
-## 2018-03-05
-```python
-batch_size = 3
-prefetch_batch_buffer = 1
-epoch_steps = 64
-epoch_log_n = 5
-epochs = 555
 
-# commit 0e94f118304b10505a6a004538392432a0194e22
 
-```    
-amount of training data: 43.944
+## 2018-04-01 [Status Report]: Improve Custom Training Loop, Evaluation, Loss Function
+#### Learned Mask:
+   ![Loss Calculation](skatingAI/evaluate/img/v7_1595_adam_1595_mask/0_predicted_mask_0_ouputs.png)  
+#### Learned Classes
+   ![Loss Calculation](skatingAI/evaluate/img/v7_1595_adam_1595_mask/155_output.png)  
+- experiment with different net structures
+    - try to train faster/ less memory
+        - strided-down/-up convolution architecture: result converges worse
+        - rescale in dataset generator: works far better (graphs will be included later)
+    - u-net with mobilenetv2 as base (not able to learn body parts)
+    - u-net as base for HRNet (converges worse than just HRNet and is slower)
+    - improve HRNet with filter amount and layer amount according to evaluation analysis of layers
+        - combine add and concat of layers
+        - always add the initial Input layer to concat/ add
+        - performs best
+    ![HRNet Model Architecture](skatingAI/hrnet_v8.png)  
+- create new custom loss function for Class Imbalance
+    - create weighed map according to a calculated graph with the relative body part distances
+- reduce classes to 9
+- add automatic dataset download and processing including saving in numpy compressed files
+
+- <img src="https://latex.codecogs.com/svg.latex?\Large&space;\theta=y_t(x)-y_p(x);" />
+- <img src="https://latex.codecogs.com/svg.latex?\Large&space;\delta = \theta * \Mu[argmax(y_t)];" />  
+- <img src="https://latex.codecogs.com/svg.latex?\Large&space;L = \sum_{i=0}^{n}\theta_i + \delta_i;" />
+
+    
+   ![Loss Calculation](skatingAI/docs/img/random/loss_calculation.png)  
+    - the new loss increased training efficiency a lot (exact results will be included later)
+    
+ - improve evaluation
+    - add functionality to test different net architectures 
+    - add simple save functionality
+    - show predicted images additionally to feature maps of layers
+    - code refactoring & improvement
+    - evaluation of best performing net HRNet with Adam optimizer after epoch 1595 [v7_1595_adam_1595_mask](skatingAI/evaluate/img/v7_1595_adam_1595_mask)
+- evaluate different optimizers, learning rates & learning rate adjustments
+#### Accuracy of different used optimizers
+> red: adam; learning rate: 0.01  
+> orange: nadam; learning rate: 0.01  
+>blue: sgd  learning rate: 0.1  
+>green: sgd with custom decay (increase on plateau; decrease with variable decay)  
+>light blue: sgd with custom decay of 0.001  
+>
+**Accuracy:**
+![accuracy_all](skatingAI/docs/img/v7/accuracy_all.svg)
+**Relation of correct body part pixel to all body part pixel**
+![accuracy_body_part_all](skatingAI/docs/img/v7/accuracy_body_part_all.svg)
+**Comparison of loss**
+![loss](skatingAI/docs/img/v7/loss_all.svg)
+**Learning Rates of SGD and SGD with custom loss**
+![lr](skatingAI/docs/img/v7/learning_rate.svg)
+**Comparison of SGD and custom decay/ learning rates**
+![loss](skatingAI/docs/img/v7/loss.svg)
+
+
 ## 2020-03-01 [Status Report]: Create Custom Training Loop (first step)
 
 - Solve problems with Tensorflow 2:

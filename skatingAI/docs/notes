@@ -1,0 +1,97 @@
+I 128,128,3
+---------------------------------------------------------1
+conv2d_sd 64,64, 32 (stride_down)
+bn
+relu
+
+convdw 64,64,32
+bn
+relu
+
+conv2d 64,64,16
+bn
+--------------------------------------------------------block-1
+conv2d 64,64,96
+bn
+relu
+
+convdw 32,32,96  (stride_down)
+bn
+relu
+
+conv2d 32,32,24
+bn (block_1_project_BN)
+--------------------------------------------------------block-2
+conv2d 32,32,144
+bn
+relu
+convdw 32,32,144
+relu
+
+conv2d 32,32,24
+bn (block_2_project_BN)
+
+add 32,32,24 (block_1_project_BN)(block_2_project_BN)
+--------------------------------------------------------block-3
+conv2d 32,32,144
+bn
+relu
+
+convdw 16,16,144  (stride_down)
+bn
+relu
+
+conv2d 16,16, 32 
+bn (block_3_project_BN)
+--------------------------------------------------------block-4
+conv2d 16,16,192
+bn
+relu
+
+convwd 16,16,192
+bn
+relu
+
+conv2d 16,16,32
+bn (block_4_project_BN)
+
+add 16,16,32 (block_3_project_BN)(block_4_project_BN)
+(block_4_add)
+--------------------------------------------------------block-5
+conv2d 16,16,192
+bn
+relu
+
+convwd 16,16,192
+bn
+relu
+
+conv2d 16,16,32
+bn (block_5_project_BN)
+
+add 16,16,32 (block_4_add)(block_5_project_BN)
+
+
+
+
+
+
+
+https://towardsdatascience.com/a-basic-introduction-to-separable-convolutions-b99ec3102728
+dwconvolution
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,34 @@
+\boolfalse {citerequest}\boolfalse {citetracker}\boolfalse {pagetracker}\boolfalse {backtracker}\relax 
+\babel@toc {english}{}
+\contentsline {chapter}{Declaration of Authorship}{iii}{section*.1}
+\contentsline {chapter}{Abstract}{vii}{section*.2}
+\contentsline {chapter}{Acknowledgements}{ix}{section*.3}
+\contentsline {chapter}{Acronyms}{xiii}{section*.5}
+\contentsline {chapter}{\numberline {1}Introduction}{1}{chapter.16}
+\contentsline {section}{\numberline {1.1}Motivation and Goals}{1}{section.17}
+\contentsline {section}{\numberline {1.2}Related Work}{1}{section.18}
+\contentsline {chapter}{\numberline {2}Methodology}{3}{chapter.19}
+\contentsline {section}{\numberline {2.1}Main Section 1}{3}{section.20}
+\contentsline {subsection}{\numberline {2.1.1}Subsection 1}{3}{subsection.21}
+\contentsline {subsection}{\numberline {2.1.2}Subsection 2}{3}{subsection.22}
+\contentsline {section}{\numberline {2.2}Main Section 2}{4}{section.23}
+\contentsline {chapter}{\numberline {3}Experiments}{5}{chapter.24}
+\contentsline {section}{\numberline {3.1}Different Net Architectures}{6}{section.26}
+\contentsline {subsection}{\numberline {3.1.1}Extract background }{6}{subsection.27}
+\contentsline {subsection}{\numberline {3.1.2}Recognition of body parts }{6}{subsection.28}
+\contentsline {subsubsection}{Stride-down, -up convolution before \gls {bl}}{6}{section*.29}
+\contentsline {subsubsection}{Experiment with concat and add layers}{6}{section*.30}
+\contentsline {subsubsection}{Experiment with concat and add layers}{6}{section*.31}
+\contentsline {subsubsection}{Best performing network HRNet v7}{6}{section*.32}
+\contentsline {section}{\numberline {3.2}Comparison of Optimizer Algorithms}{7}{section.34}
+\contentsline {paragraph}{Comparison of Adam, Nadam and SGD}{8}{figure.caption.38}
+\contentsline {paragraph}{Experiments with SGD}{9}{figure.caption.42}
+\contentsline {subsection}{\numberline {3.2.1}Subsection 2}{9}{subsection.43}
+\contentsline {section}{\numberline {3.3}Performance of our created custom loss function}{9}{section.44}
+\contentsline {subsubsection}{Sparse Categorical Cross Entropy}{10}{section*.45}
+\contentsline {subsubsection}{Mean Squared Error}{10}{section*.46}
+\contentsline {subsubsection}{Our custom loss function CILoss}{10}{section*.47}
+\contentsline {section}{\numberline {3.4}Main Section 2}{11}{section.49}
+\contentsline {chapter}{\numberline {4}Conclusion and future thoughts}{13}{chapter.50}
+\contentsline {chapter}{\numberline {A}Frequently Asked Questions}{15}{appendix.51}
+\contentsline {section}{\numberline {A.1}How do I change the colors of links?}{15}{section.52}
