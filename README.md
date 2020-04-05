@@ -29,20 +29,22 @@ Here we will follow a bottom-up approach as suggested by the OpenPose [Paper](ht
 > In this project, we will first concentrate on a single jump `the Axel` and later in our "Major Goals" try to extend the found knowledge.
 
 ## Goals ⛳️
-
-### Minor
-
+### Short-term Objective
+- Investigate existing keypoint recognition applications and their suitability for recognition in figure ice-skating ✔
+    - OpenPose
+    - VideoPose3D
+    - Wrnch
+- find/ generate training data set ✔
+    - [3DPEOPLE DATASET](https://cv.iri.upc-csic.es/)
+    - own data set via mocap/ blender 🛑🛑
+    
+- create network to recognize body parts [extending the thoughts of PAF from OpenPose] ✔
+- extend network to recognize key-points for later action recognition
+### Intermediate Target
 - map vector movements of body parts to specific curves
-- map combination of curves to specific actions _(first we will concentrate on the `Axel jump`)_
+- map combination of curves to specific actions
 
-### Major
-
+### Long-term Objective
 - App to support coaches
-- Service to support competition's _(fairness, substitutive jury)_
+- Service to support competition's _(fairness, release jury)_
 
-## Team
-
-- Nadin-Katrin Apel
-- Johannes Horn
-- Nandor Babina
-- Jonas Vogelsang
