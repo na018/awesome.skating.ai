@@ -36,13 +36,15 @@ parskip, % Uncomment to add space between paragraphs
 %nohyperref, % Uncomment to not load the hyperref package
 headsepline, % Uncomment to get a line under the header
 %chapterinoneline, % Uncomment to place the chapter title next to the number on one line
-%consistentlayout, % Uncomment to change the layout of the declaration, abstract and acknowledgements pages to match the default layout
+%consistentlayout, % Uncomment to change the layout of the declaration, abstract and acknowledgements pages to match
+the default layout
 ]{MastersDoctoralThesis} % The class file specifying the document structure
 
 \usepackage[utf8]{inputenc} % Required for inputting international characters
 \usepackage[T1]{fontenc} % Output font encoding for international characters
 \usepackage{color}
-\definecolor{refC}{rgb}{0,0,0.75}
+%\definecolor{refC}{rgb}{0.2,0.2,0.6}
+\definecolor{refC}{rgb}{0.1,0.1,0.55}
 \usepackage[colorlinks,linkcolor=refC]{hyperref}
 \usepackage[nomain,acronym,postdot, automake]{glossaries-extra}
 \makeglossaries
@@ -154,25 +156,30 @@ headsepline, % Uncomment to get a line under the header
 %----------------------------------------------------------------------------------------
 %	DECLARATION PAGE
 %----------------------------------------------------------------------------------------
-
+\hypersetup{citecolor=refC}
+\hypersetup{linkcolor=refC}
 \begin{declaration}
-\addchaptertocentry{\authorshipname} % Add the declaration to the table of contents
-\noindent I, \authorname, declare that this thesis titled, \enquote{\ttitle} and the work presented in it are my own. I confirm that:
+	\addchaptertocentry{\authorshipname} % Add the declaration to the table of contents
+	\noindent I, \authorname, declare that this thesis titled, \enquote{\ttitle} and the work presented in it are my
+	own. I confirm that:
 
-\begin{itemize}
-\item This work was done wholly or mainly while in candidature for a research degree at this University.
-\item Where any part of this thesis has previously been submitted for a degree or any other qualification at this University or any other institution, this has been clearly stated.
-\item Where I have consulted the published work of others, this is always clearly attributed.
-\item Where I have quoted from the work of others, the source is always given. With the exception of such quotations, this thesis is entirely my own work.
-\item I have acknowledged all main sources of help.
-\item Where the thesis is based on work done by myself jointly with others, I have made clear exactly what was done by others and what I have contributed myself.\\
-\end{itemize}
+	\begin{itemize}
+		\item This work was done wholly or mainly while in candidature for a research degree at this University.
+		\item Where any part of this thesis has previously been submitted for a degree or any other qualification at
+		\item this University or any other institution, this has been clearly stated.
+		\item Where I have consulted the published work of others, this is always clearly attributed.
+		\item Where I have quoted from the work of others, the source is always given. With the exception of such
+		\item quotations, this thesis is entirely my own work.
+		\item I have acknowledged all main sources of help.
+		\item Where the thesis is based on work done by myself jointly with others, I have made clear exactly what was
+		\item done by others and what I have contributed myself.\\
+	\end{itemize}
 
-\noindent Signed:\\
-\rule[0.5em]{25em}{0.5pt} % This prints a line for the signature
+	\noindent Signed:\\
+	\rule[0.5em]{25em}{0.5pt} % This prints a line for the signature
 
-\noindent Date:\\
-\rule[0.5em]{25em}{0.5pt} % This prints a line to write the date
+	\noindent Date:\\
+	\rule[0.5em]{25em}{0.5pt} % This prints a line to write the date
 \end{declaration}
 
 \cleardoublepage
@@ -211,7 +218,7 @@ The acknowledgments and the people to thank go here, don't forget to include you
 %----------------------------------------------------------------------------------------
 
 \begingroup
-\hypersetup{linkcolor=black}
+\hypersetup{linkcolor=refC}
 \tableofcontents % Prints the main table of contents
 
 \printglossaries

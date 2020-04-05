@@ -33,7 +33,7 @@
 - add automatic dataset download and processing including saving in numpy compressed files
 
 - <img src="https://latex.codecogs.com/svg.latex?\Large&space;\theta=y_t(x)-y_p(x);" />
-- <img src="https://latex.codecogs.com/svg.latex?\Large&space;\delta = \theta * \Mu[argmax(y_t)];" />  
+- <img src="https://latex.codecogs.com/svg.latex?\Large&space;\delta = \theta * \mu[argmax(y_t)];" />  
 - <img src="https://latex.codecogs.com/svg.latex?\Large&space;L = \sum_{i=0}^{n}\theta_i + \delta_i;" />
 
     

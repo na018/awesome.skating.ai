@@ -13,25 +13,27 @@ from skatingAI.utils.utils import DisplayCallback, set_gpus, Metric, Logger
 
 
 class MainLoop(object):
-    """this is the class handling the main loop
+    def __init__(self, GPU: int, NAME: str, W_COUNTER: int, optimizer: str, LR_START: float, OPTIMIZER_DECAY: float,
+                 BG: bool,
+                 BATCH_SIZE=3,
+                 PREFETCH_BATCH_BUFFER=1, EPOCH_STEPS=64, EPOCHS=5555, EPOCH_LOG_N=5, EPOCH_SGD_PLATEAUCHECK=50):
+        """this is the class handling the main loop
 
-     Args:
+        Args:
             GPU:
             NAME:
             W_COUNTER:
+            optimizer:
             LR_START:
             OPTIMIZER_DECAY:
+            BG:
             BATCH_SIZE:
             PREFETCH_BATCH_BUFFER:
             EPOCH_STEPS:
             EPOCHS:
             EPOCH_LOG_N:
-     """
-
-    def __init__(self, GPU: int, NAME: str, W_COUNTER: int, optimizer: str, LR_START: float, OPTIMIZER_DECAY: float,
-                 BG: bool,
-                 BATCH_SIZE=3,
-                 PREFETCH_BATCH_BUFFER=1, EPOCH_STEPS=64, EPOCHS=5555, EPOCH_LOG_N=5, EPOCH_SGD_PLATEAUCHECK=50):
+            EPOCH_SGD_PLATEAUCHECK:
+        """
         self.BATCHSIZE: int = BATCH_SIZE
         self.PREFETCH_BATCH_BUFFER: int = PREFETCH_BATCH_BUFFER
         self.EPOCH_STEPS: int = EPOCH_STEPS
@@ -61,9 +63,9 @@ class MainLoop(object):
         self.loss_fn = CILoss(self.N_CLASS)
 
     def _generate_dataset(self, BG: bool):
-        self.generator = DsGenerator(resize_shape=(240, 320))
+        self.generator = DsGenerator(resize_shape=(240, 320), rgb=BG)
 
-        sample_pair = next(self.generator.get_next_pair(BG))
+        sample_pair = next(self.generator.get_next_pair())
 
         self.IMG_SHAPE = sample_pair['frame'].shape
         self.N_CLASS = np.max(sample_pair['mask']).astype(int) + 1
@@ -206,10 +208,11 @@ class MainLoop(object):
 
 if __name__ == "__main__":
     ArgsNamespace = namedtuple('ArgNamespace',
-                               ['gpu', 'name', 'wcounter', 'lr', 'decay', 'opt', 'bs', 'steps','epochs', 'log_n', 'bg'])
+                               ['gpu', 'name', 'wcounter', 'lr', 'decay', 'opt', 'bs', 'steps', 'epochs', 'log_n',
+                                'bg'])
 
     parser = argparse.ArgumentParser(
-        description='Train nadins awesome network :)')
+        description='Train skatingAIs awesome network :)')
     parser.add_argument('--gpu', default=1, help='Which gpu shoud I use?', type=int)
     parser.add_argument('--name', default="hrnet_v7", help='Name for training')
     parser.add_argument('--wcounter', default=-1, help='Weight counter', type=int)
@@ -224,4 +227,4 @@ if __name__ == "__main__":
     args: ArgsNamespace = parser.parse_args()
 
     MainLoop(args.gpu, args.name, args.wcounter, args.opt, args.lr, args.decay, args.bg, BATCH_SIZE=args.bs,
-             EPOCH_STEPS=args.steps,EPOCHS=args.epochs, EPOCH_LOG_N=args.log_n).start_train_loop()
+             EPOCH_STEPS=args.steps, EPOCHS=args.epochs, EPOCH_LOG_N=args.log_n).start_train_loop()
