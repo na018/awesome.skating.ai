@@ -10,51 +10,38 @@ from matplotlib import pyplot as plt
 from skatingAI.nets.hrnet import v0, v1, v2, v3, v4, v5, v6, v7
 from skatingAI.nets.mobilenet import v0 as mobilenetv0
 from skatingAI.utils.DsGenerator import Frame, Mask, DsGenerator
-from skatingAI.utils.utils import create_mask
+from skatingAI.utils.utils import create_mask, create_dir
+
+VERSIONS = {
+    'v0': v0.HRNet,
+    'v1': v1.HRNet,
+    'v2': v2.HRNet,
+    'v3': v3.HRNet,
+    'v4': v4.HRNet,
+    'v5': v5.HRNet,
+    'v6': v6.HRNet,
+    'v7': v7.HRNet,
+    'u0': mobilenetv0.MobileNetV2,
+}
 
 
-class Layer(object):
-    def __init__(self, name='input0'):
-        self.name = name
-
-
-class Evaluater():
+class Evaluator():
     def __init__(self, weight_counter=5, nn_version='v2', name='', subfolder='', c=''):
         self.dir_img_eval = f"{os.getcwd()}/evaluate/img/{nn_version}_{weight_counter}_{name}"
         self.weight_path = f"{os.getcwd()}/ckpt{c}/{subfolder}hrnet-{weight_counter}.ckpt"
         self.frame, self.mask = self._get_frame()
 
-        versions = {
-            'v0': v0.HRNet,
-            'v1': v1.HRNet,
-            'v2': v2.HRNet,
-            'v3': v3.HRNet,
-            'v4': v4.HRNet,
-            'v5': v5.HRNet,
-            'v6': v6.HRNet,
-            'v7': v7.HRNet,
-            'u0': mobilenetv0.MobileNetV2,
-        }
-        self.NN = versions[nn_version]
+        self.NN = VERSIONS[nn_version]
 
-        if not os.path.exists(self.dir_img_eval):
-            os.makedirs(self.dir_img_eval)
-        else:
-            raise AssertionError(f"{self.dir_img_eval} already exists. Please add a unique name.")
+        create_dir(self.dir_img_eval, 'Please add a unique name.')
 
     def _get_frame(self, video_n=1, frame_n=1) -> Tuple[Frame, Mask]:
-        video_path_rgbs: str = f"{os.getcwd()}/Data/3dhuman/processed/numpy/rgbb"
-        mask_path: str = f"{os.getcwd()}/Data/3dhuman/processed/numpy/masks"
-        frame: np.ndarray = np.load(f"{video_path_rgbs}/{video_n}.npz")['arr_0'][frame_n]
-        mask: np.ndarray = np.load(f"{mask_path}/{video_n}.npz")['arr_0'][frame_n]
-
         self.generator = DsGenerator(resize_shape=(240, 320))
-
         sample_pair = next(self.generator.get_next_pair())
 
         return sample_pair['frame'], sample_pair['mask']
 
-    def draw_prediction(self, layer, predicted_mask, layer_n: int):
+    def draw_prediction(self, layer: tf.keras.layers, predicted_mask: Mask, layer_n: int):
         fig = plt.figure(figsize=(7, 5))
         fig.suptitle(f"predicted_{layer.name}")
         title = ['Input', f'Predicted: {layer.name}']
@@ -68,7 +55,7 @@ class Evaluater():
         fig.canvas.set_window_title(layer.name)
         plt.savefig(f"{self.dir_img_eval}/{layer_n}_predicted_mask_{layer.name}")
 
-    def draw_feature_maps(self, layer, feature_maps, layer_n):
+    def draw_feature_maps(self, layer: tf.keras.layers, feature_maps: Mask, layer_n: int):
         square = int(math.sqrt(feature_maps.shape[-1]))
 
         if feature_maps.shape[-1] % square != 0:
@@ -81,8 +68,8 @@ class Evaluater():
             ax.set_xticks([])
             ax.set_yticks([])
             ax.set_title(f"[{i}]", fontsize='small', alpha=0.6, color='blue')
-            # plot filter channel in grayscale
 
+            # plot filter channel in grayscale
             if i <= feature_maps.shape[-1]:
                 plt.imshow(feature_maps[:, :, i - 1], cmap='inferno')
             else:
@@ -123,8 +110,6 @@ class Evaluater():
                 self.draw_feature_maps(layer, feature_maps, i)
 
 
-
-
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(
         description='Evaluate featuremaps of trained model')
@@ -134,4 +119,4 @@ if __name__ == "__main__":
     parser.add_argument('--name', default='adam_1595_mask2', help='unique name to save images in')
     args = parser.parse_args()
 
-    Evaluater(weight_counter=args.wcounter, nn_version=args.v, name=args.name, c=args.c).show_featuremaps()
+    Evaluator(weight_counter=args.wcounter, nn_version=args.v, name=args.name, c=args.c).show_featuremaps()

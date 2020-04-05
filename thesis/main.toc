@@ -17,18 +17,19 @@
 \contentsline {subsection}{\numberline {3.1.1}Extract background }{6}{subsection.27}
 \contentsline {subsection}{\numberline {3.1.2}Recognition of body parts }{6}{subsection.28}
 \contentsline {subsubsection}{Stride-down, -up convolution before \gls {bl}}{6}{section*.29}
-\contentsline {subsubsection}{Experiment with concat and add layers}{6}{section*.30}
-\contentsline {subsubsection}{Experiment with concat and add layers}{6}{section*.31}
-\contentsline {subsubsection}{Best performing network HRNet v7}{6}{section*.32}
-\contentsline {section}{\numberline {3.2}Comparison of Optimizer Algorithms}{7}{section.34}
-\contentsline {paragraph}{Comparison of Adam, Nadam and SGD}{8}{figure.caption.38}
-\contentsline {paragraph}{Experiments with SGD}{9}{figure.caption.42}
-\contentsline {subsection}{\numberline {3.2.1}Subsection 2}{9}{subsection.43}
-\contentsline {section}{\numberline {3.3}Performance of our created custom loss function}{9}{section.44}
-\contentsline {subsubsection}{Sparse Categorical Cross Entropy}{10}{section*.45}
-\contentsline {subsubsection}{Mean Squared Error}{10}{section*.46}
-\contentsline {subsubsection}{Our custom loss function CILoss}{10}{section*.47}
-\contentsline {section}{\numberline {3.4}Main Section 2}{11}{section.49}
-\contentsline {chapter}{\numberline {4}Conclusion and future thoughts}{13}{chapter.50}
-\contentsline {chapter}{\numberline {A}Frequently Asked Questions}{15}{appendix.51}
-\contentsline {section}{\numberline {A.1}How do I change the colors of links?}{15}{section.52}
+\contentsline {subsubsection}{MobileNet extended with UNet}{6}{section*.30}
+\contentsline {subsubsection}{MobileNet extended with HRNet}{6}{section*.31}
+\contentsline {subsubsection}{Experiment with concat and add layers}{6}{section*.32}
+\contentsline {subsubsection}{Best performing network HRNet v7}{6}{section*.33}
+\contentsline {section}{\numberline {3.2}Comparison of Optimizer Algorithms}{7}{section.35}
+\contentsline {paragraph}{Comparison of Adam, Nadam and SGD}{8}{figure.caption.39}
+\contentsline {paragraph}{Experiments with SGD}{9}{figure.caption.43}
+\contentsline {subsection}{\numberline {3.2.1}Subsection 2}{9}{subsection.44}
+\contentsline {section}{\numberline {3.3}Performance of loss functions}{9}{section.45}
+\contentsline {subsubsection}{Sparse Categorical Cross Entropy}{10}{section*.46}
+\contentsline {subsubsection}{Mean Squared Error}{10}{section*.47}
+\contentsline {subsubsection}{Our custom loss function CILoss}{10}{section*.48}
+\contentsline {section}{\numberline {3.4}Main Section 2}{11}{section.50}
+\contentsline {chapter}{\numberline {4}Conclusion and future thoughts}{13}{chapter.51}
+\contentsline {chapter}{\numberline {A}Frequently Asked Questions}{15}{appendix.52}
+\contentsline {section}{\numberline {A.1}How do I change the colors of links?}{15}{section.53}

@@ -1,3 +1,4 @@
+import os
 import time
 from enum import Enum
 from pathlib import Path
@@ -79,7 +80,7 @@ def mask2rgb(mask):
 
     for i, key in enumerate(segmentation_class_colors.values()):
         if i > 0:
-            body_mask[(img == i).all(axis=2)] = key
+            body_mask[(img == i).all(axis=-1)] = key
 
     return body_mask
 
@@ -253,3 +254,10 @@ class DisplayCallback(object):
         print(f"\n\n{'=' * 100}\nSuccessfully trained {self.epochs} epochs.\n" +
               f"For evaluation (loss/ accuracy) please run \n${' ' * 5}`tensorboard --logdir {Path.cwd()}/logs`\n" +
               f"and open your webbrowser at `http://localhost:6006`\n")
+
+
+def create_dir(path: str, msg: str = ''):
+    if not os.path.exists(path):
+        os.makedirs(path)
+    else:
+        raise AssertionError(f"{path} already exists. {msg}")
