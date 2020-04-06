@@ -5,3 +5,7 @@ The DataAdmin will take care of everything:
 - downloading data
 - preprocessing data
 - saving as compressed numpy files
+
+
+## skeleton
+u,v is u,x for joints
