@@ -36,6 +36,7 @@ Here we will follow a bottom-up approach as suggested by the OpenPose [Paper](ht
     - Wrnch
 - find/ generate training data set ✔
     - [3DPEOPLE DATASET](https://cv.iri.upc-csic.es/)
+        - skeleton [u,v] is x,y joints
     - own data set via mocap/ blender 🛑🛑
     
 - create network to recognize body parts [extending the thoughts of PAF from OpenPose] ✔

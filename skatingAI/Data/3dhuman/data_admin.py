@@ -13,7 +13,7 @@ from skatingAI.utils.utils import BodyParts, segmentation_class_colors, body_par
 class DataAdmin(object):
     def __init__(self, chunk_amount: int = 1):
         self.chunk_amount = chunk_amount
-        self.path_processed_dir = f"{os.getcwd()}/Data/3dhuman/processed"
+        self.path_processed_dir = f"{os.getcwd()}/processed"
         self.dataset_url = "https://cv.iri.upc-csic.es/Dataset/"
         self.labels = ["rgb", "segmentation_clothes", "segmentation_body", "skeleton"]
         self.file_count = 0
@@ -33,18 +33,20 @@ class DataAdmin(object):
                 os.makedirs(base + folder)
 
     def _delete_dirs(self):
-
+        print("\n...start to delete folders")
         subfolders = [f.path for f in os.scandir(self.path_processed_dir) if f.is_dir()]
         files = [f.path for f in os.scandir(self.path_processed_dir) if f.is_file()]
+
+        for file in files:
+            os.remove(file)
+            print(f"successfully deleted [{file}]")
 
         for folder in subfolders:
             if "numpy" not in folder:
                 shutil.rmtree(folder)
                 print(f"successfully deleted [{folder}]")
 
-        for file in files:
-            os.remove(file)
-            print(f"successfully deleted [{file}]")
+
 
     def process_data(self):
         """ just process data, if download and extraction was already successful """
@@ -52,7 +54,7 @@ class DataAdmin(object):
 
         for i in range(1, max_chunks, 5):
             self._scandir4img()
-            # self._delete_dirs()
+            #self._delete_dirs()
             print("all data was successfully downloaded")
 
     def download_and_process_data(self):
@@ -64,8 +66,9 @@ class DataAdmin(object):
                     # download data
                     self._thread_download_data(label, chunk, i)
                     # process data
-            self._scandir4img()
-            self._delete_dirs()
+            success = self._scandir4img()
+            if success:
+                self._delete_dirs()
 
         print("all data was successfully downloaded")
 
@@ -83,12 +86,14 @@ class DataAdmin(object):
             print(f"downloaded: {i}")
 
         # extract chunk
-        os.system(f"tar -xzf {save_url} -C {self.path_processed_dir}")
+        os.system(f"tar -xzkf {save_url} -C {self.path_processed_dir}")
 
-    def _scandir4img(self, dir: str = f"{os.getcwd()}/Data/3dhuman/processed/rgb",
-                     arr: List[List[str]] = []):
+    def _scandir4img(self, dir: str = f"{os.getcwd()}/processed/rgb"):
 
         chunks_women_men = [f.path for f in os.scandir(dir) if f.is_dir()]
+        if len(chunks_women_men) < 10:
+            print(f"There are only {len(chunks_women_men)} folders. Something must be wrong.")
+            return False
         # paths_videos = []
         for dir in list(chunks_women_men):
             paths_videos = [f.path for f in os.scandir(dir) if f.is_dir()]
@@ -108,13 +113,13 @@ class DataAdmin(object):
                     else:
                         print(f"{cam_sub_dir.split('/')[-3:]} does not exist for all components.")
 
-        return arr
+        return True
 
     def _read_imgs2numpy(self, rgb_dir, segmentation_body_dir, segmentation_clothes_dir, skeleton_dir):
         # check weather directories exist for masks, segmentation_body, segmentation_clothes, skeleton
         all_imgs = {'masks': [], 'rgb': [], 'rgbb': [], 'skeletons': []}
         file_names_rgb = [f.path for f in os.scandir(rgb_dir) if f.is_file()]
-        video_name = segmentation_body_dir.split('/')[-2]
+        video_name = '__'.join(segmentation_body_dir.split('/')[-3:-1])
         camera_name = segmentation_body_dir.split('/')[-1]
 
         for file_name_rgb in sorted(file_names_rgb):
@@ -169,4 +174,4 @@ class DataAdmin(object):
         return img
 
 
-DataAdmin(1).process_data()
+DataAdmin(chunk_amount=8).download_and_process_data()
