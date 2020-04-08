@@ -2,7 +2,7 @@ import os
 import time
 from enum import Enum
 from pathlib import Path
-from typing import List
+from typing import List, Tuple
 
 import numpy as np
 import tensorflow as tf
@@ -84,6 +84,15 @@ def mask2rgb(mask):
 
     return body_mask
 
+
+def kps_upscale_reshape(shape: Tuple[int, int], kps: np.array):
+    kps = np.reshape(kps, (kps.size // 2, -1)).copy()
+    kps[:, 0] *= shape[0]
+    kps[:, 1] *= shape[1]
+    kps[:, 0] = np.clip(kps[:, 0], 0, shape[1])
+    kps[:, 1] = np.clip(kps[:, 1], 0, shape[0])
+
+    return kps
 
 def set_gpus(version: int):
     gpus = tf.config.experimental.list_physical_devices('GPU')
@@ -205,9 +214,11 @@ class Metric(object):
 
 
 class DisplayCallback(object):
-    def __init__(self, model, sample_image, sample_mask, file_writer, epochs=5, gpu: int = 1):
+    def __init__(self, base_model, model, sample_image, sample_mask, sample_kp, file_writer, epochs=5, gpu: int = 1):
+        self.base_model = base_model
         self.sample_image = sample_image
         self.sample_mask = sample_mask
+        self.sample_kp = kps_upscale_reshape(sample_mask.shape, sample_kp.numpy())
         self.model = model
         self.epochs = epochs
         self.file_writer = file_writer
@@ -218,20 +229,30 @@ class DisplayCallback(object):
         self.model.save_weights(
             f"{Path.cwd()}/ckpt{self.gpu}/hrnet-{epoch}.ckpt")
 
-        predicted_mask = create_mask(self.model.predict(self.sample_image[tf.newaxis, ...])[0])
+        predicted_mask = create_mask(self.base_model.predict(self.sample_image[tf.newaxis, ...])[0])
+        predicted_kp = self.model.predict(self.sample_image[tf.newaxis, ...])[0]
+        predicted_kp = kps_upscale_reshape(predicted_mask.shape, predicted_kp)
 
         K.clear_session()
+
         fig = plt.figure(figsize=(15, 15))
-        title = ['Input Image', 'True Mask', 'Predicted Mask']
-        display_imgs = [tf.keras.preprocessing.image.array_to_img(self.sample_image),
-                        tf.keras.preprocessing.image.array_to_img(self.sample_mask),
-                        tf.keras.preprocessing.image.array_to_img(predicted_mask)]
+        true_circles = []
+        for kp in self.sample_kp:
+            true_circles.append(plt.Circle(kp, 3, alpha=0.9, fill=False, linewidth=2., edgecolor='white'))
+        predicted_circles = []
+        for kp in predicted_kp:
+            predicted_circles.append(plt.Circle(kp, 3, alpha=0.9, fill=False, linewidth=2., edgecolor='white'))
+        title = ['Input Image', 'True Mask', 'Predicted Mask & Keypoints']
+        display_imgs = [[tf.keras.preprocessing.image.array_to_img(self.sample_image), []],
+                        [tf.keras.preprocessing.image.array_to_img(self.sample_mask), true_circles],
+                        [tf.keras.preprocessing.image.array_to_img(predicted_mask), predicted_circles]]
 
         for i, img in enumerate(display_imgs):
-            plt.subplot(1, 3, i + 1)
-            plt.title(title[i])
-            plt.draw()
-            plt.imshow(display_imgs[i])
+            ax = fig.add_subplot(1, 3, i + 1)
+            for circle in img[1]:
+                ax.add_patch(circle)
+            plt.imshow(img[0])
+            ax.set_title(title[i], fontsize='small', alpha=0.6, color='blue')
 
         if show_img:
             plt.show()
