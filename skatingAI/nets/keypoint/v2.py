@@ -16,10 +16,11 @@ class KPDetector(object):
         self.model = self._build_model()
 
     def _build_model(self):
-        pool = layers.MaxPool3D(pool_size=[2, 2, 9])(self.hrnet_input)
+        mask = tf.reduce_max(self.hrnet_input, axis=-1, keepdims=True)
+        pool = layers.MaxPool2D(pool_size=[2, 2])(mask)
         pool = layers.BatchNormalization(momentum=BN_MOMENTUM)(pool)
         pool = layers.AlphaDropout(0.5)(pool)
-        pool = layers.MaxPool2D(pool_size=[2, 2])(self.pool)
+        pool = layers.MaxPool2D(pool_size=[2, 2])(pool)
         pool = layers.BatchNormalization(momentum=BN_MOMENTUM)(pool)
         pool = layers.AlphaDropout(0.2)(pool)
         flatten = layers.Flatten()(pool)
