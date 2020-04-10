@@ -139,8 +139,6 @@ class MainLoop(object):
         self.metric_loss.append(self.loss_value)
 
     def start_train_loop(self):
-
-        train_acc_metric = tf.keras.metrics.Accuracy()
         file_writer, progress_tracker, log_v, log2 = self._track_logs()
         self.metric_loss = Metric('loss')
 
@@ -168,7 +166,6 @@ class MainLoop(object):
                 self.optimizer.apply_gradients(zip(grads, self.model.trainable_weights))
                 log_v.log(message=f"Optimized gradients")
 
-                train_acc_metric(batch['kps'], logits)
                 self.metric_loss.append(self.loss_value)
                 self.step_custom_lr += 1
 
@@ -178,14 +175,8 @@ class MainLoop(object):
 
                 progress_tracker.on_epoch_end(epoch,
                                               loss=self.metric_loss.get_median(),
-                                              metrics=[
-
-                                                  Metric(value=train_acc_metric.result(), name='accuracy')
-
-                                              ],
                                               show_img=False)
                 log2.log(message=f"Seen images: {self.generator.seen_samples}", block=True)
-                train_acc_metric.reset_states()
 
         progress_tracker.on_train_end()
         log_v.log_end()

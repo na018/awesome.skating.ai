@@ -94,6 +94,7 @@ def kps_upscale_reshape(shape: Tuple[int, int], kps: np.array):
 
     return kps
 
+
 def set_gpus(version: int):
     gpus = tf.config.experimental.list_physical_devices('GPU')
     if gpus:
@@ -213,6 +214,14 @@ class Metric(object):
         return median
 
 
+def fig2rgb_array(fig, expand=True):
+    fig.canvas.draw()
+    buf = fig.canvas.tostring_rgb()
+    n_cols, n_rows = fig.canvas.get_width_height()
+    shape = (n_rows, n_cols, 3) if not expand else (1, n_rows, n_cols, 3)
+    return np.fromstring(buf, dtype=np.uint8).reshape(shape)  #
+
+
 class DisplayCallback(object):
     def __init__(self, base_model, model, sample_image, sample_mask, sample_kp, file_writer, epochs=5, gpu: int = 1):
         self.base_model = base_model
@@ -224,7 +233,7 @@ class DisplayCallback(object):
         self.file_writer = file_writer
         self.gpu = gpu
 
-    def on_epoch_end(self, epoch: int, loss: float, metrics: List[Metric], show_img=False):
+    def on_epoch_end(self, epoch: int, loss: float, metrics: List[Metric] = [], show_img=False):
 
         self.model.save_weights(
             f"{Path.cwd()}/ckpt{self.gpu}/hrnet-{epoch}.ckpt")
@@ -235,7 +244,7 @@ class DisplayCallback(object):
 
         K.clear_session()
 
-        fig = plt.figure(figsize=(15, 15))
+        fig = plt.figure(figsize=(15, 4))
         true_circles = []
         for kp in self.sample_kp:
             true_circles.append(plt.Circle(kp, 3, alpha=0.9, fill=False, linewidth=2., edgecolor='white'))
@@ -259,10 +268,9 @@ class DisplayCallback(object):
         fig.savefig(f"{path}/img_train{self.gpu}/{epoch}_train.png")
         plt.close('all')
 
-        summary_images = [self.sample_image, mask2rgb(self.sample_mask), mask2rgb(predicted_mask)]
         # summary_images = tf.cast(summary_images, tf.uint8)
 
-        tf.summary.image(f"{epoch}_training", summary_images, step=epoch, max_outputs=3)
+        tf.summary.image(f"{epoch}_training", fig2rgb_array(fig), step=epoch, max_outputs=3)
         tf.summary.scalar('loss', loss, step=epoch)
 
         for i, item in enumerate(metrics):
