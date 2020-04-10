@@ -7,7 +7,7 @@ import numpy as np
 import tensorflow as tf
 
 from skatingAI.nets.hrnet.v7 import HRNet
-from skatingAI.nets.keypoint.v1 import KPDetector
+from skatingAI.nets.keypoint.v2 import KPDetector
 from skatingAI.utils.DsGenerator import DsGenerator, DsPair
 from skatingAI.utils.utils import DisplayCallback, set_gpus, Metric, Logger
 
@@ -200,15 +200,16 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(
         description='Train skatingAIs awesome network :)')
     parser.add_argument('--gpu', default=1, help='Which gpu shoud I use?', type=int)
-    parser.add_argument('--name', default="kpsdetector_hrnet_v7", help='Name for training')
+    parser.add_argument('--name', default="kpsdetector_relu_pool3d_hrnet_v7", help='Name for training')
     parser.add_argument('--wcounter', default=-1, help='Weight counter', type=int)
     parser.add_argument('--wcounter_base', default=4400, help='Weight counter for base net', type=int)
-    parser.add_argument('--lr', default=0.001, help='Initial learning rate', type=float)
+    parser.add_argument('--lr', default=0.005, help='Initial learning rate', type=float)
     parser.add_argument('--decay', default=0.01, help='learning rate decay', type=float)
+    parser.add_argument('--opt', default="adam", help='Optimizer [nadam, adam, sgd, sgd_clr]')
     parser.add_argument('--opt', default="adam", help='Optimizer [nadam, adam, sgd, sgd_clr]')
     parser.add_argument('--bs', default=3, help='Batch size', type=int)
     parser.add_argument('--steps', default=64, help='Epoch steps', type=int)
-    parser.add_argument('--epochs', default=1556, help='Epochs', type=int)
+    parser.add_argument('--epochs', default=5556, help='Epochs', type=int)
     parser.add_argument('--log_n', default=5, help='Epoch steps', type=int)
     parser.add_argument('--bg', default=False, help='Use training images with background', type=bool)
     args: ArgsNamespace = parser.parse_args()
