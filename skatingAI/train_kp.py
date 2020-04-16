@@ -1,30 +1,50 @@
 import argparse
+import time
 from collections import namedtuple
 from datetime import datetime
 from pathlib import Path
 
 import numpy as np
 import tensorflow as tf
+from tensorflow_core.python.ops.summary_ops_v2 import ResourceSummaryWriter
 
-from skatingAI.nets.hrnet.v7 import HRNet
-from skatingAI.nets.keypoint.v2 import KPDetector
+from skatingAI.nets.hrnet.HRNetBase import HRNetBase
+from skatingAI.nets.keypoint import KPDetectorBase
 from skatingAI.utils.DsGenerator import DsGenerator, DsPair
+from skatingAI.utils.hyper_paramater import HyperParameterParams
+from skatingAI.utils.losses import CILoss
+from skatingAI.utils.train_program_menu import TrainProgram
 from skatingAI.utils.utils import DisplayCallback, set_gpus, Metric, Logger
 
 
 class MainLoop(object):
-    def __init__(self, GPU: int, NAME: str, W_COUNTER: int, W_COUNTER_BASE: int, optimizer: str, LR_START: float,
-                 OPTIMIZER_DECAY: float,
-                 BG: bool,
+    def __init__(self, GPU: int, NAME: str,
+                 MODEL_HP: type(HRNetBase), MODEL_KPS: type(KPDetectorBase),
+                 OPTIMIZER_NAME_HP: str, LR_START_HP: float,
+                 OPTIMIZER_NAME_KPS: str, LR_START_KPS: float,
+                 LOSS_FCT_HP: tf.keras.losses, LOSS_FCT_KPS: tf.keras.losses,
+                 PARAMS_HP: HyperParameterParams, PARAMS_KPS: HyperParameterParams,
+                 DESCRIPTION_HP: str, DESCRIPTION_KPS: str,
+                 TRAIN_HP: bool = False, TRAIN_KPS: bool = False,
+                 W_COUNTER_HP: int = -1, W_COUNTER_KPS: int = -1, EPOCH_START=-1,
+                 BG: bool = False,
                  BATCH_SIZE=3,
-                 PREFETCH_BATCH_BUFFER=1, EPOCH_STEPS=64, EPOCHS=5555, EPOCH_LOG_N=5, EPOCH_SGD_PLATEAUCHECK=50):
+                 PREFETCH_BATCH_BUFFER=1, EPOCH_STEPS=64, EPOCHS=5555,
+                 EPOCH_LOG_N=5):
         """this is the class handling the main loop
 
         Args:
+            MODEL_HP:
+            MODEL_KPS:
+            LOSS_FCT:
+            TRAIN_HP:
+            TRAIN_KPS:
+            W_COUNTER_KPS:
+            PARAMS:
             GPU:
             NAME:
-            W_COUNTER:
-            optimizer:
+            W_COUNTER_HP:
+            optimizer_kps:
             LR_START:
             OPTIMIZER_DECAY:
             BG:
@@ -33,24 +53,32 @@ class MainLoop(object):
             EPOCH_STEPS:
             EPOCHS:
             EPOCH_LOG_N:
-            EPOCH_SGD_PLATEAUCHECK:
+            EPOCH_SGD_PLATEAU_CHECK:
         """
-        self.BATCHSIZE: int = BATCH_SIZE
+        self.DESCRIPTION_KPS = DESCRIPTION_KPS
+        self.DESCRIPTION_HP = DESCRIPTION_HP
+        self.PARAMS_KPS = PARAMS_KPS
+        self.PARAMS_HP = PARAMS_HP
+        self.TRAIN_KPS = TRAIN_KPS
+        self.TRAIN_HP = TRAIN_HP
+        self.MODEL_KPS = MODEL_KPS
+        self.MODEL_HP = MODEL_HP
+        self.BATCH_SIZE: int = BATCH_SIZE
         self.PREFETCH_BATCH_BUFFER: int = PREFETCH_BATCH_BUFFER
+        self.EPOCH_START = EPOCH_START
         self.EPOCH_STEPS: int = EPOCH_STEPS
         self.EPOCHS: int = EPOCHS
         self.EPOCH_LOG_N: int = EPOCH_LOG_N
-        self.EPOCH_SGD_PLATEAUCHECK: int = EPOCH_SGD_PLATEAUCHECK
 
         self.GPU: int = GPU
         self.NAME: str = NAME
-        self.W_COUNTER: int = W_COUNTER
-        self.W_COUNTER_BASE: int = W_COUNTER_BASE
-        self.LR_START: float = LR_START
-        self.SGD_CLR_DECAY_RATE = [1e-5, 1e-4, 1e-3, 0.01]
+        self.W_COUNTER_HP: int = W_COUNTER_HP
+        self.W_COUNTER_KPS: int = W_COUNTER_KPS
         self.SGD_CLR_DECAY_COUNTER = 0
-        self.OPTIMIZER_DECAY: float = OPTIMIZER_DECAY
-        self.OPTIMIZER_NAME = optimizer
+        self.OPTIMIZER_NAME_HP = OPTIMIZER_NAME_HP
+        self.OPTIMIZER_NAME_KPS = OPTIMIZER_NAME_KPS
+        self.LR_START_HP, self.LR_START_KPS = LR_START_HP, LR_START_KPS
+        self.hp_loss_fn, self.kps_loss_fn = LOSS_FCT_HP, LOSS_FCT_KPS
         self.step_custom_lr = 0
 
         self.N_CLASS: int = 9
@@ -59,20 +87,49 @@ class MainLoop(object):
         set_gpus(GPU)
 
         self.iter, self.sample_frame, self.sample_mask, self.sample_kps = self._generate_dataset(BG)
+        self.iter_test, _, _, _ = self._generate_dataset(BG, test=True)
         self.base_model = self._get_hrnet_model()
-        self.model = self._get_model()
+
+        # prepare hp model training
+        self.decay_rate_hp, self.optimizer_decay_hp = PARAMS_HP.sgd_clr_decay_rate, PARAMS_HP.decay
+        self.optimizer_hp = self._get_optimizer(OPTIMIZER_NAME_HP, LR_START_HP, PARAMS_HP, self.decay_rate_hp,
+                                                self.optimizer_decay_hp)
+        self.base_model.summary()
+        tf.keras.utils.plot_model(
+            self.base_model, to_file=f'{self.NAME}_e.png', show_shapes=True, expand_nested=True)
+        tf.keras.utils.plot_model(
+            self.base_model, to_file=f'{self.NAME}.png', show_shapes=True, expand_nested=False)
+
+        # prepare kps model training
+        self.decay_rate_kps, self.optimizer_decay_kps = PARAMS_KPS.sgd_clr_decay_rate, PARAMS_KPS.decay
+        self.optimizer_kps = self._get_optimizer(OPTIMIZER_NAME_KPS, LR_START_KPS, PARAMS_KPS, self.decay_rate_kps,
+                                                 self.optimizer_decay_kps)
+        self.model = self._get_kps_model()
         self.model.summary()
-        tf.keras.utils.plot_model(
-            self.model, to_file=f'{self.NAME}_e.png', show_shapes=True, expand_nested=True)
-        tf.keras.utils.plot_model(
-            self.model, to_file=f'{self.NAME}.png', show_shapes=True, expand_nested=False)
-        self.optimizer = self._get_optimizer()
+        if self.TRAIN_KPS:
+            tf.keras.utils.plot_model(
+                self.model, to_file=f'{self.NAME}_e.png', show_shapes=True, expand_nested=True)
+            tf.keras.utils.plot_model(
+                self.model, to_file=f'{self.NAME}.png', show_shapes=True, expand_nested=False)
+
+        self.metric_hp_correct_px_train = Metric('hp_correct_px')
+        self.metric_hp_correct_px_test = Metric('hp_correct_px')
+        self.metric_hp_acc_body_part_train = Metric('hp_correct_body_part_px_ratio')
+        self.metric_hp_acc_body_part_test = Metric('hp_correct_body_part_px_ratio')
+        self.metric_hp_correct_px_body_part_train = Metric('hp_correct_body_part_px')
+        self.metric_hp_correct_px_body_part_test = Metric('hp_correct_body_part_px')
+
+        self.metric_hp_loss_train = Metric('hp_loss')
+        self.metric_hp_loss_test = Metric('hp_loss')
+
+        self.metric_kps_loss_train = Metric('kps_loss')
+        self.metric_kps_loss_test: Metric = Metric('kps_loss')
 
         # self.loss_fn = CILoss(self.N_CLASS)
-        self.loss_fn = tf.keras.losses.MeanSquaredError()
+        # self.loss_fn = tf.keras.losses.MeanSquaredError()
 
-    def _generate_dataset(self, BG: bool):
-        self.generator = DsGenerator(resize_shape_x=240, rgb=BG)
+    def _generate_dataset(self, BG: bool, test: bool = False, sequential: bool = False):
+        self.generator = DsGenerator(resize_shape_x=240, rgb=BG, test=test, sequential=sequential)
 
         sample_pair: DsPair = next(self.generator.get_next_pair())
 
@@ -80,106 +137,342 @@ class MainLoop(object):
         self.N_CLASS = np.max(sample_pair['mask']).astype(int) + 1
         self.KPS_COUNT = len(sample_pair['kps'])
 
-        train_ds = self.generator.build_iterator(self.IMG_SHAPE, self.BATCHSIZE, self.PREFETCH_BATCH_BUFFER)
+        ds = self.generator.build_iterator(self.BATCH_SIZE, self.PREFETCH_BATCH_BUFFER)
 
-        return train_ds.as_numpy_iterator(), sample_pair['frame'], sample_pair['mask'], sample_pair['kps']
+        return ds.as_numpy_iterator(), sample_pair['frame'], sample_pair['mask'], sample_pair['kps']
 
     def _get_hrnet_model(self) -> tf.keras.Model:
-        hrnet = HRNet(self.IMG_SHAPE, int(self.N_CLASS))
+        hrnet = self.MODEL_HP(self.IMG_SHAPE, int(self.N_CLASS))
 
         model = hrnet.model
-        model.load_weights(f"./ckpt1/hrnet-{self.W_COUNTER_BASE}.ckpt")
-        base_model = tf.keras.Model(inputs=hrnet.inputs, outputs=hrnet.model.layers[-1].output)
-        base_model.trainable = False
 
-        return base_model
+        if self.W_COUNTER_HP != -1:
+            model.load_weights(f"./ckpt1/hp-{self.W_COUNTER_HP}.ckpt")
+        elif not self.TRAIN_HP:
+            model.load_weights(f"./ckpt/hrnet-4400.ckpt")
+        if not self.TRAIN_HP:
+            model.trainable = False
 
-    def _get_model(self) -> tf.keras.Model:
-        kp_detector = KPDetector(input_shape=(240, 320, 3), hrnet_input=self.base_model,
-                                 output_channels=int(self.KPS_COUNT))
-        model = kp_detector.model
         return model
 
-    def _get_optimizer(self):
+    def _get_kps_model(self) -> tf.keras.Model:
+        kp_detector = self.MODEL_KPS(input_shape=self.IMG_SHAPE, hrnet_input=self.base_model,
+                                     output_channels=int(self.KPS_COUNT))
+        model = kp_detector.model
+        if self.W_COUNTER_KPS != -1:
+            model.load_weights(f"./ckpt1/kps-{self.W_COUNTER_KPS}.ckpt")
 
-        if self.OPTIMIZER_NAME == "adam":
-            optimizer = tf.keras.optimizers.Adam(learning_rate=self.LR_START, epsilon=1e-8, amsgrad=True)  # 0.001
-        elif self.OPTIMIZER_NAME == "nadam":
-            optimizer = tf.keras.optimizers.Nadam(learning_rate=self.LR_START, beta_1=0.9, beta_2=0.999, epsilon=1e-07)
-        elif self.OPTIMIZER_NAME == "sgd_clr":
-            self.OPTIMIZER_DECAY = self.SGD_CLR_DECAY_RATE[self.SGD_CLR_DECAY_COUNTER]
-            if self.SGD_CLR_DECAY_COUNTER + 1 < len(self.SGD_CLR_DECAY_RATE):
-                self.SGD_CLR_DECAY_COUNTER += 1
+        return model
 
-            optimizer = tf.keras.optimizers.SGD(learning_rate=self.LR_START, momentum=0.9, decay=self.OPTIMIZER_DECAY,
+    def _get_optimizer(self, optimizer_name, lr_start, params: HyperParameterParams, decay_rate_counter=None,
+                       optimizer_decay=None):
+
+        if optimizer_name == "adam":
+            optimizer = tf.keras.optimizers.Adam(learning_rate=lr_start, epsilon=params.epsilon,
+                                                 amsgrad=params.amsgrad)  # 0.001
+        elif optimizer_name == "nadam":
+            optimizer = tf.keras.optimizers.Nadam(learning_rate=lr_start,
+                                                  beta_1=params.beta_1, beta_2=params.beta_2,
+                                                  epsilon=params.epsilon)
+        elif optimizer_name == "sgd_clr":
+            decay_rate = params.sgd_clr_decay_rate
+            optimizer_decay = decay_rate[decay_rate_counter]
+            if decay_rate_counter + 1 < len(decay_rate):
+                decay_rate_counter += 1
+
+            optimizer = tf.keras.optimizers.SGD(learning_rate=lr_start, momentum=0.9, decay=optimizer_decay,
                                                 nesterov=True)
         else:
-            optimizer = tf.keras.optimizers.SGD(learning_rate=self.LR_START, momentum=0.9, decay=self.OPTIMIZER_DECAY,
+            optimizer = tf.keras.optimizers.SGD(learning_rate=lr_start, momentum=0.9, decay=optimizer_decay,
                                                 nesterov=True)
 
         return optimizer
 
-    def _track_logs(self, log_detail: bool = False):
-        file_writer = tf.summary.create_file_writer(
-            f"{Path.cwd()}/logs/metrics/kp/{self.NAME}/{datetime.now().strftime('%Y_%m_%d__%H_%M')}")
-        file_writer.set_as_default()
-        progress_tracker = DisplayCallback(self.base_model, self.model, self.sample_frame, self.sample_mask,
-                                           self.sample_kps, file_writer, self.EPOCHS,
-                                           self.GPU)
-        log1 = Logger(log=log_detail)
-        log2 = Logger(log=True)
+    def _calculate_lr(self, epoch, metric_avg_acc, optimizer_name,
+                      optimizer_decay, decay_rate_counter, params,
+                      w_counter, lr_start, step_custom_lr) -> [any, float]:
 
-        return file_writer, progress_tracker, log1, log2
+        _optimizer = None
 
-    def _calculate_metrics(self):
-        self.metric_correct_px.append(self.loss_fn.correct_predictions.astype(np.float32))
-        self.metric_correct_px_body_part.append(self.loss_fn.correct_body_part_pred.astype(np.float32))
-        self.metric_acc_body_part.append(
-            (self.loss_fn.correct_body_part_pred / self.loss_fn.body_part_px_n_true).astype(np.float32))
-        self.metric_loss.append(self.loss_value)
+        if optimizer_name == 'sgd':
+            lr = lr_start * (
+                    1. / (1. + optimizer_decay * (epoch - w_counter) * self.EPOCH_STEPS))
+        elif optimizer_name == 'sgd_clr':
+            if metric_avg_acc.is_curve_steep() == False:
+                _optimizer = self._get_optimizer(optimizer_name, lr_start, params,
+                                                 decay_rate_counter, optimizer_decay
+                                                 )
+                step_custom_lr = 0
+            lr = lr_start * 1 / (1 + optimizer_decay * step_custom_lr)
+        else:
+            lr = lr_start
+        return _optimizer, lr
+
+    def _track_logs(self, subdir: str, model, log_detail: bool = False):
+        log_dir = f"{Path.cwd()}/logs/metrics/{subdir}/{self.NAME}/{datetime.now().strftime('%Y_%m_%d__%H_%M')}"
+        file_writer_test = tf.summary.create_file_writer(
+            f"{log_dir}/scalars/test")
+        # file_writer.set_as_default()
+        progress_tracker = DisplayCallback(self.base_model, self.model, subdir, self.sample_frame, self.sample_mask,
+                                           self.sample_kps, self.EPOCHS,
+                                           self.GPU, log_dir=log_dir)
+        progress_tracker.set_model(model)
+
+        return file_writer_test, progress_tracker, f"{log_dir}/train"
+
+    def _calculate_metrics_hp_train(self, loss_value: float):
+        self.metric_hp_loss_train.append(loss_value)
+        if isinstance(self.hp_loss_fn, CILoss):
+            self.metric_hp_correct_px_train.append(self.hp_loss_fn.correct_predictions.astype(np.float32))
+            self.metric_hp_correct_px_body_part_train.append(self.hp_loss_fn.correct_body_part_pred.astype(np.float32))
+            self.metric_hp_acc_body_part_train.append(
+                (self.hp_loss_fn.correct_body_part_pred / self.hp_loss_fn.body_part_px_n_true).astype(np.float32))
+
+    def _calculate_metrics_hp_test(self, loss_value: float):
+        self.metric_hp_loss_test.append(loss_value)
+        if isinstance(self.hp_loss_fn, CILoss):
+            self.metric_hp_correct_px_test.append(self.hp_loss_fn.correct_predictions.astype(np.float32))
+            self.metric_hp_correct_px_body_part_test.append(self.hp_loss_fn.correct_body_part_pred.astype(np.float32))
+            self.metric_hp_acc_body_part_test.append(
+                (self.hp_loss_fn.correct_body_part_pred / self.hp_loss_fn.body_part_px_n_true).astype(np.float32))
+
+    def _test_model_hp(self, file_writer: ResourceSummaryWriter, epoch: int,
+                       sequential: bool = False, test_amount: int = 3):
+        test_accuracy = tf.keras.metrics.Accuracy()
+
+        for i in range(test_amount):
+            # training=False is needed only if there are layers with different
+            # behavior during training versus inference (e.g. Dropout).
+            batch = next(self.iter_test)
+            logits = self.base_model(batch['frame'], training=False)
+            loss_value = self.hp_loss_fn(batch['mask'], logits)
+            max_logits = tf.argmax(logits, axis=-1)
+            prediction = max_logits[..., tf.newaxis]
+            test_accuracy(prediction, batch['mask'])
+
+            self._calculate_metrics_hp_test(loss_value)
+
+        loss = self.metric_hp_loss_test.get_median()
+
+        with file_writer.as_default():
+            tf.summary.scalar(self.metric_hp_loss_test.name, loss, step=epoch)
+            tf.summary.scalar('hp_accuracy', test_accuracy.result(), step=epoch)
+
+            if isinstance(self.hp_loss_fn, CILoss):
+                tf.summary.scalar(self.metric_hp_acc_body_part_test.name,
+                                  self.metric_hp_acc_body_part_test.get_median(), step=epoch)
+                tf.summary.scalar(self.metric_hp_correct_px_body_part_test.name,
+                                  self.metric_hp_correct_px_body_part_test.get_median(), step=epoch)
+                tf.summary.scalar(self.metric_hp_correct_px_test.name, self.metric_hp_correct_px_test.get_median(),
+                                  step=epoch)
+
+        return test_accuracy.result()
+
+    def _test_model_kps(self, file_writer: ResourceSummaryWriter, epoch: int,
+                        sequential: bool = False,
+                        test_amount: int = 3) -> float:
+
+        batch = next(self.iter_test)
+        logits = self.model(batch['frame'], training=False)
+        loss_value = self.kps_loss_fn(batch['kps'], logits)
+        self.metric_kps_loss_test.append(float(loss_value))
+
+        with file_writer.as_default():
+            tf.summary.scalar(self.metric_kps_loss_test.name, self.metric_kps_loss_test.get_median(), step=epoch)
+
+        return loss_value
+
+    def _train_hp(self, train_acc_metric):
+        batch: DsPair = next(self.iter)
+
+        with tf.GradientTape() as tape:
+            logits = self.base_model(batch['frame'], training=True)
+            loss_value = self.hp_loss_fn(batch['mask'], logits)
+
+        grads = tape.gradient(loss_value, self.base_model.trainable_weights)
+        self.optimizer_hp.apply_gradients(zip(grads, self.base_model.trainable_weights))
+
+        max_logits = tf.argmax(logits, axis=-1)
+        max_logits = max_logits[..., tf.newaxis]
+
+        train_acc_metric(batch['mask'], max_logits)
+        self._calculate_metrics_hp_train(loss_value)
+
+        return self.metric_hp_acc_body_part_train.get_median(False)
+
+    def _train_kps(self):
+        batch: DsPair = next(self.iter)
+
+        with tf.GradientTape() as tape:
+            logits = self.model(batch['frame'], training=True)
+            loss_value = self.kps_loss_fn(batch['kps'], logits)
+
+        grads = tape.gradient(loss_value, self.model.trainable_weights)
+
+        self.optimizer_kps.apply_gradients(zip(grads, self.model.trainable_weights))
+        self.metric_kps_loss_train.append(float(loss_value))
+
+        return batch['kps'], tf.abs(logits)
+
+    def _extract_bg(self):
+        pass
 
     def start_train_loop(self):
-        file_writer, progress_tracker, log_v, log2 = self._track_logs()
-        self.metric_loss = Metric('loss')
+        hp_train_acc_metric = tf.keras.metrics.Accuracy()
+        kps_train_acc_metric = tf.keras.metrics.Accuracy()
+        hp_metric_avg_acc_body_part = Metric('metric_avg_acc_body_part')
+        kps_metric_avg_acc = Metric('metric_avg_acc', max_size=50)
+        step_custom_lr_kps = 0
+        step_custom_lr_hp = 0
+        time_start = 0
+        logger = Logger()
+        hp_progress_tracker, kps_progress_tracker = None, None
 
-        if self.W_COUNTER == -1:
+        if self.TRAIN_HP:
+            hp_file_writer_test, hp_progress_tracker, log_dir = self._track_logs('hp', self.base_model)
+        if self.TRAIN_KPS:
+            kps_file_writer_test, kps_progress_tracker, log_dir = self._track_logs('kps', self.model)
+
+        if self.EPOCH_START == -1:
             start = 0
         else:
-            start = self.W_COUNTER
+            start = self.EPOCH_START
 
         for epoch in range(start, self.EPOCHS):
-            log2.log(message=f"Start of epoch {epoch}", block=True)
+
+            if epoch == 3:
+                time_start = time.perf_counter()
 
             for step in range(self.EPOCH_STEPS):
-                log_v.log(message=f"Step {step}", block=True)
-                batch: DsPair = next(self.iter)
-                log_v.log(message=f"got batch")
+                if self.TRAIN_HP:
+                    hp_metric_avg_acc_body_part.append(self._train_hp(hp_train_acc_metric))
+                    step_custom_lr_hp += 1
 
-                with tf.GradientTape() as tape:
-                    logits = self.model(batch['frame'], training=True)
-                    self.loss_value = self.loss_fn(batch['kps'], logits)
+                if self.TRAIN_KPS:
+                    kps_batch, kps_logits = self._train_kps()
+                    kps_train_acc_metric(kps_batch, kps_logits)
+                    kps_metric_avg_acc.append(kps_train_acc_metric.result())
+                    step_custom_lr_kps += 1
 
-                log_v.log(message=f"Calculated Logits & loss value")
-                grads = tape.gradient(self.loss_value, self.model.trainable_weights)
-                log_v.log(message=f"Calculated Grads")
-
-                self.optimizer.apply_gradients(zip(grads, self.model.trainable_weights))
-                log_v.log(message=f"Optimized gradients")
-
-                self.metric_loss.append(self.loss_value)
-                self.step_custom_lr += 1
-
+            if epoch == 3:
+                if self.TRAIN_HP:
+                    hp_progress_tracker \
+                        .track_metrics_on_train_start(self.base_model, self.NAME, self.OPTIMIZER_NAME_HP,
+                                                      self.hp_loss_fn.name, self.LR_START_HP, self.TRAIN_HP,
+                                                      self.TRAIN_KPS,
+                                                      f"{time.perf_counter() - time_start:#.2f}s", self.EPOCHS,
+                                                      self.EPOCH_STEPS, self.BATCH_SIZE,
+                                                      description=self.DESCRIPTION_HP)
+                if self.TRAIN_KPS:
+                    kps_progress_tracker \
+                        .track_metrics_on_train_start(self.model, self.NAME, self.OPTIMIZER_NAME_KPS,
+                                                      self.kps_loss_fn.name, self.LR_START_KPS, self.TRAIN_HP,
+                                                      self.TRAIN_KPS,
+                                                      f"{time.perf_counter() - time_start:#.2f}s", self.EPOCHS,
+                                                      self.EPOCH_STEPS, self.BATCH_SIZE,
+                                                      description=self.DESCRIPTION_KPS)
             if epoch % self.EPOCH_LOG_N == 0:
-                log2.log(
-                    message=f"loss: [{self.loss_value.numpy()}]", block=False)
 
-                progress_tracker.on_epoch_end(epoch,
-                                              loss=self.metric_loss.get_median(),
-                                              show_img=False)
-                log2.log(message=f"Seen images: {self.generator.seen_samples}", block=True)
+                if self.TRAIN_HP:
+                    _optimizer_hp, hp_lr = self._calculate_lr(epoch,
+                                                              hp_metric_avg_acc_body_part, self.OPTIMIZER_NAME_KPS,
+                                                              self.optimizer_decay_kps, self.decay_rate_kps,
+                                                              self.PARAMS_KPS,
+                                                              self.W_COUNTER_KPS, self.LR_START_KPS, step_custom_lr_kps)
 
-        progress_tracker.on_train_end()
-        log_v.log_end()
+                    if _optimizer_hp:
+                        self.optimizer_hp = _optimizer_hp
+
+                    hp_loss = self.metric_hp_loss_train.get_median()
+                    hp_progress_tracker.track_img_on_epoch_end(epoch,
+                                                               loss=hp_loss,
+                                                               metrics=[
+                                                                   self.metric_hp_correct_px_train,
+                                                                   self.metric_hp_correct_px_body_part_train,
+                                                                   self.metric_hp_acc_body_part_train,
+                                                                   Metric(value=hp_train_acc_metric.result(),
+                                                                          name='hp_accuracy'),
+                                                                   Metric(value=hp_lr, name='hp_learning_rate'),
+                                                               ],
+                                                               )
+                    hp_loss_test = self._test_model_hp(hp_file_writer_test, epoch)
+                    hp_train_acc_metric.reset_states()
+
+                    logger.log(f"Body Parts [loss]: {hp_loss} [loss test]: {hp_loss_test}")
+
+                if self.TRAIN_KPS:
+                    _optimizer_kps, kps_lr = self._calculate_lr(epoch,
+                                                                kps_metric_avg_acc, self.OPTIMIZER_NAME_KPS,
+                                                                self.optimizer_decay_kps, self.decay_rate_kps,
+                                                                self.PARAMS_KPS,
+                                                                self.W_COUNTER_KPS, self.LR_START_KPS,
+                                                                step_custom_lr_kps)
+
+                    if _optimizer_kps:
+                        self.optimizer_kps = _optimizer_kps
+                    kps_loss = self.metric_kps_loss_train.get_median()
+                    kps_progress_tracker.track_img_on_epoch_end(epoch,
+                                                                loss=kps_loss,
+                                                                metrics=[
+                                                                    Metric(value=kps_lr, name='kps_learning_rate'),
+                                                                ],
+                                                                show_img=False)
+                    kps_loss_test = self._test_model_kps(kps_file_writer_test, epoch)
+                    kps_train_acc_metric.reset_states()
+
+                    logger.log(f"Keypoint [loss]: {kps_loss} [loss test]: {kps_loss_test}")
+
+                logger.log(message=f"Seen images: {self.generator.seen_samples}", block=True)
+
+        if self.TRAIN_HP:
+            hp_progress_tracker.log_on_train_end()
+        if self.TRAIN_KPS and not self.TRAIN_HP:
+            kps_progress_tracker.log_on_train_end()
+
+    # def start_train_loop(self):
+    #     file_writer_train, file_writer_test, progress_tracker, log_v, log2 = self._track_logs()
+    #     self.metric_loss = Metric('loss')
+    #
+    #     if self.EPOCH_START == -1:
+    #         start = 0
+    #     else:
+    #         start = self.EPOCH_START
+    #
+    #     for epoch in range(start, self.EPOCHS):
+    #         log2.log(message=f"Start of epoch {epoch}", block=True)
+    #
+    #         for step in range(self.EPOCH_STEPS):
+    #             log_v.log(message=f"Step {step}", block=True)
+    #             batch: DsPair = next(self.iter)
+    #             log_v.log(message=f"got batch")
+    #
+    #             with tf.GradientTape() as tape:
+    #                 logits = self.model(batch['frame'], training=True)
+    #                 self.loss_value = self.loss_fn(batch['kps'], logits)
+    #
+    #             log_v.log(message=f"Calculated Logits & loss value")
+    #             grads = tape.gradient(self.loss_value, self.model.trainable_weights)
+    #             log_v.log(message=f"Calculated Grads")
+    #
+    #             self.optimizer.apply_gradients(zip(grads, self.model.trainable_weights))
+    #             log_v.log(message=f"Optimized gradients")
+    #
+    #             self.metric_loss.append(self.loss_value)
+    #             self.step_custom_lr += 1
+    #
+    #         if epoch % self.EPOCH_LOG_N == 0:
+    #             log2.log(
+    #                 message=f"loss: [{self.loss_value.numpy()}]", block=False)
+    #
+    #             progress_tracker.track_img_on_epoch_end(epoch,
+    #                                                     loss=self.metric_loss.get_median(),
+    #                                                     show_img=False)
+    #             progress_tracker.on_epoch_end(epoch, {'loss2': self.loss_value.numpy()})
+    #
+    #             log2.log(message=f"Seen images: {self.generator.seen_samples}", block=True)
+    #
+    #     progress_tracker.on_train_end()
+    #     log_v.log_end()
 
 
 if __name__ == "__main__":
@@ -204,6 +497,34 @@ if __name__ == "__main__":
     parser.add_argument('--bg', default=False, help='Use training images with background', type=bool)
     args: ArgsNamespace = parser.parse_args()
 
-    MainLoop(args.gpu, args.name, args.wcounter, args.wcounter_base, args.opt, args.lr, args.decay, args.bg,
-             BATCH_SIZE=args.bs,
-             EPOCH_STEPS=args.steps, EPOCHS=args.epochs, EPOCH_LOG_N=args.log_n).start_train_loop()
+    optimizer = args.opt
+    lr = args.lr
+    name = args.name
+
+    general_param, hps_params, kps_params, train_hp, train_kps = TrainProgram().create_menu()
+
+    if not train_hp:
+        name = f"kps_{kps_params.name}"
+    elif not train_kps:
+        name = f"hp_{hps_params.name}"
+    else:
+        name = f"hp_{hps_params.name}:kps_{kps_params.name}"
+
+    MainLoop(GPU=general_param.gpu, NAME=name,
+             MODEL_HP=hps_params.model, MODEL_KPS=kps_params.model,
+             OPTIMIZER_NAME_HP=hps_params.optimizer_name, LR_START_HP=hps_params.learning_rate,
+             OPTIMIZER_NAME_KPS=kps_params.optimizer_name, LR_START_KPS=hps_params.learning_rate,
+             LOSS_FCT_HP=hps_params.loss_fct, LOSS_FCT_KPS=kps_params.loss_fct,
+             PARAMS_HP=hps_params.params, PARAMS_KPS=kps_params.params,
+             DESCRIPTION_HP=hps_params.description, DESCRIPTION_KPS=kps_params.description,
+             TRAIN_HP=train_hp, TRAIN_KPS=train_kps,
+             W_COUNTER_HP=general_param.wcounter_hp, W_COUNTER_KPS=general_param.wcounter_kps,
+             EPOCH_START=general_param.epoch_start,
+             BATCH_SIZE=general_param.batch_size,
+             PREFETCH_BATCH_BUFFER=1, EPOCH_STEPS=general_param.epoch_steps, EPOCHS=general_param.epochs,
+             EPOCH_LOG_N=general_param.epoch_log_n,
+             ).start_train_loop()
+
+    # MainLoop(args.gpu, name, args.wcounter, args.wcounter_base, optimizer, lr, args.decay, args.bg,
+    #          BATCH_SIZE=args.bs,
+    #          EPOCH_STEPS=args.steps, EPOCHS=args.epochs, EPOCH_LOG_N=args.log_n, PARAMS=params).start_train_loop()

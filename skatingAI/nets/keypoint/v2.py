@@ -1,20 +1,16 @@
 import tensorflow as tf
 import tensorflow.keras.backend as K
 
+from skatingAI.nets.keypoint.KPDetectorBase import KPDetectorBase
+
 layers = tf.keras.layers
 
 BN_MOMENTUM = 0.01
 
 
-class KPDetector(object):
+class KPDetector(KPDetectorBase):
     def __init__(self, input_shape, hrnet_input: tf.keras.Model, output_channels=15):
-        self.inputs = tf.keras.Input(shape=input_shape, name='input_hrnet')
-        self.output_channels = output_channels
-        self.outputs = None
-        self.hrnet_input: tf.keras.Model = hrnet_input(self.inputs)
-        self.hrnet_input_layer = self.hrnet_input
-        self.model = self._build_model()
-
+        super().__init__(input_shape, hrnet_input, output_channels)
 
     def _build_model(self):
         mask = tf.reduce_max(self.hrnet_input, axis=-1, keepdims=True)
@@ -39,10 +35,10 @@ class KPDetector(object):
         conv = layers.Conv2D(512, kernel_size=3, padding="valid")(pool)  # 11x16x64
 
         flatten = layers.Flatten()(conv)
-        dense = layers.Dense(1024)(flatten)
+        dense = layers.Dense(1024, activation='relu')(flatten)
         dense = layers.BatchNormalization(momentum=BN_MOMENTUM)(dense)
         dense = layers.AlphaDropout(0.2)(dense)
-        dense = layers.Dense(512, )(dense)
+        dense = layers.Dense(512, activation='sigmoid')(dense)
         dense = layers.BatchNormalization(momentum=BN_MOMENTUM)(dense)
         dense = layers.AlphaDropout(0.1)(dense)
         self.outputs = layers.Dense(self.output_channels)(dense)

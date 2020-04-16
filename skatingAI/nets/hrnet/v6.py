@@ -1,20 +1,15 @@
 import tensorflow as tf
 import tensorflow.keras.backend as K
 
+from skatingAI.nets.hrnet import HRNetBase
+
 layers = tf.keras.layers
 
 BN_MOMENTUM = 0.01
 
 
-class HRNet(object):
+class HRNet(HRNetBase):
 
-    def __init__(self, input_shape, output_channels=15, block_amount=3):
-        self.inputs = tf.keras.Input(shape=input_shape, name='images')
-        self.output_channels = output_channels
-        self.model = self._build_model(block_amount)
-        self.outputs = None
-
-    # noinspection PyDefaultArgument
     def conv3x3_block(self, inputs: tf.Tensor,
                       block_nr=1,
                       filter_counts=[36, 64, 121, 256],

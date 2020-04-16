@@ -1,23 +1,21 @@
 import tensorflow as tf
 import tensorflow.keras.backend as K
 
+from skatingAI.nets.hrnet import HRNetBase
+
 layers = tf.keras.layers
 
 BN_MOMENTUM = 0.01
 
 
-class HRNet(object):
-
-    def __init__(self, input_shape, output_channels=15, block_amount=3):
-        self.inputs = tf.keras.Input(shape=input_shape, name='images')
-        self.output_channels = output_channels
-        self.model = self._build_model(block_amount)
-        self.outputs = None
+class HRNet(HRNetBase):
 
     # noinspection PyDefaultArgument
     def conv3x3_block(self, inputs: tf.Tensor,
                       block_nr=1,
                       filter_counts=[36, 64, 121, 256],
+                      layer_type=[],
+                      activation=[],
                       name="block") -> tf.Tensor:
         bn = tf.identity(inputs)
         for i, filter in enumerate(filter_counts):
@@ -31,7 +29,7 @@ class HRNet(object):
 
         return bn
 
-    def stride_down(self, inputs: tf.Tensor, block_nr=1, k=5, f=36, name="block") -> tf.Tensor:
+    def stride_down(self, inputs: tf.Tensor, block_nr=1, k=5, f=36, activation='relu', name="block") -> tf.Tensor:
         return layers.Conv2D(f, k, strides=k, activation='relu', padding="same",
                              name=f"{name}_{block_nr}_conv_stride_down")(
             inputs)

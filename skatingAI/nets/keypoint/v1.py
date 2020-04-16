@@ -1,19 +1,16 @@
 import tensorflow as tf
 import tensorflow.keras.backend as K
 
+from skatingAI.nets.keypoint.KPDetectorBase import KPDetectorBase
+
 layers = tf.keras.layers
 
 BN_MOMENTUM = 0.01
 
 
-class KPDetector(object):
+class KPDetector(KPDetectorBase):
     def __init__(self, input_shape, hrnet_input: tf.keras.Model, output_channels=15):
-        self.inputs = tf.keras.Input(shape=input_shape, name='input_hrnet')
-        self.output_channels = output_channels
-        self.outputs = None
-        self.hrnet_input: tf.keras.Model = hrnet_input(self.inputs)
-        self.hrnet_input_layer = self.hrnet_input
-        self.model = self._build_model()
+        super().__init__(input_shape, hrnet_input, output_channels)
 
     def _build_model(self):
         pool = layers.MaxPool2D(pool_size=[6, 6])(self.hrnet_input)

@@ -1,3 +1,4 @@
+import io
 import os
 import time
 from enum import Enum
@@ -7,6 +8,7 @@ from typing import List, Tuple
 import numpy as np
 import tensorflow as tf
 from keras import backend as K
+from keras.utils.layer_utils import count_params
 from matplotlib import pyplot as plt
 from tensorflow import keras, summary
 
@@ -160,11 +162,11 @@ class LearningRateScheduler(tf.keras.callbacks.Callback):
     def on_epoch_begin(self, epoch, logs=None):
         if not hasattr(self.model.optimizer, 'lr'):
             raise ValueError('Optimizer must have a "lr" attribute.')
-        # Get the current learning rate from model's optimizer.
+        # Get the current learning rate from model's optimizer_kps.
         lr = float(tf.keras.backend.get_value(self.model.optimizer.lr))
         # Call schedule function to get the scheduled learning rate.
         scheduled_lr = self.schedule(epoch, lr)
-        # Set the value back to the optimizer before this epoch starts
+        # Set the value back to the optimizer_kps before this epoch starts
         tf.keras.backend.set_value(self.model.optimizer.lr, scheduled_lr)
         print('\nEpoch %05d: Learning rate is %6.4f.' % (epoch, scheduled_lr))
 
@@ -204,7 +206,7 @@ class Metric(object):
         return curve_diff > self.diff
 
     def get_median(self, reset: bool = True):
-        if self.value:
+        if self.value is not None:
             median = self.value
         else:
             median = np.median(self.metrics)
@@ -214,29 +216,76 @@ class Metric(object):
         return median
 
 
-def fig2rgb_array(fig, expand=True):
-    fig.canvas.draw()
-    buf = fig.canvas.tostring_rgb()
-    n_cols, n_rows = fig.canvas.get_width_height()
-    shape = (n_rows, n_cols, 3) if not expand else (1, n_rows, n_cols, 3)
-    return np.fromstring(buf, dtype=np.uint8).reshape(shape)  #
+def plot2img(figure):
+    """Converts the matplotlib plot specified by 'figure' to a PNG image and
+    returns it. The supplied figure is closed and inaccessible after this call."""
+    # Save the plot to a PNG in memory.
+    buf = io.BytesIO()
+    plt.savefig(buf, format='png')
+    # Closing the figure prevents it from being displayed directly inside
+    # the notebook.
+    plt.close(figure)
+    buf.seek(0)
+    # Convert PNG buffer to TF image
+    image = tf.image.decode_png(buf.getvalue(), channels=4)
+    # Add the batch dimension
+    image = tf.expand_dims(image, 0)
+    return image
 
 
-class DisplayCallback(object):
-    def __init__(self, base_model, model, sample_image, sample_mask, sample_kp, file_writer, epochs=5, gpu: int = 1):
+class DisplayCallback(tf.keras.callbacks.TensorBoard):
+    def __init__(self, base_model, model, sub_dir: str,
+                 sample_image, sample_mask, sample_kp,
+                 epochs=5, gpu: int = 1,
+                 log_dir='logs',
+                 **kwargs):
+        super().__init__(log_dir=f"{log_dir}/model/", histogram_freq=1, profile_batch='500,520', **kwargs)
+        # log_dir = f"{log_dir}/model/train", histogram_freq = 1, profile_batch = '500,520', ** kwargs
+        self.sub_dir = sub_dir
         self.base_model = base_model
+        self.model = model
         self.sample_image = sample_image
         self.sample_mask = sample_mask
         self.sample_kp = kps_upscale_reshape(sample_mask.shape, sample_kp.numpy())
-        self.model = model
         self.epochs = epochs
-        self.file_writer = file_writer
+        # self._file_writer = tf.summary.create_file_writer(f"{log_dir}/scalars/train")
+        self._file_writer = tf.summary.create_file_writer(f"{log_dir}/scalars/train")
         self.gpu = gpu
+        # self.log_dir = log_dir
+        # self.write_images = True
+        self.histogram_freq = 1
 
-    def on_epoch_end(self, epoch: int, loss: float, metrics: List[Metric] = [], show_img=False):
+    def track_metrics_on_train_start(self, model: tf.keras.Model, name, optimizer_name, loss_function, learning_rate,
+                                     train_hp: bool, train_kps: bool, training_time, epochs, epoch_steps, batch_size,
+                                     description):
+        text_summary = f'|name    |{name}    |\n|----|----|\n'
+        trainable_params = count_params(model.trainable_weights)
+        non_trainable_params = count_params(model.non_trainable_weights)
+        layers = len(model.layers)
+
+        for item in (['optimizer_name', optimizer_name],
+                     ['epochs:epoch_steps:batch_size', f"{epochs}:{epoch_steps}:{batch_size}"],
+                     ['loss_function', loss_function],
+                     ['train_body_parts', train_hp],
+                     ['train_keypoints', train_kps],
+                     ['learning_rate', str(learning_rate)],
+                     ['all_params', f"{trainable_params + non_trainable_params:,}"],
+                     ['trainable_params', f"{trainable_params:,}"],
+                     ['non_trainable_params', f"{non_trainable_params:,}"],
+                     ['layers', layers],
+                     ['training_time_1_epoch', training_time],
+                     ['description', description],
+                     ):
+            text_summary += f"|**{item[0].ljust(30)[:30]}**|{str(item[1]).ljust(30)[:30]}|\n"
+        print(text_summary)
+
+        with self._file_writer.as_default():
+            tf.summary.text(name, tf.constant(text_summary), description=text_summary, step=0)
+
+    def track_img_on_epoch_end(self, epoch: int, loss: float, metrics: List[Metric] = [], show_img=False):
 
         self.model.save_weights(
-            f"{Path.cwd()}/ckpt{self.gpu}/hrnet-{epoch}.ckpt")
+            f"{Path.cwd()}/ckpt{self.gpu}/{self.sub_dir}-{epoch}.ckpt")
 
         predicted_mask = create_mask(self.base_model.predict(self.sample_image[tf.newaxis, ...])[0])
         predicted_kp = self.model.predict(self.sample_image[tf.newaxis, ...])[0]
@@ -244,45 +293,53 @@ class DisplayCallback(object):
 
         K.clear_session()
 
-        fig = plt.figure(figsize=(15, 4))
-        true_circles = []
-        for kp in self.sample_kp:
-            true_circles.append(plt.Circle(kp, 3, alpha=0.9, fill=False, linewidth=2., edgecolor='white'))
-        predicted_circles = []
-        for kp in predicted_kp:
-            predicted_circles.append(plt.Circle(kp, 3, alpha=0.9, fill=False, linewidth=2., edgecolor='white'))
+        true_circles, predicted_circles = [], []
+        if self.sub_dir == 'kps':
+            for kp in self.sample_kp:
+                true_circles.append(plt.Circle(kp, 3, alpha=0.9, fill=False, linewidth=2., edgecolor='white'))
+            for kp in predicted_kp:
+                predicted_circles.append(plt.Circle(kp, 3, alpha=0.9, fill=False, linewidth=2., edgecolor='white'))
+
         title = ['Input Image', 'True Mask', 'Predicted Mask & Keypoints']
         display_imgs = [[tf.keras.preprocessing.image.array_to_img(self.sample_image), []],
                         [tf.keras.preprocessing.image.array_to_img(self.sample_mask), true_circles],
                         [tf.keras.preprocessing.image.array_to_img(predicted_mask), predicted_circles]]
-
+        # plt.figure(figsize=(15, 4))
+        # fig, ax = plt.subplots()
+        fig = plt.figure(figsize=(15, 4))
         for i, img in enumerate(display_imgs):
             ax = fig.add_subplot(1, 3, i + 1)
             for circle in img[1]:
                 ax.add_patch(circle)
-            plt.imshow(img[0])
             ax.set_title(title[i], fontsize='small', alpha=0.6, color='blue')
+            ax.imshow(img[0])
 
         if show_img:
             plt.show()
-        fig.savefig(f"{path}/img_train{self.gpu}/{epoch}_train.png")
-        plt.close('all')
 
         # summary_images = tf.cast(summary_images, tf.uint8)
 
-        tf.summary.image(f"{epoch}_training", fig2rgb_array(fig), step=epoch, max_outputs=3)
-        tf.summary.scalar('loss', loss, step=epoch)
+        img = plot2img(fig)
 
-        for i, item in enumerate(metrics):
-            tf.summary.scalar(item.name, item.get_median(), step=epoch)
+        with self._file_writer.as_default():
+            tf.summary.image(f"{epoch}_img_train", img, step=epoch)
+            tf.summary.scalar(f'{self.sub_dir}_loss', loss, step=epoch)
 
-    def on_train_end(self):
+            for i, item in enumerate(metrics):
+                tf.summary.scalar(item.name, item.get_median(), step=epoch)
+
+        fig.savefig(f"{path}/img_train{self.gpu}/{epoch}_{self.sub_dir}_train.png")
+        plt.close('all')
+        self.on_epoch_end(epoch)
+
+    def log_on_train_end(self):
         # clear_output(wait=True)
         print('train_end')
-        # K.clear_session()
+
         print(f"\n\n{'=' * 100}\nSuccessfully trained {self.epochs} epochs.\n" +
               f"For evaluation (loss/ accuracy) please run \n${' ' * 5}`tensorboard --logdir {Path.cwd()}/logs`\n" +
               f"and open your webbrowser at `http://localhost:6006`\n")
+        self.on_train_end()
 
 
 def create_dir(path: str, msg: str = ''):

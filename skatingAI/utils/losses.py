@@ -21,7 +21,7 @@ class CILoss(tf.keras.losses.Loss):
         """
         super(tf.keras.losses.Loss, self)
         self.reduction = losses_utils.loss_reduction.ReductionV2.AUTO
-        self.name = "GeneralisedWassersteinDiceLoss"
+        self.name = "ClassImbalanceLoss"
         self._allow_sum_over_batch_size = True
         self.n_classes = n_classes
         self.y_true: tf.int32 = None
