@@ -63,8 +63,8 @@ BodyPoseDetectorHyperParameters = [
         optimizer_name='adam',
         learning_rate=1e-3,
         loss_fct=CILoss(9),
-        description='',
-        params=HyperParameterParams(epsilon=1e-8, amsgrad=True)
+        params=HyperParameterParams(epsilon=1e-8, amsgrad=True),
+        description='Test **adam** optimizer on hrnet v7',
     ),
     HyperParameter(
         name='ciloss_nadam',
@@ -72,8 +72,9 @@ BodyPoseDetectorHyperParameters = [
         optimizer_name='nadam',
         learning_rate=1e-3,
         loss_fct=CILoss(9),
-        description='',
-        params=HyperParameterParams(beta_1=0.9, beta_2=0.999, epsilon=1e-7)
+        params=HyperParameterParams(beta_1=0.9, beta_2=0.999, epsilon=1e-7),
+        description='Test **nadam** optimizer on hrnet v7',
+
     ),
     HyperParameter(
         name='ciloss_sgd',
@@ -81,8 +82,8 @@ BodyPoseDetectorHyperParameters = [
         optimizer_name='sgd',
         learning_rate=1e-3,
         loss_fct=CILoss(9),
-        description='',
-        params=HyperParameterParams()
+        params=HyperParameterParams(),
+        description='Test **sgd** optimizer on hrnet v7',
     ),
     HyperParameter(
         name='ciloss_sgd_decay',
@@ -90,37 +91,53 @@ BodyPoseDetectorHyperParameters = [
         optimizer_name='sgd',
         learning_rate=1e-3,
         loss_fct=CILoss(9),
-        description='',
-        params=HyperParameterParams(decay=0.01)
+        params=HyperParameterParams(decay=0.01),
+        description='Test **sgd** optimizer <br>'
+                    'reduce lr with static decay<br>'
+                    'on hrnet v7',
     ),
     HyperParameter(
         name='ciloss_sgd_clr',
         model=hrnet.v7.HRNet,
-        optimizer_name='sgd',
+        optimizer_name='sgd_clr',
         learning_rate=0.1,
         loss_fct=CILoss(9),
-        description='',
-        params=HyperParameterParams(sgd_clr_decay_rate=[1e-2, 1e-3, 1e-4, 1e-5], decay=0.1)
+        params=HyperParameterParams(sgd_clr_decay_rate=[1e-2, 1e-3, 1e-4, 1e-5], decay=0.1),
+        description='Test **sgd** optimizer <br>'
+                    'reduce lr if training stocks<br>'
+                    'on hrnet v7',
+    ),
+    HyperParameter(
+        name='crossentropy_adam',
+        model=hrnet.v7.HRNet,
+        optimizer_name='adam',
+        learning_rate=1e-3,
+        loss_fct=tf.keras.losses.SparseCategoricalCrossentropy(),
+        params=HyperParameterParams(epsilon=1e-8, amsgrad=True),
+        description='Test cross entropy loss <br>on hrnet v7',
     ),
 ]
 KeyPointDetectorHyperParameters = [
     HyperParameter(
-        name='conv_relu_sigmoid',
+        name='block_l_relu_sigmoid',
         model=kp_net.v0.KPDetector,
         optimizer_name='adam',
         learning_rate=1e-3,
         loss_fct=tf.keras.losses.MeanSquaredError(),
-        description='',
-        params=HyperParameterParams(epsilon=1e-8, amsgrad=True)
+        params=HyperParameterParams(epsilon=1e-8, amsgrad=True),
+        description='Train hrnet block_l <br>'
+                    'with 1 MaxPool reducing image size<br>'
+                    '& 2 relu+sigmoid Dense modules',
     ),
     HyperParameter(
-        name='relu_sigmoid_adam1e3',
+        name='relu_sigmoid',
         model=kp_net.v1.KPDetector,
         optimizer_name='adam',
         learning_rate=1e-3,
         loss_fct=tf.keras.losses.MeanSquaredError(),
         params=HyperParameterParams(epsilon=1e-8, amsgrad=True),
-        description=''
+        description='Train 2 relu+sigmoid Dense modules <br>'
+                    'with 1 MaxPool reducing image size'
     ),
     HyperParameter(
         name='extended_conv_linear_adam1e3',
@@ -129,6 +146,7 @@ KeyPointDetectorHyperParameters = [
         learning_rate=1e-3,
         loss_fct=tf.keras.losses.MeanSquaredError(),
         params=HyperParameterParams(epsilon=1e-8, amsgrad=True),
-        description=''
+        description='Train 4 MaxPool-Conv modules<br>'
+                    '& 2 relu+sigmoid Dense modules'
     )
 ]

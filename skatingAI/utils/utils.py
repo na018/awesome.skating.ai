@@ -276,7 +276,7 @@ class DisplayCallback(tf.keras.callbacks.TensorBoard):
                      ['training_time_1_epoch', training_time],
                      ['description', description],
                      ):
-            text_summary += f"|**{item[0].ljust(30)[:30]}**|{str(item[1]).ljust(30)[:30]}|\n"
+            text_summary += f"|**{item[0].ljust(30)[:30]}**|{str(item[1]).ljust(120)[:120]}|\n"
         print(text_summary)
 
         with self._file_writer.as_default():

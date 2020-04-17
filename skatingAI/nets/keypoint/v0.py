@@ -30,14 +30,16 @@ class KPDetector(KPDetectorBase):
         block_xs = self.stride_up(block_xs, 4, k=20, name="bxs")
 
         concat = layers.concatenate([block_l, block_m, block_s, block_xs, ])
+
         pool = layers.MaxPool2D(pool_size=[6, 6])(concat)
         pool = layers.BatchNormalization(momentum=BN_MOMENTUM)(pool)
         pool = layers.AlphaDropout(0.2)(pool)
+
         flatten = layers.Flatten()(pool)
-        dense = layers.Dense(256, 'relu')(flatten)
+        dense = layers.Dense(1024, 'relu')(flatten)
         dense = layers.BatchNormalization(momentum=BN_MOMENTUM)(dense)
         dense = layers.AlphaDropout(0.2)(dense)
-        dense = layers.Dense(90, 'sigmoid')(dense)
+        dense = layers.Dense(512, 'sigmoid')(dense)
         dense = layers.BatchNormalization(momentum=BN_MOMENTUM)(dense)
         dense = layers.AlphaDropout(0.1)(dense)
         dense = layers.Dense(self.output_channels)(dense)
