@@ -10,7 +10,7 @@ BN_MOMENTUM = 0.01
 
 class HRNet(HRNetBase):
 
-    def _build_model(self, block_amount=3) -> tf.keras.Model:
+    def _build_model(self) -> tf.keras.Model:
         # --------------first-block-------------------#
         block_l = self.conv3x3_block(self.inputs, block_nr=1, filter_counts=[64, 64, 64, 64], name="bl")
         block_m = self.stride_down(block_l, block_nr=1, name="bm")

@@ -8,10 +8,10 @@ BN_MOMENTUM = 0.01
 
 class HRNetBase(object):
 
-    def __init__(self, input_shape, output_channels=15, block_amount=3):
+    def __init__(self, input_shape, output_channels=15):
         self.inputs = tf.keras.Input(shape=input_shape, name='images')
         self.output_channels = output_channels
-        self.model = self._build_model(block_amount)
+        self.model = self._build_model()
         self.outputs = None
 
     # noinspection PyDefaultArgument
@@ -60,5 +60,5 @@ class HRNetBase(object):
 
         return layers.Activation(activation, name=f"{name}_{block_nr}_{activation}_{block_nr}_stride_up")(conv)
 
-    def _build_model(self, block_amount=3) -> tf.keras.Model:
+    def _build_model(self) -> tf.keras.Model:
         raise NotImplementedError

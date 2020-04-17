@@ -58,7 +58,7 @@ class HyperParameter(object):
 
 BodyPoseDetectorHyperParameters = [
     HyperParameter(
-        name='ciloss_adam',
+        name='chrnet_adam',
         model=hrnet.v7.HRNet,
         optimizer_name='adam',
         learning_rate=1e-3,
@@ -67,7 +67,7 @@ BodyPoseDetectorHyperParameters = [
         description='Test **adam** optimizer on hrnet v7',
     ),
     HyperParameter(
-        name='ciloss_nadam',
+        name='chrnet_nadam',
         model=hrnet.v7.HRNet,
         optimizer_name='nadam',
         learning_rate=1e-3,
@@ -77,7 +77,7 @@ BodyPoseDetectorHyperParameters = [
 
     ),
     HyperParameter(
-        name='ciloss_sgd',
+        name='chrnet_sgd',
         model=hrnet.v7.HRNet,
         optimizer_name='sgd',
         learning_rate=1e-3,
@@ -86,7 +86,7 @@ BodyPoseDetectorHyperParameters = [
         description='Test **sgd** optimizer on hrnet v7',
     ),
     HyperParameter(
-        name='ciloss_sgd_decay',
+        name='chrnet_sgd_decay',
         model=hrnet.v7.HRNet,
         optimizer_name='sgd',
         learning_rate=1e-3,
@@ -97,7 +97,7 @@ BodyPoseDetectorHyperParameters = [
                     'on hrnet v7',
     ),
     HyperParameter(
-        name='ciloss_sgd_clr',
+        name='chrnet_sgd_clr',
         model=hrnet.v7.HRNet,
         optimizer_name='sgd_clr',
         learning_rate=0.1,
@@ -108,13 +108,78 @@ BodyPoseDetectorHyperParameters = [
                     'on hrnet v7',
     ),
     HyperParameter(
-        name='crossentropy_adam',
+        name='chrnet_crossentropy_adam',
         model=hrnet.v7.HRNet,
         optimizer_name='adam',
         learning_rate=1e-3,
         loss_fct=tf.keras.losses.SparseCategoricalCrossentropy(),
         params=HyperParameterParams(epsilon=1e-8, amsgrad=True),
         description='Test cross entropy loss <br>on hrnet v7',
+    ),
+    HyperParameter(
+        name='traditional_hrnet_64',
+        model=hrnet.v0.HRNet,
+        optimizer_name='adam',
+        learning_rate=1e-3,
+        loss_fct=CILoss(9),
+        params=HyperParameterParams(epsilon=1e-8, amsgrad=True),
+        description='Train HRNet as described in paper',
+    ),
+    HyperParameter(
+        name='traditional_hrnet_adjusted_filter',
+        model=hrnet.v1.HRNet,
+        optimizer_name='adam',
+        learning_rate=1e-3,
+        loss_fct=CILoss(9),
+        params=HyperParameterParams(epsilon=1e-8, amsgrad=True),
+        description='Test hrnet with adjusted filters<br> Smaller conv layers learn more coarse filter',
+    ),
+    HyperParameter(
+        name='hrnet_stride_down_up',
+        model=hrnet.v2.HRNet,
+        optimizer_name='adam',
+        learning_rate=1e-3,
+        loss_fct=CILoss(9),
+        params=HyperParameterParams(epsilon=1e-8, amsgrad=True),
+        description='Reduce conv size by <br>striding down the input layer',
+    ),
+    HyperParameter(
+        name='hrnet_stride_down_up_input',
+        model=hrnet.v3.HRNet,
+        optimizer_name='adam',
+        learning_rate=1e-3,
+        loss_fct=CILoss(9),
+        params=HyperParameterParams(epsilon=1e-8, amsgrad=True),
+        description='Reduce conv size by <br>striding down the input layer<br>Use input layer for every block module.',
+    ),
+    HyperParameter(
+        name='hrnet_3_blocks',
+        model=hrnet.v4.HRNet,
+        optimizer_name='adam',
+        learning_rate=1e-3,
+        loss_fct=CILoss(9),
+        params=HyperParameterParams(epsilon=1e-8, amsgrad=True),
+        description='Reduce to 3 blocks, [l,m,s].',
+    ),
+    HyperParameter(
+        name='UNet',
+        model=hrnet.v5.HRNet,
+        optimizer_name='adam',
+        learning_rate=1e-3,
+        loss_fct=CILoss(9),
+        params=HyperParameterParams(epsilon=1e-8, amsgrad=True),
+        description='Train UNet',
+    ),
+    HyperParameter(
+        name='chrnet_add_dwonv',
+        model=hrnet.v6.HRNet,
+        optimizer_name='adam',
+        learning_rate=1e-3,
+        loss_fct=CILoss(9),
+        params=HyperParameterParams(epsilon=1e-8, amsgrad=True),
+        description='Add Input layer to all combination layers,<br>'
+                    'replace concat with add layers,<br>'
+                    'experiment with depthwise convolution',
     ),
 ]
 KeyPointDetectorHyperParameters = [
@@ -140,7 +205,7 @@ KeyPointDetectorHyperParameters = [
                     'with 1 MaxPool reducing image size'
     ),
     HyperParameter(
-        name='extended_conv_linear_adam1e3',
+        name='extended_conv_relu_sigmoid',
         model=kp_net.v2.KPDetector,
         optimizer_name='adam',
         learning_rate=1e-3,
