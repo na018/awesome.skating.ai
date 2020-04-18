@@ -67,7 +67,7 @@ class TrainProgram(object):
             epoch_steps = input(
                 f'Please choose how many steps you want to train for every epoch: [{general_train_params.epoch_steps}]')
             general_train_params.epoch_steps = int(epoch_steps) if self._parse_if_int(
-                epoch_steps) else general_train_params.epochs
+                epoch_steps) else general_train_params.epoch_steps
             epoch_log_n = input(
                 f'Please choose after how many epochs you need logging information: [{general_train_params.epoch_log_n}]')
             general_train_params.epoch_log_n = int(epoch_log_n) if self._parse_if_int(
