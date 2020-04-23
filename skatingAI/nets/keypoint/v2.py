@@ -13,8 +13,8 @@ class KPDetector(KPDetectorBase):
         super().__init__(input_shape, hrnet_input, output_channels)
 
     def _build_model(self):
-        mask = tf.reduce_max(self.hrnet_input, axis=-1, keepdims=True)
-        pool = layers.MaxPool2D(pool_size=[2, 2])(mask)
+        # mask = tf.reduce_max(self.hrnet_input, axis=-1, keepdims=True)
+        pool = layers.MaxPool2D(pool_size=[2, 2])(self.hrnet_input)
         pool = layers.BatchNormalization(momentum=BN_MOMENTUM)(pool)
         pool = layers.AlphaDropout(0.1)(pool)
         conv = layers.Conv2D(32, kernel_size=5, padding="valid")(pool)  # 116x156x32

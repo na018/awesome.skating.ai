@@ -86,8 +86,8 @@ class MainLoop(object):
 
         set_gpus(GPU)
 
-        self.iter, self.sample_frame, self.sample_mask, self.sample_kps = self._generate_dataset(BG)
-        self.iter_test, _, _, _ = self._generate_dataset(BG, test=True)
+        self.generator, self.iter, self.sample_frame, self.sample_mask, self.sample_kps = self._generate_dataset(BG)
+        _, self.iter_test, _, _, _ = self._generate_dataset(BG, test=True)
         self.base_model = self._get_hrnet_model()
 
         # prepare hp model training
@@ -132,17 +132,17 @@ class MainLoop(object):
         # self.loss_fn = tf.keras.losses.MeanSquaredError()
 
     def _generate_dataset(self, BG: bool, test: bool = False, sequential: bool = False):
-        self.generator = DsGenerator(resize_shape_x=240, rgb=BG, test=test, sequential=sequential)
+        generator = DsGenerator(resize_shape_x=240, rgb=BG, test=test, sequential=sequential)
 
-        sample_pair: DsPair = next(self.generator.get_next_pair())
+        sample_pair: DsPair = next(generator.get_next_pair())
 
         self.IMG_SHAPE = sample_pair['frame'].shape
         self.N_CLASS = np.max(sample_pair['mask']).astype(int) + 1
         self.KPS_COUNT = len(sample_pair['kps'])
 
-        ds = self.generator.build_iterator(self.BATCH_SIZE, self.PREFETCH_BATCH_BUFFER)
+        ds = generator.build_iterator(self.BATCH_SIZE, self.PREFETCH_BATCH_BUFFER)
 
-        return ds.as_numpy_iterator(), sample_pair['frame'], sample_pair['mask'], sample_pair['kps']
+        return generator, ds.as_numpy_iterator(), sample_pair['frame'], sample_pair['mask'], sample_pair['kps']
 
     def _get_hrnet_model(self) -> tf.keras.Model:
         hrnet = self.MODEL_HP(self.IMG_SHAPE, int(self.N_CLASS))
@@ -201,15 +201,15 @@ class MainLoop(object):
             lr = lr_start * (
                     1. / (1. + optimizer_decay * (epoch - w_counter) * self.EPOCH_STEPS))
         elif optimizer_name == 'sgd_clr':
+            lr = lr_start * 1 / (1 + optimizer_decay * step_custom_lr)
+
             if metric_avg_acc.is_curve_steep() == False:
                 _optimizer = self._get_optimizer(optimizer_name, lr_start, params,
-                                                 decay_rate_counter, optimizer_decay
-                                                 )
+                                                 decay_rate_counter, optimizer_decay)
                 step_custom_lr = 0
-            lr = lr_start * 1 / (1 + optimizer_decay * step_custom_lr)
         else:
             lr = lr_start
-        return _optimizer, lr
+        return _optimizer, lr, step_custom_lr
 
     def _track_logs(self, subdir: str, model, log_detail: bool = False):
         log_dir = f"{Path.cwd()}/logs/metrics/{subdir}/{self.NAME}/{datetime.now().strftime('%Y_%m_%d__%H_%M')}"
@@ -315,7 +315,7 @@ class MainLoop(object):
         self.optimizer_kps.apply_gradients(zip(grads, self.model.trainable_weights))
         self.metric_kps_loss_train.append(float(loss_value))
 
-        return batch['kps'], tf.abs(logits)
+        return self.kps_loss_fn.y_true_maps, tf.abs(logits)
 
     def _extract_bg(self):
         pass
@@ -334,7 +334,10 @@ class MainLoop(object):
         if self.TRAIN_HP:
             hp_file_writer_test, hp_progress_tracker, log_dir = self._track_logs('hp', self.base_model)
         if self.TRAIN_KPS:
-            kps_file_writer_test, kps_progress_tracker, log_dir = self._track_logs('kps', self.model)
+            if self.kps_loss_fn.name == 'KPSLoss':
+                kps_file_writer_test, kps_progress_tracker, log_dir = self._track_logs('kps_map', self.model)
+            else:
+                kps_file_writer_test, kps_progress_tracker, log_dir = self._track_logs('kps', self.model)
 
         if self.EPOCH_START == -1:
             start = 0
@@ -377,11 +380,14 @@ class MainLoop(object):
             if epoch % self.EPOCH_LOG_N == 0:
 
                 if self.TRAIN_HP:
-                    _optimizer_hp, hp_lr = self._calculate_lr(epoch,
-                                                              hp_metric_avg_acc_body_part, self.OPTIMIZER_NAME_KPS,
-                                                              self.optimizer_decay_kps, self.decay_rate_kps,
-                                                              self.PARAMS_KPS,
-                                                              self.W_COUNTER_KPS, self.LR_START_KPS, step_custom_lr_kps)
+                    _optimizer_hp, hp_lr, step_custom_lr_hp = self._calculate_lr(epoch,
+                                                                                 hp_metric_avg_acc_body_part,
+                                                                                 self.OPTIMIZER_NAME_HP,
+                                                                                 self.optimizer_decay_hp,
+                                                                                 self.hp_decay_rate_counter,
+                                                                                 self.PARAMS_HP,
+                                                                                 self.W_COUNTER_HP, self.LR_START_HP,
+                                                                                 step_custom_lr_hp)
 
                     if _optimizer_hp:
                         self.optimizer_hp = _optimizer_hp
@@ -404,12 +410,15 @@ class MainLoop(object):
                     logger.log(f"Body Parts [loss]: {hp_loss} [loss test]: {hp_loss_test}")
 
                 if self.TRAIN_KPS:
-                    _optimizer_kps, kps_lr = self._calculate_lr(epoch,
-                                                                kps_metric_avg_acc, self.OPTIMIZER_NAME_KPS,
-                                                                self.optimizer_decay_kps, self.decay_rate_kps,
-                                                                self.PARAMS_KPS,
-                                                                self.W_COUNTER_KPS, self.LR_START_KPS,
-                                                                step_custom_lr_kps)
+                    _optimizer_kps, kps_lr, step_custom_lr_kps = self._calculate_lr(epoch,
+                                                                                    kps_metric_avg_acc,
+                                                                                    self.OPTIMIZER_NAME_KPS,
+                                                                                    self.optimizer_decay_kps,
+                                                                                    self.kps_decay_rate_counter,
+                                                                                    self.PARAMS_KPS,
+                                                                                    self.W_COUNTER_KPS,
+                                                                                    self.LR_START_KPS,
+                                                                                    step_custom_lr_kps)
 
                     if _optimizer_kps:
                         self.optimizer_kps = _optimizer_kps
@@ -432,50 +441,6 @@ class MainLoop(object):
         if self.TRAIN_KPS and not self.TRAIN_HP:
             kps_progress_tracker.log_on_train_end()
 
-    # def start_train_loop(self):
-    #     file_writer_train, file_writer_test, progress_tracker, log_v, log2 = self._track_logs()
-    #     self.metric_loss = Metric('loss')
-    #
-    #     if self.EPOCH_START == -1:
-    #         start = 0
-    #     else:
-    #         start = self.EPOCH_START
-    #
-    #     for epoch in range(start, self.EPOCHS):
-    #         log2.log(message=f"Start of epoch {epoch}", block=True)
-    #
-    #         for step in range(self.EPOCH_STEPS):
-    #             log_v.log(message=f"Step {step}", block=True)
-    #             batch: DsPair = next(self.iter)
-    #             log_v.log(message=f"got batch")
-    #
-    #             with tf.GradientTape() as tape:
-    #                 logits = self.model(batch['frame'], training=True)
-    #                 self.loss_value = self.loss_fn(batch['kps'], logits)
-    #
-    #             log_v.log(message=f"Calculated Logits & loss value")
-    #             grads = tape.gradient(self.loss_value, self.model.trainable_weights)
-    #             log_v.log(message=f"Calculated Grads")
-    #
-    #             self.optimizer.apply_gradients(zip(grads, self.model.trainable_weights))
-    #             log_v.log(message=f"Optimized gradients")
-    #
-    #             self.metric_loss.append(self.loss_value)
-    #             self.step_custom_lr += 1
-    #
-    #         if epoch % self.EPOCH_LOG_N == 0:
-    #             log2.log(
-    #                 message=f"loss: [{self.loss_value.numpy()}]", block=False)
-    #
-    #             progress_tracker.track_img_on_epoch_end(epoch,
-    #                                                     loss=self.metric_loss.get_median(),
-    #                                                     show_img=False)
-    #             progress_tracker.on_epoch_end(epoch, {'loss2': self.loss_value.numpy()})
-    #
-    #             log2.log(message=f"Seen images: {self.generator.seen_samples}", block=True)
-    #
-    #     progress_tracker.on_train_end()
-    #     log_v.log_end()
 
 
 if __name__ == "__main__":

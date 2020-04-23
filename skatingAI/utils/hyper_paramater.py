@@ -4,6 +4,7 @@ import tensorflow as tf
 
 import skatingAI.nets.hrnet as hrnet
 import skatingAI.nets.keypoint as kp_net
+from skatingAI.utils.KPSLoss import KPSLoss
 from skatingAI.utils.losses import CILoss
 
 
@@ -29,10 +30,10 @@ class GeneralTrainParams(object):
                  wcounter_hp: int = -1,
                  wcounter_kps: int = -1,
                  epoch_start: int = 0,
-                 batch_size: int = 3,
-                 epoch_steps: int = 64,
-                 epochs: int = 5556,
-                 epoch_log_n: int = 5):
+                 batch_size: int = 2,
+                 epoch_steps: int = 2,
+                 epochs: int = 12,
+                 epoch_log_n: int = 1):
         self.gpu = gpu
         self.wcounter_hp = wcounter_hp
         self.wcounter_kps = wcounter_kps
@@ -213,5 +214,15 @@ KeyPointDetectorHyperParameters = [
         params=HyperParameterParams(epsilon=1e-8, amsgrad=True),
         description='Train 4 MaxPool-Conv modules<br>'
                     '& 2 relu+sigmoid Dense modules'
+    ),
+    HyperParameter(
+        name='blockl_kps_loss',
+        model=kp_net.v3.KPDetector,
+        optimizer_name='adam',
+        learning_rate=1e-3,
+        loss_fct=KPSLoss(11),
+        params=HyperParameterParams(epsilon=1e-8, amsgrad=True),
+        description='Train block_l with 11 classes<br>'
+                    '& KPSLoss'
     )
 ]

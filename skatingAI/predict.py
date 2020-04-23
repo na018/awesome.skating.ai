@@ -40,7 +40,7 @@ class Predictor(object):
         self.img_path = img_path
         self.video_path = video_path
         self.save = save_path
-        self.DsGenerator = DsGenerator(resize_shape=(240, 320), rgb=False,
+        self.DsGenerator = DsGenerator(resize_shape_x=(240, 320), rgb=False,
                                        single_random_frame=random_image or len(img_path) > 1)
         self.weight_path = f"{os.getcwd()}/ckpt{gpu}/hrnet-{weight_counter}.ckpt"
         self.dir_save = f"{os.getcwd()}/predictions/{nn_version}_{weight_counter}"

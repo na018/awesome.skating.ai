@@ -288,22 +288,33 @@ class DisplayCallback(tf.keras.callbacks.TensorBoard):
             f"{Path.cwd()}/ckpt{self.gpu}/{self.sub_dir}-{epoch}.ckpt")
 
         predicted_mask = create_mask(self.base_model.predict(self.sample_image[tf.newaxis, ...])[0])
+
         predicted_kp = self.model.predict(self.sample_image[tf.newaxis, ...])[0]
-        predicted_kp = kps_upscale_reshape(predicted_mask.shape, predicted_kp)
+
+        # predicted_kp = self.model.predict(self.sample_image[tf.newaxis, ...])[0]
 
         K.clear_session()
 
         true_circles, predicted_circles = [], []
-        if self.sub_dir == 'kps':
+        if 'kps' in self.sub_dir:
             for kp in self.sample_kp:
                 true_circles.append(plt.Circle(kp, 3, alpha=0.9, fill=False, linewidth=2., edgecolor='white'))
-            for kp in predicted_kp:
-                predicted_circles.append(plt.Circle(kp, 3, alpha=0.9, fill=False, linewidth=2., edgecolor='white'))
+            if self.sub_dir == 'kps':
+                predicted_kp = kps_upscale_reshape(predicted_mask.shape, predicted_kp)
+                for kp in predicted_kp:
+                    predicted_circles.append(plt.Circle(kp, 3, alpha=0.9, fill=False, linewidth=2., edgecolor='white'))
 
         title = ['Input Image', 'True Mask', 'Predicted Mask & Keypoints']
-        display_imgs = [[tf.keras.preprocessing.image.array_to_img(self.sample_image), []],
-                        [tf.keras.preprocessing.image.array_to_img(self.sample_mask), true_circles],
-                        [tf.keras.preprocessing.image.array_to_img(predicted_mask), predicted_circles]]
+        if self.sub_dir == 'kps':
+            display_imgs = [[tf.keras.preprocessing.image.array_to_img(self.sample_image), []],
+                            [tf.keras.preprocessing.image.array_to_img(self.sample_mask), true_circles],
+                            [tf.keras.preprocessing.image.array_to_img(predicted_mask), predicted_circles]]
+        else:
+            predicted_kp_img = tf.argmax(predicted_kp, axis=-1)
+            display_imgs = [[tf.keras.preprocessing.image.array_to_img(self.sample_image), []],
+                            [tf.keras.preprocessing.image.array_to_img(self.sample_mask), true_circles],
+                            [predicted_kp_img, []]]
+
         # plt.figure(figsize=(15, 4))
         # fig, ax = plt.subplots()
         fig = plt.figure(figsize=(15, 4))
