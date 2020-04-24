@@ -28,10 +28,10 @@ class TrainProgram(object):
             wcounter_hp=-1,
             wcounter_kps=-1,
             epoch_start=0,
-            batch_size=2,
-            epoch_steps=2,
-            epochs=12,
-            epoch_log_n=1
+            batch_size=3,
+            epoch_steps=64,
+            epochs=5556,
+            epoch_log_n=5
         )
         train_hp, train_kps = False, False
         print('\n' * 2)

@@ -30,10 +30,10 @@ class GeneralTrainParams(object):
                  wcounter_hp: int = -1,
                  wcounter_kps: int = -1,
                  epoch_start: int = 0,
-                 batch_size: int = 2,
-                 epoch_steps: int = 2,
-                 epochs: int = 12,
-                 epoch_log_n: int = 1):
+                 batch_size: int = 3,
+                 epoch_steps: int = 64,
+                 epochs: int = 5556,
+                 epoch_log_n: int = 5):
         self.gpu = gpu
         self.wcounter_hp = wcounter_hp
         self.wcounter_kps = wcounter_kps

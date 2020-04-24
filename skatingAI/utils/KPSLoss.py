@@ -1,4 +1,3 @@
-import matplotlib.pyplot as plt
 import numpy as np
 import tensorflow as tf
 import tensorflow.keras.backend as K
@@ -65,19 +64,8 @@ class KPSLoss(tf.keras.losses.Loss):
                     feature_map[y - gaussian_size // 2:y + gaussian_size // 2 + 1,
                     x - gaussian_size // 2: x + gaussian_size // 2 + 1] = gaussian_kernel
                 feature_maps.append(feature_map)
-                plt.imsave(f"/home/nadin-katrin/Downloads/pics/{ii}.png", feature_map)
-                ii += 1
-            # for kps in y_kps:
-            #     feature_map = np.zeros(map_shape)
-            #     x, y = np.int(kps[0]), np.int(kps[1])
-            #     feature_map[y-gaussian_size//2:y + gaussian_size//2+1, x-gaussian_size//2: x + gaussian_size//2+1] = gaussian_kernel
-            #     feature_maps.append(feature_map)
-            #     plt.imsave(f"/home/nadin-katrin/Downloads/pics/{ii}.png", feature_map)
-            #     ii+=1
 
             y_true_maps.append(np.transpose(feature_maps, (1, 2, 0)))
-            img = tf.argmax(np.transpose(feature_maps, (1, 2, 0)), axis=-1)
-            plt.imsave(f"/home/nadin-katrin/Downloads/pics/final.png", img)
 
         y_true_maps = np.array(y_true_maps)
         self.y_true_maps = y_true_maps
