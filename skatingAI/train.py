@@ -97,9 +97,9 @@ class MainLoop(object):
                                                 self.optimizer_decay_hp)
         self.base_model.summary()
         tf.keras.utils.plot_model(
-            self.base_model, to_file=f'{self.NAME}_e.png', show_shapes=True, expand_nested=True)
+            self.base_model, to_file=f'nets/imgs/{self.NAME}_e.png', show_shapes=True, expand_nested=True)
         tf.keras.utils.plot_model(
-            self.base_model, to_file=f'{self.NAME}.png', show_shapes=True, expand_nested=False)
+            self.base_model, to_file=f'nets/imgs/{self.NAME}.png', show_shapes=True, expand_nested=False)
 
         # prepare kps model training
         self.decay_rate_kps, self.optimizer_decay_kps = PARAMS_KPS.sgd_clr_decay_rate, PARAMS_KPS.decay
@@ -111,9 +111,9 @@ class MainLoop(object):
         self.model.summary()
         if self.TRAIN_KPS:
             tf.keras.utils.plot_model(
-                self.model, to_file=f'{self.NAME}_e.png', show_shapes=True, expand_nested=True)
+                self.model, to_file=f'nets/imgs/{self.NAME}_e.png', show_shapes=True, expand_nested=True)
             tf.keras.utils.plot_model(
-                self.model, to_file=f'{self.NAME}.png', show_shapes=True, expand_nested=False)
+                self.model, to_file=f'nets/imgs/{self.NAME}.png', show_shapes=True, expand_nested=False)
 
         self.metric_hp_correct_px_train = Metric('hp_correct_px')
         self.metric_hp_correct_px_test = Metric('hp_correct_px')

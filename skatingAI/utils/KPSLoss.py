@@ -65,7 +65,12 @@ class KPSLoss(tf.keras.losses.Loss):
                     x - gaussian_size // 2: x + gaussian_size // 2 + 1] = gaussian_kernel
                 feature_maps.append(feature_map)
 
-            y_true_maps.append(np.transpose(feature_maps, (1, 2, 0)))
+            feature_maps = np.transpose(feature_maps, (1, 2, 0))
+            all_keypoints = np.argmax(feature_maps, axis=-1)
+            all_keypoints[all_keypoints > 0] = 1
+            feature_map_bg = np.ones(feature_map.shape) - all_keypoints
+            feature_maps = np.insert(feature_maps, 0, feature_map_bg, axis=-1)
+            y_true_maps.append(feature_maps)
 
         y_true_maps = np.array(y_true_maps)
         self.y_true_maps = y_true_maps

@@ -9,7 +9,7 @@ BN_MOMENTUM = 0.01
 
 
 class KPDetector(KPDetectorBase):
-    def __init__(self, input_shape, hrnet_input: tf.keras.Model, output_channels=11):
+    def __init__(self, input_shape, hrnet_input: tf.keras.Model, output_channels=12):
         super().__init__(input_shape, hrnet_input, output_channels)
 
     def _build_model(self):
@@ -31,7 +31,7 @@ class KPDetector(KPDetectorBase):
 
         concat = layers.concatenate([block_l, block_m, block_s, block_xs, ])
 
-        self.outputs = layers.Conv2D(filters=11, kernel_size=3,
+        self.outputs = layers.Conv2D(filters=12, kernel_size=3,
                                      activation='softmax',
                                      padding="same",
                                      name=f"output")(concat)
