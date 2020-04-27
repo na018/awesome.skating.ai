@@ -2,10 +2,12 @@ This is BibTeX, Version 0.99d (TeX Live 2017/Debian)
 Capacity: max_strings=100000, hash_size=100000, hash_prime=85009
 The top-level auxiliary file: main.aux
 The style file: biblatex.bst
-A level-1 auxiliary file: Chapters/Introduction.aux
-A level-1 auxiliary file: Chapters/Methodology.aux
-A level-1 auxiliary file: Chapters/Experiments.aux
-A level-1 auxiliary file: Chapters/Conclusion.aux
+A level-1 auxiliary file: Chapters/00_Introduction.aux
+A level-1 auxiliary file: Chapters/01_FigureSkating.aux
+A level-1 auxiliary file: Chapters/02_Dataset.aux
+A level-1 auxiliary file: Chapters/03_Method.aux
+A level-1 auxiliary file: Chapters/04_Experiments.aux
+A level-1 auxiliary file: Chapters/05_Conclusion.aux
 A level-1 auxiliary file: Appendices/AppendixA.aux
 Reallocated glb_str_ptr (elt_size=4) to 20 items from 10.
 Reallocated global_strs (elt_size=20001) to 20 items from 10.
@@ -28,7 +30,7 @@ Reallocated wiz_functions (elt_size=4) to 9000 items from 6000.
 Reallocated singl_function (elt_size=4) to 100 items from 50.
 You've used 1 entry,
             6268 wiz_defined-function locations,
-            1183 strings with 8678 characters,
+            1185 strings with 8737 characters,
 and the built_in function-call counts, 1205 in all, are:
 = -- 58
 > -- 52
