@@ -154,7 +154,7 @@ class MainLoop(object):
         model = hrnet.model
 
         if self.W_COUNTER_HP != -1:
-            model.load_weights(f"./ckpt1/hp-{self.W_COUNTER_HP}.ckpt")
+            model.load_weights(f"./ckpt{self.GPU}/hp-{self.W_COUNTER_HP}.ckpt")
         elif not self.TRAIN_HP:
             model.load_weights(f"./ckpt/hrnet-4400.ckpt")
         if not self.TRAIN_HP:
@@ -167,7 +167,7 @@ class MainLoop(object):
                                      output_channels=int(self.KPS_COUNT))
         model = kp_detector.model
         if self.W_COUNTER_KPS != -1:
-            model.load_weights(f"./ckpt1/{self.kps_subdir}-{self.W_COUNTER_KPS}.ckpt")
+            model.load_weights(f"./ckpt{self.GPU}/{self.kps_subdir}-{self.W_COUNTER_KPS}.ckpt")
 
         return model
 
