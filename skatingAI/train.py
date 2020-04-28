@@ -84,6 +84,10 @@ class MainLoop(object):
         self.N_CLASS: int = 9
         self.IMG_SHAPE: [int, int, int] = (240, 320, 3)
 
+        self.kps_subdir = 'kps'
+        if self.kps_loss_fn.name == 'KPSLoss':
+            self.kps_subdir = 'kps_map'
+
         set_gpus(GPU)
 
         self.generator, self.iter, self.sample_frame, self.sample_mask, self.sample_kps = self._generate_dataset(BG)
@@ -163,7 +167,7 @@ class MainLoop(object):
                                      output_channels=int(self.KPS_COUNT))
         model = kp_detector.model
         if self.W_COUNTER_KPS != -1:
-            model.load_weights(f"./ckpt1/kps-{self.W_COUNTER_KPS}.ckpt")
+            model.load_weights(f"./ckpt1/{self.kps_subdir}-{self.W_COUNTER_KPS}.ckpt")
 
         return model
 
@@ -240,10 +244,10 @@ class MainLoop(object):
                 (self.hp_loss_fn.correct_body_part_pred / self.hp_loss_fn.body_part_px_n_true).astype(np.float32))
 
     def _test_model_hp(self, file_writer: ResourceSummaryWriter, epoch: int,
-                       sequential: bool = False, test_amount: int = 3):
+                       sequential: bool = False):
         test_accuracy = tf.keras.metrics.Accuracy()
 
-        for i in range(test_amount):
+        for i in range(self.EPOCH_STEPS):
             # training=False is needed only if there are layers with different
             # behavior during training versus inference (e.g. Dropout).
             batch = next(self.iter_test)
@@ -272,13 +276,13 @@ class MainLoop(object):
         return test_accuracy.result()
 
     def _test_model_kps(self, file_writer: ResourceSummaryWriter, epoch: int,
-                        sequential: bool = False,
-                        test_amount: int = 3) -> float:
+                        sequential: bool = False) -> float:
 
-        batch = next(self.iter_test)
-        logits = self.model(batch['frame'], training=False)
-        loss_value = self.kps_loss_fn(batch['kps'], logits)
-        self.metric_kps_loss_test.append(float(loss_value))
+        for _ in range(self.EPOCH_STEPS):
+            batch = next(self.iter_test)
+            logits = self.model(batch['frame'], training=False)
+            loss_value = self.kps_loss_fn(batch['kps'], logits)
+            self.metric_kps_loss_test.append(float(loss_value))
 
         with file_writer.as_default():
             tf.summary.scalar(self.metric_kps_loss_test.name, self.metric_kps_loss_test.get_median(), step=epoch)
@@ -330,21 +334,19 @@ class MainLoop(object):
         time_start = 0
         logger = Logger()
         hp_progress_tracker, kps_progress_tracker = None, None
+        hp_file_writer_test, kps_file_writer_test = None, None
 
         if self.TRAIN_HP:
             hp_file_writer_test, hp_progress_tracker, log_dir = self._track_logs('hp', self.base_model)
         if self.TRAIN_KPS:
-            if self.kps_loss_fn.name == 'KPSLoss':
-                kps_file_writer_test, kps_progress_tracker, log_dir = self._track_logs('kps_map', self.model)
-            else:
-                kps_file_writer_test, kps_progress_tracker, log_dir = self._track_logs('kps', self.model)
+            kps_file_writer_test, kps_progress_tracker, log_dir = self._track_logs(self.kps_subdir, self.model)
 
         if self.EPOCH_START == -1:
             start = 0
         else:
             start = self.EPOCH_START
 
-        for epoch in range(start, self.EPOCHS):
+        for epoch in range(start, self.EPOCHS + start):
 
             if epoch == 3:
                 time_start = time.perf_counter()
@@ -360,7 +362,7 @@ class MainLoop(object):
                     kps_metric_avg_acc.append(kps_train_acc_metric.result())
                     step_custom_lr_kps += 1
 
-            if epoch == 3:
+            if epoch == start + 3:
                 if self.TRAIN_HP:
                     hp_progress_tracker \
                         .track_metrics_on_train_start(self.base_model, self.NAME, self.OPTIMIZER_NAME_HP,
@@ -407,7 +409,8 @@ class MainLoop(object):
                     hp_loss_test = self._test_model_hp(hp_file_writer_test, epoch)
                     hp_train_acc_metric.reset_states()
 
-                    logger.log(f"Body Parts [loss]: {hp_loss} [loss test]: {hp_loss_test}")
+                    logger.log(
+                        f"[{self.epoch}:{self.EPOCHS + start}]: Body Parts [loss]: {hp_loss} [loss test]: {hp_loss_test}")
 
                 if self.TRAIN_KPS:
                     _optimizer_kps, kps_lr, step_custom_lr_kps = self._calculate_lr(epoch,
@@ -432,7 +435,8 @@ class MainLoop(object):
                     kps_loss_test = self._test_model_kps(kps_file_writer_test, epoch)
                     kps_train_acc_metric.reset_states()
 
-                    logger.log(f"Keypoint [loss]: {kps_loss} [loss test]: {kps_loss_test}")
+                    logger.log(
+                        f"[{self.epoch}:{self.EPOCHS + start}]:Keypoint [loss]: {kps_loss} [loss test]: {kps_loss_test}")
 
                 logger.log(message=f"Seen images: {self.generator.seen_samples}", block=True)
 

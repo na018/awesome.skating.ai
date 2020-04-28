@@ -253,7 +253,7 @@ class DisplayCallback(tf.keras.callbacks.TensorBoard):
         self.gpu = gpu
         # self.log_dir = log_dir
         # self.write_images = True
-        self.histogram_freq = 1
+        self.histogram_freq = 10
 
     def track_metrics_on_train_start(self, model: tf.keras.Model, name, optimizer_name, loss_function, learning_rate,
                                      train_hp: bool, train_kps: bool, training_time, epochs, epoch_steps, batch_size,

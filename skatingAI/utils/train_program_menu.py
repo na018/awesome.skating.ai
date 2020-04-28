@@ -45,31 +45,31 @@ class TrainProgram(object):
         if index == 0:
             print('Cool, you will stick to the default general setting.')
         else:
-            gpu = input(f'Please choose a gpu to train on [1,2,3]: [{general_train_params.gpu}]')
-            general_train_params.gpu = int(gpu) if self._parse_if_int(gpu) in [1, 2, 3] else general_train_params.gpu
+            gpu = input(f'Please choose a gpu to train on [0,1,2,3]: [{general_train_params.gpu}] ')
+            general_train_params.gpu = int(gpu) if self._parse_if_int(gpu) else general_train_params.gpu
             wcounter_hp = input(
-                f'Please choose a weight counter index for the body parts pre-training: [{general_train_params.wcounter_hp}]')
+                f'Please choose a weight counter index for the body parts pre-training: [{general_train_params.wcounter_hp}] ')
             general_train_params.wcounter_hp = int(wcounter_hp) if self._parse_if_int(
                 wcounter_hp) else general_train_params.wcounter_hp
             wcounter_kps = input(
-                f'Please choose a weight counter index for the keypoints pre-training: [{general_train_params.wcounter_kps}]')
+                f'Please choose a weight counter index for the keypoints pre-training: [{general_train_params.wcounter_kps}] ')
             general_train_params.wcounter_kps = int(wcounter_kps) if self._parse_if_int(
                 wcounter_kps) else general_train_params.wcounter_kps
             epoch_start = input(
-                f'Please choose the epoch you want to start the training from: [{general_train_params.epoch_start}]')
+                f'Please choose the epoch you want to start the training from: [{general_train_params.epoch_start}] ')
             general_train_params.epoch_start = int(epoch_start) if self._parse_if_int(
                 epoch_start) else general_train_params.epoch_start
-            batch_size = input(f'Please choose the batch_size: [{general_train_params.batch_size}]')
+            batch_size = input(f'Please choose the batch_size: [{general_train_params.batch_size}] ')
             general_train_params.batch_size = int(batch_size) if self._parse_if_int(
                 batch_size) else general_train_params.batch_size
-            epochs = input(f'Please choose the maximum epochs for the training loop: [{general_train_params.epochs}]')
+            epochs = input(f'Please choose the maximum epochs for the training loop: [{general_train_params.epochs}] ')
             general_train_params.epochs = int(epochs) if self._parse_if_int(epochs) else general_train_params.epochs
             epoch_steps = input(
-                f'Please choose how many steps you want to train for every epoch: [{general_train_params.epoch_steps}]')
+                f'Please choose how many steps you want to train for every epoch: [{general_train_params.epoch_steps}] ')
             general_train_params.epoch_steps = int(epoch_steps) if self._parse_if_int(
                 epoch_steps) else general_train_params.epoch_steps
             epoch_log_n = input(
-                f'Please choose after how many epochs you need logging information: [{general_train_params.epoch_log_n}]')
+                f'Please choose after how many epochs you need logging information: [{general_train_params.epoch_log_n}] ')
             general_train_params.epoch_log_n = int(epoch_log_n) if self._parse_if_int(
                 epoch_log_n) else general_train_params.epoch_log_n
 

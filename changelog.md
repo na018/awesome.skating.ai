@@ -26,7 +26,7 @@
         - combine add and concat of layers
         - always add the initial Input layer to concat/ add
         - performs best
-    ![HRNet Model Architecture](skatingAI/hrnet_v8.png)  
+    ![HRNet Model Architecture](skatingAI/nets/imgs/hrnet_v8.png)  
 - create new custom loss function for Class Imbalance
     - create weighed map according to a calculated graph with the relative body part distances
 - reduce classes to 9

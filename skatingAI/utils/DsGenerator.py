@@ -41,17 +41,20 @@ class DsGenerator(object):
         self.video_amount: int = len(self.file_names)
         self.test_start = int(self.video_amount * 0.9)
         self.train_end = self.test_start - 1
-        self.seen_samples = 0
-        self.sequential = sequential
-        self.test = test
+        self.seen_samples: int = 0
+        self.sequential: bool = sequential
+        self.test: bool = test
 
-        self.video, self.mask, self.kps = self._get_random_video_mask_kp(test)
+        self.video, self.mask, self.kps, self.video_name = self._get_random_video_mask_kp(test)
+        self.video_size: int = len(self.kps)
+        self.frame_i: int = 0
+        print(self.video_size)
 
         if resize_shape_x:
             self.resize_factor = self.video.shape[1] // resize_shape_x
             self.resize_shape = (resize_shape_x, self.video.shape[2] // self.resize_factor)
 
-    def _get_random_video_mask_kp(self, test: bool = False) -> Tuple[Video, VideoMask, KeyPoints]:
+    def _get_random_video_mask_kp(self, test: bool = False) -> Tuple[Video, VideoMask, KeyPoints, str]:
         if test or self.test:
             random_n: int = int(random.randint(self.test_start, self.video_amount - 1))
         else:
@@ -70,7 +73,7 @@ class DsGenerator(object):
         mask: np.ndarray = mask.reshape((*mask_shape, -1))
         kps: np.ndarray = np.load(f"{self.video_path_kps}/{self.file_names[random_n]}")['arr_0']
 
-        return video, mask, kps
+        return video, mask, kps, self.file_names[random_n].split('.')[0]
 
     def get_image_amount(self) -> int:
         img_counter = 0
@@ -81,16 +84,18 @@ class DsGenerator(object):
         return img_counter
 
     def set_new_video(self, test: bool = False):
-        self.video, self.mask, self.kps = self._get_random_video_mask_kp(test)
+        self.video, self.mask, self.kps, self.video_name = self._get_random_video_mask_kp(test)
 
-    def get_next_pair(self, frame_i: int = -1, test: bool = False) -> Generator:
+    def get_next_pair(self) -> Generator:
         for _ in itertools.count(1):
-            if frame_i != -1 or self.sequential:
-                print('sequential')
-                _frame_i: int = frame_i
-                video_i, mask_i, kps_i = self.video[_frame_i], self.mask[_frame_i], self.kps[_frame_i]
+            if self.sequential:
+                _frame_i: int = self.frame_i
+                video_i, mask_i, kps_i, video_name = self.video[_frame_i], self.mask[_frame_i], self.kps[
+                    _frame_i], self.video_name
+                if self.frame_i + 1 < self.video_size:
+                    self.frame_i += 1
             else:
-                video, mask, kps = self._get_random_video_mask_kp(test)
+                video, mask, kps, video_name = self._get_random_video_mask_kp(self.test)
                 _frame_i: int = random.randint(0, video.shape[0] - 1)
                 video_i, mask_i, kps_i = video[_frame_i], mask[_frame_i], kps[_frame_i]
 
@@ -114,14 +119,14 @@ class DsGenerator(object):
 
             self.seen_samples += 1
 
-            yield {'frame': frame_n, 'mask': mask_n, 'kps': kps_n, 'size': 1}
+            yield {'frame': frame_n, 'mask': mask_n, 'kps': kps_n}
 
     def build_iterator(self, batch_size: int = 10,
                        prefetch_batch_buffer: int = 5) -> tf.data.Dataset:
 
         dataset = tf.data.Dataset.from_generator(self.get_next_pair,
                                                  output_types={'frame': tf.float32, 'mask': tf.float32,
-                                                               'kps': tf.float64, 'size': tf.int8})
+                                                               'kps': tf.float64})
 
         dataset = dataset.batch(batch_size)
         dataset = dataset.prefetch(prefetch_batch_buffer)

@@ -220,9 +220,20 @@ KeyPointDetectorHyperParameters = [
         model=kp_net.v3.KPDetector,
         optimizer_name='adam',
         learning_rate=1e-3,
-        loss_fct=KPSLoss(12),
+        loss_fct=KPSLoss(11),
         params=HyperParameterParams(epsilon=1e-8, amsgrad=True),
         description='Train block_l with 11 keypoint classes<br>'
                     '& one background class with KPSLoss'
+    ),
+    HyperParameter(
+        name='blockl_kps_loss_sgd_clr',
+        model=kp_net.v3.KPDetector,
+        optimizer_name='sgd_clr',
+        learning_rate=1e-3,
+        loss_fct=KPSLoss(11),
+        params=HyperParameterParams(sgd_clr_decay_rate=[1e-2, 1e-3, 1e-4, 1e-5], decay=0.1),
+        description='Train block_l with 11 keypoint classes<br>'
+                    '& one background class with KPSLoss<br>'
+                    '& sgd_clr'
     )
 ]
