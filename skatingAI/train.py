@@ -410,7 +410,7 @@ class MainLoop(object):
                     hp_train_acc_metric.reset_states()
 
                     logger.log(
-                        f"[{self.epoch}:{self.EPOCHS + start}]: Body Parts [loss]: {hp_loss} [loss test]: {hp_loss_test}")
+                        f"[{epoch}:{self.EPOCHS + start}]: Body Parts [loss]: {hp_loss} [loss test]: {hp_loss_test}")
 
                 if self.TRAIN_KPS:
                     _optimizer_kps, kps_lr, step_custom_lr_kps = self._calculate_lr(epoch,
@@ -436,7 +436,7 @@ class MainLoop(object):
                     kps_train_acc_metric.reset_states()
 
                     logger.log(
-                        f"[{self.epoch}:{self.EPOCHS + start}]:Keypoint [loss]: {kps_loss} [loss test]: {kps_loss_test}")
+                        f"[{epoch}:{self.EPOCHS + start}]:Keypoint [loss]: {kps_loss} [loss test]: {kps_loss_test}")
 
                 logger.log(message=f"Seen images: {self.generator.seen_samples}", block=True)
 
