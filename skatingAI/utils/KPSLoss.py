@@ -43,7 +43,8 @@ class KPSLoss(tf.keras.losses.Loss):
             loss value
         """
         map_shape = self.y_pred.shape[1:3]
-        gaussian_size = 5
+        gaussian_size = 6
+        gs_h = gaussian_size // 2
         gaussian_kernel = self.gkern(gaussian_size)
         y_true_maps = []
 
@@ -57,18 +58,19 @@ class KPSLoss(tf.keras.losses.Loss):
             joints = [[0], [1], [2], [3, 7], [4, 8], [5, 9], [6, 10], [11, 15],
                       [12, 16], [13, 17], [14, 18]]
             for joint in joints:
-                feature_map = np.zeros(map_shape)
+                feature_map = np.zeros((map_shape[0] + gaussian_size, map_shape[1] + gaussian_size))
                 for idx in joint:
                     kps = y_kps[idx]
-                    x, y = np.int(kps[0]), np.int(kps[1])
-                    feature_map[y - gaussian_size // 2:y + gaussian_size // 2 + 1,
-                    x - gaussian_size // 2: x + gaussian_size // 2 + 1] = gaussian_kernel
+                    # prevent errors if x or y is add the edges
+                    x, y = np.int(kps[0]) + gs_h, np.int(kps[1]) + gs_h
+                    feature_map[y - gs_h:y + gs_h, x - gs_h: x + gs_h] = gaussian_kernel
                 feature_maps.append(feature_map)
 
-            feature_maps = np.transpose(feature_maps, (1, 2, 0))
+            feature_maps = np.array(feature_maps)
+            feature_maps = np.transpose(feature_maps[:, gs_h: -gs_h, gs_h: -gs_h], (1, 2, 0))
             all_keypoints = np.argmax(feature_maps, axis=-1)
             all_keypoints[all_keypoints > 0] = 1
-            feature_map_bg = np.ones(feature_map.shape) - all_keypoints
+            feature_map_bg = np.ones(map_shape) - all_keypoints
             feature_maps = np.insert(feature_maps, 0, feature_map_bg, axis=-1)
             y_true_maps.append(feature_maps)
 
