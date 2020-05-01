@@ -1,5 +1,5 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Masters/Doctoral Thesis 
+% Masters/Doctoral Thesis
 
 % LaTeX Template
 % Version 2.5 (27/8/17)
@@ -54,6 +54,19 @@ the default layout
 
 %\usepackage{hyperref}
 %\hypersetup{colorlinks=true, linkcolor=blue}
+%\makeatletter
+%\renewcommand\chapter{\addtocontents{toc}{\protect\addvspace{0\p@}}%
+%  \if@openright\cleardoublepage\else\clearpage\fi
+%  \thispagestyle{plain}%
+%  \global\@topnum\z@
+%  \@afterindentfalse
+%  \secdef\@chapter\@schapter}
+%\renewcommand\section{\addtocontents{toc}{\protect\addvspace{0\p@}}%
+%  \@startsection {section}{1}{\z@}%
+%  {-15ex \@plus -10ex \@minus -10ex}%
+%  {13ex \@plus.2ex}%
+%  {\normalfont\bfseries}}
+%\makeatother
 
 \usepackage{mathpazo} % Use the Palatino font by default
 
@@ -83,8 +96,8 @@ the default layout
 %	THESIS INFORMATION
 %----------------------------------------------------------------------------------------
 
-\thesistitle{Applied Research of an End-to-End Human Pose-Keypoint Recognition Network with Figure Ice Skating as Application Scope} % Your thesis title, this is used in the title and abstract, print it elsewhere with \ttitle
-\supervisor{1st Prof. Dr. J. \textsc{Maucher}\\2nd Prof. Dr. S. \textsc{Radicke}} % Your supervisor's name, this is used in the title page, print it elsewhere with \supname
+\thesistitle{Applied Research of an End-to-End Human Keypoint Detection Network with Figure Ice Skating as Application Scope} % Your thesis title, this is used in the title and abstract, print it elsewhere with \ttitle
+\supervisor{Prof. Dr. J. \textsc{Maucher}\\Prof. Dr. S. \textsc{Radicke}} % Your supervisor's name, this is used in the title page, print it elsewhere with \supname
 
 \examiner{} % Your examiner's name, this is not currently used anywhere in the template, print it elsewhere with \examname
 \degree{Master of Science} % Your degree name, this is used in the title page and abstract, print it elsewhere with \degreename
@@ -94,9 +107,9 @@ the default layout
 \subject{Computer Sciences and Media} % Your subject area, this is not currently used anywhere in the template, print it elsewhere with \subjectname
 \keywords{} % Keywords for your thesis, this is not currently used anywhere in the template, print it elsewhere with \keywordnames
 \university{\href{http://www.hdm-dtuttgart.de}{Stuttgart Media University}} % Your university's name and URL, this is used in the title page and abstract, print it elsewhere with \univname
-\department{\href{http://department.university.com}{Department or School Name}} % Your department's name and URL, this is used in the title page and abstract, print it elsewhere with \deptname
+\department{\href{https://www.hdm-stuttgart.de/en/prospective_students/academic_programs/all_programs/steckbrief?sgang_ID=550058}{Computer Science and Media}} % Your department's name and URL, this is used in the title page and abstract, print it elsewhere with \deptname
 \group{\href{http://researchgroup.university.com}{Research Group Name}} % Your research group's name and URL, this is used in the title page, print it elsewhere with \groupname
-\faculty{\href{http://faculty.university.com}{Faculty Name}} % Your faculty's name and URL, this is used in the title page and abstract, print it elsewhere with \facname
+\faculty{\href{http://faculty.university.com}{}} % Your faculty's name and URL, this is used in the title page and abstract, print it elsewhere with \facname
 
 \AtBeginDocument{
 \hypersetup{pdftitle=\ttitle} % Set the PDF's title to your title
@@ -128,25 +141,25 @@ the default layout
 \begin{minipage}[t]{0.4\textwidth}
 \begin{flushleft} \large
 \emph{Author:}\\
-\href{http://www.johnsmith.com}{\authorname} % Author name - remove the \href bracket to remove the link
+\href{http://nadin-katrin.de/}{\authorname} % Author name - remove the \href bracket to remove the link
 \end{flushleft}
 \end{minipage}
 \begin{minipage}[t]{0.4\textwidth}
 \begin{flushright} \large
 \emph{Supervisor:} \\
-\href{http://www.jamessmith.com}{\supname} % Supervisor name - remove the \href bracket to remove the link
+\href{https://www.hdm-stuttgart.de/csm/studiengang/team/professoren}{\supname} % Supervisor name - remove the \href bracket to remove the link
 \end{flushright}
-\end{minipage}\\[3cm]
+\end{minipage}\\[2.2cm]
 
 \vfill
 
-\large \textit{A thesis submitted in fulfillment of the requirements\\ for the degree of \degreename}\\[0.3cm] % University requirement text
-\textit{in the}\\[0.4cm]
-\groupname\\\deptname\\[2cm] % Research group name and department name
-
+\large \textit{A thesis submitted in fulfillment of the requirements\\ for the degree }\\[0.2cm] % University requirement text
+\huge \degreename\\[0.6cm]
+\large \deptname\\[0.2cm]
+%\today\\[2cm] % Research group name and department name
+%\today
 \vfill
-
-{\large \today}\\[4cm] % Date
+\textcolor{black}{\large \today}\\ % Date
 %\includegraphics{Logo} % University/department logo - uncomment to place it
 
 \vfill
@@ -190,10 +203,9 @@ the default layout
 
 \vspace*{0.2\textheight}
 
-\noindent\enquote{\itshape Thanks to my solid academic training, today I can write hundreds of words on virtually any topic without possessing a shred of information, which is how I got a good job in journalism.}\bigbreak
+\noindent\enquote{\itshape Data is a precious thing and will last longer than the systems themselves.}\bigbreak
 
-\hfill Dave Barry
-
+\hfill  Tim Berners-Lee
 %----------------------------------------------------------------------------------------
 %	ABSTRACT PAGE
 %----------------------------------------------------------------------------------------
@@ -219,7 +231,9 @@ The acknowledgments and the people to thank go here, don't forget to include you
 
 \begingroup
 \hypersetup{linkcolor=refC}
+\renewcommand{\baselinestretch}{1.1}\normalsize
 \tableofcontents % Prints the main table of contents
+\renewcommand{\baselinestretch}{1.5}\normalsize
 
 \printglossaries
 
@@ -273,7 +287,7 @@ $\omega$ & angular frequency & \si{\radian} \\
 %	DEDICATION
 %----------------------------------------------------------------------------------------
 
-\dedicatory{For/Dedicated to/To my\ldots} 
+\dedicatory{For/Dedicated to/To my\ldots}
 
 %----------------------------------------------------------------------------------------
 %	THESIS CONTENT - CHAPTERS
@@ -286,14 +300,14 @@ $\omega$ & angular frequency & \si{\radian} \\
 % Include the chapters of the thesis as separate files from the Chapters folder
 % Uncomment the lines as you write the chapters
 
-\include{Chapters/Introduction} 
-\include{Chapters/Methodology}
-\include{Chapters/Experiments}
-\include{Chapters/Conclusion}
-%\include{Chapters/Chapter2}
-%\include{Chapters/Chapter3}
-%\include{Chapters/Chapter4} 
-%\include{Chapters/Chapter5} 
+\include{Chapters/00_Introduction}
+\include{Chapters/01_FigureSkating}
+\include{Chapters/02_Dataset}
+\include{Chapters/03_Method}
+\include{Chapters/04_Experiments}
+\include{Chapters/05_Conclusion}
+%\include{Chapters/Chapter4}
+%\include{Chapters/Chapter5}
 
 %----------------------------------------------------------------------------------------
 %	THESIS CONTENT - APPENDICES
@@ -304,7 +318,7 @@ $\omega$ & angular frequency & \si{\radian} \\
 % Include the appendices of the thesis as separate files from the Appendices folder
 % Uncomment the lines as you write the Appendices
 
-\include{Appendices/AppendixA}
+%\include{Appendices/AppendixA}
 %\include{Appendices/AppendixB}
 %\include{Appendices/AppendixC}
 
@@ -316,4 +330,4 @@ $\omega$ & angular frequency & \si{\radian} \\
 
 %----------------------------------------------------------------------------------------
 \endgroup
-\end{document}  
+\end{document}
