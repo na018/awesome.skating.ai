@@ -10,42 +10,45 @@ import tensorflow as tf
 from PIL import Image, ImageDraw, ImageFont
 from matplotlib import pyplot as plt
 
-from skatingAI.evaluate.eval import VERSIONS
+from skatingAI.nets.hrnet.v7 import HRNet
+from skatingAI.nets.keypoint.v3 import KPDetector
 from skatingAI.utils.DsGenerator import DsGenerator, Frame, Mask, DsPair
-from skatingAI.utils.utils import create_mask, mask2rgb, create_dir, Logger, set_gpus
+from skatingAI.utils.utils import create_mask, mask2rgb, create_dir, Logger
 
 
 class Predictor(object):
-    def __init__(self, weight_counter: int, nn_version: str, name: str, gpu: int,
+    def __init__(self, hp_weight_counter: int, kps_weight_counter: int, name: str,
                  random_video: bool, random_image: bool, img_path: str, video_path: str, save_path: str):
         """predicts images or videos from specified network and weight
 
-        Args:
-            weight_counter:
-            nn_version:
-            name:
-            gpu:
-            random_video:
-            random_image:
-            img_path:
-            video_path:
-            save_path:
         """
-        self.weight_counter = weight_counter
-        self.NN_VERSION = VERSIONS[nn_version]
-        self.name = name
-        self.gpu = gpu
+
+        self.hp_weight_counter = hp_weight_counter
+        self.kps_weight_counter = kps_weight_counter
+
+        if random_video:
+            sequential = True
+            self.generator, self.iter, self.sample_frame, \
+            self.sample_mask, self.sample_kps = self._generate_dataset(BG=False, sequential=sequential)
+            self.name = self.generator.video_name
+        elif video_path:
+            self.name = video_path.split('.')[-2].split('/')[-1]
+            self.video_frames = self.parse_video(video_path)
+
         self.random_video = random_video
         self.random_image = random_image
         self.img_path = img_path
         self.video_path = video_path
         self.save = save_path
-        self.DsGenerator = DsGenerator(resize_shape=(240, 320), rgb=False,
-                                       single_random_frame=random_image or len(img_path) > 1)
-        self.weight_path = f"{os.getcwd()}/ckpt{gpu}/hrnet-{weight_counter}.ckpt"
-        self.dir_save = f"{os.getcwd()}/predictions/{nn_version}_{weight_counter}"
+
+        self.hp_weight_path = f"{os.getcwd()}/ckpt/hrnet-{hp_weight_counter}.ckpt"
+        self.kps_weight_path = f"{os.getcwd()}/ckpt/kps_map-{kps_weight_counter}.ckpt"
+        self.dir_save = f"{os.getcwd()}/predictions/{self.name}_{kps_weight_counter}"
         self.Logger = Logger()
         self.file_name = self._prepare_file_saving()
+
+        self.base_model = self._get_hrnet_model()
+        self.model = self._get_kps_model()
 
     def _prepare_file_saving(self) -> str:
         try:
@@ -86,63 +89,106 @@ class Predictor(object):
                                  np.reshape(pairs['masks'][i], pairs['masks'][i].shape[:-1]),
                                  predicted_mask, i)
 
-    def _create_video(self, frames, masks, feature_maps):
+    def _create_video(self, frames, body_part_predictions, kps_predictions):
         offset = 10
-        width_total = feature_maps[0].shape[1] * 3 + offset * 4
-        height_total = feature_maps[1].shape[0]
+        width_total = body_part_predictions[0].shape[1] * 3 + offset * 4
+        height_total = body_part_predictions[1].shape[0] + 50
         new_img = Image.new('RGB', (width_total, height_total))
+        out = cv2.VideoWriter(f"{self.dir_save}/{self.name}.avi", cv2.VideoWriter_fourcc(*'DIVX'), 12,
+                              new_img.size)
 
-        for i, feature_map in enumerate(feature_maps):
+        for i, bp_prediction in enumerate(body_part_predictions):
             images = [
                 tf.keras.preprocessing.image.array_to_img(frames[i]),
-                tf.keras.preprocessing.image.array_to_img(mask2rgb(tf.constant(masks[i]))),
-                tf.keras.preprocessing.image.array_to_img(mask2rgb(create_mask(feature_map))),
+                tf.keras.preprocessing.image.array_to_img(mask2rgb(create_mask(bp_prediction))),
+                tf.keras.preprocessing.image.array_to_img(mask2rgb(create_mask(kps_predictions[i])))
             ]
 
-            title = ['Input', 'mask', f'prediction']
+            title = ['Input', 'predicted mask', f'predicted keypoints']
             fnt = ImageFont.truetype('/usr/share/fonts/truetype/open-sans/OpenSans-Semibold.ttf', 15)
             x_offset = 0
             for j, img in enumerate(images):
                 new_img.paste(img, (x_offset, 0))
                 d = ImageDraw.Draw(new_img)
-                d.text((x_offset + feature_map.shape[1] / 2.4, 5), title[j], font=fnt, fill=(255, 255, 255))
-                x_offset += feature_map.shape[1] + offset
+                d.text((x_offset + bp_prediction.shape[1] / 2.4, 5), title[j], font=fnt, fill=(255, 255, 255))
+                x_offset += bp_prediction.shape[1] + offset
 
-            if i == 0:
-                out = cv2.VideoWriter(f"{self.dir_save}/{self.file_name}.avi", cv2.VideoWriter_fourcc(*'DIVX'), 12,
-                                      new_img.size)
+            # if i == 0:
+            #     out = cv2.VideoWriter(f"{self.dir_save}/{self.file_name}.avi", cv2.VideoWriter_fourcc(*'DIVX'), 12,
+            #                           new_img.size)
             out.write(np.array(new_img))
-            self.Logger.log(f"Ad frame {i} to video writer")
+            self.Logger.log(f"Add frame {i} to video writer")
         out.release()
-        Logger.log('successfully created video')
+        self.Logger.log(f'successfully created video: {self.name}')
 
-    def _predict_video(self, model, sample_pair):
-        pairs = {'frames': [], 'masks': []}
+    def _predict_video(self, frames):
+        body_parts = self.base_model.predict([frames])
+        kps = self.model.predict([frames])
+        self.Logger.log('Prediction finished.\n start to generate video', block=True)
+        self._create_video(frames, body_parts, kps)
 
-        for i in range(sample_pair['size'] - 1):
-            sample_pair = next(self.DsGenerator.get_next_pair(frame_i=i))
-            pairs['frames'].append(sample_pair['frame'])
-            pairs['masks'].append(sample_pair['mask'])
-            Logger.log(f"Got frame [{i}]")
+    def parse_video(self, video_path):
+        video_handle = cv2.VideoCapture(video_path)
+        width = int(video_handle.get(cv2.CAP_PROP_FRAME_WIDTH))
+        height = int(video_handle.get(cv2.CAP_PROP_FRAME_HEIGHT))
+        print(
+            "width:", width,
+            "height:", height,
+            "amount of frames:", video_handle.get(cv2.CAP_PROP_FRAME_COUNT),
+            "fps:", video_handle.get(cv2.CAP_PROP_FPS),
+        )
 
-        feature_maps = model.predict([pairs['frames']])
-        Logger.log('Prediction finished.\n start to generate video', block=True)
-        self._create_video(pairs['frames'], pairs['masks'], feature_maps)
+        all_frames = video_handle.get(cv2.CAP_PROP_FRAME_COUNT)
+        i = 0
+        frames = []
+        eof = True
+        i = 0
+        while i < all_frames:
+            eof, frame = video_handle.read()
+            frame = cv2.resize(frame, (width // 2, height // 2))
+            frames.append(frame)
+            i += 1
 
-    def _get_model(self) -> Tuple[tf.keras.Model, Union[DsPair, DsPair]]:
-        sample_pair = next(self.DsGenerator.get_next_pair())
-        frame: Frame = sample_pair['frame']
-        mask: Mask = sample_pair['mask']
+        self.IMG_SHAPE = frame.shape
+        self.N_CLASS = 9
+        self.KPS_COUNT = 11
 
-        img_shape = frame.shape
-        n_classes = np.max(mask) + 1
+        print('read in all frames')
 
-        NN = self.NN_VERSION(img_shape, int(n_classes))
-        model: tf.keras.Model = NN.model
-        model.load_weights(self.weight_path)
+        return np.array(frames)
+
+    def _generate_dataset(self, BG: bool, test: bool = False, sequential: bool = False):
+        generator = DsGenerator(resize_shape_x=240, rgb=BG, test=test, sequential=sequential)
+
+        sample_pair: DsPair = next(generator.get_next_pair())
+
+        self.IMG_SHAPE = sample_pair['frame'].shape
+        self.N_CLASS = np.max(sample_pair['mask']).astype(int) + 1
+        self.KPS_COUNT = len(sample_pair['kps'])
+
+        ds = generator.build_iterator(1, 0)
+
+        return generator, ds.as_numpy_iterator(), \
+               sample_pair['frame'], sample_pair['mask'], sample_pair['kps']
+
+    def _get_hrnet_model(self) -> Tuple[tf.keras.Model, Union[DsPair, DsPair]]:
+        hrnet = HRNet(self.IMG_SHAPE, int(self.N_CLASS))
+        model = hrnet.model
+
+        model.load_weights(self.hp_weight_path)
         model.trainable = False
 
-        return model, sample_pair
+        return model
+
+    def _get_kps_model(self) -> tf.keras.Model:
+        kp_detector = KPDetector(input_shape=self.IMG_SHAPE, hrnet_input=self.base_model,
+                                 output_channels=int(self.KPS_COUNT))
+        model = kp_detector.model
+
+        model.load_weights(self.kps_weight_path)
+        model.trainable = False
+
+        return model
 
     def predict(self, prediction_img_amount: int = 2):
         """start the prediction process.
@@ -150,37 +196,48 @@ class Predictor(object):
         Args:
             prediction_img_amount: Amount of images which will be predicted.
         """
-        set_gpus(self.gpu)
-        model, sample_pair = self._get_model()
+        # set_gpus(self.gpu)
+
         if self.random_image:
-            self._predict_img(model, prediction_img_amount)
+            self._predict_img(prediction_img_amount)
         elif self.random_video:
-            self._predict_video(model, sample_pair)
+            frames = []
+            for i in range(self.generator.video_size):
+                sample_pair = next(self.iter)
+                frames.append(sample_pair['frame'][0])
+                self.Logger.log(f"Got frame [{i}]")
+
+            self._predict_video(frames)
+
         elif len(self.img_path) > 1:
             # todo: load image
             pass
         elif len(self.video_path) > 1:
             # todo: load video and extract frames
-            pass
+            self._predict_video(self.video_frames)
 
 
 if __name__ == "__main__":
     ArgsNamespace = namedtuple('ArgNamespace',
-                               ['gpu', 'name', 'wcounter', 'v', 'video', 'image', 'random_video', 'random_image',
+                               ['gpu', 'name', 'wcounter_hp', 'wcounter_kps',
+                                'v', 'video', 'image', 'random_video', 'random_image',
                                 'save'])
 
     parser = argparse.ArgumentParser(
         description='Predict body parts from images or videos')
-    parser.add_argument('--wcounter', default=1595, help='Number of weight')
-    parser.add_argument('--v', default='v7', help='version of hrnet')
-    parser.add_argument('--gpu', default='1', help='gpu number the net has trained on')
+    parser.add_argument('--wcounter_hp', default=4400, help='Number of weight')
+    parser.add_argument('--wcounter_kps', default=3295, help='Number of weight')
     parser.add_argument('--name', default='', help='unique name to save to save video/image')
-    parser.add_argument('--video', default='/', help='absolute path to video file', type=bool)
+    parser.add_argument('--video', default='/home/nadin-katrin/awesome.skating.ai/Biellmann_2.avi',
+                        help='absolute path to video file', type=str)
     parser.add_argument('--image', default='/', help='absolute path to image file')
     parser.add_argument('--random_video', default=False, help='Random video')
-    parser.add_argument('--random_image', default=True, help='Random image', type=bool)
+    parser.add_argument('--random_image', default=False, help='Random image', type=bool)
     parser.add_argument('--save', default='', help='Path to save prediction in')
     args: ArgsNamespace = parser.parse_args()
 
-    Predictor(args.wcounter, args.v, args.name, args.gpu, args.random_video, args.random_image, args.image,
+    Predictor(args.wcounter_hp, args.wcounter_kps,
+              args.name,
+              args.random_video, args.random_image,
+              args.image,
               args.video, args.save).predict()

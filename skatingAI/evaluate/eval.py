@@ -36,7 +36,7 @@ class Evaluator():
         create_dir(self.dir_img_eval, 'Please add a unique name.')
 
     def _get_frame(self, video_n=1, frame_n=1) -> Tuple[Frame, Mask]:
-        self.generator = DsGenerator(resize_shape=(240, 320))
+        self.generator = DsGenerator(resize_shape_x=(240, 320))
         sample_pair = next(self.generator.get_next_pair())
 
         return sample_pair['frame'], sample_pair['mask']

@@ -73,6 +73,7 @@ def save_np_video(img_paths, FileName):
     img_masks = []
     img_rgbs = []
     img_rgbbs = []
+    img_skeleton = []
 
     counter = FileName.get_name()
     print(counter)
