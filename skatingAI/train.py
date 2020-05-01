@@ -96,9 +96,9 @@ class MainLoop(object):
 
         # prepare hp model training
         self.decay_rate_hp, self.optimizer_decay_hp = PARAMS_HP.sgd_clr_decay_rate, PARAMS_HP.decay
-        self.hp_decay_rate_counter = 0
-        self.optimizer_hp = self._get_optimizer(OPTIMIZER_NAME_HP, LR_START_HP, PARAMS_HP, self.hp_decay_rate_counter,
-                                                self.optimizer_decay_hp)
+        self.optimizer_hp, self.hp_decay_rate_counter = self._get_optimizer(OPTIMIZER_NAME_HP, LR_START_HP, PARAMS_HP,
+                                                                            0,
+                                                                            self.optimizer_decay_hp)
         self.base_model.summary()
         tf.keras.utils.plot_model(
             self.base_model, to_file=f'nets/imgs/{self.NAME}_e.png', show_shapes=True, expand_nested=True)
@@ -107,10 +107,10 @@ class MainLoop(object):
 
         # prepare kps model training
         self.decay_rate_kps, self.optimizer_decay_kps = PARAMS_KPS.sgd_clr_decay_rate, PARAMS_KPS.decay
-        self.kps_decay_rate_counter = 0
-        self.optimizer_kps = self._get_optimizer(OPTIMIZER_NAME_KPS, LR_START_KPS, PARAMS_KPS,
-                                                 self.kps_decay_rate_counter,
-                                                 self.optimizer_decay_kps)
+        self.optimizer_kps, self.kps_decay_rate_counter = self._get_optimizer(OPTIMIZER_NAME_KPS, LR_START_KPS,
+                                                                              PARAMS_KPS,
+                                                                              0,
+                                                                              self.optimizer_decay_kps)
         self.model = self._get_kps_model()
         self.model.summary()
         if self.TRAIN_KPS:
@@ -129,8 +129,8 @@ class MainLoop(object):
         self.metric_hp_loss_train = Metric('hp_loss')
         self.metric_hp_loss_test = Metric('hp_loss')
 
-        self.metric_kps_loss_train = Metric('kps_loss')
-        self.metric_kps_loss_test: Metric = Metric('kps_loss')
+        self.metric_kps_loss_train = Metric(f'{self.kps_subdir}_loss')
+        self.metric_kps_loss_test: Metric = Metric(f'{self.kps_subdir}_loss')
 
         # self.loss_fn = CILoss(self.N_CLASS)
         # self.loss_fn = tf.keras.losses.MeanSquaredError()
@@ -193,13 +193,14 @@ class MainLoop(object):
             optimizer = tf.keras.optimizers.SGD(learning_rate=lr_start, momentum=0.9, decay=optimizer_decay,
                                                 nesterov=True)
 
-        return optimizer
+        return optimizer, decay_rate_counter
 
-    def _calculate_lr(self, epoch, metric_avg_acc, optimizer_name,
+    def _calculate_lr(self, epoch, metric, optimizer_name,
                       optimizer_decay, decay_rate_counter, params,
                       w_counter, lr_start, step_custom_lr) -> [any, float]:
 
         _optimizer = None
+        _decay_rate_counter = decay_rate_counter
 
         if optimizer_name == 'sgd':
             lr = lr_start * (
@@ -207,13 +208,13 @@ class MainLoop(object):
         elif optimizer_name == 'sgd_clr':
             lr = lr_start * 1 / (1 + optimizer_decay * step_custom_lr)
 
-            if metric_avg_acc.is_curve_steep() == False:
-                _optimizer = self._get_optimizer(optimizer_name, lr_start, params,
-                                                 decay_rate_counter, optimizer_decay)
+            if metric.is_curve_steep() == False:
+                _optimizer, _decay_rate_counter = self._get_optimizer(optimizer_name, lr_start, params,
+                                                                      decay_rate_counter, optimizer_decay)
                 step_custom_lr = 0
         else:
             lr = lr_start
-        return _optimizer, lr, step_custom_lr
+        return _optimizer, lr, step_custom_lr, _decay_rate_counter
 
     def _track_logs(self, subdir: str, model, log_detail: bool = False):
         log_dir = f"{Path.cwd()}/logs/metrics/{subdir}/{self.NAME}/{datetime.now().strftime('%Y_%m_%d__%H_%M')}"
@@ -354,13 +355,12 @@ class MainLoop(object):
             for step in range(self.EPOCH_STEPS):
                 if self.TRAIN_HP:
                     hp_metric_avg_acc_body_part.append(self._train_hp(hp_train_acc_metric))
-                    step_custom_lr_hp += 1
 
                 if self.TRAIN_KPS:
                     kps_batch, kps_logits = self._train_kps()
                     kps_train_acc_metric(kps_batch, kps_logits)
                     kps_metric_avg_acc.append(kps_train_acc_metric.result())
-                    step_custom_lr_kps += 1
+
 
             if epoch == start + 3:
                 if self.TRAIN_HP:
@@ -382,18 +382,22 @@ class MainLoop(object):
             if epoch % self.EPOCH_LOG_N == 0:
 
                 if self.TRAIN_HP:
-                    _optimizer_hp, hp_lr, step_custom_lr_hp = self._calculate_lr(epoch,
-                                                                                 hp_metric_avg_acc_body_part,
-                                                                                 self.OPTIMIZER_NAME_HP,
-                                                                                 self.optimizer_decay_hp,
-                                                                                 self.hp_decay_rate_counter,
-                                                                                 self.PARAMS_HP,
-                                                                                 self.W_COUNTER_HP, self.LR_START_HP,
-                                                                                 step_custom_lr_hp)
+                    _optimizer_hp, hp_lr, step_custom_lr_hp, self.hp_decay_rate_counter = self._calculate_lr(epoch,
+                                                                                                             hp_metric_avg_acc_body_part,
+                                                                                                             self.OPTIMIZER_NAME_HP,
+                                                                                                             self.optimizer_decay_hp,
+                                                                                                             self.hp_decay_rate_counter,
+                                                                                                             self.PARAMS_HP,
+                                                                                                             self.W_COUNTER_HP,
+                                                                                                             self.LR_START_HP,
+                                                                                                             step_custom_lr_hp)
+
 
                     if _optimizer_hp:
                         self.optimizer_hp = _optimizer_hp
+                        self.LR_START_HP = self.decay_rate_hp[self.hp_decay_rate_counter]
 
+                    step_custom_lr_hp += 1
                     hp_loss = self.metric_hp_loss_train.get_median()
                     hp_progress_tracker.track_img_on_epoch_end(epoch,
                                                                loss=hp_loss,
@@ -413,18 +417,21 @@ class MainLoop(object):
                         f"[{epoch}:{self.EPOCHS + start}]: Body Parts [loss]: {hp_loss} [loss test]: {hp_loss_test}")
 
                 if self.TRAIN_KPS:
-                    _optimizer_kps, kps_lr, step_custom_lr_kps = self._calculate_lr(epoch,
-                                                                                    kps_metric_avg_acc,
-                                                                                    self.OPTIMIZER_NAME_KPS,
-                                                                                    self.optimizer_decay_kps,
-                                                                                    self.kps_decay_rate_counter,
-                                                                                    self.PARAMS_KPS,
-                                                                                    self.W_COUNTER_KPS,
-                                                                                    self.LR_START_KPS,
-                                                                                    step_custom_lr_kps)
+                    _optimizer_kps, kps_lr, step_custom_lr_kps, self.kps_decay_rate_counter = self._calculate_lr(epoch,
+                                                                                                                 self.metric_kps_loss_train,
+                                                                                                                 self.OPTIMIZER_NAME_KPS,
+                                                                                                                 self.optimizer_decay_kps,
+                                                                                                                 self.kps_decay_rate_counter,
+                                                                                                                 self.PARAMS_KPS,
+                                                                                                                 self.W_COUNTER_KPS,
+                                                                                                                 self.LR_START_KPS,
+                                                                                                                 step_custom_lr_kps)
 
                     if _optimizer_kps:
                         self.optimizer_kps = _optimizer_kps
+                        self.LR_START_KPS = self.decay_rate_kps[self.kps_decay_rate_counter]
+
+                    step_custom_lr_kps += 1
                     kps_loss = self.metric_kps_loss_train.get_median()
                     kps_progress_tracker.track_img_on_epoch_end(epoch,
                                                                 loss=kps_loss,
@@ -436,7 +443,7 @@ class MainLoop(object):
                     kps_train_acc_metric.reset_states()
 
                     logger.log(
-                        f"[{epoch}:{self.EPOCHS + start}]:Keypoint [loss]: {kps_loss} [loss test]: {kps_loss_test}")
+                        f"[{epoch}:{self.EPOCHS + start}]: Keypoint [loss]: {kps_loss} [loss test]: {kps_loss_test}")
 
                 logger.log(message=f"Seen images: {self.generator.seen_samples}", block=True)
 

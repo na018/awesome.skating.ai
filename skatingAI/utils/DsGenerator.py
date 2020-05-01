@@ -48,7 +48,6 @@ class DsGenerator(object):
         self.video, self.mask, self.kps, self.video_name = self._get_random_video_mask_kp(test)
         self.video_size: int = len(self.kps)
         self.frame_i: int = 0
-        print(self.video_size)
 
         if resize_shape_x:
             self.resize_factor = self.video.shape[1] // resize_shape_x
