@@ -5,16 +5,17 @@ from enum import Enum
 from pathlib import Path
 from typing import List, Tuple
 
-import matplotlib
+import cv2
+# import matplotlib
+import matplotlib.pyplot as plt
 import numpy as np
 import tensorflow as tf
 from keras import backend as K
 from keras.utils.layer_utils import count_params
-
-# needed for savefig to work
-matplotlib.use("Qt4Agg")
-import matplotlib.pyplot as plt
 from tensorflow import keras, summary
+
+# # needed for savefig to work
+# matplotlib.use("Qt4Agg")
 
 path = Path.cwd()
 
@@ -318,9 +319,9 @@ class DisplayCallback(tf.keras.callbacks.TensorBoard):
                             [tf.keras.preprocessing.image.array_to_img(self.sample_mask), true_circles],
                             [tf.keras.preprocessing.image.array_to_img(predicted_mask), predicted_circles]]
         elif self.sub_dir == 'bg':
-            display_imgs = [[tf.keras.preprocessing.image.array_to_img(self.sample_image), []],
-                            [tf.reshape(self.sample_mask, self.sample_mask.shape[:-1]), []],
-                            [tf.reshape(predicted_bg, self.sample_mask.shape[:-1]), []],
+            display_imgs = [[self.sample_image.numpy(), []],
+                            [np.reshape(self.sample_mask, self.sample_mask.shape[:-1]), []],
+                            [np.array(np.reshape(predicted_bg, self.sample_mask.shape[:-1]), dtype=np.float32), []],
                             ]
         else:
             predicted_kp_img = tf.argmax(predicted_kp, axis=-1)
@@ -336,7 +337,7 @@ class DisplayCallback(tf.keras.callbacks.TensorBoard):
             for circle in img[1]:
                 ax.add_patch(circle)
             ax.set_title(title[i], fontsize='small', alpha=0.6, color='blue')
-            ax.imshow(img[0])
+            ax.imshow(cv2.cvtColor(img[0], cv2.COLOR_BGR2RGB))
 
         if show_img:
             plt.show()
