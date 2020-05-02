@@ -8,6 +8,7 @@ import numpy as np
 import tensorflow as tf
 from tensorflow_core.python.ops.summary_ops_v2 import ResourceSummaryWriter
 
+from skatingAI.nets.bg import BGNetBase
 from skatingAI.nets.hrnet.HRNetBase import HRNetBase
 from skatingAI.nets.keypoint import KPDetectorBase
 from skatingAI.utils.DsGenerator import DsGenerator, DsPair
@@ -19,14 +20,15 @@ from skatingAI.utils.utils import DisplayCallback, set_gpus, Metric, Logger
 
 class MainLoop(object):
     def __init__(self, GPU: int, NAME: str,
-                 MODEL_HP: type(HRNetBase), MODEL_KPS: type(KPDetectorBase),
+                 MODEL_BG: type(BGNetBase), MODEL_HP: type(HRNetBase), MODEL_KPS: type(KPDetectorBase),
                  OPTIMIZER_NAME_HP: str, LR_START_HP: float,
+                 OPTIMIZER_NAME_BG: str, LR_START_BG: float,
                  OPTIMIZER_NAME_KPS: str, LR_START_KPS: float,
-                 LOSS_FCT_HP: tf.keras.losses, LOSS_FCT_KPS: tf.keras.losses,
-                 PARAMS_HP: HyperParameterParams, PARAMS_KPS: HyperParameterParams,
-                 DESCRIPTION_HP: str, DESCRIPTION_KPS: str,
-                 TRAIN_HP: bool = False, TRAIN_KPS: bool = False,
-                 W_COUNTER_HP: int = -1, W_COUNTER_KPS: int = -1, EPOCH_START=-1,
+                 LOSS_FCT_BG: tf.keras.losses, LOSS_FCT_HP: tf.keras.losses, LOSS_FCT_KPS: tf.keras.losses,
+                 PARAMS_BG: HyperParameterParams, PARAMS_HP: HyperParameterParams, PARAMS_KPS: HyperParameterParams,
+                 DESCRIPTION_BG: str, DESCRIPTION_HP: str, DESCRIPTION_KPS: str,
+                 TRAIN_BG: bool = False, TRAIN_HP: bool = False, TRAIN_KPS: bool = False,
+                 W_COUNTER_BG: int = -1, W_COUNTER_HP: int = -1, W_COUNTER_KPS: int = -1, EPOCH_START=-1,
                  BG: bool = False,
                  BATCH_SIZE=3,
                  PREFETCH_BATCH_BUFFER=1, EPOCH_STEPS=64, EPOCHS=5555,
@@ -57,12 +59,16 @@ class MainLoop(object):
         """
         self.DESCRIPTION_KPS = DESCRIPTION_KPS
         self.DESCRIPTION_HP = DESCRIPTION_HP
+        self.DESCRIPTION_BG = DESCRIPTION_BG
         self.PARAMS_KPS = PARAMS_KPS
         self.PARAMS_HP = PARAMS_HP
+        self.PARAMS_BG = PARAMS_BG
         self.TRAIN_KPS = TRAIN_KPS
         self.TRAIN_HP = TRAIN_HP
+        self.TRAIN_BG = TRAIN_BG
         self.MODEL_KPS = MODEL_KPS
         self.MODEL_HP = MODEL_HP
+        self.MODEL_BG = MODEL_BG
         self.BATCH_SIZE: int = BATCH_SIZE
         self.PREFETCH_BATCH_BUFFER: int = PREFETCH_BATCH_BUFFER
         self.EPOCH_START = EPOCH_START
@@ -72,13 +78,15 @@ class MainLoop(object):
 
         self.GPU: int = GPU
         self.NAME: str = NAME
+        self.W_COUNTER_BG: int = W_COUNTER_BG
         self.W_COUNTER_HP: int = W_COUNTER_HP
         self.W_COUNTER_KPS: int = W_COUNTER_KPS
         self.SGD_CLR_DECAY_COUNTER = 0
+        self.OPTIMIZER_NAME_BG = OPTIMIZER_NAME_BG
         self.OPTIMIZER_NAME_HP = OPTIMIZER_NAME_HP
         self.OPTIMIZER_NAME_KPS = OPTIMIZER_NAME_KPS
-        self.LR_START_HP, self.LR_START_KPS = LR_START_HP, LR_START_KPS
-        self.hp_loss_fn, self.kps_loss_fn = LOSS_FCT_HP, LOSS_FCT_KPS
+        self.LR_START_BG, self.LR_START_HP, self.LR_START_KPS = LR_START_BG, LR_START_HP, LR_START_KPS
+        self.bg_loss_fn, self.hp_loss_fn, self.kps_loss_fn = LOSS_FCT_BG, LOSS_FCT_HP, LOSS_FCT_KPS
         self.step_custom_lr = 0
 
         self.N_CLASS: int = 9
@@ -92,18 +100,36 @@ class MainLoop(object):
 
         self.generator, self.iter, self.sample_frame, self.sample_mask, self.sample_kps = self._generate_dataset(BG)
         _, self.iter_test, _, _, _ = self._generate_dataset(BG, test=True)
+
+        self.bgmodel = self._get_bg_model()
+        self.bgmodel.summary()
+
         self.base_model = self._get_hrnet_model()
+        self.base_model.summary()
+        if self.TRAIN_HP:
+            tf.keras.utils.plot_model(
+                self.base_model, to_file=f'nets/imgs/{self.NAME}_e.png', show_shapes=True, expand_nested=True)
+            tf.keras.utils.plot_model(
+                self.base_model, to_file=f'nets/imgs/{self.NAME}.png', show_shapes=True, expand_nested=False)
+
+        # prepare bg model training
+        self.decay_rate_bg, self.optimizer_decay_bg = PARAMS_KPS.sgd_clr_decay_rate, PARAMS_KPS.decay
+        self.optimizer_bg, self.bg_decay_rate_counter = self._get_optimizer(OPTIMIZER_NAME_KPS, LR_START_KPS,
+                                                                            PARAMS_KPS,
+                                                                            0,
+                                                                            self.optimizer_decay_bg)
+
+        if self.TRAIN_BG:
+            tf.keras.utils.plot_model(
+                self.bgmodel, to_file=f'nets/imgs/{self.NAME}_e.png', show_shapes=True, expand_nested=True)
+            tf.keras.utils.plot_model(
+                self.bgmodel, to_file=f'nets/imgs/{self.NAME}.png', show_shapes=True, expand_nested=False)
 
         # prepare hp model training
-        self.decay_rate_hp, self.optimizer_decay_hp = PARAMS_HP.sgd_clr_decay_rate, PARAMS_HP.decay
-        self.optimizer_hp, self.hp_decay_rate_counter = self._get_optimizer(OPTIMIZER_NAME_HP, LR_START_HP, PARAMS_HP,
+        self.decay_rate_hp, self.optimizer_decay_hp = PARAMS_BG.sgd_clr_decay_rate, PARAMS_BG.decay
+        self.optimizer_hp, self.hp_decay_rate_counter = self._get_optimizer(OPTIMIZER_NAME_BG, LR_START_BG, PARAMS_BG,
                                                                             0,
                                                                             self.optimizer_decay_hp)
-        self.base_model.summary()
-        tf.keras.utils.plot_model(
-            self.base_model, to_file=f'nets/imgs/{self.NAME}_e.png', show_shapes=True, expand_nested=True)
-        tf.keras.utils.plot_model(
-            self.base_model, to_file=f'nets/imgs/{self.NAME}.png', show_shapes=True, expand_nested=False)
 
         # prepare kps model training
         self.decay_rate_kps, self.optimizer_decay_kps = PARAMS_KPS.sgd_clr_decay_rate, PARAMS_KPS.decay
@@ -125,6 +151,9 @@ class MainLoop(object):
         self.metric_hp_acc_body_part_test = Metric('hp_correct_body_part_px_ratio')
         self.metric_hp_correct_px_body_part_train = Metric('hp_correct_body_part_px')
         self.metric_hp_correct_px_body_part_test = Metric('hp_correct_body_part_px')
+
+        self.metric_bg_loss_train = Metric(f'bg_loss')
+        self.metric_bg_loss_test: Metric = Metric(f'bg_loss')
 
         self.metric_hp_loss_train = Metric('hp_loss')
         self.metric_hp_loss_test = Metric('hp_loss')
@@ -148,8 +177,22 @@ class MainLoop(object):
 
         return generator, ds.as_numpy_iterator(), sample_pair['frame'], sample_pair['mask'], sample_pair['kps']
 
+    def _get_bg_model(self) -> tf.keras.Model:
+        bgnet = self.MODEL_BG(self.IMG_SHAPE, 2)
+
+        model = bgnet.model
+
+        if self.W_COUNTER_BG != -1:
+            model.load_weights(f"./ckpt{self.GPU}/hp-{self.W_COUNTER_BG}.ckpt")
+        elif not self.TRAIN_BG:
+            model.load_weights(f"./ckpt/bg-4400.ckpt")
+        if not self.TRAIN_BG:
+            model.trainable = False
+
+        return model
+
     def _get_hrnet_model(self) -> tf.keras.Model:
-        hrnet = self.MODEL_HP(self.IMG_SHAPE, int(self.N_CLASS))
+        hrnet = self.MODEL_HP(self.IMG_SHAPE, 9)
 
         model = hrnet.model
 
@@ -221,7 +264,8 @@ class MainLoop(object):
         file_writer_test = tf.summary.create_file_writer(
             f"{log_dir}/scalars/test")
         # file_writer.set_as_default()
-        progress_tracker = DisplayCallback(self.base_model, self.model, subdir, self.sample_frame, self.sample_mask,
+        progress_tracker = DisplayCallback(self.bgmodel, self.base_model, self.model, subdir, self.sample_frame,
+                                           self.sample_mask,
                                            self.sample_kps, self.EPOCHS,
                                            self.GPU, log_dir=log_dir)
         progress_tracker.set_model(model)
@@ -243,6 +287,20 @@ class MainLoop(object):
             self.metric_hp_correct_px_body_part_test.append(self.hp_loss_fn.correct_body_part_pred.astype(np.float32))
             self.metric_hp_acc_body_part_test.append(
                 (self.hp_loss_fn.correct_body_part_pred / self.hp_loss_fn.body_part_px_n_true).astype(np.float32))
+
+    def _test_model_bg(self, file_writer: ResourceSummaryWriter, epoch: int,
+                       sequential: bool = False) -> float:
+
+        for _ in range(self.EPOCH_STEPS):
+            batch = next(self.iter_test)
+            logits = self.bgmodel(batch['frame'], training=False)
+            loss_value = self.bg_loss_fn(batch['mask'], logits)
+            self.metric_bg_loss_test.append(float(loss_value))
+
+        with file_writer.as_default():
+            tf.summary.scalar(self.metric_bg_loss_test.name, self.metric_bg_loss_test.get_median(), step=epoch)
+
+        return loss_value
 
     def _test_model_hp(self, file_writer: ResourceSummaryWriter, epoch: int,
                        sequential: bool = False):
@@ -290,6 +348,20 @@ class MainLoop(object):
 
         return loss_value
 
+    def _train_bg(self):
+        batch: DsPair = next(self.iter)
+
+        with tf.GradientTape() as tape:
+            logits = self.bgmodel(batch['frame'], training=True)
+            loss_value = self.bg_loss_fn(batch['mask'], logits)
+
+        grads = tape.gradient(loss_value, self.bgmodel.trainable_weights)
+
+        self.optimizer_bg.apply_gradients(zip(grads, self.bgmodel.trainable_weights))
+        self.metric_bg_loss_train.append(float(loss_value))
+
+        return self.bg_loss_fn.y_true_maps, tf.abs(logits)
+
     def _train_hp(self, train_acc_metric):
         batch: DsPair = next(self.iter)
 
@@ -326,17 +398,22 @@ class MainLoop(object):
         pass
 
     def start_train_loop(self):
+        bg_train_acc_metric = tf.keras.metrics.Accuracy()
         hp_train_acc_metric = tf.keras.metrics.Accuracy()
         kps_train_acc_metric = tf.keras.metrics.Accuracy()
+        bg_metric_avg_acc = Metric('metric_avg_acc_bg')
         hp_metric_avg_acc_body_part = Metric('metric_avg_acc_body_part')
-        kps_metric_avg_acc = Metric('metric_avg_acc', max_size=50)
+        kps_metric_avg_acc = Metric('metric_avg_acc_kps', max_size=50)
         step_custom_lr_kps = 0
         step_custom_lr_hp = 0
+        step_custom_lr_bg = 0
         time_start = 0
         logger = Logger()
-        hp_progress_tracker, kps_progress_tracker = None, None
-        hp_file_writer_test, kps_file_writer_test = None, None
+        bg_progress_tracker, hp_progress_tracker, kps_progress_tracker = None, None, None
+        bg_file_writer_test, hp_file_writer_test, kps_file_writer_test = None, None, None
 
+        if self.TRAIN_BG:
+            bg_file_writer_test, bg_progress_tracker, log_dir = self._track_logs('bg', self.bgmodel)
         if self.TRAIN_HP:
             hp_file_writer_test, hp_progress_tracker, log_dir = self._track_logs('hp', self.base_model)
         if self.TRAIN_KPS:
@@ -353,6 +430,11 @@ class MainLoop(object):
                 time_start = time.perf_counter()
 
             for step in range(self.EPOCH_STEPS):
+                if self.TRAIN_BG:
+                    bg_batch, bg_logits = self._train_bg()
+                    bg_train_acc_metric(bg_batch, bg_logits)
+                    bg_metric_avg_acc.append(bg_train_acc_metric.result())
+
                 if self.TRAIN_HP:
                     hp_metric_avg_acc_body_part.append(self._train_hp(hp_train_acc_metric))
 
@@ -361,25 +443,64 @@ class MainLoop(object):
                     kps_train_acc_metric(kps_batch, kps_logits)
                     kps_metric_avg_acc.append(kps_train_acc_metric.result())
 
-
             if epoch == start + 3:
+                if self.TRAIN_BG:
+                    bg_progress_tracker \
+                        .track_metrics_on_train_start(self.bgmodel, self.NAME, self.OPTIMIZER_NAME_BG,
+                                                      self.bg_loss_fn.name, self.LR_START_BG,
+                                                      self.TRAIN_BG, self.TRAIN_HP, self.TRAIN_KPS,
+                                                      f"{time.perf_counter() - time_start:#.2f}s", self.EPOCHS,
+                                                      self.EPOCH_STEPS, self.BATCH_SIZE,
+                                                      description=self.DESCRIPTION_BG)
                 if self.TRAIN_HP:
                     hp_progress_tracker \
                         .track_metrics_on_train_start(self.base_model, self.NAME, self.OPTIMIZER_NAME_HP,
-                                                      self.hp_loss_fn.name, self.LR_START_HP, self.TRAIN_HP,
-                                                      self.TRAIN_KPS,
+                                                      self.hp_loss_fn.name, self.LR_START_HP,
+                                                      self.TRAIN_BG, self.TRAIN_HP, self.TRAIN_KPS,
                                                       f"{time.perf_counter() - time_start:#.2f}s", self.EPOCHS,
                                                       self.EPOCH_STEPS, self.BATCH_SIZE,
                                                       description=self.DESCRIPTION_HP)
                 if self.TRAIN_KPS:
                     kps_progress_tracker \
                         .track_metrics_on_train_start(self.model, self.NAME, self.OPTIMIZER_NAME_KPS,
-                                                      self.kps_loss_fn.name, self.LR_START_KPS, self.TRAIN_HP,
-                                                      self.TRAIN_KPS,
+                                                      self.kps_loss_fn.name, self.LR_START_KPS,
+                                                      self.TRAIN_BG, self.TRAIN_HP, self.TRAIN_KPS,
                                                       f"{time.perf_counter() - time_start:#.2f}s", self.EPOCHS,
                                                       self.EPOCH_STEPS, self.BATCH_SIZE,
                                                       description=self.DESCRIPTION_KPS)
             if epoch % self.EPOCH_LOG_N == 0:
+
+                if self.TRAIN_BG:
+                    _optimizer_bg, bg_lr, step_custom_lr_bg, self.bg_decay_rate_counter = self._calculate_lr(epoch,
+                                                                                                             bg_metric_avg_acc,
+                                                                                                             self.OPTIMIZER_NAME_BG,
+                                                                                                             self.optimizer_decay_bg,
+                                                                                                             self.bg_decay_rate_counter,
+                                                                                                             self.PARAMS_BG,
+                                                                                                             self.W_COUNTER_BG,
+                                                                                                             self.LR_START_BG,
+                                                                                                             step_custom_lr_bg)
+
+                    if _optimizer_bg:
+                        self.optimizer_bg = _optimizer_bg
+                        self.LR_START_BG = self.decay_rate_bg[self.bg_decay_rate_counter]
+
+                    step_custom_lr_bg += 1
+                    bg_loss = self.metric_bg_loss_train.get_median()
+                    bg_progress_tracker.track_img_on_epoch_end(epoch,
+                                                               loss=bg_loss,
+                                                               metrics=[
+
+                                                                   Metric(value=bg_train_acc_metric.result(),
+                                                                          name='bg_accuracy'),
+                                                                   Metric(value=bg_lr, name='bg_learning_rate'),
+                                                               ],
+                                                               )
+                    bg_loss_test = self._test_model_bg(bg_file_writer_test, epoch)
+                    bg_train_acc_metric.reset_states()
+
+                    logger.log(
+                        f"[{epoch}:{self.EPOCHS + start}]: Body Parts [loss]: {bg_loss} [loss test]: {bg_loss_test}")
 
                 if self.TRAIN_HP:
                     _optimizer_hp, hp_lr, step_custom_lr_hp, self.hp_decay_rate_counter = self._calculate_lr(epoch,
@@ -447,6 +568,8 @@ class MainLoop(object):
 
                 logger.log(message=f"Seen images: {self.generator.seen_samples}", block=True)
 
+        if self.TRAIN_BG:
+            bg_progress_tracker.log_on_train_end()
         if self.TRAIN_HP:
             hp_progress_tracker.log_on_train_end()
         if self.TRAIN_KPS and not self.TRAIN_HP:
@@ -473,14 +596,14 @@ if __name__ == "__main__":
     parser.add_argument('--steps', default=64, help='Epoch steps', type=int)
     parser.add_argument('--epochs', default=5556, help='Epochs', type=int)
     parser.add_argument('--log_n', default=5, help='Epoch steps', type=int)
-    parser.add_argument('--bg', default=False, help='Use training images with background', type=bool)
+    parser.add_argument('--bg', default=True, help='Use training images with background', type=bool)
     args: ArgsNamespace = parser.parse_args()
 
     optimizer = args.opt
     lr = args.lr
     name = args.name
 
-    general_param, hps_params, kps_params, train_hp, train_kps = TrainProgram().create_menu()
+    general_param, bg_params, hps_params, kps_params, train_bg, train_hp, train_kps = TrainProgram().create_menu()
 
     if not train_hp:
         name = f"kps_{kps_params.name}"
@@ -490,20 +613,19 @@ if __name__ == "__main__":
         name = f"hp_{hps_params.name}:kps_{kps_params.name}"
 
     MainLoop(GPU=general_param.gpu, NAME=name,
-             MODEL_HP=hps_params.model, MODEL_KPS=kps_params.model,
+             MODEL_BG=bg_params.model, MODEL_HP=hps_params.model, MODEL_KPS=kps_params.model,
+             OPTIMIZER_NAME_BG=bg_params.optimizer_name, LR_START_BG=bg_params.learning_rate,
              OPTIMIZER_NAME_HP=hps_params.optimizer_name, LR_START_HP=hps_params.learning_rate,
              OPTIMIZER_NAME_KPS=kps_params.optimizer_name, LR_START_KPS=hps_params.learning_rate,
-             LOSS_FCT_HP=hps_params.loss_fct, LOSS_FCT_KPS=kps_params.loss_fct,
-             PARAMS_HP=hps_params.params, PARAMS_KPS=kps_params.params,
-             DESCRIPTION_HP=hps_params.description, DESCRIPTION_KPS=kps_params.description,
-             TRAIN_HP=train_hp, TRAIN_KPS=train_kps,
-             W_COUNTER_HP=general_param.wcounter_hp, W_COUNTER_KPS=general_param.wcounter_kps,
+             LOSS_FCT_BG=bg_params.loss_fct, LOSS_FCT_HP=hps_params.loss_fct, LOSS_FCT_KPS=kps_params.loss_fct,
+             PARAMS_BG=bg_params.params, PARAMS_HP=hps_params.params, PARAMS_KPS=kps_params.params,
+             DESCRIPTION_BG=bg_params.description, DESCRIPTION_HP=hps_params.description,
+             DESCRIPTION_KPS=kps_params.description,
+             TRAIN_BG=train_bg, TRAIN_HP=train_hp, TRAIN_KPS=train_kps,
+             W_COUNTER_BG=general_param.wcounter_bg, W_COUNTER_HP=general_param.wcounter_hp,
+             W_COUNTER_KPS=general_param.wcounter_kps,
              EPOCH_START=general_param.epoch_start,
              BATCH_SIZE=general_param.batch_size,
              PREFETCH_BATCH_BUFFER=1, EPOCH_STEPS=general_param.epoch_steps, EPOCHS=general_param.epochs,
-             EPOCH_LOG_N=general_param.epoch_log_n,
+             EPOCH_LOG_N=general_param.epoch_log_n, BG=args.bg,
              ).start_train_loop()
-
-    # MainLoop(args.gpu, name, args.wcounter, args.wcounter_base, optimizer, lr, args.decay, args.bg,
-    #          BATCH_SIZE=args.bs,
-    #          EPOCH_STEPS=args.steps, EPOCHS=args.epochs, EPOCH_LOG_N=args.log_n, PARAMS=params).start_train_loop()

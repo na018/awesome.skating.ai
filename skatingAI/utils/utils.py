@@ -5,11 +5,15 @@ from enum import Enum
 from pathlib import Path
 from typing import List, Tuple
 
+import matplotlib
 import numpy as np
 import tensorflow as tf
 from keras import backend as K
 from keras.utils.layer_utils import count_params
-from matplotlib import pyplot as plt
+
+# needed for savefig to work
+matplotlib.use("Qt4Agg")
+import matplotlib.pyplot as plt
 from tensorflow import keras, summary
 
 path = Path.cwd()
@@ -234,13 +238,14 @@ def plot2img(figure):
 
 
 class DisplayCallback(tf.keras.callbacks.TensorBoard):
-    def __init__(self, base_model, model, sub_dir: str,
+    def __init__(self, bgmodel: tf.keras.Model, base_model, model, sub_dir: str,
                  sample_image, sample_mask, sample_kp,
                  epochs=5, gpu: int = 1,
                  log_dir='logs',
                  **kwargs):
         super().__init__(log_dir=f"{log_dir}/model/", histogram_freq=1, profile_batch='500,520', **kwargs)
         # log_dir = f"{log_dir}/model/train", histogram_freq = 1, profile_batch = '500,520', ** kwargs
+        self.bgmodel = bgmodel
         self.sub_dir = sub_dir
         self.base_model = base_model
         self.model = model
@@ -256,7 +261,8 @@ class DisplayCallback(tf.keras.callbacks.TensorBoard):
         self.histogram_freq = 10
 
     def track_metrics_on_train_start(self, model: tf.keras.Model, name, optimizer_name, loss_function, learning_rate,
-                                     train_hp: bool, train_kps: bool, training_time, epochs, epoch_steps, batch_size,
+                                     train_bg: bool, train_hp: bool, train_kps: bool, training_time, epochs,
+                                     epoch_steps, batch_size,
                                      description):
         text_summary = f'|name    |{name}    |\n|----|----|\n'
         trainable_params = count_params(model.trainable_weights)
@@ -266,6 +272,7 @@ class DisplayCallback(tf.keras.callbacks.TensorBoard):
         for item in (['optimizer_name', optimizer_name],
                      ['epochs:epoch_steps:batch_size', f"{epochs}:{epoch_steps}:{batch_size}"],
                      ['loss_function', loss_function],
+                     ['train_bg', train_bg],
                      ['train_body_parts', train_hp],
                      ['train_keypoints', train_kps],
                      ['learning_rate', str(learning_rate)],
@@ -287,12 +294,13 @@ class DisplayCallback(tf.keras.callbacks.TensorBoard):
         self.model.save_weights(
             f"{Path.cwd()}/ckpt{self.gpu}/{self.sub_dir}-{epoch}.ckpt")
 
+        predicted_bg = create_mask(self.bgmodel.predict(self.sample_image[tf.newaxis, ...])[0])
+
         predicted_mask = create_mask(self.base_model.predict(self.sample_image[tf.newaxis, ...])[0])
 
         predicted_kp = self.model.predict(self.sample_image[tf.newaxis, ...])[0]
 
         # predicted_kp = self.model.predict(self.sample_image[tf.newaxis, ...])[0]
-
         K.clear_session()
 
         true_circles, predicted_circles = [], []
@@ -309,6 +317,11 @@ class DisplayCallback(tf.keras.callbacks.TensorBoard):
             display_imgs = [[tf.keras.preprocessing.image.array_to_img(self.sample_image), []],
                             [tf.keras.preprocessing.image.array_to_img(self.sample_mask), true_circles],
                             [tf.keras.preprocessing.image.array_to_img(predicted_mask), predicted_circles]]
+        elif self.sub_dir == 'bg':
+            display_imgs = [[tf.keras.preprocessing.image.array_to_img(self.sample_image), []],
+                            [tf.reshape(self.sample_mask, self.sample_mask.shape[:-1]), []],
+                            [tf.reshape(predicted_bg, self.sample_mask.shape[:-1]), []],
+                            ]
         else:
             predicted_kp_img = tf.argmax(predicted_kp, axis=-1)
             display_imgs = [[tf.keras.preprocessing.image.array_to_img(self.sample_image), []],
@@ -330,6 +343,8 @@ class DisplayCallback(tf.keras.callbacks.TensorBoard):
 
         # summary_images = tf.cast(summary_images, tf.uint8)
 
+        fig.savefig(f"{path}/img_train{self.gpu}/{epoch}_{self.sub_dir}_train.png")
+
         img = plot2img(fig)
 
         with self._file_writer.as_default():
@@ -339,7 +354,6 @@ class DisplayCallback(tf.keras.callbacks.TensorBoard):
             for i, item in enumerate(metrics):
                 tf.summary.scalar(item.name, item.get_median(), step=epoch)
 
-        fig.savefig(f"{path}/img_train{self.gpu}/{epoch}_{self.sub_dir}_train.png")
         plt.close('all')
         self.on_epoch_end(epoch)
 

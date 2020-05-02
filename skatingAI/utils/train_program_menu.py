@@ -1,11 +1,7 @@
 from pick import pick
 
 from skatingAI.utils.hyper_paramater import KeyPointDetectorHyperParameters, BodyPoseDetectorHyperParameters, \
-    GeneralTrainParams
-from pick import pick
-
-from skatingAI.utils.hyper_paramater import KeyPointDetectorHyperParameters, BodyPoseDetectorHyperParameters, \
-    GeneralTrainParams
+    GeneralTrainParams, BGExtractorHyperParameters
 
 
 class TrainProgram(object):
@@ -21,10 +17,12 @@ class TrainProgram(object):
     def create_menu(self) -> (
             GeneralTrainParams, BodyPoseDetectorHyperParameters, KeyPointDetectorHyperParameters, bool, bool):
 
+        bg_param: BodyPoseDetectorHyperParameters = BGExtractorHyperParameters[0]
         hp_param: BodyPoseDetectorHyperParameters = BodyPoseDetectorHyperParameters[0]
         kps_param: KeyPointDetectorHyperParameters = KeyPointDetectorHyperParameters[0]
         general_train_params = GeneralTrainParams(
             gpu=1,
+            wcounter_bg=-1,
             wcounter_hp=-1,
             wcounter_kps=-1,
             epoch_start=0,
@@ -33,7 +31,7 @@ class TrainProgram(object):
             epochs=5556,
             epoch_log_n=5
         )
-        train_hp, train_kps = False, False
+        train_bg, train_hp, train_kps = False, False, False
         print('\n' * 2)
         print('Welcome to the custom training of body parts and key points of skatingAI ⛸💡')
 
@@ -47,6 +45,10 @@ class TrainProgram(object):
         else:
             gpu = input(f'Please choose a gpu to train on [0,1,2,3]: [{general_train_params.gpu}] ')
             general_train_params.gpu = int(gpu) if self._parse_if_int(gpu) else general_train_params.gpu
+            wcounter_bg = input(
+                f'Please choose a weight counter index for the background extraction pre-training: [{general_train_params.wcounter_bg}] ')
+            general_train_params.wcounter_bg = int(wcounter_bg) if self._parse_if_int(
+                wcounter_bg) else general_train_params.wcounter_bg
             wcounter_hp = input(
                 f'Please choose a weight counter index for the body parts pre-training: [{general_train_params.wcounter_hp}] ')
             general_train_params.wcounter_hp = int(wcounter_hp) if self._parse_if_int(
@@ -74,17 +76,24 @@ class TrainProgram(object):
                 epoch_log_n) else general_train_params.epoch_log_n
 
         title = f'Which model do you want to train?'
-        options = ['body part detection', 'key point detection', 'both together']
+        options = ['background extraction', 'body part detection', 'key point detection', 'all together']
         option, index = pick(options, title)
 
-        if option == 'body part detection' or option == 'both together':
+        if option == 'background extraction' or option == 'both together':
+            title = 'Please choose one of the Hyper Parameter training settings for the background extraction training: '
+            options = [f"{parameter.name}: {parameter.description}" for parameter in BGExtractorHyperParameters]
+            bg_param_option, index = pick(options, title)
+            bg_param = BGExtractorHyperParameters[index]
+            train_bg = True
+
+        if option == 'body part detection' or option == 'all together':
             title = 'Please choose one of the Hyper Parameter training settings for the body part detection training: '
             options = [f"{parameter.name}: {parameter.description}" for parameter in BodyPoseDetectorHyperParameters]
             hp_param_option, index = pick(options, title)
             hp_param = BodyPoseDetectorHyperParameters[index]
             train_hp = True
 
-        if option == 'key point detection' or option == 'both together':
+        if option == 'key point detection' or option == 'all together':
             title = 'Please choose one of the Hyper Parameter training settings for the keypoint detection training:: '
             options = [f"{parameter.name}: {parameter.description}" for parameter in KeyPointDetectorHyperParameters]
             option, index = pick(options, title)
@@ -92,4 +101,4 @@ class TrainProgram(object):
             train_kps = True
 
         print('\n' * 2)
-        return general_train_params, hp_param, kps_param, train_hp, train_kps
+        return general_train_params, bg_param, hp_param, kps_param, train_bg, train_hp, train_kps

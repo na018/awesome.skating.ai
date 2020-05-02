@@ -62,12 +62,17 @@ class DsGenerator(object):
         if self.rgb:
             video: np.ndarray = np.load(
                 f"{self.video_path_rgbs}/{self.file_names[random_n]}")['arr_0']
+            rgbb: np.ndarray = np.load(
+                f"{self.video_path_rgbbs}/{self.file_names[random_n]}")['arr_0']
+            rgbb = np.sum(rgbb, axis=-1)
+            mask = np.zeros(rgbb.shape)
+            mask[rgbb > 0] = 1
         else:
             video: np.ndarray = np.load(
                 f"{self.video_path_rgbbs}/{self.file_names[random_n]}")['arr_0']
-
-        mask: np.ndarray = np.load(
-            f"{self.video_path_masks}/{self.file_names[random_n]}")['arr_0']
+            mask: np.ndarray = np.load(
+                f"{self.video_path_masks}/{self.file_names[random_n]}")['arr_0']
+            mask[mask > 0] = 1
         mask_shape: np.ndarray = np.array(mask.shape)
         mask: np.ndarray = mask.reshape((*mask_shape, -1))
         kps: np.ndarray = np.load(f"{self.video_path_kps}/{self.file_names[random_n]}")['arr_0']
@@ -131,3 +136,4 @@ class DsGenerator(object):
         dataset = dataset.prefetch(prefetch_batch_buffer)
 
         return dataset
+

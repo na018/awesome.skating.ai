@@ -2,8 +2,10 @@ from typing import List
 
 import tensorflow as tf
 
+import skatingAI.nets.bg as bgnet
 import skatingAI.nets.hrnet as hrnet
 import skatingAI.nets.keypoint as kp_net
+from skatingAI.utils.BGLoss import BGLoss
 from skatingAI.utils.KPSLoss import KPSLoss
 from skatingAI.utils.losses import CILoss
 
@@ -27,6 +29,7 @@ class HyperParameterParams(object):
 
 class GeneralTrainParams(object):
     def __init__(self, gpu: int = 1,
+                 wcounter_bg: int = -1,
                  wcounter_hp: int = -1,
                  wcounter_kps: int = -1,
                  epoch_start: int = 0,
@@ -35,6 +38,7 @@ class GeneralTrainParams(object):
                  epochs: int = 5556,
                  epoch_log_n: int = 5):
         self.gpu = gpu
+        self.wcounter_bg = wcounter_bg
         self.wcounter_hp = wcounter_hp
         self.wcounter_kps = wcounter_kps
         self.epoch_start = epoch_start
@@ -57,6 +61,17 @@ class HyperParameter(object):
         self.params = params
 
 
+BGExtractorHyperParameters = [
+    HyperParameter(
+        name='bg_adam',
+        model=bgnet.v7.BGNet,
+        optimizer_name='adam',
+        learning_rate=1e-3,
+        loss_fct=BGLoss(2),
+        params=HyperParameterParams(epsilon=1e-8, amsgrad=True),
+        description='Test **adam** optimizer on hrnet v7',
+    )
+]
 BodyPoseDetectorHyperParameters = [
     HyperParameter(
         name='chrnet_adam',
