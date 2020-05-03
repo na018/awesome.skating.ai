@@ -19,7 +19,7 @@
 \contentsline {subsection}{\numberline {4.1.2}Joint Detection Module}{7}{subsection.28}
 \contentsline {section}{\numberline {4.2}Training Performance}{8}{section.29}
 \contentsline {section}{\numberline {4.3}Inference Runtime Analysis}{8}{section.30}
-\contentsline {section}{\numberline {4.4}Implementation Details}{9}{section.31}
+\contentsline {section}{\numberline {4.4}Implementation Details}{8}{section.31}
 \contentsline {chapter}{\numberline {5}Experiments}{11}{chapter.32}
 \contentsline {section}{\numberline {5.1}Ablation Study}{12}{section.34}
 \contentsline {subsection}{\numberline {5.1.1}Body Parts Module }{12}{subsection.35}
@@ -31,10 +31,10 @@
 \contentsline {subsection}{\numberline {5.1.2}Joint Module }{12}{subsection.42}
 \contentsline {paragraph}{Dense Modules}{12}{section*.43}
 \contentsline {paragraph}{Fully Convolutional}{12}{section*.44}
-\contentsline {section}{\numberline {5.2}Comparison of Optimizer Algorithms}{13}{section.45}
-\contentsline {paragraph}{Comparison of Adam, Nadam and SGD}{14}{figure.caption.49}
-\contentsline {paragraph}{Experiments with SGD}{15}{figure.caption.53}
-\contentsline {section}{\numberline {5.3}Performance of loss functions}{15}{section.54}
+\contentsline {section}{\numberline {5.2}Comparison of Optimizer Algorithms}{12}{section.45}
+\contentsline {paragraph}{Comparison of Adam, Nadam and SGD}{13}{figure.caption.49}
+\contentsline {paragraph}{Experiments with SGD}{14}{figure.caption.53}
+\contentsline {section}{\numberline {5.3}Performance of loss functions}{14}{section.54}
 \contentsline {subsection}{\numberline {5.3.1}Sparse Categorical Cross Entropy}{15}{subsection.55}
 \contentsline {subsection}{\numberline {5.3.2}Mean Squared Error}{15}{subsection.56}
 \contentsline {subsection}{\numberline {5.3.3}Our custom loss function CILoss}{15}{subsection.57}
