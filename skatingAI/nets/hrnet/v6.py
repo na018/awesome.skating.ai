@@ -1,14 +1,14 @@
 import tensorflow as tf
 import tensorflow.keras.backend as K
 
-from skatingAI.nets.hrnet.HRNetBase import HRNetBase
+from skatingAI.nets.hrnet.HPNetBase import HPNetBase
 
 layers = tf.keras.layers
 
 BN_MOMENTUM = 0.01
 
 
-class HRNet(HRNetBase):
+class HPNet(HPNetBase):
 
     def _build_model(self) -> tf.keras.Model:
         # --------------first-block-------------------#

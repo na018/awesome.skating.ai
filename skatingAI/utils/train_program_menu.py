@@ -26,7 +26,7 @@ class TrainProgram(object):
             wcounter_hp=-1,
             wcounter_kps=-1,
             epoch_start=0,
-            batch_size=3,
+            batch_size=12,
             epoch_steps=64,
             epochs=5556,
             epoch_log_n=5
@@ -37,7 +37,7 @@ class TrainProgram(object):
 
         title = f'Welcome to the custom training of body parts and key points of skatingAI ⛸💡\n\n' \
                 f'Do you want to stick to the default parameters for training?'
-        options = [f'yes: {general_train_params.__dict__}', 'No, I wand to choose my own.']
+        options = [f'yes: {general_train_params.__dict__}', 'No, I want to choose my own.']
         option, index = pick(options, title)
 
         if index == 0:
@@ -76,17 +76,18 @@ class TrainProgram(object):
                 epoch_log_n) else general_train_params.epoch_log_n
 
         title = f'Which model do you want to train?'
-        options = ['background extraction', 'body part detection', 'key point detection', 'all together']
+        options = ['background extraction', 'body part detection', 'key point detection', 'background & body part',
+                   'all together']
         option, index = pick(options, title)
 
-        if option == 'background extraction' or option == 'both together':
+        if option == 'background extraction' or option == 'background & body part' or option == 'all together':
             title = 'Please choose one of the Hyper Parameter training settings for the background extraction training: '
             options = [f"{parameter.name}: {parameter.description}" for parameter in BGExtractorHyperParameters]
             bg_param_option, index = pick(options, title)
             bg_param = BGExtractorHyperParameters[index]
             train_bg = True
 
-        if option == 'body part detection' or option == 'all together':
+        if option == 'body part detection' or option == 'background & body part' or option == 'all together':
             title = 'Please choose one of the Hyper Parameter training settings for the body part detection training: '
             options = [f"{parameter.name}: {parameter.description}" for parameter in BodyPoseDetectorHyperParameters]
             hp_param_option, index = pick(options, title)
