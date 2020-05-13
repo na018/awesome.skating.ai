@@ -5,13 +5,13 @@
 \addvspace {10\p@ }
 \addvspace {10\p@ }
 \addvspace {10\p@ }
-\contentsline {figure}{\numberline {5.1}{\ignorespaces Predicted Mask}}{11}{figure.caption.33}
-\contentsline {figure}{\numberline {5.2}{\ignorespaces HRNet v7}}{12}{figure.caption.41}
-\contentsline {figure}{\numberline {5.3}{\ignorespaces Accuracy}}{13}{figure.caption.47}
-\contentsline {figure}{\numberline {5.4}{\ignorespaces Correct BPR}}{13}{figure.caption.48}
-\contentsline {figure}{\numberline {5.5}{\ignorespaces loss}}{13}{figure.caption.49}
-\contentsline {figure}{\numberline {5.6}{\ignorespaces Learning Rate SGD}}{14}{figure.caption.51}
-\contentsline {figure}{\numberline {5.7}{\ignorespaces Loss SGD}}{14}{figure.caption.52}
-\contentsline {figure}{\numberline {5.8}{\ignorespaces Accuracy SGD}}{14}{figure.caption.53}
-\contentsline {figure}{\numberline {5.9}{\ignorespaces CILoss}}{15}{figure.caption.58}
+\contentsline {figure}{\numberline {5.1}{\ignorespaces Predicted Mask}}{13}{figure.caption.34}
+\contentsline {figure}{\numberline {5.2}{\ignorespaces HPNet v7}}{14}{figure.caption.42}
+\contentsline {figure}{\numberline {5.3}{\ignorespaces Accuracy}}{15}{figure.caption.48}
+\contentsline {figure}{\numberline {5.4}{\ignorespaces Correct BPR}}{15}{figure.caption.49}
+\contentsline {figure}{\numberline {5.5}{\ignorespaces loss}}{15}{figure.caption.50}
+\contentsline {figure}{\numberline {5.6}{\ignorespaces Learning Rate SGD}}{16}{figure.caption.52}
+\contentsline {figure}{\numberline {5.7}{\ignorespaces Loss SGD}}{16}{figure.caption.53}
+\contentsline {figure}{\numberline {5.8}{\ignorespaces Accuracy SGD}}{16}{figure.caption.54}
+\contentsline {figure}{\numberline {5.9}{\ignorespaces CILoss}}{17}{figure.caption.59}
 \addvspace {10\p@ }

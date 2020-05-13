@@ -70,11 +70,10 @@
 %\makeatother
 
 \usepackage{mathpazo} % Use the Palatino font by default
-
-\usepackage[backend=bibtex,style=authoryear,natbib=true]{biblatex} % Use the bibtex backend with the authoryear
+\usepackage[backend=bibtex,style=numeric-comp,natbib=true]{biblatex} % Use the bibtex backend with the authoryear
 %citation style (which resembles APA)
 
-\addbibresource{example.bib} % The filename of the bibliography
+\addbibresource{main.bib} % The filename of the bibliography
 
 \usepackage[autostyle=true]{csquotes}
 \usepackage{graphicx} % Required to generate language-dependent quotes in the bibliography
@@ -261,7 +260,7 @@ Application Scope} % Your thesis title, this is used in the title and abstract, 
 
     \begingroup
     \hypersetup{linkcolor=refC}
-    \renewcommand{\baselinestretch}{1.1}\normalsize
+    \renewcommand{\baselinestretch}{1.0}\normalsize
     \tableofcontents % Prints the main table of contents
     \renewcommand{\baselinestretch}{1.5}\normalsize
 

@@ -16,5 +16,422 @@
   {}
 \endgroup
 
-\datalist[entry]{nyt/global//global/global}\enddatalist
+\datalist[entry]{nty/global//global/global}
+  \entry{DensePose}{article}{}
+    \name{author}{1}{}{%
+      {{hash=RizAGIKNN}{%
+         prefix={R\~{i}\bibnamedelima za},
+         prefixi={R\bibinitperiod\bibinitdelim i\bibinitperiod\bibinitdelim
+  z\bibinitperiod},
+         family={Alp\bibnamedelima G\"uler},
+         familyi={A\bibinitperiod\bibinitdelim G\bibinitperiod},
+         suffix={Natalia\bibnamedelima Neverova},
+         suffixi={N\bibinitperiod\bibinitdelim N\bibinitperiod},
+         given={Iasonas\bibnamedelima Kokkinos},
+         giveni={I\bibinitperiod\bibinitdelim K\bibinitperiod},
+      }}%
+    }
+    \strng{namehash}{AGNNIKRiz1}
+    \strng{fullhash}{AGNNIKRiz1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{sortinit}{A}
+    \field{sortinithash}{A}
+    \field{title}{DensePose: Dense Human Pose Estimation In The Wild}
+    \field{journaltitle}{The IEEE Conference on Computer Vision and Pattern
+  Recognition (CVPR)}
+    \field{year}{2018}
+  \endentry
+
+  \entry{coronalife}{article}{}
+    \name{author}{1}{}{%
+      {{hash=BS}{%
+         family={Barr},
+         familyi={B\bibinitperiod},
+         given={Sabrina},
+         giveni={S\bibinitperiod},
+      }}%
+    }
+    \strng{namehash}{BS1}
+    \strng{fullhash}{BS1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{sortinit}{B}
+    \field{sortinithash}{B}
+    \field{title}{CORONAVIRUS: FROM YOGA TO BARRY'S BOOTCAMP — BEST EXERCISE
+  CLASSES ON ZOOM, INSTAGRAM AND YOUTUBE}
+    \verb{url}
+    \verb https://www.independent.co.uk/life-style/health-and-families/coronavi
+    \verb rus-home-workout-exercise-class-yoga-dance-kids-elderly-joe-wicks-a94
+    \verb 21126.html
+    \endverb
+    \field{journaltitle}{Indewpendent}
+    \field{year}{2020}
+    \field{urlday}{11}
+    \field{urlmonth}{05}
+    \field{urlyear}{2020}
+  \endentry
+
+  \entry{openpose}{article}{}
+    \name{author}{5}{}{%
+      {{hash=CZ}{%
+         family={{Cao}},
+         familyi={C\bibinitperiod},
+         given={Z.},
+         giveni={Z\bibinitperiod},
+      }}%
+      {{hash=HG}{%
+         family={{Hidalgo Martinez}},
+         familyi={H\bibinitperiod},
+         given={G.},
+         giveni={G\bibinitperiod},
+      }}%
+      {{hash=ST}{%
+         family={{Simon}},
+         familyi={S\bibinitperiod},
+         given={T.},
+         giveni={T\bibinitperiod},
+      }}%
+      {{hash=WS}{%
+         family={{Wei}},
+         familyi={W\bibinitperiod},
+         given={S.},
+         giveni={S\bibinitperiod},
+      }}%
+      {{hash=SYA}{%
+         family={{Sheikh}},
+         familyi={S\bibinitperiod},
+         given={Y.\bibnamedelima A.},
+         giveni={Y\bibinitperiod\bibinitdelim A\bibinitperiod},
+      }}%
+    }
+    \strng{namehash}{CZ+1}
+    \strng{fullhash}{CZHGSTWSSYA1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{sortinit}{C}
+    \field{sortinithash}{C}
+    \field{pages}{1\bibrangedash 1}
+    \field{title}{OpenPose: Realtime Multi-Person 2D Pose Estimation using Part
+  Affinity Fields}
+    \field{journaltitle}{IEEE Transactions on Pattern Analysis and Machine
+  Intelligence}
+    \field{year}{2019}
+  \endentry
+
+  \entry{sappanasonic}{article}{}
+    \name{author}{1}{}{%
+      {{hash=FD}{%
+         family={Fox},
+         familyi={F\bibinitperiod},
+         given={David},
+         giveni={D\bibinitperiod},
+      }}%
+    }
+    \strng{namehash}{FD1}
+    \strng{fullhash}{FD1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{sortinit}{F}
+    \field{sortinithash}{F}
+    \field{title}{Video-based sports analytics system from SAP and Panasonic
+  announced at IBC}
+    \verb{url}
+    \verb https://www.svgeurope.org/blog/headlines/video-based-sports-analytics
+    \verb -from-sap-and-panasonic-announced-at-ibc/
+    \endverb
+    \field{journaltitle}{SVG europe}
+    \field{year}{2014}
+    \field{urlday}{11}
+    \field{urlmonth}{05}
+    \field{urlyear}{2020}
+  \endentry
+
+  \entry{fbPub}{article}{}
+    \name{author}{1}{}{%
+      {{hash=IFA}{%
+         family={Intelligence},
+         familyi={I\bibinitperiod},
+         given={Facebook\bibnamedelima Artificial},
+         giveni={F\bibinitperiod\bibinitdelim A\bibinitperiod},
+      }}%
+    }
+    \strng{namehash}{IFA1}
+    \strng{fullhash}{IFA1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{sortinit}{I}
+    \field{sortinithash}{I}
+    \field{title}{Feacebook publications with topic pose estimation}
+    \verb{url}
+    \verb https://ai.facebook.com/results/?q=pose%20estimation&content_types[0]
+    \verb =publication&years[0]=2020&years[1]=2019&years[2]=2018&sort_by=releva
+    \verb nce&view=list&page=1
+    \endverb
+    \field{year}{2020}
+    \field{urlday}{03}
+    \field{urlmonth}{05}
+    \field{urlyear}{2020}
+  \endentry
+
+  \entry{synergetic}{article}{}
+    \name{author}{3}{}{%
+      {{hash=OT}{%
+         family={Ohashi},
+         familyi={O\bibinitperiod},
+         given={Takuya},
+         giveni={T\bibinitperiod},
+      }}%
+      {{hash=IY}{%
+         family={Ikegami},
+         familyi={I\bibinitperiod},
+         given={Yosuke},
+         giveni={Y\bibinitperiod},
+      }}%
+      {{hash=NY}{%
+         family={Nakamura},
+         familyi={N\bibinitperiod},
+         given={Yoshihiko},
+         giveni={Y\bibinitperiod},
+      }}%
+    }
+    \strng{namehash}{OTIYNY1}
+    \strng{fullhash}{OTIYNY1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{sortinit}{O}
+    \field{sortinithash}{O}
+    \field{title}{Synergetic Reconstruction from 2D Pose and 3D Motion for
+  Wide-Space Multi-Person Video Motion Capture in the Wild}
+    \field{year}{2020}
+  \endentry
+
+  \entry{olympicsport}{article}{}
+    \name{author}{2}{}{%
+      {{hash=PP}{%
+         family={Parmar},
+         familyi={P\bibinitperiod},
+         given={Paritosh},
+         giveni={P\bibinitperiod},
+      }}%
+      {{hash=MBT}{%
+         family={Morris},
+         familyi={M\bibinitperiod},
+         given={Brendan\bibnamedelima Tran},
+         giveni={B\bibinitperiod\bibinitdelim T\bibinitperiod},
+      }}%
+    }
+    \strng{namehash}{PPMBT1}
+    \strng{fullhash}{PPMBT1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{sortinit}{P}
+    \field{sortinithash}{P}
+    \field{pages}{76\bibrangedash 84}
+    \field{title}{Learning to Score Olympic Events}
+    \field{journaltitle}{2017 IEEE Conference on Computer Vision and Pattern
+  Recognition Workshops (CVPRW)}
+    \field{year}{2017}
+  \endentry
+
+  \entry{videopose3d}{article}{}
+    \name{author}{4}{}{%
+      {{hash=PD}{%
+         family={{Pavllo}},
+         familyi={P\bibinitperiod},
+         given={D.},
+         giveni={D\bibinitperiod},
+      }}%
+      {{hash=FC}{%
+         family={{Feichtenhofer}},
+         familyi={F\bibinitperiod},
+         given={C.},
+         giveni={C\bibinitperiod},
+      }}%
+      {{hash=GD}{%
+         family={{Grangier}},
+         familyi={G\bibinitperiod},
+         given={D.},
+         giveni={D\bibinitperiod},
+      }}%
+      {{hash=AM}{%
+         family={{Auli}},
+         familyi={A\bibinitperiod},
+         given={M.},
+         giveni={M\bibinitperiod},
+      }}%
+    }
+    \strng{namehash}{PD+1}
+    \strng{fullhash}{PDFCGDAM1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{sortinit}{P}
+    \field{sortinithash}{P}
+    \field{booktitle}{2019 IEEE/CVF Conference on Computer Vision and Pattern
+  Recognition (CVPR)}
+    \field{pages}{7745\bibrangedash 7754}
+    \field{title}{3D Human Pose Estimation in Video With Temporal Convolutions
+  and Semi-Supervised Training}
+    \field{year}{2019}
+  \endentry
+
+  \entry{coronarki}{article}{}
+    \name{author}{1}{}{%
+      {{hash=R}{%
+         family={RKI},
+         familyi={R\bibinitperiod},
+      }}%
+    }
+    \strng{namehash}{R1}
+    \strng{fullhash}{R1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{sortinit}{R}
+    \field{sortinithash}{R}
+    \field{title}{SARS-CoV-2 Steckbrief zur Coronavirus-Krankheit-2019
+  (COVID-19)}
+    \verb{url}
+    \verb https://www.rki.de/DE/Content/InfAZ/N/Neuartiges_Coronavirus/Steckbri
+    \verb ef.html
+    \endverb
+    \field{journaltitle}{Robert Koch Institut}
+    \field{year}{2020}
+    \field{urlday}{11}
+    \field{urlmonth}{05}
+    \field{urlyear}{2020}
+  \endentry
+
+  \entry{spaBloomberg}{article}{}
+    \name{author}{1}{}{%
+      {{hash=RBP}{%
+         family={Room},
+         familyi={R\bibinitperiod},
+         given={Bloomberg\bibnamedelima Press},
+         giveni={B\bibinitperiod\bibinitdelim P\bibinitperiod},
+      }}%
+    }
+    \strng{namehash}{RBP1}
+    \strng{fullhash}{RBP1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{sortinit}{R}
+    \field{sortinithash}{R}
+    \field{title}{Bloomberg Sports Launches “Stats Insights,” Sports
+  Analysis Blog}
+    \verb{url}
+    \verb https://www.bloomberg.com/company/press/bloomberg-sports-launches-sta
+    \verb ts-insights-sports-analysis-blog/
+    \endverb
+    \field{year}{2012}
+    \field{urlday}{11}
+    \field{urlmonth}{05}
+    \field{urlyear}{2020}
+  \endentry
+
+  \entry{surveillance}{article}{}
+    \name{author}{3}{}{%
+      {{hash=SW}{%
+         family={Sultani},
+         familyi={S\bibinitperiod},
+         given={Waqas},
+         giveni={W\bibinitperiod},
+      }}%
+      {{hash=CC}{%
+         family={Chen},
+         familyi={C\bibinitperiod},
+         given={Chen},
+         giveni={C\bibinitperiod},
+      }}%
+      {{hash=SM}{%
+         family={Shah},
+         familyi={S\bibinitperiod},
+         given={Mubarak},
+         giveni={M\bibinitperiod},
+      }}%
+    }
+    \strng{namehash}{SWCCSM1}
+    \strng{fullhash}{SWCCSM1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{sortinit}{S}
+    \field{sortinithash}{S}
+    \field{pages}{6479\bibrangedash 6488}
+    \field{title}{Real-World Anomaly Detection in Surveillance Videos}
+    \field{journaltitle}{2018 IEEE/CVF Conference on Computer Vision and
+  Pattern Recognition}
+    \field{year}{2018}
+  \endentry
+
+  \entry{wrnch}{article}{}
+    \field{labeltitlesource}{title}
+    \field{sortinit}{W}
+    \field{sortinithash}{W}
+    \field{title}{wrnchAI, BUILT FOR ALL YOUR HUMAN VISION NEEDS}
+    \verb{url}
+    \verb https://wrnch.ai/product
+    \endverb
+    \field{year}{2020}
+    \field{urlday}{12}
+    \field{urlmonth}{05}
+    \field{urlyear}{2020}
+  \endentry
+
+  \entry{kinectWalkDepression}{article}{}
+    \name{author}{7}{}{%
+      {{hash=ZN}{%
+         family={Zhao},
+         familyi={Z\bibinitperiod},
+         given={Nan},
+         giveni={N\bibinitperiod},
+      }}%
+      {{hash=ZZ}{%
+         family={Zhang},
+         familyi={Z\bibinitperiod},
+         given={Zhan},
+         giveni={Z\bibinitperiod},
+      }}%
+      {{hash=WY}{%
+         family={Wang},
+         familyi={W\bibinitperiod},
+         given={Yameng},
+         giveni={Y\bibinitperiod},
+      }}%
+      {{hash=WJ}{%
+         family={Wang},
+         familyi={W\bibinitperiod},
+         given={Jingying},
+         giveni={J\bibinitperiod},
+      }}%
+      {{hash=LB}{%
+         family={Li},
+         familyi={L\bibinitperiod},
+         given={Baobin},
+         giveni={B\bibinitperiod},
+      }}%
+      {{hash=ZT}{%
+         family={Zhu},
+         familyi={Z\bibinitperiod},
+         given={Tingshao},
+         giveni={T\bibinitperiod},
+      }}%
+      {{hash=XY}{%
+         family={Xiang},
+         familyi={X\bibinitperiod},
+         given={Yuanyuan},
+         giveni={Y\bibinitperiod},
+      }}%
+    }
+    \strng{namehash}{ZN+1}
+    \strng{fullhash}{ZNZZWYWJLBZTXY1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{sortinit}{Z}
+    \field{sortinithash}{Z}
+    \field{title}{See your mental state from your walk: Recognizing anxiety and
+  depression through Kinect-recorded gait data}
+    \field{volume}{14}
+    \field{journaltitle}{PLoS ONE}
+    \field{year}{2019}
+  \endentry
+\enddatalist
 \endinput
