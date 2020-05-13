@@ -47,8 +47,8 @@ class Predictor(object):
         self.save = save_path
 
         self.bg_weight_path = f"{os.getcwd()}/ckpt/bg-{bg_weight_counter}.ckpt"
-        self.hp_weight_path = f"{os.getcwd()}/ckpt/hrnet-{hp_weight_counter}.ckpt"
-        self.kps_weight_path = f"{os.getcwd()}/ckpt/kps_map-{kps_weight_counter}.ckpt"
+        self.hp_weight_path = f"{os.getcwd()}/ckpt/hp-{hp_weight_counter}.ckpt"
+        self.kps_weight_path = f"{os.getcwd()}/ckpt/kp-{kps_weight_counter}.ckpt"
         self.dir_save = f"{os.getcwd()}/predictions/{self.name}_{kps_weight_counter}"
         self.Logger = Logger()
         self.file_name = self._prepare_file_saving()
@@ -138,14 +138,14 @@ class Predictor(object):
         f = np.array(frames)
 
         pred_bg, pred_hp, pred_kp = [], [], []
-        for i in range(0, len(frames), 100):
-            fi = f[i:i + 100:]
+        for i in range(0, len(frames), 80):
+            fi = f[i:i + 80:]
             self.Logger.log(f'Start prediction fun:bg_extractor {i}', block=True)
 
             extracted_bg = self.bg_extractor.predict([fi])
             imgs = np.argmax(extracted_bg, axis=-1)
             frames_extracted_bg = np.array(fi)
-            frames_extracted_bg[imgs == 0] = 2
+            frames_extracted_bg[imgs == 0] = 0
             self.Logger.log('Start prediction fun:body_parts', block=True)
             body_parts = self.base_model.predict([frames_extracted_bg])
             self.Logger.log('Start prediction fun:keypoints', block=True)
@@ -298,11 +298,11 @@ if __name__ == "__main__":
     # image sequence: /home/nadin-katrin/Videos/biellmann_sequence
     parser = argparse.ArgumentParser(
         description='Predict body parts from images or videos')
-    parser.add_argument('--wcounter_bg', default=1310, help='Number of weight')
+    parser.add_argument('--wcounter_bg', default=2535, help='Number of weight')
     parser.add_argument('--wcounter_hp', default=4400, help='Number of weight')
     parser.add_argument('--wcounter_kps', default=4885, help='Number of weight')
     parser.add_argument('--name', default='', help='unique name to save to save video/image')
-    parser.add_argument('--video', default='/home/nadin-katrin/Videos/youtube_skate/edited/alena_3a_3t.avi',
+    parser.add_argument('--video', default='/home/nadin-katrin/Videos/youtube_skate/edited/alena_steps.avi',# alina_biellmann_red_dress.avi',
                         # /home/nadin-katrin/awesome.skating.ai/Biellmann_2.avi
                         help='absolute path to video file', type=str)
     parser.add_argument('--video_sequence', default='/home/nadin-katrin/Videos/biellmann_sequence',
