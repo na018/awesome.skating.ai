@@ -1,4 +1,4 @@
-@article{Reference1,
+example.bib@article{Reference1,
 	Abstract = {We have developed an enhanced Littrow configuration extended cavity diode laser (ECDL) that can be tuned without changing the direction of the output beam. The output of a conventional Littrow ECDL is reflected from a plane mirror fixed parallel to the tuning diffraction grating. Using a free-space Michelson wavemeter to measure the laser wavelength, we can tune the laser over a range greater than 10 nm without any alteration of alignment.},
 	Author = {C. J. Hawthorn and K. P. Weber and R. E. Scholten},
 	Journal = {Review of Scientific Instruments},
