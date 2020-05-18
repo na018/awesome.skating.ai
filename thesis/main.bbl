@@ -17,6 +17,18 @@
 \endgroup
 
 \datalist[entry]{nty/global//global/global}
+  \entry{xsensabout}{online}{}
+    \verb{url}
+    \verb https://base.xsens.com/hc/en-us/community/posts/115003027934-How-do-t
+    \verb he-Xsens-suits-actually-work
+    \endverb
+    \field{journaltitle}{Base by XSens}
+    \field{year}{2017}
+    \field{urlday}{17}
+    \field{urlmonth}{05}
+    \field{urlyear}{2020}
+  \endentry
+
   \entry{DensePose}{article}{}
     \name{author}{1}{}{%
       {{hash=RizAGIKNN}{%
@@ -65,9 +77,22 @@
     \verb rus-home-workout-exercise-class-yoga-dance-kids-elderly-joe-wicks-a94
     \verb 21126.html
     \endverb
-    \field{journaltitle}{Indewpendent}
+    \field{journaltitle}{Independent}
     \field{year}{2020}
     \field{urlday}{11}
+    \field{urlmonth}{05}
+    \field{urlyear}{2020}
+  \endentry
+
+  \entry{blender}{online}{}
+    \field{labeltitlesource}{title}
+    \field{sortinit}{B}
+    \field{sortinithash}{B}
+    \field{title}{Blender.today - daily art \& development live streams}
+    \verb{url}
+    \verb https://www.blender.org/
+    \endverb
+    \field{urlday}{17}
     \field{urlmonth}{05}
     \field{urlyear}{2020}
   \endentry
@@ -119,6 +144,200 @@
     \field{year}{2019}
   \endentry
 
+  \entry{dance}{article}{}
+    \name{author}{7}{}{%
+      {{hash=CD}{%
+         family={Castro},
+         familyi={C\bibinitperiod},
+         given={Daniel},
+         giveni={D\bibinitperiod},
+      }}%
+      {{hash=HS}{%
+         family={Hickson},
+         familyi={H\bibinitperiod},
+         given={Steven},
+         giveni={S\bibinitperiod},
+      }}%
+      {{hash=SP}{%
+         family={Sangkloy},
+         familyi={S\bibinitperiod},
+         given={Patsorn},
+         giveni={P\bibinitperiod},
+      }}%
+      {{hash=MB}{%
+         family={Mittal},
+         familyi={M\bibinitperiod},
+         given={Bhavishya},
+         giveni={B\bibinitperiod},
+      }}%
+      {{hash=DS}{%
+         family={Dai},
+         familyi={D\bibinitperiod},
+         given={Sean},
+         giveni={S\bibinitperiod},
+      }}%
+      {{hash=HJ}{%
+         family={Hays},
+         familyi={H\bibinitperiod},
+         given={James},
+         giveni={J\bibinitperiod},
+      }}%
+      {{hash=EI}{%
+         family={Essa},
+         familyi={E\bibinitperiod},
+         given={Irfan},
+         giveni={I\bibinitperiod},
+      }}%
+    }
+    \strng{namehash}{CD+1}
+    \strng{fullhash}{CDHSSPMBDSHJEI1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{sortinit}{C}
+    \field{sortinithash}{C}
+    \field{title}{Let's Dance: Learning From Online Dance Videos}
+    \field{year}{2018}
+  \endentry
+
+  \entry{gaitblender}{article}{}
+    \name{author}{2}{}{%
+      {{hash=CC}{%
+         family={Charalambous},
+         familyi={C\bibinitperiod},
+         given={Christoforos},
+         giveni={C\bibinitperiod},
+      }}%
+      {{hash=BA}{%
+         family={Bharath},
+         familyi={B\bibinitperiod},
+         given={Anil},
+         giveni={A\bibinitperiod},
+      }}%
+    }
+    \strng{namehash}{CCBA1}
+    \strng{fullhash}{CCBA1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{sortinit}{C}
+    \field{sortinithash}{C}
+    \field{title}{A data augmentation methodology for training machine/deep
+  learning gait recognition algorithms}
+    \field{month}{10}
+    \field{year}{2016}
+  \endentry
+
+  \entry{pyramidnetwork}{article}{}
+    \name{author}{6}{}{%
+      {{hash=CY}{%
+         family={{Chen}},
+         familyi={C\bibinitperiod},
+         given={Y.},
+         giveni={Y\bibinitperiod},
+      }}%
+      {{hash=WZ}{%
+         family={{Wang}},
+         familyi={W\bibinitperiod},
+         given={Z.},
+         giveni={Z\bibinitperiod},
+      }}%
+      {{hash=PY}{%
+         family={{Peng}},
+         familyi={P\bibinitperiod},
+         given={Y.},
+         giveni={Y\bibinitperiod},
+      }}%
+      {{hash=ZZ}{%
+         family={{Zhang}},
+         familyi={Z\bibinitperiod},
+         given={Z.},
+         giveni={Z\bibinitperiod},
+      }}%
+      {{hash=YG}{%
+         family={{Yu}},
+         familyi={Y\bibinitperiod},
+         given={G.},
+         giveni={G\bibinitperiod},
+      }}%
+      {{hash=SJ}{%
+         family={{Sun}},
+         familyi={S\bibinitperiod},
+         given={J.},
+         giveni={J\bibinitperiod},
+      }}%
+    }
+    \strng{namehash}{CY+1}
+    \strng{fullhash}{CYWZPYZZYGSJ1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{sortinit}{C}
+    \field{sortinithash}{C}
+    \field{booktitle}{2018 IEEE/CVF Conference on Computer Vision and Pattern
+  Recognition}
+    \field{pages}{7103\bibrangedash 7112}
+    \field{title}{Cascaded Pyramid Network for Multi-person Pose Estimation}
+    \field{year}{2018}
+  \endentry
+
+  \entry{stuttgarteiswelt}{online}{}
+    \field{labeltitlesource}{title}
+    \field{sortinit}{E}
+    \field{sortinithash}{E}
+    \field{title}{Eiswelt Stuttgart - Stadt Stuttgart}
+    \verb{url}
+    \verb https://www.stuttgart.de/eiswelt
+    \endverb
+    \field{urlday}{17}
+    \field{urlmonth}{05}
+    \field{urlyear}{2020}
+  \endentry
+
+  \entry{posehockey}{article}{}
+    \name{author}{5}{}{%
+      {{hash=FM}{%
+         family={{Fani}},
+         familyi={F\bibinitperiod},
+         given={M.},
+         giveni={M\bibinitperiod},
+      }}%
+      {{hash=NH}{%
+         family={{Neher}},
+         familyi={N\bibinitperiod},
+         given={H.},
+         giveni={H\bibinitperiod},
+      }}%
+      {{hash=CDA}{%
+         family={{Clausi}},
+         familyi={C\bibinitperiod},
+         given={D.\bibnamedelima A.},
+         giveni={D\bibinitperiod\bibinitdelim A\bibinitperiod},
+      }}%
+      {{hash=WA}{%
+         family={{Wong}},
+         familyi={W\bibinitperiod},
+         given={A.},
+         giveni={A\bibinitperiod},
+      }}%
+      {{hash=ZJ}{%
+         family={{Zelek}},
+         familyi={Z\bibinitperiod},
+         given={J.},
+         giveni={J\bibinitperiod},
+      }}%
+    }
+    \strng{namehash}{FM+1}
+    \strng{fullhash}{FMNHCDAWAZJ1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{sortinit}{F}
+    \field{sortinithash}{F}
+    \field{booktitle}{2017 IEEE Conference on Computer Vision and Pattern
+  Recognition Workshops (CVPRW)}
+    \field{pages}{85\bibrangedash 93}
+    \field{title}{Hockey Action Recognition via Integrated Stacked Hourglass
+  Network}
+    \field{year}{2017}
+  \endentry
+
   \entry{sappanasonic}{article}{}
     \name{author}{1}{}{%
       {{hash=FD}{%
@@ -147,7 +366,83 @@
     \field{urlyear}{2020}
   \endentry
 
-  \entry{fbPub}{article}{}
+  \entry{maskrcnn}{article}{}
+    \name{author}{4}{}{%
+      {{hash=HK}{%
+         family={{He}},
+         familyi={H\bibinitperiod},
+         given={K.},
+         giveni={K\bibinitperiod},
+      }}%
+      {{hash=GG}{%
+         family={{Gkioxari}},
+         familyi={G\bibinitperiod},
+         given={G.},
+         giveni={G\bibinitperiod},
+      }}%
+      {{hash=DP}{%
+         family={{Dollár}},
+         familyi={D\bibinitperiod},
+         given={P.},
+         giveni={P\bibinitperiod},
+      }}%
+      {{hash=GR}{%
+         family={{Girshick}},
+         familyi={G\bibinitperiod},
+         given={R.},
+         giveni={R\bibinitperiod},
+      }}%
+    }
+    \strng{namehash}{HK+1}
+    \strng{fullhash}{HKGGDPGR1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{sortinit}{H}
+    \field{sortinithash}{H}
+    \field{booktitle}{2017 IEEE International Conference on Computer Vision
+  (ICCV)}
+    \field{pages}{2980\bibrangedash 2988}
+    \field{title}{Mask R-CNN}
+    \field{year}{2017}
+  \endentry
+
+  \entry{mocapopticalcapture}{online}{}
+    \name{author}{1}{}{%
+      {{hash=h}{%
+         family={https://thecaptury.com/},
+         familyi={h\bibinitperiod},
+      }}%
+    }
+    \strng{namehash}{h1}
+    \strng{fullhash}{h1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{sortinit}{H}
+    \field{sortinithash}{H}
+    \field{title}{THE CAPTURY - Markerless Motion Capture}
+    \verb{url}
+    \verb https://thecaptury.com/
+    \endverb
+    \field{year}{2020}
+    \field{urlday}{17}
+    \field{urlmonth}{05}
+    \field{urlyear}{2020}
+  \endentry
+
+  \entry{human36m}{online}{}
+    \field{labeltitlesource}{title}
+    \field{sortinit}{H}
+    \field{sortinithash}{H}
+    \field{title}{Human3.6M}
+    \verb{url}
+    \verb http://vision.imar.ro/human3.6m/description.php
+    \endverb
+    \field{urlday}{17}
+    \field{urlmonth}{05}
+    \field{urlyear}{2020}
+  \endentry
+
+  \entry{fbPub}{online}{}
     \name{author}{1}{}{%
       {{hash=IFA}{%
          family={Intelligence},
@@ -170,6 +465,238 @@
     \endverb
     \field{year}{2020}
     \field{urlday}{03}
+    \field{urlmonth}{05}
+    \field{urlyear}{2020}
+  \endentry
+
+  \entry{pifpaf}{article}{}
+    \name{author}{3}{}{%
+      {{hash=KS}{%
+         family={{Kreiss}},
+         familyi={K\bibinitperiod},
+         given={S.},
+         giveni={S\bibinitperiod},
+      }}%
+      {{hash=BL}{%
+         family={{Bertoni}},
+         familyi={B\bibinitperiod},
+         given={L.},
+         giveni={L\bibinitperiod},
+      }}%
+      {{hash=AA}{%
+         family={{Alahi}},
+         familyi={A\bibinitperiod},
+         given={A.},
+         giveni={A\bibinitperiod},
+      }}%
+    }
+    \strng{namehash}{KSBLAA1}
+    \strng{fullhash}{KSBLAA1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{sortinit}{K}
+    \field{sortinithash}{K}
+    \field{booktitle}{2019 IEEE/CVF Conference on Computer Vision and Pattern
+  Recognition (CVPR)}
+    \field{pages}{11969\bibrangedash 11978}
+    \field{title}{PifPaf: Composite Fields for Human Pose Estimation}
+    \field{year}{2019}
+  \endentry
+
+  \entry{fsd10}{article}{}
+    \name{author}{9}{}{%
+      {{hash=LS}{%
+         family={Liu},
+         familyi={L\bibinitperiod},
+         given={Shenlan},
+         giveni={S\bibinitperiod},
+      }}%
+      {{hash=LX}{%
+         family={Liu},
+         familyi={L\bibinitperiod},
+         given={Xiang},
+         giveni={X\bibinitperiod},
+      }}%
+      {{hash=HG}{%
+         family={Huang},
+         familyi={H\bibinitperiod},
+         given={Gao},
+         giveni={G\bibinitperiod},
+      }}%
+      {{hash=FL}{%
+         family={Feng},
+         familyi={F\bibinitperiod},
+         given={Lin},
+         giveni={L\bibinitperiod},
+      }}%
+      {{hash=HL}{%
+         family={Hu},
+         familyi={H\bibinitperiod},
+         given={Lianyu},
+         giveni={L\bibinitperiod},
+      }}%
+      {{hash=JD}{%
+         family={Jiang},
+         familyi={J\bibinitperiod},
+         given={Dong},
+         giveni={D\bibinitperiod},
+      }}%
+      {{hash=ZA}{%
+         family={Zhang},
+         familyi={Z\bibinitperiod},
+         given={Aibin},
+         giveni={A\bibinitperiod},
+      }}%
+      {{hash=LY}{%
+         family={Liu},
+         familyi={L\bibinitperiod},
+         given={Yang},
+         giveni={Y\bibinitperiod},
+      }}%
+      {{hash=QH}{%
+         family={Qiao},
+         familyi={Q\bibinitperiod},
+         given={Hong},
+         giveni={H\bibinitperiod},
+      }}%
+    }
+    \strng{namehash}{LS+1}
+    \strng{fullhash}{LSLXHGFLHLJDZALYQH1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{sortinit}{L}
+    \field{sortinithash}{L}
+    \field{title}{FSD-10: A Dataset for Competitive Sports Content Analysis}
+    \field{year}{2020}
+  \endentry
+
+  \entry{mocapmarkerless3dscans}{article}{}
+    \name{author}{6}{}{%
+      {{hash=LZ}{%
+         family={{Liu}},
+         familyi={L\bibinitperiod},
+         given={Z.},
+         giveni={Z\bibinitperiod},
+      }}%
+      {{hash=HJ}{%
+         family={{Huang}},
+         familyi={H\bibinitperiod},
+         given={J.},
+         giveni={J\bibinitperiod},
+      }}%
+      {{hash=BS}{%
+         family={{Bu}},
+         familyi={B\bibinitperiod},
+         given={S.},
+         giveni={S\bibinitperiod},
+      }}%
+      {{hash=HJ}{%
+         family={{Han}},
+         familyi={H\bibinitperiod},
+         given={J.},
+         giveni={J\bibinitperiod},
+      }}%
+      {{hash=TX}{%
+         family={{Tang}},
+         familyi={T\bibinitperiod},
+         given={X.},
+         giveni={X\bibinitperiod},
+      }}%
+      {{hash=LX}{%
+         family={{Li}},
+         familyi={L\bibinitperiod},
+         given={X.},
+         giveni={X\bibinitperiod},
+      }}%
+    }
+    \strng{namehash}{LZ+1}
+    \strng{fullhash}{LZHJBSHJTXLX1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{sortinit}{L}
+    \field{sortinithash}{L}
+    \field{number}{3}
+    \field{pages}{695\bibrangedash 708}
+    \field{title}{Template Deformation-Based 3-D Reconstruction of Full Human
+  Body Scans From Low-Cost Depth Cameras}
+    \field{volume}{47}
+    \field{journaltitle}{IEEE Transactions on Cybernetics}
+    \field{year}{2017}
+  \endentry
+
+  \entry{adobefuse}{online}{}
+    \field{labeltitlesource}{title}
+    \field{sortinit}{M}
+    \field{sortinithash}{M}
+    \field{title}{Make custom 3D characters for your Photoshop projects.}
+    \verb{url}
+    \verb https://www.adobe.com/products/fuse.html
+    \endverb
+    \field{urlday}{17}
+    \field{urlmonth}{05}
+    \field{urlyear}{2020}
+  \endentry
+
+  \entry{makehuman}{online}{}
+    \field{labeltitlesource}{title}
+    \field{sortinit}{M}
+    \field{sortinithash}{M}
+    \field{title}{MakeHuman - Open Source tool for making 3D characters}
+    \verb{url}
+    \verb http://www.makehumancommunity.org/
+    \endverb
+    \field{urlday}{17}
+    \field{urlmonth}{05}
+    \field{urlyear}{2020}
+  \endentry
+
+  \entry{mixamomotionpac}{online}{}
+    \field{labeltitlesource}{title}
+    \field{sortinit}{M}
+    \field{sortinithash}{M}
+    \field{title}{Motion Pack}
+    \verb{url}
+    \verb https://www.mixamo.com/#/?page=1&type=Motion%2CMotionPac
+    \endverb
+    \field{journaltitle}{Adobe}
+    \field{urlday}{17}
+    \field{urlmonth}{05}
+    \field{urlyear}{2020}
+  \endentry
+
+  \entry{xsensmvnanimate}{online}{}
+    \field{labeltitlesource}{title}
+    \field{sortinit}{M}
+    \field{sortinithash}{M}
+    \field{title}{MVN Animate}
+    \verb{url}
+    \verb https://www.xsens.com/products/mvn-animate
+    \endverb
+    \field{urlday}{17}
+    \field{urlmonth}{05}
+    \field{urlyear}{2020}
+  \endentry
+
+  \entry{mocapinterialneuron}{online}{}
+    \name{author}{1}{}{%
+      {{hash=NP}{%
+         family={Neuron},
+         familyi={N\bibinitperiod},
+         given={Perception},
+         giveni={P\bibinitperiod},
+      }}%
+    }
+    \strng{namehash}{NP1}
+    \strng{fullhash}{NP1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{sortinit}{N}
+    \field{sortinithash}{N}
+    \field{title}{Perception Neuron Motion Capture}
+    \verb{url}
+    \verb https://neuronmocap.com/
+    \endverb
+    \field{urlday}{17}
     \field{urlmonth}{05}
     \field{urlyear}{2020}
   \endentry
@@ -275,6 +802,114 @@
     \field{year}{2019}
   \endentry
 
+  \entry{3dpeople}{article}{}
+    \name{author}{5}{}{%
+      {{hash=PA}{%
+         family={Pumarola},
+         familyi={P\bibinitperiod},
+         given={Albert},
+         giveni={A\bibinitperiod},
+      }}%
+      {{hash=SJ}{%
+         family={Sanchez},
+         familyi={S\bibinitperiod},
+         given={Jordi},
+         giveni={J\bibinitperiod},
+      }}%
+      {{hash=CG}{%
+         family={Choi},
+         familyi={C\bibinitperiod},
+         given={Gary},
+         giveni={G\bibinitperiod},
+      }}%
+      {{hash=SA}{%
+         family={Sanfeliu},
+         familyi={S\bibinitperiod},
+         given={A.},
+         giveni={A\bibinitperiod},
+      }}%
+      {{hash=MNF}{%
+         family={Moreno-Noguer},
+         familyi={M\bibinitperiod-N\bibinitperiod},
+         given={Francesc},
+         giveni={F\bibinitperiod},
+      }}%
+    }
+    \strng{namehash}{PA+1}
+    \strng{fullhash}{PASJCGSAMNF1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{sortinit}{P}
+    \field{sortinithash}{P}
+    \field{title}{3DPeople: Modeling the Geometry of Dressed Humans}
+    \field{month}{04}
+    \field{year}{2019}
+  \endentry
+
+  \entry{staf}{article}{}
+    \name{author}{4}{}{%
+      {{hash=RY}{%
+         family={{Raaj}},
+         familyi={R\bibinitperiod},
+         given={Y.},
+         giveni={Y\bibinitperiod},
+      }}%
+      {{hash=IH}{%
+         family={{Idrees}},
+         familyi={I\bibinitperiod},
+         given={H.},
+         giveni={H\bibinitperiod},
+      }}%
+      {{hash=HG}{%
+         family={{Hidalgo}},
+         familyi={H\bibinitperiod},
+         given={G.},
+         giveni={G\bibinitperiod},
+      }}%
+      {{hash=SY}{%
+         family={{Sheikh}},
+         familyi={S\bibinitperiod},
+         given={Y.},
+         giveni={Y\bibinitperiod},
+      }}%
+    }
+    \strng{namehash}{RY+1}
+    \strng{fullhash}{RYIHHGSY1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{sortinit}{R}
+    \field{sortinithash}{R}
+    \field{booktitle}{2019 IEEE/CVF Conference on Computer Vision and Pattern
+  Recognition (CVPR)}
+    \field{pages}{4615\bibrangedash 4623}
+    \field{title}{Efficient Online Multi-Person 2D Pose Tracking With Recurrent
+  Spatio-Temporal Affinity Fields}
+    \field{year}{2019}
+  \endentry
+
+  \entry{mocapopticalradical}{online}{}
+    \name{author}{1}{}{%
+      {{hash=R}{%
+         family={Radical},
+         familyi={R\bibinitperiod},
+      }}%
+    }
+    \strng{namehash}{R1}
+    \strng{fullhash}{R1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{sortinit}{R}
+    \field{sortinithash}{R}
+    \field{title}{The Body in Motion - No suits. No hardware.}
+    \verb{url}
+    \verb https://getrad.co/
+    \endverb
+    \field{year}{2020}
+    \field{urlday}{17}
+    \field{urlmonth}{05}
+    \field{urlyear}{2020}
+  \endentry
+
   \entry{coronarki}{article}{}
     \name{author}{1}{}{%
       {{hash=R}{%
@@ -282,8 +917,8 @@
          familyi={R\bibinitperiod},
       }}%
     }
-    \strng{namehash}{R1}
-    \strng{fullhash}{R1}
+    \strng{namehash}{R2}
+    \strng{fullhash}{R2}
     \field{labelnamesource}{author}
     \field{labeltitlesource}{title}
     \field{sortinit}{R}
@@ -328,6 +963,89 @@
     \field{urlyear}{2020}
   \endentry
 
+  \entry{synpose300}{article}{}
+    \name{author}{4}{}{%
+      {{hash=SN}{%
+         family={Sarafianos},
+         familyi={S\bibinitperiod},
+         given={Nikolaos},
+         giveni={N\bibinitperiod},
+      }}%
+      {{hash=BB}{%
+         family={Boteanu},
+         familyi={B\bibinitperiod},
+         given={Bogdan},
+         giveni={B\bibinitperiod},
+      }}%
+      {{hash=IB}{%
+         family={Ionescu},
+         familyi={I\bibinitperiod},
+         given={Bogdan},
+         giveni={B\bibinitperiod},
+      }}%
+      {{hash=KI}{%
+         family={Kakadiaris},
+         familyi={K\bibinitperiod},
+         given={Ioannis},
+         giveni={I\bibinitperiod},
+      }}%
+    }
+    \strng{namehash}{SN+1}
+    \strng{fullhash}{SNBBIBKI1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{sortinit}{S}
+    \field{sortinithash}{S}
+    \verb{doi}
+    \verb 10.1016/j.cviu.2016.09.002
+    \endverb
+    \field{title}{3D Human Pose Estimation: A Review of the Literature and
+  Analysis of Covariates}
+    \field{volume}{152}
+    \field{journaltitle}{Computer Vision and Image Understanding}
+    \field{month}{09}
+    \field{year}{2016}
+  \endentry
+
+  \entry{humaneva}{article}{}
+    \name{author}{3}{}{%
+      {{hash=SL}{%
+         family={Sigal},
+         familyi={S\bibinitperiod},
+         given={Leonid},
+         giveni={L\bibinitperiod},
+      }}%
+      {{hash=BA}{%
+         family={Balan},
+         familyi={B\bibinitperiod},
+         given={Alexandru},
+         giveni={A\bibinitperiod},
+      }}%
+      {{hash=BM}{%
+         family={Black},
+         familyi={B\bibinitperiod},
+         given={Michael},
+         giveni={M\bibinitperiod},
+      }}%
+    }
+    \strng{namehash}{SLBABM1}
+    \strng{fullhash}{SLBABM1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{sortinit}{S}
+    \field{sortinithash}{S}
+    \verb{doi}
+    \verb 10.1007/s11263-009-0273-6
+    \endverb
+    \field{pages}{4\bibrangedash 27}
+    \field{title}{HumanEva: Synchronized Video and Motion Capture Dataset and
+  Baseline Algorithm for Evaluation of Articulated Human Motion}
+    \field{volume}{87}
+    \field{journaltitle}{International Journal of Computer Vision}
+    \field{month}{03}
+    \field{year}{2010}
+  \endentry
+
   \entry{surveillance}{article}{}
     \name{author}{3}{}{%
       {{hash=SW}{%
@@ -362,6 +1080,213 @@
     \field{year}{2018}
   \endentry
 
+  \entry{highres}{article}{}
+    \name{author}{4}{}{%
+      {{hash=SK}{%
+         family={{Sun}},
+         familyi={S\bibinitperiod},
+         given={K.},
+         giveni={K\bibinitperiod},
+      }}%
+      {{hash=XB}{%
+         family={{Xiao}},
+         familyi={X\bibinitperiod},
+         given={B.},
+         giveni={B\bibinitperiod},
+      }}%
+      {{hash=LD}{%
+         family={{Liu}},
+         familyi={L\bibinitperiod},
+         given={D.},
+         giveni={D\bibinitperiod},
+      }}%
+      {{hash=WJ}{%
+         family={{Wang}},
+         familyi={W\bibinitperiod},
+         given={J.},
+         giveni={J\bibinitperiod},
+      }}%
+    }
+    \strng{namehash}{SK+1}
+    \strng{fullhash}{SKXBLDWJ1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{sortinit}{S}
+    \field{sortinithash}{S}
+    \field{booktitle}{2019 IEEE/CVF Conference on Computer Vision and Pattern
+  Recognition (CVPR)}
+    \field{pages}{5686\bibrangedash 5696}
+    \field{title}{Deep High-Resolution Representation Learning for Human Pose
+  Estimation}
+    \field{year}{2019}
+  \endentry
+
+  \entry{isuguideleinesgoe}{article}{}
+    \name{author}{1}{}{%
+      {{hash=UIS}{%
+         family={Uniion},
+         familyi={U\bibinitperiod},
+         given={International\bibnamedelima Skating},
+         giveni={I\bibinitperiod\bibinitdelim S\bibinitperiod},
+      }}%
+    }
+    \strng{namehash}{UIS1}
+    \strng{fullhash}{UIS1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{sortinit}{U}
+    \field{sortinithash}{U}
+    \field{title}{Levels of Difficulty and Guidelines for marking Grade of
+  Execution and Program Components, Season 2020/21}
+    \verb{url}
+    \verb https://www.isu.org/inside-isu/isu-communications/communications/2433
+    \verb 2-2324-sp-levels-of-difficulty-and-guidelines-for-marking-goe-final/f
+    \verb ile
+    \endverb
+    \field{journaltitle}{Communication No. 2324: SINGLE \& PAIR SKATING}
+    \field{year}{2020}
+  \endentry
+
+  \entry{isuscores}{article}{}
+    \name{author}{1}{}{%
+      {{hash=UIS}{%
+         family={Uniion},
+         familyi={U\bibinitperiod},
+         given={International\bibnamedelima Skating},
+         giveni={I\bibinitperiod\bibinitdelim S\bibinitperiod},
+      }}%
+    }
+    \strng{namehash}{UIS1}
+    \strng{fullhash}{UIS1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{sortinit}{U}
+    \field{sortinithash}{U}
+    \field{title}{Scale of Values, Levels of Difficulty and Guidelines for
+  marking Grade of Execution, season 2018/19}
+    \verb{url}
+    \verb https://www.isu.org/docman-documents-links/isu-files/documents-commun
+    \verb ications/isu-communications/17142-isu-communication-2168/file
+    \endverb
+    \field{journaltitle}{Communication No. 2168: SINGLE \& PAIR SKATING}
+    \field{year}{2018}
+  \endentry
+
+  \entry{makehumanassets}{online}{}
+    \field{labeltitlesource}{title}
+    \field{sortinit}{U}
+    \field{sortinithash}{U}
+    \field{title}{User contributed assets}
+    \verb{url}
+    \verb http://www.makehumancommunity.org/content/user_contributed_assets.htm
+    \verb l
+    \endverb
+    \field{urlday}{17}
+    \field{urlmonth}{05}
+    \field{urlyear}{2020}
+  \endentry
+
+  \entry{mocapoptical}{online}{}
+    \name{author}{1}{}{%
+      {{hash=V}{%
+         family={Vicon},
+         familyi={V\bibinitperiod},
+      }}%
+    }
+    \strng{namehash}{V1}
+    \strng{fullhash}{V1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{sortinit}{V}
+    \field{sortinithash}{V}
+    \field{title}{Award Winning Motion Capture Systems}
+    \field{year}{2020}
+    \field{urlday}{17}
+    \field{urlmonth}{05}
+    \field{urlyear}{2020}
+  \endentry
+
+  \entry{swimm}{article}{}
+    \name{author}{4}{}{%
+      {{hash=VB}{%
+         family={{Victor}},
+         familyi={V\bibinitperiod},
+         given={B.},
+         giveni={B\bibinitperiod},
+      }}%
+      {{hash=HZ}{%
+         family={{He}},
+         familyi={H\bibinitperiod},
+         given={Z.},
+         giveni={Z\bibinitperiod},
+      }}%
+      {{hash=MS}{%
+         family={{Morgan}},
+         familyi={M\bibinitperiod},
+         given={S.},
+         giveni={S\bibinitperiod},
+      }}%
+      {{hash=MD}{%
+         family={{Miniutti}},
+         familyi={M\bibinitperiod},
+         given={D.},
+         giveni={D\bibinitperiod},
+      }}%
+    }
+    \strng{namehash}{VB+1}
+    \strng{fullhash}{VBHZMSMD1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{sortinit}{V}
+    \field{sortinithash}{V}
+    \field{booktitle}{2017 IEEE Conference on Computer Vision and Pattern
+  Recognition Workshops (CVPRW)}
+    \field{pages}{122\bibrangedash 131}
+    \field{title}{Continuous Video to Simple Signals for Swimming Stroke
+  Detection with Convolutional Neural Networks}
+    \field{year}{2017}
+  \endentry
+
+  \entry{convpose}{article}{}
+    \name{author}{4}{}{%
+      {{hash=WS}{%
+         family={{Wei}},
+         familyi={W\bibinitperiod},
+         given={S.},
+         giveni={S\bibinitperiod},
+      }}%
+      {{hash=RV}{%
+         family={{Ramakrishna}},
+         familyi={R\bibinitperiod},
+         given={V.},
+         giveni={V\bibinitperiod},
+      }}%
+      {{hash=KT}{%
+         family={{Kanade}},
+         familyi={K\bibinitperiod},
+         given={T.},
+         giveni={T\bibinitperiod},
+      }}%
+      {{hash=SY}{%
+         family={{Sheikh}},
+         familyi={S\bibinitperiod},
+         given={Y.},
+         giveni={Y\bibinitperiod},
+      }}%
+    }
+    \strng{namehash}{WS+1}
+    \strng{fullhash}{WSRVKTSY1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{sortinit}{W}
+    \field{sortinithash}{W}
+    \field{booktitle}{2016 IEEE Conference on Computer Vision and Pattern
+  Recognition (CVPR)}
+    \field{pages}{4724\bibrangedash 4732}
+    \field{title}{Convolutional Pose Machines}
+    \field{year}{2016}
+  \endentry
+
   \entry{wrnch}{article}{}
     \field{labeltitlesource}{title}
     \field{sortinit}{W}
@@ -374,6 +1299,150 @@
     \field{urlday}{12}
     \field{urlmonth}{05}
     \field{urlyear}{2020}
+  \endentry
+
+  \entry{simplebaselines}{article}{}
+    \name{author}{3}{}{%
+      {{hash=XB}{%
+         family={{Xiao}},
+         familyi={X\bibinitperiod},
+         given={B.},
+         giveni={B\bibinitperiod},
+      }}%
+      {{hash=WH}{%
+         family={{Wu}},
+         familyi={W\bibinitperiod},
+         given={H.},
+         giveni={H\bibinitperiod},
+      }}%
+      {{hash=YW}{%
+         family={.},
+         familyi={\bibinitperiod},
+         given={Y.\bibnamedelima {Wei}},
+         giveni={Y\bibinitperiod\bibinitdelim W\bibinitperiod},
+      }}%
+    }
+    \strng{namehash}{XBWHYW1}
+    \strng{fullhash}{XBWHYW1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{sortinit}{X}
+    \field{sortinithash}{X}
+    \field{booktitle}{2018 European Conference on Computer Vision (ECCV)}
+    \field{title}{Simple Baselines for Human Pose Estimation and Tracking}
+    \field{year}{2018}
+  \endentry
+
+  \entry{xsens}{online}{}
+    \name{author}{1}{}{%
+      {{hash=X}{%
+         family={XSens},
+         familyi={X\bibinitperiod},
+      }}%
+    }
+    \strng{namehash}{X1}
+    \strng{fullhash}{X1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{sortinit}{X}
+    \field{sortinithash}{X}
+    \field{title}{Xsens 3D motion tracking}
+    \verb{url}
+    \verb https://www.xsens.com/
+    \endverb
+    \field{urlday}{17}
+    \field{urlmonth}{05}
+    \field{urlyear}{2020}
+  \endentry
+
+  \entry{scorefigureskating}{article}{}
+    \name{author}{6}{}{%
+      {{hash=XC}{%
+         family={{Xu}},
+         familyi={X\bibinitperiod},
+         given={C.},
+         giveni={C\bibinitperiod},
+      }}%
+      {{hash=FY}{%
+         family={{Fu}},
+         familyi={F\bibinitperiod},
+         given={Y.},
+         giveni={Y\bibinitperiod},
+      }}%
+      {{hash=ZB}{%
+         family={{Zhang}},
+         familyi={Z\bibinitperiod},
+         given={B.},
+         giveni={B\bibinitperiod},
+      }}%
+      {{hash=CZ}{%
+         family={{Chen}},
+         familyi={C\bibinitperiod},
+         given={Z.},
+         giveni={Z\bibinitperiod},
+      }}%
+      {{hash=JY}{%
+         family={{Jiang}},
+         familyi={J\bibinitperiod},
+         given={Y.},
+         giveni={Y\bibinitperiod},
+      }}%
+      {{hash=XX}{%
+         family={{Xue}},
+         familyi={X\bibinitperiod},
+         given={X.},
+         giveni={X\bibinitperiod},
+      }}%
+    }
+    \strng{namehash}{XC+1}
+    \strng{fullhash}{XCFYZBCZJYXX1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{sortinit}{X}
+    \field{sortinithash}{X}
+    \field{pages}{1\bibrangedash 1}
+    \field{title}{Learning to Score Figure Skating Sport Videos}
+    \field{journaltitle}{IEEE Transactions on Circuits and Systems for Video
+  Technology}
+    \field{year}{2019}
+  \endentry
+
+  \entry{figureskatingsimulation}{article}{}
+    \name{author}{3}{}{%
+      {{hash=YR}{%
+         family={Yu},
+         familyi={Y\bibinitperiod},
+         given={Ri},
+         giveni={R\bibinitperiod},
+      }}%
+      {{hash=PH}{%
+         family={Park},
+         familyi={P\bibinitperiod},
+         given={Hwangpil},
+         giveni={H\bibinitperiod},
+      }}%
+      {{hash=LJ}{%
+         family={Lee},
+         familyi={L\bibinitperiod},
+         given={J.},
+         giveni={J\bibinitperiod},
+      }}%
+    }
+    \strng{namehash}{YRPHLJ1}
+    \strng{fullhash}{YRPHLJ1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{sortinit}{Y}
+    \field{sortinithash}{Y}
+    \verb{doi}
+    \verb 10.1111/cgf.13831
+    \endverb
+    \field{pages}{225\bibrangedash 234}
+    \field{title}{Figure Skating Simulation from Video}
+    \field{volume}{38}
+    \field{journaltitle}{Computer Graphics Forum}
+    \field{month}{10}
+    \field{year}{2019}
   \endentry
 
   \entry{kinectWalkDepression}{article}{}

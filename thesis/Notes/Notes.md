@@ -180,7 +180,11 @@ In CVPR, 2017
 
 
 # 3D human pose estimation in video with temporal convolutions and semi-supervised training (2019-03-29 Facebook)
-
+- has applications in many fields like sports and health care
+- perform exercise therapy on their own, without physiotherapist get feedback, no money
+- avoid scoring scandals
+    - Wikipedia. List of olympic games scandals and controversies
+    — M.-J. Borzilleri. Olympic figure skating controversy: Judging system is most to blame for uproar, 2014. 
 
 # Learning To Score Olympic Events 2017
 
@@ -349,10 +353,21 @@ Borno et al. [ABDLH13] to generate reference motion
 
 
 # Continuous Video to Simple Signals for Swimming Stroke Detection with Convolutional Neural Networks
+In many sports, it is useful to analyse video of an athlete in competition for training purposes. 
+In swimming, stroke rate is a common metric used by coaches; requiring a laborious labelling of each individual stroke. 
+We show that using a Convolutional Neural Network (CNN) we can automatically detect discrete events in continuous video (in this case, swimming strokes). 
+We create a CNN that learns a mapping from a window of frames to a point on a smooth 1D target signal, with peaks denoting the location of a stroke, evaluated as a sliding window. 
+To our knowledge this process of training and utilizing a CNN has not been investigated before; either in sports or fundamental computer vision research. 
+Most research has been focused on action recognition and using it to classify many clips in continuous video for action localisation. 
+In this paper we demonstrate our process works well on the task of detecting swimming strokes in the wild. 
+However, without modifying the model architecture or training method, the process is also shown to work equally well on detecting tennis strokes, implying that this is a general process. 
+The outputs of our system are surprisingly smooth signals that predict an arbitrary event at least as accurately as humans (manually evaluated from a sample of negative results). 
+A number of different architectures are evaluated, pertaining to slightly different problem formulations and signal targets.
 
 
 # Computer Vision in Sports (ice hockey, swimming)
 - https://towardsdatascience.com/computer-vision-in-sports-61195342bcef
+# Hockey Action Recognition via Integrated Stacked Hourglass Network
 
 
 
@@ -458,7 +473,57 @@ FlowTrack - top-down --> slower than bottom-up STAF
 - CNNs at every module + pass required data computed from previous frame
 
 
+# markerless motion capture
+- smartphones with depth cam:
+    - https://developer.apple.com/documentation/avfoundation/cameras_and_media_capture/capturing_photos_with_depth
+    - https://www.cashify.in/top-10-smartphones-with-a-dedicated-depth-sensor-camera-to-capture-perfect-bokeh-shots
+- https://www.cs.ubc.ca/~shafaei/homepage/projects/papers/crv_16.pdf
+    - Real-Time Human Motion Capture with Multiple Depth Cameras
+- https://cinemontage.org/motion-capture-for-the-masses/
+- https://graphics.tu-bs.de/upload/publications/multikinectsMocap.pdf Markerless Motion Capture using multiple Color-Depth Sensors
 
+# Integrability and Chaos in Figure Skating
+- physics, motion (2019)
+https://arxiv.org/pdf/1809.11146.pdf
+
+# 3D Sensing technology for real-time quantification of Athletes' Movements
+
+# A Simple 3D Scanning System of Human Foot Using a Smartphone with a Depth Camera
+    - https://www.researchgate.net/publication/329425920_A_Simple_3D_Scanning_System_of_Human_Foot_Using_a_Smartphone_with_a_Depth_Camera
+    
+# Template Deformation-Based 3-D Reconstruction of Full Human Body Scans From Low-Cost Depth Cameras
+
+
+# Neuron: what is motion capture
+- https://neuronmocap.com/content/mocap-101-what-motion-capture
+
+https://www.xsens.com/inertial-sensors
+
+
+# A data augmentation methodology for training machine/deep learning gait recognition algorithms
+- create gait synthetic dataset for gait regognition systemes - characteristics in gait/ idetity of subjects
+- multi camera Vicon motion capture system + 10 infrared cams, 38 reflective markers
+- makehuman: attach avatar of human subject to a rig (skeleton, known as armature) = skinning procedure
+    - each vertex of 3d mesh model is associated with bone in rig + weighed according physics engine - determines how body moves relative to skeleton
+    - retargetting: connect motion capture data to the rig
+- synthetic dataset allows arbitrary degrees of variation
+
+
+# 3D Human Pose Estimation: A Review of the Literature and Analysis of Covariates
+- (SynPose300)
+- current datasets controlled environments, wear tight clothes 
+    - Human3.6M: wear shorts and t-shirts
+    - HumanEva one out of four subjects is female
+- use blender & makehuman
+    - export from blender in biovision hiearchy format
+    - process in matlab
+    - parse 3d coordinates for all joints
+
+
+#HUMANEVA: Synchronized Video and Motion Capture Dataset and Baseline Algorithm for Evaluation of Articulated Human Motion
+- optical trackers
+- 6/2 subjects performing some actions
+- trackers applied onto clothes
 
 # test videos: 
 https://www.youtube.com/watch?v=TlXCk1LDlC0

@@ -3,7 +3,7 @@
 
 \chapter{Figure Skating Pose Detection} % Main chapter title
 
-\label{Figure Skating} % Change X to a consecutive number; for referencing this chapter elsewhere, use \ref{ChapterX}
+\label{figureskating} % Change X to a consecutive number; for referencing this chapter elsewhere, use \ref{ChapterX}
 
 %----------------------------------------------------------------------------------------
 %	SECTION 1
@@ -11,14 +11,70 @@
 
 
 \section{Complexity of Figures}
+\begin{flushleft}
+    Figure ice skating includes very special movement sequences which stand out from other sports.
+    Thanks to the surface of the ice, skaters perform gliding movements.
+    Furthermore, their programs include highly artisitic
+    movements with explosive take-offs, very high rotation speeds and flexible positions.
+    Current pose estimators such as OpenPose, VideoPose3d or wrnch.ai all fail to correctly predict
+    spins with their high
+    rotation speed and difficult flexible positions.
+    In this section we try to explain why especially figure ice skating means a challenge in human pose estimation.
+\end{flushleft}
+\begin{flushleft}
+    In single figure ice skating, there are three main element types in a competitive program, which receive
+    technical scores:
+    jumps, steps, and spins.
+    There are seven different listed jumps, which only differ in their take-off phase.
+    Three
+    of these
+    are jumped just from one edge, the Axel, Loop and Salchow.
+    The other ones additionally use the skate toe as a catapult.
+    Furthermore, they can be distinguished by the edge that is last skated on the ice before the skater takes off.
+    This is one of the reasons, why many skaters have problems with the Lutz and Flip jumps.
+    For the jury it is often hard to tell as well, weather the jump should get an edge deduction.
+    All the jumps can include a different amount of rotation in the air,
+    whereas four rotations was the maximum a skater could perform until today.
+    All these jumps can be combined in various manners, include features such as lifted arms or difficult steps
+    before or after the element to
+    increase the level of difficulty, resulting in higher scores.
+\end{flushleft}
+\begin{flushleft}
+    For spins there are four main positions: upright, sit, camel and layback.
+    These positions as well can be combined with various features, as for example jumps or difficult elastic positions
+    such as the famous Biellmann spin.
+\end{flushleft}
+\begin{flushleft}
+    There are plenty of different step sequence elements including turns on the ice and steps.
+    These as well can be combined with multiple additional features resulting in higher scores.
 
-- existing KP detectors struggle (OpenPose, VideoPose)
-
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam ultricies lacinia euismod. Nam tempus risus in dolor
-rhoncus in interdum enim tincidunt. Donec vel nunc neque. In condimentum ullamcorper quam non consequat. Fusce
-sagittis tempor feugiat. Fusce magna erat, molestie eu convallis ut, tempus sed arcu. Quisque molestie, ante a
-tincidunt ullamcorper, sapien enim dignissim lacus, in semper nibh erat lobortis purus. Integer dapibus ligula ac
-risus convallis pellentesque.
+\end{flushleft}
+\begin{flushleft}
+    The above named elements only explain the absolute basics in figure ice skating.
+    In practice scoring and the
+    creation of ice skating
+    programs is much more difficult.
+    Nevertheless, this illustrates nicely, that however for the not professionalized
+    audience many elements
+    look the same, there are plenty of different metrics and elements.
+    Moreover, each skater has their own style
+    and performs these elements
+    slightly different.
+    This is what makes it so hard in machine-learning to correctly predict the elements.
+    Which is
+    why it is important that
+    the basis, the keypoint recognition module, has to predict the poses correctly.
+    Because otherwise the action
+    recognition module has no
+    chance to make correct estimations.
+\end{flushleft}
+%- existing KP detectors struggle (OpenPose, VideoPose)
+%
+%Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam ultricies lacinia euismod. Nam tempus risus in dolor
+%rhoncus in interdum enim tincidunt. Donec vel nunc neque. In condimentum ullamcorper quam non consequat. Fusce
+%sagittis tempor feugiat. Fusce magna erat, molestie eu convallis ut, tempus sed arcu. Quisque molestie, ante a
+%tincidunt ullamcorper, sapien enim dignissim lacus, in semper nibh erat lobortis purus. Integer dapibus ligula ac
+%risus convallis pellentesque.
 
 %----------------------------------------------------------------------------------------
 %	SECTION 2
@@ -26,7 +82,8 @@ risus convallis pellentesque.
 
 
 \section{Distinct Rating System}
-
+- isu scores~\cite{isuscores}
+- isu guidelines/ level of execution goe~\cite{isuguideleinesgoe}
 - human struggle as well -> rating system with points, many abstractions, still often experienced as not fair
 
 Sed ullamcorper quam eu nisl interdum at interdum enim egestas. Aliquam placerat justo sed lectus lobortis ut porta
