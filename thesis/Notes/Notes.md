@@ -520,11 +520,49 @@ https://www.xsens.com/inertial-sensors
     - parse 3d coordinates for all joints
 
 
-#HUMANEVA: Synchronized Video and Motion Capture Dataset and Baseline Algorithm for Evaluation of Articulated Human Motion
+# HUMANEVA: Synchronized Video and Motion Capture Dataset and Baseline Algorithm for Evaluation of Articulated Human Motion
 - optical trackers
 - 6/2 subjects performing some actions
 - trackers applied onto clothes
 
+# High-Resolution Representations for Labeling Pixels and Regions
+- maintain high-resolution representations
+    - connect high-to-low resolution convolutions in parallel
+    - repeatedly conduct fusions across parallell convolutions
+- semantic segmentations: top results on Cityscapes, Pascal, Context, facial landmark detection on AFLW, COFW, 300W, WFLW
+- apply to Faster R-CNN object detection framework 
+    - superior results on COCO object detection
+    
+**general**
+- low-resolution representations:
+    - image classification
+- high-resolution representations:
+    -  semantic segmentation, object detection, human pose estimation
+    - 2 main lines of computing:
+        - recover high-resolution from low resolution ResNet, optional medium-res Hourglass, Segnet, DeconvNet, U-Net, encoder-decoder
+        - maintain high-res + strengthen representations with parallel low-res 
+    - dilated convolutions: replace strided convolutions & associate regular convs in classifications networks to compute medium-res
+- HRNet:
+    - connect high-to-low + multi-scale fusions -> strong + spatially precise
+    - HRNetV2: eplore representations from all high-to-low resolution parallell convolutions (not only high-res as original HRNet)
+
+- HRNetv1
+    - maintain high-to-low res in parallell + repeated multi-scale fusions
+    -only representations (feature maps) from high-res conv are outputtes --> only subset of output channels from high-res conv = exploited (other subsets from low-res are lost)
+    
+- HRNetv2
+    -fully explore multi-res conv --> bileaniar upscaling + concat subset of representations
+    - downsample: average pooling
+    - 1st stage: 4 residual units, each formed by bottleneck with width 64, followed by one 3x3 conv  --> reducing the width of feature maps to C
+    - 2nd, 3rd,4th stage 1,4,3 multi resolution blocks
+    - each branch 4 residual unitis + 3x3 convs
+    - pass to linear classifier/regressor with softmax/MSE loss predict maps/facial landmar heatmaps
+    - reduce to 256 (high-res)
+    - 1x1 conv before forming feature pyramid
+
+
+# original HRNet: Deep High-Resolution Representation Learning for Human Pose Estimation
+-resolution increase by bilinear (nearest neighbour) upsampling
 # test videos: 
 https://www.youtube.com/watch?v=TlXCk1LDlC0
 https://www.youtube.com/watch?v=8gP_qYEgaog

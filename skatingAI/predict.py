@@ -105,6 +105,7 @@ class Predictor(object):
                               new_img.size)
 
         for i, bp_prediction in enumerate(body_part_predictions):
+            frames_extracted_bg[i][frames_extracted_bg[i] == 2] = 0
             images = [
 
                 tf.keras.preprocessing.image.array_to_img(frames_extracted_bg[i]),
@@ -298,18 +299,18 @@ if __name__ == "__main__":
     # image sequence: /home/nadin-katrin/Videos/biellmann_sequence
     parser = argparse.ArgumentParser(
         description='Predict body parts from images or videos')
-    parser.add_argument('--wcounter_bg', default=2535, help='Number of weight')
-    parser.add_argument('--wcounter_hp', default=4400, help='Number of weight')
+    parser.add_argument('--wcounter_bg', default=5450, help='Number of weight')
+    parser.add_argument('--wcounter_hp', default=4430, help='Number of weight')
     parser.add_argument('--wcounter_kps', default=4885, help='Number of weight')
     parser.add_argument('--name', default='', help='unique name to save to save video/image')
-    parser.add_argument('--video', default='/home/nadin-katrin/Videos/youtube_skate/edited/alena_steps.avi',# alina_biellmann_red_dress.avi',
+    parser.add_argument('--video', default='/home/nadin-katrin/Videos/youtube_skate/edited/alena_biellmann_no_sound.avi',# alina_biellmann_red_dress.avi',
                         # /home/nadin-katrin/awesome.skating.ai/Biellmann_2.avi
                         help='absolute path to video file', type=str)
     parser.add_argument('--video_sequence', default='/home/nadin-katrin/Videos/biellmann_sequence',
                         # /home/nadin-katrin/awesome.skating.ai/Biellmann_2.avi
                         help='absolute path to video file', type=str)
     parser.add_argument('--image', default='/', help='absolute path to image file')
-    parser.add_argument('--random_video', default=False, help='Random video')
+    parser.add_argument('--random_video', default=True, help='Random video')
     parser.add_argument('--random_image', default=False, help='Random image', type=bool)
     parser.add_argument('--save', default='', help='Path to save prediction in')
     args: ArgsNamespace = parser.parse_args()

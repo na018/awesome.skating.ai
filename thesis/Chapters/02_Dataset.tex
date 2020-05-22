@@ -129,8 +129,6 @@ dataset was not possible due to the huge time efforts.
 The systhetic datset 3DPeople as described in the next section correspond our expectations of a synthetic dataset.
 
 
-
-
 %----------------------------------------------------------------------------------------
 %	SECTION 2
 %----------------------------------------------------------------------------------------
@@ -138,22 +136,36 @@ The systhetic datset 3DPeople as described in the next section correspond our ex
 
 \section{Synthetic Dataset: 3DPeople}
 
+\begin{figure}
+    \centering
+    \includegraphics[width=130mm]{Figures/woman_step_3dpeople2.png}
+    \decoRule
+    \caption[3DPeople]{Learned labels from a image sequence of the 3DPeople dataset: Woman stiff walk}
+    \label{fig:woman_step_3dpeople}
+\end{figure}
+
+
 The dataset 3DPeople was created via created motion capture files.
 They took 70 realistic action sequences from Mixamo~\cite{mixamomotionpac}.
 The sequences contain on average 110 frames and range from usual activities with little motions such as driving
 or drinking until break dance moves or backflips.
-These actions they then retarget onto 80 armatures which are created with MakeHuman~\cite{makehuman} or Adobe Fuse~\cite{adobefuse}.
+These actions they then retarget onto 80 armatures which are created with MakeHuman~\cite{makehuman} or Adobe
+Fuse~\cite{adobefuse}.
 There are 40 female and 40 male characters with plenty of variation in body shapes, skin tones, outfits and hair.
 Furthermore, they record the actions with a projective camera and 800 nm focal length from four different viewpoints
 which are orthogonally aligned with the ground.
 The distance to the subjects vary arbitrary as do light sources and static background images.
 In sum the dataset includes 22,400 clips with the rendered video sequences as 640x480 pixel image frames, the according
-depth maps, optical flow and semantic information such as body parts and cloth labels.
+depth maps, optical flow and semantic information such as body parts and cloth labels~\cite{3dpeople}.
 
 We found this dataset highly sofisticated due to the wide variance and diversity of the data.
 Especially in terms of clothes it stands out from other famous datasets such as Human3.6M~\cite{humaneva}.
 They use a variety of wide and tight clothes. For example do they include dresses and shorts.
 There variance is greater compared to their freely available combats~\cite{human36m, humaneva}.
+In \autoref{fig:woman_step_3dpeople} we demonstrate the learned labels of our modules from a random image of the
+3DPeople dataset.
+
+
 
 %----------------------------------------------------------------------------------------
 %	SECTION 3
@@ -161,12 +173,81 @@ There variance is greater compared to their freely available combats~\cite{human
 
 
 \section{Data Processing}
+The 3DPeople dataset can be recrested through their project homepage and is allowed for use in research
+enironments.
+Each data package consists of five batches for women and men. There are five data packages available for download.
+We created a \textit{data\_admin python class}, which takes care of downloading the data, processing and storing the
+data
+in memory agnostic and efficient access structured compressed numpy files, and delete the initial downloaded data.
+We included several processing steps:
+In sum we created four compressed numpy archives.
+Every archieve file included an array with all frames of one movement sequence to allow faster reading process for
+our neuronal network training later.
+The four archives consist of the usual RGB sequence frames, one archive without background, one for the body part
+labels,
+and one for the joint keypoints.
+The numpy archive without background only shows the actors in RGB colors.
+Therefore, we used the clothes labels, and replaced all colored pixels with black pixels when the pixels where not
+inside the mask.
+Initially we did this to test, weather our network ideas would converge with easier data.
+Later, when we trained our background-extractor module for getting an end-two-end architecture, this data served as
+labels.\\
+Furthermore, we cleaned up the body masks and mapped the resulting three dimensional pixels to one-dimensional class
+values~\autoref{fig:test21}.
+The borders of the body-parts often contained a mixture of RGB values, which where of no use to our network.\\
+\begin{figure}
 
-Sed ullamcorper quam eu nisl interdum at interdum enim egestas. Aliquam placerat justo sed lectus lobortis ut porta
-nisl porttitor. Vestibulum mi dolor, lacinia molestie gravida at, tempus vitae ligula. Donec eget quam sapien, in
-viverra eros. Donec pellentesque justo a massa fringilla non vestibulum metus vestibulum. Vestibulum in orci quis
-felis tempor lacinia. Vivamus ornare ultrices facilisis. Ut hendrerit volutpat vulputate. Morbi condimentum venenatis
-augue, id porta ipsum vulputate in. Curabitur luctus tempus justo. Vestibulum risus lectus, adipiscing nec
-condimentum quis, condimentum nec nisl. Aliquam dictum sagittis velit sed iaculis. Morbi tristique augue sit amet
-nulla pulvinar id facilisis ligula mollis. Nam elit libero, tincidunt ut aliquam at, molestie in quam. Aenean rhoncus
-vehicula hendrerit.
+    \fontsmall
+\begin{minipage}{0.29\linewidth}
+    \begin{Verbatim}[frame=topline,label=Mapping to classes,framesep=3mm]
+        body_part_classes = {
+            BodyParts.bg.name: 0,
+            BodyParts.Head.name: 1,
+            BodyParts.RUpArm.name: 2,
+            BodyParts.RForeArm.name: 3,
+            BodyParts.RHand.name: 4,
+            BodyParts.LUpArm.name: 2,
+            BodyParts.LForeArm.name: 3,
+            BodyParts.LHand.name: 4,
+            BodyParts.torso.name: 5,
+            BodyParts.RThigh.name: 6,
+            BodyParts.RLowLeg.name: 7,
+            BodyParts.RFoot.name: 8,
+            BodyParts.LThigh.name: 6,
+            BodyParts.LLowLeg.name: 7,
+            BodyParts.LFoot.name: 8
+        }
+    \end{Verbatim}
+    \label{fig:test1}
+\end{minipage}\hfill
+\begin{minipage}{0.49\linewidth}
+    \begin{Verbatim}[frame=topline,label=Mapping to RGB values, framesep=3mm]
+        segmentation_class_colors = {
+            BodyParts.bg.name: [153, 153, 153],
+            BodyParts.Head.name: [128, 64, 0],
+            BodyParts.RUpArm.name: [128, 0, 128],
+            BodyParts.RForeArm.name: [128, 128, 255],
+            BodyParts.RHand.name: [255, 128, 128],
+            BodyParts.LUpArm.name: [0, 0, 255],
+            BodyParts.LForeArm.name: [128, 128, 0],
+            BodyParts.LHand.name: [0, 128, 0],
+            BodyParts.torso.name: [128, 0, 0],
+            BodyParts.RThigh.name: [128, 255, 128],
+            BodyParts.RLowLeg.name: [255, 255, 128],
+            BodyParts.RFoot.name: [255, 0, 255],
+            BodyParts.LThigh.name: [0, 0, 128],
+            BodyParts.LLowLeg.name: [0, 128, 128],
+            BodyParts.LFoot.name: [255, 128, 0]
+        }
+    \end{Verbatim}
+     \label{fig:test}
+\end{minipage}
+    \label{fig:test21}
+    \end{figure}
+%\begin{figure}
+%    \begin{minipage}{10cm}
+%        \label{fig:test}
+%    \end{minipage}
+%\end{figure}
+
+

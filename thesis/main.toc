@@ -14,31 +14,28 @@
 \contentsline {section}{\numberline {3.1}Figure Skating Dataset}{9}{section.23}
 \contentsline {subsection}{\numberline {3.1.1}XSens: Inertial motion capturing recordings on the ice rink}{10}{subsection.24}
 \contentsline {section}{\numberline {3.2}Synthetic Dataset: 3DPeople}{12}{section.25}
-\contentsline {section}{\numberline {3.3}Data Processing}{13}{section.26}
-\contentsline {chapter}{\numberline {4}Method}{15}{chapter.27}
-\contentsline {section}{\numberline {4.1}Network Architecture}{15}{section.28}
-\contentsline {subsection}{\numberline {4.1.1}Body Part Detection Module}{15}{subsection.29}
-\contentsline {subsection}{\numberline {4.1.2}Joint Detection Module}{15}{subsection.30}
-\contentsline {section}{\numberline {4.2}Training Performance}{16}{section.31}
-\contentsline {section}{\numberline {4.3}Inference Runtime Analysis}{16}{section.32}
-\contentsline {section}{\numberline {4.4}Implementation Details}{16}{section.33}
-\contentsline {chapter}{\numberline {5}Experiments}{19}{chapter.34}
-\contentsline {section}{\numberline {5.1}Ablation Study}{20}{section.36}
-\contentsline {subsection}{\numberline {5.1.1}Body Parts Module }{20}{subsection.37}
-\contentsline {paragraph}{Stride-down, -up convolution before \gls {bl}}{20}{section*.38}
-\contentsline {paragraph}{MobileNet extended with UNet}{20}{section*.39}
-\contentsline {paragraph}{MobileNet extended with HPNet}{20}{section*.40}
-\contentsline {paragraph}{Experiment with concat and add layers}{20}{section*.41}
-\contentsline {paragraph}{Best performing network HPNet v7}{20}{figure.caption.43}
-\contentsline {subsection}{\numberline {5.1.2}Joint Module }{20}{subsection.44}
-\contentsline {paragraph}{Dense Modules}{20}{section*.45}
-\contentsline {paragraph}{Fully Convolutional}{20}{section*.46}
-\contentsline {section}{\numberline {5.2}Comparison of Optimizer Algorithms}{20}{section.47}
-\contentsline {paragraph}{Comparison of Adam, Nadam and SGD}{21}{figure.caption.51}
-\contentsline {paragraph}{Experiments with SGD}{22}{figure.caption.55}
-\contentsline {section}{\numberline {5.3}Performance of loss functions}{22}{section.56}
-\contentsline {subsection}{\numberline {5.3.1}Sparse Categorical Cross Entropy}{23}{subsection.57}
-\contentsline {subsection}{\numberline {5.3.2}Mean Squared Error}{23}{subsection.58}
-\contentsline {subsection}{\numberline {5.3.3}Our custom loss function CILoss}{23}{subsection.59}
-\contentsline {chapter}{\numberline {6}Conclusion and future thoughts}{25}{chapter.61}
-\contentsline {chapter}{Bibliography}{27}{appendix*.62}
+\contentsline {section}{\numberline {3.3}Data Processing}{13}{section.27}
+\contentsline {chapter}{\numberline {4}Method}{15}{chapter.29}
+\contentsline {section}{\numberline {4.1}Training Performance (human parts)}{17}{section.32}
+\contentsline {section}{\numberline {4.2}Inference Runtime Analysis}{18}{section.35}
+\contentsline {section}{\numberline {4.3}Implementation Details}{19}{section.36}
+\contentsline {chapter}{\numberline {5}Experiments}{21}{chapter.37}
+\contentsline {section}{\numberline {5.1}Ablation Study}{22}{section.39}
+\contentsline {subsection}{\numberline {5.1.1}Body Parts Module }{22}{subsection.40}
+\contentsline {paragraph}{Stride-down, -up convolution before \gls {bl}}{22}{section*.41}
+\contentsline {paragraph}{MobileNet extended with UNet}{22}{section*.42}
+\contentsline {paragraph}{MobileNet extended with HPNet}{22}{section*.43}
+\contentsline {paragraph}{Experiment with concat and add layers}{22}{section*.44}
+\contentsline {paragraph}{Best performing network HPNet v7}{22}{figure.caption.46}
+\contentsline {subsection}{\numberline {5.1.2}Joint Module }{22}{subsection.47}
+\contentsline {paragraph}{Dense Modules}{22}{section*.48}
+\contentsline {paragraph}{Fully Convolutional}{22}{section*.49}
+\contentsline {section}{\numberline {5.2}Comparison of Optimizer Algorithms}{22}{section.50}
+\contentsline {paragraph}{Comparison of Adam, Nadam and SGD}{23}{figure.caption.54}
+\contentsline {paragraph}{Experiments with SGD}{24}{figure.caption.58}
+\contentsline {section}{\numberline {5.3}Performance of loss functions}{24}{section.59}
+\contentsline {subsection}{\numberline {5.3.1}Sparse Categorical Cross Entropy}{25}{subsection.60}
+\contentsline {subsection}{\numberline {5.3.2}Mean Squared Error}{25}{subsection.61}
+\contentsline {subsection}{\numberline {5.3.3}Our custom loss function CILoss}{25}{subsection.62}
+\contentsline {chapter}{\numberline {6}Conclusion and future thoughts}{27}{chapter.64}
+\contentsline {chapter}{Bibliography}{29}{appendix*.65}

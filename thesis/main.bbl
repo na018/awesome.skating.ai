@@ -469,6 +469,81 @@
     \field{urlyear}{2020}
   \endentry
 
+  \entry{HRNetv2}{article}{}
+    \name{author}{10}{}{%
+      {{hash=kS}{%
+         family={ke},
+         familyi={k\bibinitperiod},
+         given={Sun},
+         giveni={S\bibinitperiod},
+      }}%
+      {{hash=ZY}{%
+         family={Zhao},
+         familyi={Z\bibinitperiod},
+         given={Yang},
+         giveni={Y\bibinitperiod},
+      }}%
+      {{hash=JB}{%
+         family={Jiang},
+         familyi={J\bibinitperiod},
+         given={Borui},
+         giveni={B\bibinitperiod},
+      }}%
+      {{hash=CT}{%
+         family={Cheng},
+         familyi={C\bibinitperiod},
+         given={Tianheng},
+         giveni={T\bibinitperiod},
+      }}%
+      {{hash=XB}{%
+         family={Xiao},
+         familyi={X\bibinitperiod},
+         given={Bin},
+         giveni={B\bibinitperiod},
+      }}%
+      {{hash=LD}{%
+         family={Liu},
+         familyi={L\bibinitperiod},
+         given={Dong},
+         giveni={D\bibinitperiod},
+      }}%
+      {{hash=MY}{%
+         family={Mu},
+         familyi={M\bibinitperiod},
+         given={Yadong},
+         giveni={Y\bibinitperiod},
+      }}%
+      {{hash=WX}{%
+         family={Wang},
+         familyi={W\bibinitperiod},
+         given={Xinggang},
+         giveni={X\bibinitperiod},
+      }}%
+      {{hash=LW}{%
+         family={Liu},
+         familyi={L\bibinitperiod},
+         given={Wenyu},
+         giveni={W\bibinitperiod},
+      }}%
+      {{hash=WJ}{%
+         family={Wang},
+         familyi={W\bibinitperiod},
+         given={Jingdong},
+         giveni={J\bibinitperiod},
+      }}%
+    }
+    \strng{namehash}{kS+1}
+    \strng{fullhash}{kSZYJBCTXBLDMYWXLWWJ1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{sortinit}{K}
+    \field{sortinithash}{K}
+    \field{title}{High-Resolution Representations for Labeling Pixels and
+  Regions}
+    \field{month}{04}
+    \field{year}{2019}
+  \endentry
+
   \entry{pifpaf}{article}{}
     \name{author}{3}{}{%
       {{hash=KS}{%
@@ -673,6 +748,32 @@
     \verb https://www.xsens.com/products/mvn-animate
     \endverb
     \field{urlday}{17}
+    \field{urlmonth}{05}
+    \field{urlyear}{2020}
+  \endentry
+
+  \entry{mobileAI}{online}{}
+    \name{author}{1}{}{%
+      {{hash=N}{%
+         family={Neuromation},
+         familyi={N\bibinitperiod},
+      }}%
+    }
+    \strng{namehash}{N1}
+    \strng{fullhash}{N1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{sortinit}{N}
+    \field{sortinithash}{N}
+    \field{title}{What’s the deal with “AI chips” in the Latest
+  Smartphones?}
+    \verb{url}
+    \verb https://medium.com/neuromation-blog/whats-the-deal-with-ai-chips-in-t
+    \verb he-latest-smartphones-28eb16dc9f45
+    \endverb
+    \field{journaltitle}{Medium}
+    \field{year}{2018}
+    \field{urlday}{22}
     \field{urlmonth}{05}
     \field{urlyear}{2020}
   \endentry
@@ -1121,6 +1222,78 @@
     \field{year}{2019}
   \endentry
 
+  \entry{tensorflowdocker}{online}{}
+    \name{author}{1}{}{%
+      {{hash=T}{%
+         family={Tensorflow},
+         familyi={T\bibinitperiod},
+      }}%
+    }
+    \strng{namehash}{T1}
+    \strng{fullhash}{T1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{sortinit}{T}
+    \field{sortinithash}{T}
+    \field{title}{dockerhub - tensorflow}
+    \verb{url}
+    \verb https://hub.docker.com/r/tensorflow/tensorflow/tags
+    \endverb
+    \field{year}{2020}
+    \field{urlday}{22}
+    \field{urlmonth}{05}
+    \field{urlyear}{2020}
+  \endentry
+
+  \entry{tensorflow2}{online}{}
+    \name{author}{1}{}{%
+      {{hash=T}{%
+         family={Tensorflow},
+         familyi={T\bibinitperiod},
+      }}%
+    }
+    \strng{namehash}{T1}
+    \strng{fullhash}{T1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{sortinit}{T}
+    \field{sortinithash}{T}
+    \field{title}{TensorFlow Core}
+    \verb{url}
+    \verb https://www.tensorflow.org/overview/
+    \endverb
+    \field{year}{2020}
+    \field{urlday}{22}
+    \field{urlmonth}{05}
+    \field{urlyear}{2020}
+  \endentry
+
+  \entry{2020european}{online}{}
+    \name{author}{1}{}{%
+      {{hash=UIIS}{%
+         family={Unigion},
+         familyi={U\bibinitperiod},
+         given={ISU International\bibnamedelima Skating},
+         giveni={I\bibinitperiod\bibinitdelim I\bibinitperiod\bibinitdelim
+  S\bibinitperiod},
+      }}%
+    }
+    \strng{namehash}{UIIS1}
+    \strng{fullhash}{UIIS1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{sortinit}{U}
+    \field{sortinithash}{U}
+    \field{title}{ISU European Figure Skating 2020 - Ladies - Result}
+    \verb{url}
+    \verb http://www.isuresults.com/results/season1920/ec2020/CAT002RS.htm
+    \endverb
+    \field{year}{2020}
+    \field{urlday}{22}
+    \field{urlmonth}{05}
+    \field{urlyear}{2020}
+  \endentry
+
   \entry{isuguideleinesgoe}{article}{}
     \name{author}{1}{}{%
       {{hash=UIS}{%
@@ -1245,6 +1418,95 @@
     \field{title}{Continuous Video to Simple Signals for Swimming Stroke
   Detection with Convolutional Neural Networks}
     \field{year}{2017}
+  \endentry
+
+  \entry{HRNetv1}{article}{}
+    \name{author}{12}{}{%
+      {{hash=WJ}{%
+         family={{Wang}},
+         familyi={W\bibinitperiod},
+         given={J.},
+         giveni={J\bibinitperiod},
+      }}%
+      {{hash=SK}{%
+         family={{Sun}},
+         familyi={S\bibinitperiod},
+         given={K.},
+         giveni={K\bibinitperiod},
+      }}%
+      {{hash=CT}{%
+         family={{Cheng}},
+         familyi={C\bibinitperiod},
+         given={T.},
+         giveni={T\bibinitperiod},
+      }}%
+      {{hash=JB}{%
+         family={{Jiang}},
+         familyi={J\bibinitperiod},
+         given={B.},
+         giveni={B\bibinitperiod},
+      }}%
+      {{hash=DC}{%
+         family={{Deng}},
+         familyi={D\bibinitperiod},
+         given={C.},
+         giveni={C\bibinitperiod},
+      }}%
+      {{hash=ZY}{%
+         family={{Zhao}},
+         familyi={Z\bibinitperiod},
+         given={Y.},
+         giveni={Y\bibinitperiod},
+      }}%
+      {{hash=LD}{%
+         family={{Liu}},
+         familyi={L\bibinitperiod},
+         given={D.},
+         giveni={D\bibinitperiod},
+      }}%
+      {{hash=MY}{%
+         family={{Mu}},
+         familyi={M\bibinitperiod},
+         given={Y.},
+         giveni={Y\bibinitperiod},
+      }}%
+      {{hash=TM}{%
+         family={{Tan}},
+         familyi={T\bibinitperiod},
+         given={M.},
+         giveni={M\bibinitperiod},
+      }}%
+      {{hash=WX}{%
+         family={{Wang}},
+         familyi={W\bibinitperiod},
+         given={X.},
+         giveni={X\bibinitperiod},
+      }}%
+      {{hash=LW}{%
+         family={{Liu}},
+         familyi={L\bibinitperiod},
+         given={W.},
+         giveni={W\bibinitperiod},
+      }}%
+      {{hash=XB}{%
+         family={{Xiao}},
+         familyi={X\bibinitperiod},
+         given={B.},
+         giveni={B\bibinitperiod},
+      }}%
+    }
+    \strng{namehash}{WJ+1}
+    \strng{fullhash}{WJSKCTJBDCZYLDMYTMWXLWXB1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{sortinit}{W}
+    \field{sortinithash}{W}
+    \field{pages}{1\bibrangedash 1}
+    \field{title}{Deep High-Resolution Representation Learning for Visual
+  Recognition}
+    \field{journaltitle}{IEEE Transactions on Pattern Analysis and Machine
+  Intelligence}
+    \field{year}{2020}
   \endentry
 
   \entry{convpose}{article}{}
