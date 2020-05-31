@@ -52,10 +52,20 @@
 \setabbreviationstyle[acronym]{long-short}
 \loadglsentries{glossy}
 
+\usepackage{numprint}
+\npthousandsep{\,}
+
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
 \usepackage{fancyvrb}
 \newcommand{\fontsmall}{\fontsize{10pt}{11pt}\selectfont}
+\newcounter{rowcntr}[table]
+\renewcommand{\therowcntr}{\thetable.\arabic{rowcntr}}
+% A new columntype to apply automatic stepping
+\newcolumntype{N}{>{\refstepcounter{rowcntr}\therowcntr}c}
+
+% Reset the rowcntr counter at each new tabular
+%\AtBeginEnvironment{tabular}{\setcounter{rowcntr}{0}}
 
 %\usepackage{hyperref}
 %\hypersetup{colorlinks=true, linkcolor=blue}
@@ -83,6 +93,7 @@
 \usepackage{graphicx} % Required to generate language-dependent quotes in the bibliography
 \usepackage{float}
 \usepackage{amsfonts}
+\usepackage{amsmath}
 
 %----------------------------------------------------------------------------------------
 %	MARGIN SETTINGS

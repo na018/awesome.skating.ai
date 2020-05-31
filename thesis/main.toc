@@ -3,39 +3,39 @@
 \contentsline {chapter}{Declaration of Authorship}{iii}{section*.1}
 \contentsline {chapter}{Abstract}{vii}{section*.2}
 \contentsline {chapter}{Acknowledgements}{ix}{section*.3}
-\contentsline {chapter}{Acronyms}{xiii}{section*.5}
-\contentsline {chapter}{\numberline {1}Introduction}{1}{chapter.16}
-\contentsline {section}{\numberline {1.1}Motivation and Goals}{2}{section.17}
-\contentsline {section}{\numberline {1.2}Related Work}{3}{section.18}
+\contentsline {chapter}{\numberline {1}Introduction}{1}{chapter.14}
+\contentsline {section}{\numberline {1.1}Motivation and Goals}{2}{section.15}
+\contentsline {section}{\numberline {1.2}Related Work}{3}{section.16}
+\contentsline {paragraph}{Goals}{5}{section*.17}
+\contentsline {paragraph}{Our Work}{6}{section*.18}
 \contentsline {chapter}{\numberline {2}Figure Skating Pose Detection}{7}{chapter.19}
 \contentsline {section}{\numberline {2.1}Complexity of Figures}{7}{section.20}
 \contentsline {section}{\numberline {2.2}Distinct Rating System}{8}{section.21}
 \contentsline {chapter}{\numberline {3}Dataset}{9}{chapter.22}
 \contentsline {section}{\numberline {3.1}Figure Skating Dataset}{9}{section.23}
-\contentsline {subsection}{\numberline {3.1.1}XSens: Inertial motion capturing recordings on the ice rink}{10}{subsection.24}
-\contentsline {section}{\numberline {3.2}Synthetic Dataset: 3DPeople}{12}{section.25}
-\contentsline {section}{\numberline {3.3}Data Processing}{13}{section.27}
-\contentsline {chapter}{\numberline {4}Method}{15}{chapter.29}
-\contentsline {section}{\numberline {4.1}Training Performance (human parts)}{17}{section.32}
-\contentsline {section}{\numberline {4.2}Inference Runtime Analysis}{18}{section.35}
-\contentsline {section}{\numberline {4.3}Implementation Details}{19}{section.36}
-\contentsline {chapter}{\numberline {5}Experiments}{21}{chapter.37}
-\contentsline {section}{\numberline {5.1}Ablation Study}{22}{section.39}
-\contentsline {subsection}{\numberline {5.1.1}Body Parts Module }{22}{subsection.40}
-\contentsline {paragraph}{Stride-down, -up convolution before \gls {bl}}{22}{section*.41}
-\contentsline {paragraph}{MobileNet extended with UNet}{22}{section*.42}
-\contentsline {paragraph}{MobileNet extended with HPNet}{22}{section*.43}
-\contentsline {paragraph}{Experiment with concat and add layers}{22}{section*.44}
-\contentsline {paragraph}{Best performing network HPNet v7}{22}{figure.caption.46}
-\contentsline {subsection}{\numberline {5.1.2}Joint Module }{22}{subsection.47}
-\contentsline {paragraph}{Dense Modules}{22}{section*.48}
-\contentsline {paragraph}{Fully Convolutional}{22}{section*.49}
-\contentsline {section}{\numberline {5.2}Comparison of Optimizer Algorithms}{22}{section.50}
-\contentsline {paragraph}{Comparison of Adam, Nadam and SGD}{23}{figure.caption.54}
-\contentsline {paragraph}{Experiments with SGD}{24}{figure.caption.58}
-\contentsline {section}{\numberline {5.3}Performance of loss functions}{24}{section.59}
-\contentsline {subsection}{\numberline {5.3.1}Sparse Categorical Cross Entropy}{25}{subsection.60}
-\contentsline {subsection}{\numberline {5.3.2}Mean Squared Error}{25}{subsection.61}
-\contentsline {subsection}{\numberline {5.3.3}Our custom loss function CILoss}{25}{subsection.62}
-\contentsline {chapter}{\numberline {6}Conclusion and future thoughts}{27}{chapter.64}
-\contentsline {chapter}{Bibliography}{29}{appendix*.65}
+\contentsline {subsection}{\numberline {3.1.1}Motion capturing techniques}{9}{subsection.24}
+\contentsline {subsection}{\numberline {3.1.2}XSens: Inertial motion capturing recordings on the ice rink}{10}{subsection.25}
+\contentsline {section}{\numberline {3.2}Synthetic Dataset: 3DPeople}{12}{section.26}
+\contentsline {section}{\numberline {3.3}Data Processing}{14}{section.28}
+\contentsline {chapter}{\numberline {4}Method}{15}{chapter.30}
+\contentsline {section}{\numberline {4.1}Training Performance (human parts)}{17}{section.33}
+\contentsline {section}{\numberline {4.2}Inference Runtime Analysis}{18}{section.36}
+\contentsline {section}{\numberline {4.3}Implementation Details}{19}{section.37}
+\contentsline {chapter}{\numberline {5}Experiments}{21}{chapter.38}
+\contentsline {section}{\numberline {5.1}Ablation Study}{21}{section.39}
+\contentsline {subsection}{\numberline {5.1.1}Body Parts Detection Module }{21}{subsection.50}
+\contentsline {paragraph}{Comparison of network architectures}{23}{section*.51}
+\contentsline {paragraph}{Summary}{26}{section*.57}
+\contentsline {subsection}{\numberline {5.1.2}Joint Detection Module }{26}{subsection.58}
+\contentsline {paragraph}{Network Architectures}{27}{section*.63}
+\contentsline {paragraph}{Fully Convolutional}{29}{section*.67}
+\contentsline {section}{\numberline {5.2}Comparison of Optimizer Algorithms}{30}{section.68}
+\contentsline {paragraph}{Overview of our used opimizers}{31}{section*.70}
+\contentsline {paragraph}{Experiments with optimizers}{34}{section*.87}
+\contentsline {paragraph}{Comparison of Adam, Nadam and SGD}{34}{section*.89}
+\contentsline {paragraph}{Conclusions}{36}{section*.92}
+\contentsline {section}{\numberline {5.3}Performance of loss functions}{36}{section.93}
+\contentsline {subsection}{\numberline {5.3.1}Commonly used loss functions}{36}{subsection.94}
+\contentsline {subsection}{\numberline {5.3.2}Our custom loss function CILoss}{38}{subsection.99}
+\contentsline {chapter}{\numberline {6}Conclusion and future thoughts}{41}{chapter.101}
+\contentsline {chapter}{Bibliography}{45}{appendix*.102}

@@ -18,15 +18,18 @@ As of today, there does not exist a publicly available dataset which labels keyp
 elements.
 Famous existing one such as FIS-V or the MIT datasets only include the total technical and performance scores of the
 complete performances, which are not applicable her as explained in \autoref{figureskating}.
-
+\\\mbox{}\\
 To create a reasonable dataset for figure ice skating there are various possibilities.
 Most straightforward would be to make use of the huge amout of vidos published everyday on online platforms such as
 YouTube and label the videos by hand. This however would cost a huge amount of time and includes outliers coming from
 human errors.
-
+Another possibility would be to work with motion capture.
+\\\mbox{}\\
 %# Neuron: what is motion capture
 %- https://neuronmocap.com/content/mocap-101-what-motion-capture
-Another possibility would be to work with motion capture.
+
+
+\subsection{Motion capturing techniques}
 There are three main methods for recording motion capturing data.
 Markerless capture is a method where videos are recorded via a single or multiple depth cameras.
 This comes with the advantage that the athletes are not distracted or feel uncomfortable by any
@@ -43,7 +46,7 @@ and then can be used in game engines such as Unity or Unreal, or in 3D animation
 3DSMax~\cite{xsensabout}.
 % https://www.xsens.com/inertial-sensor-modules
 % https://www.xsens.com/inertial-sensors
-
+\\\mbox{}\\
 In an environment such as the ice rink motion capture has to deal with several difficulties.
 For one, the lighting is often not smooth and there are several different light sources.
 Moreover, it is very difficult to get the whole ice rink for a recording, because most of the time the ice rink is fully
@@ -64,8 +67,8 @@ Their MVN Animate software helps with calibration and shows the recording result
 enough
 for transmission.
 Furthermore, it processes the data and performs adjustments in a postprocessing step~\cite{xsensmvnanimate}.
-
-\textbf{Our experiences with MVN Link from XSens}\\
+\\\mbox{}\\
+\textbf{Our experiences with MVN Link from XSens}\mbox{}\\
 The overall setup was very time consuming. To correctly attach all the straps and align the cables took us a
 minimum of 20 minutes. Here we tried out the suit and the straps with equal preparation times.
 Then the calibration on the ice with the MVN Analyze software was very time consuming again and took about 20 minutes.
@@ -87,8 +90,8 @@ sensors
 are integrated without cables~\cite{mocapinterialneuron}. These products would very likely better fit for figure ice
 skating
 motion captures.
-
-\textbf{Create datset with Blender and MakeHuman}\\
+\\\mbox{}\\
+\textbf{Create datset with Blender and MakeHuman}\\\mbox{}\\
 We processed the recorded data from the XSens trackers in MVN Animate and then exported a short sequence as bvh file
 to test possible dataset creation procedures.
 Further, we used the open source MakeHuman~\cite{makehuman} to create a figure skating avatar.
@@ -99,7 +102,7 @@ and retargetted the bvh motion capture file onto the rig.
 We then set up a default scene with lighting and a moving camera.
 To obtain the keypoints, we wrote a Python script in Blender to calculate the joint locations in relation to the camera
 view and exported the resulting keypoints into numpy files.
-
+\\\mbox{}\\
 However, the above described process seemed to be smooth to conduct, we did face a couple of challenges.
 For one, artistic elastic movements yielded in errors on the armature, since the joints were restricted to certain
 regions of movement, which seemed to work for usual daily activities but not figure ice skating ones.
@@ -107,8 +110,8 @@ Another one was that with the moving camera the keypoints were not calculated co
 Recent research studies suggest to export the animation as bvh files and later calculate the joint positions with a
 program such as Matlab~\cite{synpose300, 3dpeople, gaitblender}. So this could improve the calculationof joint
 positions.
-
-\textbf{Our conclusions on creating a synthetic dataset in figure ice skating}\\
+\\\mbox{}\\
+\textbf{Our conclusions on creating a synthetic dataset in figure ice skating}\\\mbox{}\\
 We are convinced that the above described process to create a synthetic dataset for figure ice skating is a
 indispensability when it comes to figure ice skating,
 because of the following reasons:\
@@ -122,7 +125,7 @@ clothes and race variances.
 Further, multiple different light sources and camera views can be applied and the background randomly selected.\
 fourth: calculated labels by the according animation software or post-processing program are just more exact then
 human labeled data.
-
+\\\mbox{}\\
 All these points confirm the legitimacy of synthetic datasets in figure ice skating.
 Which is why we researched on already existing synthetic datasets since in the scope of this thesis creating an own
 dataset was not possible due to the huge time efforts.
@@ -157,7 +160,7 @@ which are orthogonally aligned with the ground.
 The distance to the subjects vary arbitrary as do light sources and static background images.
 In sum the dataset includes 22,400 clips with the rendered video sequences as 640x480 pixel image frames, the according
 depth maps, optical flow and semantic information such as body parts and cloth labels~\cite{3dpeople}.
-
+\\\mbox{}\\
 We found this dataset highly sofisticated due to the wide variance and diversity of the data.
 Especially in terms of clothes it stands out from other famous datasets such as Human3.6M~\cite{humaneva}.
 They use a variety of wide and tight clothes. For example do they include dresses and shorts.
@@ -199,46 +202,46 @@ The borders of the body-parts often contained a mixture of RGB values, which whe
 
     \fontsmall
 \begin{minipage}{0.29\linewidth}
-    \begin{Verbatim}[frame=topline,label=Mapping to classes,framesep=3mm]
-        body_part_classes = {
-            BodyParts.bg.name: 0,
-            BodyParts.Head.name: 1,
-            BodyParts.RUpArm.name: 2,
-            BodyParts.RForeArm.name: 3,
-            BodyParts.RHand.name: 4,
-            BodyParts.LUpArm.name: 2,
-            BodyParts.LForeArm.name: 3,
-            BodyParts.LHand.name: 4,
-            BodyParts.torso.name: 5,
-            BodyParts.RThigh.name: 6,
-            BodyParts.RLowLeg.name: 7,
-            BodyParts.RFoot.name: 8,
-            BodyParts.LThigh.name: 6,
-            BodyParts.LLowLeg.name: 7,
-            BodyParts.LFoot.name: 8
-        }
+    \begin{Verbatim}[frame=topline,label=Mapping to classes,framesep=1mm]
+body_part_classes = {
+    BodyParts.bg.name: 0,
+    BodyParts.Head.name: 1,
+    BodyParts.RUpArm.name: 2,
+    BodyParts.RForeArm.name: 3,
+    BodyParts.RHand.name: 4,
+    BodyParts.LUpArm.name: 2,
+    BodyParts.LForeArm.name: 3,
+    BodyParts.LHand.name: 4,
+    BodyParts.torso.name: 5,
+    BodyParts.RThigh.name: 6,
+    BodyParts.RLowLeg.name: 7,
+    BodyParts.RFoot.name: 8,
+    BodyParts.LThigh.name: 6,
+    BodyParts.LLowLeg.name: 7,
+    BodyParts.LFoot.name: 8
+}
     \end{Verbatim}
     \label{fig:test1}
 \end{minipage}\hfill
 \begin{minipage}{0.49\linewidth}
-    \begin{Verbatim}[frame=topline,label=Mapping to RGB values, framesep=3mm]
-        segmentation_class_colors = {
-            BodyParts.bg.name: [153, 153, 153],
-            BodyParts.Head.name: [128, 64, 0],
-            BodyParts.RUpArm.name: [128, 0, 128],
-            BodyParts.RForeArm.name: [128, 128, 255],
-            BodyParts.RHand.name: [255, 128, 128],
-            BodyParts.LUpArm.name: [0, 0, 255],
-            BodyParts.LForeArm.name: [128, 128, 0],
-            BodyParts.LHand.name: [0, 128, 0],
-            BodyParts.torso.name: [128, 0, 0],
-            BodyParts.RThigh.name: [128, 255, 128],
-            BodyParts.RLowLeg.name: [255, 255, 128],
-            BodyParts.RFoot.name: [255, 0, 255],
-            BodyParts.LThigh.name: [0, 0, 128],
-            BodyParts.LLowLeg.name: [0, 128, 128],
-            BodyParts.LFoot.name: [255, 128, 0]
-        }
+    \begin{Verbatim}[frame=topline,label=Mapping to RGB values, framesep=1mm]
+segmentation_class_colors = {
+    BodyParts.bg.name: [153, 153, 153],
+    BodyParts.Head.name: [128, 64, 0],
+    BodyParts.RUpArm.name: [128, 0, 128],
+    BodyParts.RForeArm.name: [128, 128, 255],
+    BodyParts.RHand.name: [255, 128, 128],
+    BodyParts.LUpArm.name: [0, 0, 255],
+    BodyParts.LForeArm.name: [128, 128, 0],
+    BodyParts.LHand.name: [0, 128, 0],
+    BodyParts.torso.name: [128, 0, 0],
+    BodyParts.RThigh.name: [128, 255, 128],
+    BodyParts.RLowLeg.name: [255, 255, 128],
+    BodyParts.RFoot.name: [255, 0, 255],
+    BodyParts.LThigh.name: [0, 0, 128],
+    BodyParts.LLowLeg.name: [0, 128, 128],
+    BodyParts.LFoot.name: [255, 128, 0]
+}
     \end{Verbatim}
      \label{fig:test}
 \end{minipage}

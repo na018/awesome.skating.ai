@@ -563,6 +563,21 @@ https://www.xsens.com/inertial-sensors
 
 # original HRNet: Deep High-Resolution Representation Learning for Human Pose Estimation
 -resolution increase by bilinear (nearest neighbour) upsampling
+
+# ON EMPIRICAL COMPARISONS OF OPTIMIZERS FOR DEEP LEARNING
+- optimizer: 
+- training speed, final predictive performance
+    - today, no theory on choice --> empirical studies & benchmarking
+- never underperform optimizer which is approximated (e.g. Adam should not underperform Momentum)
+    - adabtives should not underperform SGD
+    
+-  ADAM (Kingma and Ba, 2015) & RMSPROP (Tieleman and Hinton, 2012) --> approximately simulate MOMENTUM (Polyak, 1964) 
+    - if eta term in param updates is allowed to grow very large
+    
+- more general optimizers never underperform special cases --> ADAM other adabtive never underperform Momentum/ SGD
+- Hyperparameter tuning is a crucial step
+of the deep learning pipeline (Bergstra and Bengio, 2012; Snoek et al., 2012; Sutskever et al., 2013; Smith, 2018)
+
 # test videos: 
 https://www.youtube.com/watch?v=TlXCk1LDlC0
 https://www.youtube.com/watch?v=8gP_qYEgaog
@@ -570,3 +585,17 @@ https://www.youtube.com/watch?v=hAJf7zc6S_8
 https://www.youtube.com/watch?v=lNxG8XPP41M
 - 
 
+
+
+Ineed,
+ Indeed, it is the de facto standard 
+In fact
+to date
+Yet, 
+Instead, 
+Although
+Accordingly,
+popular first-order optimizers form a natural inclusion hierarchy
+Despite conventional wisdom
+carefully tuned, 
+The remainder of this paper is structured as follows.1910.05446

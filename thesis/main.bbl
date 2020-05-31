@@ -1037,6 +1037,78 @@
     \field{urlyear}{2020}
   \endentry
 
+  \entry{sgd}{article}{}
+    \name{author}{2}{}{%
+      {{hash=RH}{%
+         family={Robbins},
+         familyi={R\bibinitperiod},
+         given={Herbert},
+         giveni={H\bibinitperiod},
+      }}%
+      {{hash=MS}{%
+         family={Monro},
+         familyi={M\bibinitperiod},
+         given={Sutton},
+         giveni={S\bibinitperiod},
+      }}%
+    }
+    \strng{namehash}{RHMS1}
+    \strng{fullhash}{RHMS1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{sortinit}{R}
+    \field{sortinithash}{R}
+    \verb{doi}
+    \verb 10.1214/aoms/1177729586
+    \endverb
+    \field{pages}{400\bibrangedash 407}
+    \field{title}{A Stochastic Approximation Method}
+    \field{volume}{22}
+    \field{journaltitle}{Annals of Mathematical Statistics}
+    \field{month}{09}
+    \field{year}{1951}
+  \endentry
+
+  \entry{unet}{article}{}
+    \name{author}{3}{}{%
+      {{hash=RO}{%
+         family={Ronneberger},
+         familyi={R\bibinitperiod},
+         given={Olaf},
+         giveni={O\bibinitperiod},
+      }}%
+      {{hash=FP}{%
+         family={Fischer},
+         familyi={F\bibinitperiod},
+         given={Philipp},
+         giveni={P\bibinitperiod},
+      }}%
+      {{hash=BT}{%
+         family={Brox},
+         familyi={B\bibinitperiod},
+         given={Thomas},
+         giveni={T\bibinitperiod},
+      }}%
+    }
+    \strng{namehash}{ROFPBT1}
+    \strng{fullhash}{ROFPBT1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{sortinit}{R}
+    \field{sortinithash}{R}
+    \verb{doi}
+    \verb 10.1007/978-3-319-24574-4_28
+    \endverb
+    \field{isbn}{978-3-319-24573-7}
+    \field{pages}{234\bibrangedash 241}
+    \field{title}{U-Net: Convolutional Networks for Biomedical Image
+  Segmentation}
+    \field{volume}{9351}
+    \field{journaltitle}{LNCS}
+    \field{month}{10}
+    \field{year}{2015}
+  \endentry
+
   \entry{spaBloomberg}{article}{}
     \name{author}{1}{}{%
       {{hash=RBP}{%
@@ -1108,6 +1180,27 @@
     \field{year}{2016}
   \endentry
 
+  \entry{deeplcomputervision}{article}{}
+    \name{author}{1}{}{%
+      {{hash=SR}{%
+         family={Shanmugamani},
+         familyi={S\bibinitperiod},
+         given={Rajalingappaa},
+         giveni={R\bibinitperiod},
+      }}%
+    }
+    \strng{namehash}{SR1}
+    \strng{fullhash}{SR1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{sortinit}{S}
+    \field{sortinithash}{S}
+    \field{title}{Deep Learning for Computer Vision}
+    \field{journaltitle}{Packt Publishing}
+    \field{month}{01}
+    \field{year}{2018}
+  \endentry
+
   \entry{humaneva}{article}{}
     \name{author}{3}{}{%
       {{hash=SL}{%
@@ -1145,6 +1238,36 @@
     \field{journaltitle}{International Journal of Computer Vision}
     \field{month}{03}
     \field{year}{2010}
+  \endentry
+
+  \entry{mobilenet}{article}{}
+    \name{author}{2}{}{%
+      {{hash=SD}{%
+         family={Sinha},
+         familyi={S\bibinitperiod},
+         given={Debjyoti},
+         giveni={D\bibinitperiod},
+      }}%
+      {{hash=ESM}{%
+         family={El-Sharkawy},
+         familyi={E\bibinitperiod-S\bibinitperiod},
+         given={Mohamed},
+         giveni={M\bibinitperiod},
+      }}%
+    }
+    \strng{namehash}{SDESM1}
+    \strng{fullhash}{SDESM1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{sortinit}{S}
+    \field{sortinithash}{S}
+    \verb{doi}
+    \verb 10.1109/UEMCON47517.2019.8993089
+    \endverb
+    \field{pages}{0280\bibrangedash 0285}
+    \field{title}{Thin MobileNet: An Enhanced MobileNet Architecture}
+    \field{month}{10}
+    \field{year}{2019}
   \endentry
 
   \entry{surveillance}{article}{}

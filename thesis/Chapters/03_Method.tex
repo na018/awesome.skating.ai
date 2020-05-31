@@ -51,7 +51,7 @@ representation learning. Our architecture consists of one input block $\mathcal{
 $\mathcal{N}_L$, $\mathcal{N}_M$,$\mathcal{N}_S$ and $\mathcal{N}_{XS}$.
 These subsequent blocks combine feature maps with lower coarser representations with the original sized input image
 feature maps and thus learn the features of the different levels equal to the HRNet strategy~\cite{HRNetv2, HRNetv1}.
-
+\\\mbox{}\\
 However, different from the HRNetV1 and HRNetV2 we do not use pooling to decrease or increase the size of the feature
 maps. We decrease the feature maps with usual convolutions and accoring strides $\mathfrak{s}$ and kernel sizes
 $\mathfrak{k}$, with $\mathfrak{s}=\mathfrak{k}$.
@@ -59,29 +59,25 @@ To increase the feature maps we use transposed convolutions with again $\mathfra
 strided down convolutions.
 This allows the network to learn additional weights for the upward and downward convolutions and improve these level
 exchange processes.
-
+\\\mbox{}\\
 Furthermore, we fuse the layer blocks in the first and second stage to combine the mentioned feature levels.
 In the third stage however, we concatenate all feature levels to fully exploit the multi-resolution convolutions
 as argued in HRNetV2~\cite{HRNetv2}.
-
+\\\mbox{}\\
 As visualized in~\ref{fig:custom_hrnet} we adjusted the amount of feature maps for the different blocks.
 Moreover, in the first stage we use only three convolutional layers for one block int the other stages we use four layers
 for the lower levels and only in $\mathcal{N}_L$ we use only three convolutional blocks throughout the network.
-
+\\\mbox{}\\
 Another adjustment is, that we use the input image as initial input for all our block levels but the $\mathcal{N}_{XS}$
 block, wich uses the fused layers of all the other levels as input.
-
 To every stage we add the input block $\mathcal{N}_I$.
-
+\\\mbox{}\\
 This network architecture resulted after several experiments and investigations of the estimated feature maps of the
 different blocks and stages.
-
 Every block is completed with batch normalization and a \textit{selu} activation functions.
-
 The output of the network is predicted by a linear softmax activation function.
 For the background-extraction and keypoint detection network we use mean-squared-error as loss functions and in the
 human part detection network we use a custom loss function~\autoref{Experiments} to optimize the network weights.
-
 In sum our network comprises 3,008,562 parameters of which 3,003,930 can be learned.
 The amount of all layers for one network is 156.\\
 
@@ -188,11 +184,11 @@ This sets apart our architecture from OpenPose, which we could not use for infer
 %----------------------------------------------------------------------------------------
 \section{Implementation Details}
 We build our Network upon the high-level API TensorFlow 2 which is based on the Keras API~\cite{tensorflow2}.
-We run our training on the AI server \textit{J.A.R.V.I.S.} provided by the Stuttgart Media University.
+Our training run on the AI server \textit{J.A.R.V.I.S.} provided by the Stuttgart Media University.
 The server contains four Nvidia Titan Xp GPUs with 12 GB RAM and a i7 8-core CPU with 3.2 GHz.
-We run each experiment on a separate GPU. The training was conducted in docker containers using the TensorFlow
+We trained each experiment on a separate GPU. The training was conducted in docker containers using the TensorFlow
 \textit{latest-devel-gpu}~\cite{tensorflowdocker} docker build.
-The latest TensorFlow docker container did not support python 3 at the time of this research, but only python in version
+The latest TensorFlow docker container did not support Python 3 at the time of this research, but only Python in version
 2, which is why we had to use the before mentioned descendant.
 
 

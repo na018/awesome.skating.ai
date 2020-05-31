@@ -14,18 +14,16 @@ The most popular ones are DensePose, VideoPose3d or Mask R-CNN~\cite{fbPub, Dens
 A company in Canada \textit{wrnch.ai} even specialized on keypoint recognition from image and video data with a
 lot of product options~\cite{wrnch}.
 Furthermore, many enterprises are becoming more and more interested in Sport Content Analysis (SPA)
-e.g. Bloomberg, SAP and Panasonic, just naming a few~\cite{sappanasonic, spaBloomberg}.\\
-\par
-%
+e.g. Bloomberg, SAP and Panasonic, just naming a few~\cite{sappanasonic, spaBloomberg}.
+\\\mbox{}\\
 But how got this topic into such a demanded focal point?
 Probably this is due to the various application areas in which Pose estimation can be encountered.
 Main fields are sports, visual surveillance, autonomous driving, entertainment, health care and
 robotics~\cite{olympicsport, surveillance, kinectWalkDepression}.
 For example Vaak, a japanese startup, developed a software, which would detect shoplifters,
 even before they were able to remove items from a store.
-This yielded in a drastic reduction of stealing crimes in stores.\\
-\par
-%
+This yielded in a drastic reduction of stealing crimes in stores.
+\\\mbox{}\\
 The exercise of sport not via visiting a sports course, gym or club became of fundamental severance in 2020,
 when the Coronavirus SARS-CoV-2 spread the entire world~\cite{coronarki}.
 Many courses such as Yoga, Pilates or general fitness routines went online
@@ -33,9 +31,8 @@ and were often conducted via Zoom, Instagram live or other video streaming techn
 However, what participants were often missing, was the feedback of the coach on how the exercise was going, and
 whether it was done right or wrong.
 So in 2020 more than ever was missed a technology which is good at pose estimation, or even further, action
-recognition, in sports.\\
-\par
-%
+recognition, in sports.
+\\\mbox{}\\
 Most investigations in this field target usual activities not including complex poses which can be encountered in
 professional sport.
 This is why these architectures often fail when applied to more complex movements.
@@ -49,21 +46,19 @@ This could provide an answer to the question on how certain activities might be 
 Single competitive sports with very complex movement routines are for example gymnastics and figure ice skating.
 Both sports include various artistic body movements, which are not part of daily activities.
 Even famous and well rated 2d pose recognition networks such as OpenPose or VideoPose3d fail to recognize these
-poses.\\
-\par
-%
+poses.
+\\\mbox{}\\
 If this problem was solved it could help with action recognition and support during practice or relieve the jury
 on competitions.
 A predictor could for example suggest, what an athlete should do to land a certain jump.
 On the other hand jury is rare and the job sitting all day in the ice-rink on weekends with only a very small
 salary is not very attractive.
-Furthermore, people often complain scoring is not executed fairly.\\
-\par
-%
+Furthermore, people often complain scoring is not executed fairly.
+\\\mbox{}\\
 Especially in figure ice skating an accurate 2d pose recognition could make a huge contribution.
 This is why this paper investigates 2d pose recognition with special focus on figure ice skating.
-
-Don't forget to sum thesis up here
+%
+%Don't forget to sum thesis up here
 
 
 %----------------------------------------------------------------------------------------
@@ -107,9 +102,8 @@ Don't forget to sum thesis up here
     on the ice.
     Especially spins with their fast rotation and stretching poses are of high complexity to these estimators.
     Such an estimator could support fair scoring during competitions or help to improve motion sequences during
-    practice.\\
-    \par
-    %
+    practice.
+    \\\mbox{}\\
     With the downward trend of jury staff and the increasing demand for more small competitions, jury is asked
     more and more in figure ice skating.
     Particularly the role of the technical specialist or controller diagnosing the individual elements on the ice
@@ -120,15 +114,13 @@ Don't forget to sum thesis up here
     not rating fairly enough,
     completely forgetting the demanding work the jury has to do.
     Here a 2d pose estimator could contribute by recognizing the different elements or even scoring.
-    This would not only relieve the jury but also could increase fairness.\\
-    \par
-    %
+    This would not only relieve the jury but also could increase fairness.
+    \\\mbox{}\\
     During practice 2d pose estimators could examine the specific motions during elements and give hints how to
     improve these.
     Probably they could even suggest certain exercises to learn an element like a spin, jump or certain step.
-    Additionally they could keep track of training and provide analysis metrics to the skaters and coaches.\\
-    \par
-    %
+    Additionally they could keep track of training and provide analysis metrics to the skaters and coaches.
+    \\\mbox{}\\
     All in all 2d pose estimation is very interesting not only because of all the possible different appliance
     possibilities in this sport,
     but as well because of the
@@ -151,8 +143,8 @@ Don't forget to sum thesis up here
     2D Pose estimation sets the baseline for machines to understand actions.
     It is the problem of localizing human joints or keypoints in images and videos.
     Many research studies explored and researched this topic already with the most popular ones being OpenPose
-    and VideoPose3d~\cite{openpose, videopose3d}.\\
-    \par
+    and VideoPose3d~\cite{openpose, videopose3d}.
+\\\mbox{}\\
     For 2D pose recognition there are mainly two general procedures: either top-down or bottom-up.
     Top-down first detects a person and then finds their keypoints.
     Whereas bottom-up first detects all keypoints in the image and then refers the corresponding people.
@@ -160,8 +152,8 @@ Don't forget to sum thesis up here
     found.
     This would lead to more undetected keypoints in the frames of a video.
     When there are many people in the image with many occlusions the people often can not be detected.
-    However, when a person is correctly detected, it is said that accuracy would be higher~\cite{synergetic}.\\
-    \par
+    However, when a person is correctly detected, it is said that accuracy would be higher~\cite{synergetic}.
+\\\mbox{}\\
     A famous top-down approach for example is Mask R-CNN developed by the Facebook AI Research team. It consists
     of three branches and two stages.
     The first stage presents the Region Proposal Network (RPN). It proposes candidate bounding boxes for objects.
@@ -171,8 +163,8 @@ Don't forget to sum thesis up here
     They receive top results in the COCO challenges for instance segmentation, bounding box object detection, and
     person keypoint detection~\cite{maskrcnn}.
     Other famous top-down approaches include \textit{Simple Baselines}, \textit{the Cascaded Pyramid Network} or
-    \textit{Deep High-Resolution Learning}~\cite{simplebaselines,pyramidnetwork, highres}.\\
-    \par
+    \textit{Deep High-Resolution Learning}~\cite{simplebaselines,pyramidnetwork, highres}.
+\\\mbox{}\\
     One of the most discussed and popular bottom-up approaches as of today is OpenPose.
     Their net predicts vector fields for the joint connections, which they call part affinity fields.
     Additionally, it estimates candidate keypoint locations via gaussian distributions.
@@ -188,13 +180,12 @@ Don't forget to sum thesis up here
     of people in the frames.
     Furthermore, they receive highly competitive results on the PoseTrack challenges~\cite{staf}.
     Some other famous bottom-up approaches include \textit{Convolutional Pose Machines} and
-    \textit{PifPaf}~\cite{convpose, pifpaf}.\\
-    \par
+    \textit{PifPaf}~\cite{convpose, pifpaf}.
+\\\mbox{}\\
     %- bottom-up/ top-down
     % - one/vs multiple people
     %figure skating
     % - datasets/ mocap
-
     The COCO, MPII and PoseTrack challenges lead to several studies in the pose estimation field.
     However, their dataset targets rather simple daily activities.
     There have been only conducted a few studies on competetive sports such as basketball, ice-hockey or
@@ -222,18 +213,16 @@ Don't forget to sum thesis up here
     They exactly encountered the problem, that pose estimation currently does not work on difficult pose sequences
     such as spins or very flexible positions.
     However, they were able to successfully predict jumps and simple steps from videos into 3d
-    simulation~\cite{simplebaselines}.\\
-\par
-    %
-    \textbf{Goals} \par
+    simulation~\cite{simplebaselines}.
+\\\mbox{}\\
+    \paragraph{Goals}\mbox{}\\
     Our goal was to find a way on how to detect human poses in single skating, with an architecture which would even
     be possible to run on devices with lower computation power such as mobile phones.
     Important is, that only the main character in the image should be detected, and all background people would be
     neglected, so our network could later be used for action recognition and recommendation tasks during practice when
-    there are multiple skaters on the ice.\\
-\par
-    %
-    \textbf{Our Work} \par
+    there are multiple skaters on the ice.
+\\\mbox{}\\
+    \paragraph{Our Work}\mbox{}\\
     In our work we investigated the performance of VideoPose3d, OpenPose and wrnch.ai on figure ice skating elements.
     We elaborated the creation of a figure ice skating dataset with the help of the XSens motion capturing data in a
     real figure ice skating arena

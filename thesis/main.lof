@@ -3,20 +3,26 @@
 \addvspace {10\p@ }
 \addvspace {10\p@ }
 \addvspace {10\p@ }
-\contentsline {figure}{\numberline {3.1}{\ignorespaces 3DPeople}}{13}{figure.caption.26}
+\contentsline {figure}{\numberline {3.1}{\ignorespaces 3DPeople}}{13}{figure.caption.27}
 \addvspace {10\p@ }
-\contentsline {figure}{\numberline {4.1}{\ignorespaces HRNetV3}}{15}{figure.caption.30}
-\contentsline {figure}{\numberline {4.2}{\ignorespaces Alena step}}{16}{figure.caption.31}
-\contentsline {figure}{\numberline {4.3}{\ignorespaces Alena step}}{18}{figure.caption.33}
-\contentsline {figure}{\numberline {4.4}{\ignorespaces Alena step}}{18}{figure.caption.34}
+\contentsline {figure}{\numberline {4.1}{\ignorespaces HRNetV3}}{15}{figure.caption.31}
+\contentsline {figure}{\numberline {4.2}{\ignorespaces Alena step}}{16}{figure.caption.32}
+\contentsline {figure}{\numberline {4.3}{\ignorespaces Alena step}}{18}{figure.caption.34}
+\contentsline {figure}{\numberline {4.4}{\ignorespaces Alena step}}{18}{figure.caption.35}
 \addvspace {10\p@ }
-\contentsline {figure}{\numberline {5.1}{\ignorespaces Predicted Mask}}{21}{figure.caption.38}
-\contentsline {figure}{\numberline {5.2}{\ignorespaces HPNet v7}}{22}{figure.caption.46}
-\contentsline {figure}{\numberline {5.3}{\ignorespaces Accuracy}}{23}{figure.caption.52}
-\contentsline {figure}{\numberline {5.4}{\ignorespaces Correct BPR}}{23}{figure.caption.53}
-\contentsline {figure}{\numberline {5.5}{\ignorespaces loss}}{23}{figure.caption.54}
-\contentsline {figure}{\numberline {5.6}{\ignorespaces Learning Rate SGD}}{24}{figure.caption.56}
-\contentsline {figure}{\numberline {5.7}{\ignorespaces Loss SGD}}{24}{figure.caption.57}
-\contentsline {figure}{\numberline {5.8}{\ignorespaces Accuracy SGD}}{24}{figure.caption.58}
-\contentsline {figure}{\numberline {5.9}{\ignorespaces CILoss}}{25}{figure.caption.63}
+\contentsline {figure}{\numberline {5.1}{\ignorespaces Ablation Human Parts Module: Accuracy}}{24}{figure.caption.52}
+\contentsline {figure}{\numberline {5.2}{\ignorespaces Ablation Human Parts Module: Correct Pixel}}{24}{figure.caption.53}
+\contentsline {figure}{\numberline {5.3}{\ignorespaces Ablation Human Parts Module: Correctness Ratio}}{25}{figure.caption.54}
+\contentsline {figure}{\numberline {5.4}{\ignorespaces Ablation Human Parts Module: 1st Episode Predictions}}{25}{figure.caption.55}
+\contentsline {figure}{\numberline {5.5}{\ignorespaces Ablation Human Parts Module: 20th Episode Predictions}}{26}{figure.caption.56}
+\contentsline {figure}{\numberline {5.6}{\ignorespaces Ablation Keypoints Detection Module: Predicted Training Images}}{28}{figure.caption.64}
+\contentsline {figure}{\numberline {5.7}{\ignorespaces Ablation Keypoints Detection Module: Predicted Training Images}}{29}{figure.caption.65}
+\contentsline {figure}{\numberline {5.8}{\ignorespaces Ablation Keypoints Detection Module: Predicted Training Images}}{29}{figure.caption.66}
+\contentsline {figure}{\numberline {5.9}{\ignorespaces HRNetV3: Prediceted Feature Maps}}{30}{figure.caption.69}
+\contentsline {figure}{\numberline {5.10}{\ignorespaces Learning Rate SGD}}{34}{figure.caption.88}
+\contentsline {figure}{\numberline {5.11}{\ignorespaces Accuracy}}{35}{figure.caption.90}
+\contentsline {figure}{\numberline {5.12}{\ignorespaces loss}}{35}{figure.caption.91}
+\contentsline {figure}{\numberline {5.13}{\ignorespaces SCCE: Accuracy}}{37}{figure.caption.97}
+\contentsline {figure}{\numberline {5.14}{\ignorespaces SCCE: predictions}}{38}{figure.caption.98}
+\contentsline {figure}{\numberline {5.15}{\ignorespaces CILoss}}{39}{figure.caption.100}
 \addvspace {10\p@ }
