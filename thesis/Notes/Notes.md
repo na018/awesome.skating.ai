@@ -586,7 +586,7 @@ https://www.youtube.com/watch?v=lNxG8XPP41M
 - 
 
 
-
+aims at
 Ineed,
  Indeed, it is the de facto standard 
 In fact
@@ -599,3 +599,29 @@ popular first-order optimizers form a natural inclusion hierarchy
 Despite conventional wisdom
 carefully tuned, 
 The remainder of this paper is structured as follows.1910.05446
+
+
+https://ruder.io/optimizing-gradient-descent/index.html#nadam
+
+gradient descent -> minimize objective function J(\theta) model's parameters \theata element \mathbb{R}^d
+objective function \nabla_\theta J(\theta) -> update parameters in oppisite direction of gradient
+follow direction of the slope of the surface downhill - reach valley
+
+gradient descent variants: accuracy of parameter update vs time to update
+1) batch gradient descent (vanilla) \theta = \theta - \eta \cdot \nabla_\theta J( \theta)
+    - gradients of cost fct for entire training dataset w.r.t. parameters \theta
+    - redundant computations -> recompute gradients for similar examples before each param update
+2) stochastic gradient descent (SGD)
+    - update for each training example x_i and label y_i \theta = \theta - \eta \cdot \nabla_\theta J( \theta; x_i}; y_i)
+    - much faster, frequent updates with high variance
+    - jump to another minimum -> complicate convergence to exact minimum (overshooting problem)
+    - slowly decrease lr -> convergence behavior == BGD
+3) Mini-batch gradient descent
+    - update for every mini-batch of n training examples \theta = \theta - \eta \cdot \nabla_\theta J( \theta; x^{(i:i+n)}; y^{(i:i+n)})
+    - reduce variance of parameter updates --> more stabel convergence
+    - highly optimized matrix optimizations integrated into common libraries (50-256)
+    - challenges: 
+        - choose right lr: flunctuate around minimum/ land on plateau
+            - lr scheduels - define in advance, do not adapt to ds charachteristics 
+            - same lr to all parameter updates -- sparse data, differenct feature frequences: larger updates for rarely occuring features
+        - trapped in local minima, or saddle point (one dimension slopes up/ one down)

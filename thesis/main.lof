@@ -19,10 +19,10 @@
 \contentsline {figure}{\numberline {5.7}{\ignorespaces Ablation Keypoints Detection Module: Predicted Training Images}}{29}{figure.caption.65}
 \contentsline {figure}{\numberline {5.8}{\ignorespaces Ablation Keypoints Detection Module: Predicted Training Images}}{29}{figure.caption.66}
 \contentsline {figure}{\numberline {5.9}{\ignorespaces HRNetV3: Prediceted Feature Maps}}{30}{figure.caption.69}
-\contentsline {figure}{\numberline {5.10}{\ignorespaces Learning Rate SGD}}{34}{figure.caption.88}
-\contentsline {figure}{\numberline {5.11}{\ignorespaces Accuracy}}{35}{figure.caption.90}
-\contentsline {figure}{\numberline {5.12}{\ignorespaces loss}}{35}{figure.caption.91}
-\contentsline {figure}{\numberline {5.13}{\ignorespaces SCCE: Accuracy}}{37}{figure.caption.97}
-\contentsline {figure}{\numberline {5.14}{\ignorespaces SCCE: predictions}}{38}{figure.caption.98}
-\contentsline {figure}{\numberline {5.15}{\ignorespaces CILoss}}{39}{figure.caption.100}
+\contentsline {figure}{\numberline {5.10}{\ignorespaces Learning Rate SGD}}{36}{figure.caption.93}
+\contentsline {figure}{\numberline {5.11}{\ignorespaces Accuracy}}{37}{figure.caption.95}
+\contentsline {figure}{\numberline {5.12}{\ignorespaces loss}}{37}{figure.caption.96}
+\contentsline {figure}{\numberline {5.13}{\ignorespaces SCCE: Accuracy}}{40}{figure.caption.102}
+\contentsline {figure}{\numberline {5.14}{\ignorespaces SCCE: predictions}}{40}{figure.caption.103}
+\contentsline {figure}{\numberline {5.15}{\ignorespaces CILoss}}{41}{figure.caption.105}
 \addvspace {10\p@ }

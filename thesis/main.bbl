@@ -278,6 +278,114 @@
     \field{year}{2018}
   \endentry
 
+  \entry{empiricaloptimizers}{article}{}
+    \name{author}{6}{}{%
+      {{hash=CD}{%
+         family={Choi},
+         familyi={C\bibinitperiod},
+         given={Dami},
+         giveni={D\bibinitperiod},
+      }}%
+      {{hash=SCJ}{%
+         family={Shallue},
+         familyi={S\bibinitperiod},
+         given={Christopher\bibnamedelima J.},
+         giveni={C\bibinitperiod\bibinitdelim J\bibinitperiod},
+      }}%
+      {{hash=NZ}{%
+         family={Nado},
+         familyi={N\bibinitperiod},
+         given={Zachary},
+         giveni={Z\bibinitperiod},
+      }}%
+      {{hash=LJ}{%
+         family={Lee},
+         familyi={L\bibinitperiod},
+         given={Jaehoon},
+         giveni={J\bibinitperiod},
+      }}%
+      {{hash=MCJ}{%
+         family={Maddison},
+         familyi={M\bibinitperiod},
+         given={Chris\bibnamedelima J.},
+         giveni={C\bibinitperiod\bibinitdelim J\bibinitperiod},
+      }}%
+      {{hash=DGE}{%
+         family={Dahl},
+         familyi={D\bibinitperiod},
+         given={George\bibnamedelima E.},
+         giveni={G\bibinitperiod\bibinitdelim E\bibinitperiod},
+      }}%
+    }
+    \strng{namehash}{CD+2}
+    \strng{fullhash}{CDSCJNZLJMCJDGE1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{sortinit}{C}
+    \field{sortinithash}{C}
+    \field{title}{On Empirical Comparisons of Optimizers for Deep Learning}
+    \verb{url}
+    \verb https://openreview.net/forum?id=HygrAR4tPS
+    \endverb
+    \field{year}{2020}
+  \endentry
+
+  \entry{nadam}{article}{}
+    \name{author}{1}{}{%
+      {{hash=DT}{%
+         family={Dozat},
+         familyi={D\bibinitperiod},
+         given={Timothy},
+         giveni={T\bibinitperiod},
+      }}%
+    }
+    \strng{namehash}{DT1}
+    \strng{fullhash}{DT1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{sortinit}{D}
+    \field{sortinithash}{D}
+    \field{title}{Incorporating Nesterov momentum into Adam}
+    \field{journaltitle}{ICLR Workshops}
+    \field{year}{2016}
+  \endentry
+
+  \entry{adagrad}{article}{}
+    \name{author}{3}{}{%
+      {{hash=DJ}{%
+         family={Duchi},
+         familyi={D\bibinitperiod},
+         given={John},
+         giveni={J\bibinitperiod},
+      }}%
+      {{hash=HE}{%
+         family={Hazan},
+         familyi={H\bibinitperiod},
+         given={Elad},
+         giveni={E\bibinitperiod},
+      }}%
+      {{hash=SY}{%
+         family={Singer},
+         familyi={S\bibinitperiod},
+         given={Yoram},
+         giveni={Y\bibinitperiod},
+      }}%
+    }
+    \strng{namehash}{DJHESY1}
+    \strng{fullhash}{DJHESY1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{sortinit}{D}
+    \field{sortinithash}{D}
+    \field{pages}{2121\bibrangedash 2159}
+    \field{title}{Adaptive Subgradient Methods for Online Learning and
+  Stochastic Optimization}
+    \field{volume}{12}
+    \field{journaltitle}{Journal of Machine Learning Research}
+    \field{month}{07}
+    \field{year}{2011}
+  \endentry
+
   \entry{stuttgarteiswelt}{online}{}
     \field{labeltitlesource}{title}
     \field{sortinit}{E}
@@ -366,6 +474,33 @@
     \field{urlyear}{2020}
   \endentry
 
+  \entry{optimizersexplained}{online}{}
+    \name{author}{1}{}{%
+      {{hash=HC}{%
+         family={Hansen},
+         familyi={H\bibinitperiod},
+         given={Casper},
+         giveni={C\bibinitperiod},
+      }}%
+    }
+    \strng{namehash}{HC1}
+    \strng{fullhash}{HC1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{sortinit}{H}
+    \field{sortinithash}{H}
+    \field{title}{Optimizers Explained - Adam, Momentum and Stochastic Gradient
+  Descent}
+    \verb{url}
+    \verb https://mlfromscratch.com/optimizers-explained/#/
+    \endverb
+    \field{journaltitle}{Machine Learning From Scratch}
+    \field{year}{2019}
+    \field{urlday}{02}
+    \field{urlmonth}{06}
+    \field{urlyear}{2020}
+  \endentry
+
   \entry{maskrcnn}{article}{}
     \name{author}{4}{}{%
       {{hash=HK}{%
@@ -404,6 +539,44 @@
     \field{pages}{2980\bibrangedash 2988}
     \field{title}{Mask R-CNN}
     \field{year}{2017}
+  \endentry
+
+  \entry{rmsprop}{online}{}
+    \name{author}{3}{}{%
+      {{hash=HG}{%
+         family={Hinton},
+         familyi={H\bibinitperiod},
+         given={Geoffrey},
+         giveni={G\bibinitperiod},
+      }}%
+      {{hash=SN}{%
+         family={Srivastava},
+         familyi={S\bibinitperiod},
+         given={Nitish},
+         giveni={N\bibinitperiod},
+      }}%
+      {{hash=SK}{%
+         family={Swersky},
+         familyi={S\bibinitperiod},
+         given={Kevin},
+         giveni={K\bibinitperiod},
+      }}%
+    }
+    \strng{namehash}{HGSNSK1}
+    \strng{fullhash}{HGSNSK1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{sortinit}{H}
+    \field{sortinithash}{H}
+    \field{title}{Lecture 6a:Overview of mini-batch gradient descent}
+    \verb{url}
+    \verb http://www.cs.toronto.edu/~tijmen/csc321/slides/lecture_slides_lec6.p
+    \verb df
+    \endverb
+    \field{journaltitle}{Neural Networks for Machine Learning}
+    \field{urlday}{02}
+    \field{urlmonth}{06}
+    \field{urlyear}{2020}
   \endentry
 
   \entry{mocapopticalcapture}{online}{}
@@ -542,6 +715,33 @@
   Regions}
     \field{month}{04}
     \field{year}{2019}
+  \endentry
+
+  \entry{adam}{article}{}
+    \name{author}{2}{}{%
+      {{hash=KD}{%
+         family={Kingma},
+         familyi={K\bibinitperiod},
+         given={Diederik},
+         giveni={D\bibinitperiod},
+      }}%
+      {{hash=BJ}{%
+         family={Ba},
+         familyi={B\bibinitperiod},
+         given={Jimmy},
+         giveni={J\bibinitperiod},
+      }}%
+    }
+    \strng{namehash}{KDBJ1}
+    \strng{fullhash}{KDBJ1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{sortinit}{K}
+    \field{sortinithash}{K}
+    \field{title}{Adam: A Method for Stochastic Optimization}
+    \field{journaltitle}{International Conference on Learning Representations}
+    \field{month}{12}
+    \field{year}{2014}
   \endentry
 
   \entry{pifpaf}{article}{}
@@ -947,6 +1147,33 @@
     \field{year}{2019}
   \endentry
 
+  \entry{momentum}{article}{}
+    \name{author}{1}{}{%
+      {{hash=QN}{%
+         family={Qian},
+         familyi={Q\bibinitperiod},
+         given={Ning},
+         giveni={N\bibinitperiod},
+      }}%
+    }
+    \strng{namehash}{QN1}
+    \strng{fullhash}{QN1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{sortinit}{Q}
+    \field{sortinithash}{Q}
+    \verb{doi}
+    \verb 10.1016/S0893-6080(98)00116-6
+    \endverb
+    \field{pages}{145\bibrangedash 151}
+    \field{title}{On the momentum term in gradient descent learning algorithms}
+    \field{volume}{12}
+    \field{journaltitle}{Neural networks : the official journal of the
+  International Neural Network Society}
+    \field{month}{02}
+    \field{year}{1999}
+  \endentry
+
   \entry{staf}{article}{}
     \name{author}{4}{}{%
       {{hash=RY}{%
@@ -1136,6 +1363,27 @@
     \field{urlyear}{2020}
   \endentry
 
+  \entry{optimizersoverview}{article}{}
+    \name{author}{1}{}{%
+      {{hash=RS}{%
+         family={Ruder},
+         familyi={R\bibinitperiod},
+         given={Sebastian},
+         giveni={S\bibinitperiod},
+      }}%
+    }
+    \strng{namehash}{RS1}
+    \strng{fullhash}{RS1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{sortinit}{R}
+    \field{sortinithash}{R}
+    \field{title}{An overview of gradient descent optimization algorithms}
+    \field{journaltitle}{Insight Centre for Data Analytics, NUI Galway}
+    \field{month}{09}
+    \field{year}{2016}
+  \endentry
+
   \entry{synpose300}{article}{}
     \name{author}{4}{}{%
       {{hash=SN}{%
@@ -1178,27 +1426,6 @@
     \field{journaltitle}{Computer Vision and Image Understanding}
     \field{month}{09}
     \field{year}{2016}
-  \endentry
-
-  \entry{deeplcomputervision}{article}{}
-    \name{author}{1}{}{%
-      {{hash=SR}{%
-         family={Shanmugamani},
-         familyi={S\bibinitperiod},
-         given={Rajalingappaa},
-         giveni={R\bibinitperiod},
-      }}%
-    }
-    \strng{namehash}{SR1}
-    \strng{fullhash}{SR1}
-    \field{labelnamesource}{author}
-    \field{labeltitlesource}{title}
-    \field{sortinit}{S}
-    \field{sortinithash}{S}
-    \field{title}{Deep Learning for Computer Vision}
-    \field{journaltitle}{Packt Publishing}
-    \field{month}{01}
-    \field{year}{2018}
   \endentry
 
   \entry{humaneva}{article}{}
