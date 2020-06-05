@@ -642,6 +642,21 @@
     \field{urlyear}{2020}
   \endentry
 
+  \entry{isujudginssystem}{online}{}
+    \field{labeltitlesource}{title}
+    \field{sortinit}{I}
+    \field{sortinithash}{I}
+    \field{title}{ISU Judging System}
+    \verb{url}
+    \verb https://www.isu.org/isu-statutes-constitution-regulations-technical-r
+    \verb ules-2/isu-judging-system
+    \endverb
+    \field{journaltitle}{International Skating Union (ISU)}
+    \field{urlday}{02}
+    \field{urlmonth}{06}
+    \field{urlyear}{2020}
+  \endentry
+
   \entry{HRNetv2}{article}{}
     \name{author}{10}{}{%
       {{hash=kS}{%
@@ -922,6 +937,35 @@
     \endverb
     \field{urlday}{17}
     \field{urlmonth}{05}
+    \field{urlyear}{2020}
+  \endentry
+
+  \entry{unfairjudge}{online}{}
+    \name{author}{1}{}{%
+      {{hash=MJB}{%
+         family={Meri-Jo},
+         familyi={M\bibinitperiod-J\bibinitperiod},
+         given={Borzilleri},
+         giveni={B\bibinitperiod},
+      }}%
+    }
+    \strng{namehash}{MJB1}
+    \strng{fullhash}{MJB1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{sortinit}{M}
+    \field{sortinithash}{M}
+    \field{title}{2014 Winter Olympics - Olympic Figure Skating Controversy:
+  Judging System Is Most to Blame for Uproar}
+    \verb{url}
+    \verb https://bleacherreport.com/articles/1969257-olympic-figure-skating-co
+    \verb ntroversy-judging-system-is-most-to-blame-for-uproar
+    \endverb
+    \field{journaltitle}{Bleacher Report}
+    \field{month}{02}
+    \field{year}{2014}
+    \field{urlday}{02}
+    \field{urlmonth}{06}
     \field{urlyear}{2020}
   \endentry
 
@@ -1618,6 +1662,86 @@
     \field{urlyear}{2020}
   \endentry
 
+  \entry{vaak}{online}{}
+    \name{author}{1}{}{%
+      {{hash=TMC}{%
+         family={Tom\bibnamedelima Meehan},
+         familyi={T\bibinitperiod\bibinitdelim M\bibinitperiod},
+         given={CFI},
+         giveni={C\bibinitperiod},
+      }}%
+    }
+    \strng{namehash}{TMC1}
+    \strng{fullhash}{TMC1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{sortinit}{T}
+    \field{sortinithash}{T}
+    \field{title}{Using Artificial Intelligence to Catch Shoplifters in the
+  Act}
+    \verb{url}
+    \verb https://losspreventionmedia.com/using-artificial-intelligence-to-catc
+    \verb h-shoplifters-in-the-act/
+    \endverb
+    \field{journaltitle}{Loss Prevention Magazine}
+    \field{year}{2019}
+    \field{urlday}{02}
+    \field{urlmonth}{06}
+    \field{urlyear}{2020}
+  \endentry
+
+  \entry{juryunger3minutes}{online}{}
+    \name{author}{1}{}{%
+      {{hash=TMO}{%
+         family={Tom\bibnamedelima Meehan},
+         familyi={T\bibinitperiod\bibinitdelim M\bibinitperiod},
+         given={Olessia},
+         giveni={O\bibinitperiod},
+      }}%
+    }
+    \strng{namehash}{TMO1}
+    \strng{fullhash}{TMO1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{sortinit}{T}
+    \field{sortinithash}{T}
+    \field{title}{Expertin bei Eislaufweltmeisterschaften: Drei entscheidende
+  Minuten}
+    \verb{url}
+    \verb https://www.stuttgarter-zeitung.de/inhalt.expertin-bei-eislaufmeister
+    \verb schaften-drei-entscheidende-minuten.3b370419-3df9-4ea7-81ba-97d64480e
+    \verb 78f.html
+    \endverb
+    \field{journaltitle}{Stuttgarter Zeitung}
+    \field{month}{12}
+    \field{year}{2014}
+    \field{urlday}{02}
+    \field{urlmonth}{06}
+    \field{urlyear}{2020}
+  \endentry
+
+  \entry{ungerjuryinterview}{misc}{}
+    \name{author}{1}{}{%
+      {{hash=UC}{%
+         family={Unger},
+         familyi={U\bibinitperiod},
+         given={Claudia},
+         giveni={C\bibinitperiod},
+      }}%
+    }
+    \strng{namehash}{UC1}
+    \strng{fullhash}{UC1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{sortinit}{U}
+    \field{sortinithash}{U}
+    \field{howpublished}{private interview}
+    \field{title}{Jury work from point of view of german figure ice skating
+  coach and technical specialist Claudia Unger}
+    \field{month}{05}
+    \field{year}{202}
+  \endentry
+
   \entry{2020european}{online}{}
     \name{author}{1}{}{%
       {{hash=UIIS}{%
@@ -1668,31 +1792,6 @@
     \endverb
     \field{journaltitle}{Communication No. 2324: SINGLE \& PAIR SKATING}
     \field{year}{2020}
-  \endentry
-
-  \entry{isuscores}{article}{}
-    \name{author}{1}{}{%
-      {{hash=UIS}{%
-         family={Uniion},
-         familyi={U\bibinitperiod},
-         given={International\bibnamedelima Skating},
-         giveni={I\bibinitperiod\bibinitdelim S\bibinitperiod},
-      }}%
-    }
-    \strng{namehash}{UIS1}
-    \strng{fullhash}{UIS1}
-    \field{labelnamesource}{author}
-    \field{labeltitlesource}{title}
-    \field{sortinit}{U}
-    \field{sortinithash}{U}
-    \field{title}{Scale of Values, Levels of Difficulty and Guidelines for
-  marking Grade of Execution, season 2018/19}
-    \verb{url}
-    \verb https://www.isu.org/docman-documents-links/isu-files/documents-commun
-    \verb ications/isu-communications/17142-isu-communication-2168/file
-    \endverb
-    \field{journaltitle}{Communication No. 2168: SINGLE \& PAIR SKATING}
-    \field{year}{2018}
   \endentry
 
   \entry{makehumanassets}{online}{}

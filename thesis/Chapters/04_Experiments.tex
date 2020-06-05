@@ -3,7 +3,7 @@
 
 \chapter{Experiments} % Main chapter title
 
-\label{Experiments} % Change X to a consecutive number; for referencing this chapter elsewhere, use \ref{ChapterX}
+\label{experiments} % Change X to a consecutive number; for referencing this chapter elsewhere, use \ref{ChapterX}
 We conducted several experiments on our human parts and keypoint detection module.
 We applied the resulting network architecture from the human parts module later to the background extraction module.
 In sum we investigated eight network architecture variants differentiating in commonly discussed parameters.
@@ -277,7 +277,6 @@ upward per epoch learning the other keypoint locations in a continuous way.
     after first, 20th and last episode}
     \label{fig:kps-loss}
 \end{figure}
-\paragraph{Fully Convolutional}
 
 %-----------------------------------
 %	SECTION 2
@@ -645,12 +644,12 @@ Additionally to the sumation of squarred errors, MSE divides this sum with the n
 value:
 
 \begin{align}
-    MSE(y_t,y_p) = \frac{1}{n}*\sum_[i=1]^n(y_t-y_p)^2
+    MSE(y_t,y_p) = \frac{1}{n}\cdot\sum_[i=1]^n(y_t-y_p)^2
 \end{align}
 
 We trained the Keypoint Detection and Body Part Extraction modules with MSE.
 
-However, with our Body Part Detection Module we intially had problems with class inbalances.
+However, with our Body Part Detection Module we initially had problems with class inbalances.
 First we conducted our training with Sparse Categorical Cross Entropy (SCCE), which is a common loss function used in image
 segmentation.
 Wrong predictions are weighed harder, especially the ones with a great wrong probability value.
@@ -660,7 +659,7 @@ an exponential decrease towards $-\infty$ and there is just one true label for t
 the prediction is clearly the wrong class, the cost will be exponentially higher.
 
 \begin{align}
-    SCCE(y_t,y_p) = -\sum_{i,j=1}^{i,j}y_{t_{i,j}}*log(y_{p_{i,j}})
+    SCCE(y_t,y_p) = -\sum_{i,j=1}^{i,j}y_{t_{i,j}}\cdot log(y_{p_{i,j}})
 \end{align}
 Here \textit{i,j} stands for the column and row pixels of the image.
 
@@ -713,7 +712,7 @@ We multiply the resulting error $\mathcal{E}$ with our weighed map receiving $\d
 To calculate the loss we then sum the error and delta pixel-wise:
 
 $$\mathcal{E}=y_t(x)-y_p(x)$$
-$$\delta=\theta*\mu[argmax(y_t)] $$
+$$\delta=\theta\cdot\mu[argmax(y_t)] $$
 $$L=\sum_{i=0}^{n}\mathcal{E}_i+\delta_i$$
 
 
