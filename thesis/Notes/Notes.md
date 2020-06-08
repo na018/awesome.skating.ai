@@ -586,20 +586,6 @@ https://www.youtube.com/watch?v=lNxG8XPP41M
 - 
 
 
-aims at
-Ineed,
- Indeed, it is the de facto standard 
-In fact
-to date
-Yet, 
-Instead, 
-Although
-Accordingly,
-popular first-order optimizers form a natural inclusion hierarchy
-Despite conventional wisdom
-carefully tuned, 
-The remainder of this paper is structured as follows.1910.05446
-
 
 https://ruder.io/optimizing-gradient-descent/index.html#nadam
 

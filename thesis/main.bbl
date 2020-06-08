@@ -330,6 +330,34 @@
     \field{year}{2020}
   \endentry
 
+  \entry{2018world}{online}{}
+    \name{author}{1}{}{%
+      {{hash=CL}{%
+         family={Clarke},
+         familyi={C\bibinitperiod},
+         given={Liz},
+         giveni={L\bibinitperiod},
+      }}%
+    }
+    \strng{namehash}{CL1}
+    \strng{fullhash}{CL1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{sortinit}{C}
+    \field{sortinithash}{C}
+    \field{title}{Russia’s Alina Zagitova captures gold in women’s free
+  skate}
+    \verb{url}
+    \verb https://www.denverpost.com/2018/02/22/alina-zagitova-captures-gold-wo
+    \verb mens-free-skate-russia/
+    \endverb
+    \field{journaltitle}{The Denver Post}
+    \field{year}{2018}
+    \field{urlday}{07}
+    \field{urlmonth}{06}
+    \field{urlyear}{2020}
+  \endentry
+
   \entry{nadam}{article}{}
     \name{author}{1}{}{%
       {{hash=DT}{%

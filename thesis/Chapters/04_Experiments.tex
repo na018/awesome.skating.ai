@@ -5,14 +5,14 @@
 
 \label{experiments} % Change X to a consecutive number; for referencing this chapter elsewhere, use \ref{ChapterX}
 We conducted several experiments on our human parts and keypoint detection module.
-We applied the resulting network architecture from the human parts module later to the background extraction module.
-In sum we investigated eight network architecture variants differentiating in commonly discussed parameters.
-For the keypoint detection module we conducted tests with and without Dense layers.
-On the human parts detection module we tested the three state-of-the-art optimizers Adam, Nadam, and SGD and experimented with little
+In fact, we applied the resulting network architecture from the human parts module later to the background extraction module.
+All in all, we investigated eight network architecture variants differentiating in commonly discussed parameters.
+For the keypoint detection module, we conducted tests with and without Dense layers.
+On the human parts detection module, we tested the three state-of-the-art optimizers Adam, Nadam, and SGD and experimented with little
 modifications to the SGD optimizer.
 To overcome class invariance, we tried out three different loss functions under which one we have come up with
 ourselves.
-In the following section we will present our experimental setup, results and constructive thoughts behind the studies.
+In the subsequent sections we will present our experimental setup, results, and constructive thoughts behind the studies.
 %----------------------------------------------------------------------------------------
 %	SECTION 1
 %----------------------------------------------------------------------------------------
@@ -60,51 +60,51 @@ In the following section we will present our experimental setup, results and con
 
 In~\ref{fig:ablation-accuracy} we demonstrate our network architectures, which range from 88 until 177 layers and are
 all fully convolutional networks.
-The HRNet \textit{(traditional)}~\ref{HRNet:traditional} we slightly deviate the HRNetV2 presented in~\cite{HRNetv2} by replacing the pooling
+For the HRNet \textit{(traditional)}~\ref{HRNet:traditional} we slightly deviate the HRNetV2 presented in~\cite{HRNetv2} by replacing the pooling
 layers with strided-down and transposed convolutional layers.
 The amount of levels and sizes of the feature maps correspond to~\ref{fig:custom_hrnet}.
 As in HRNetV2 we use 4 stages with a filter size of 64 for each stage.
 We add one level per stage starting with just the highest level $\mathcal{N}_L$
 and concatenate the levels from stage 2 ongoing as demonstrated in HRNetV2.\\
-For the HRNet \textit{(filters)}~\ref{HRNet:filter}, we adjust the filters in a way, so that higher levels use less filters then lower levels.
+For the HRNet \textit{(filters)}~\ref{HRNet:filter}, we adjust the filters in a way, so that higher levels use fewer filters then lower levels.
 Additionally, we decrease the filters from the convolutional layers in the level blocks, starting from the highest filter
 amount reducing until 36.
 All levels are concatenated with a filter size of 36.\\
 Subsequent architectures all make use of the adjusted filter amount.\\
-For the HRNet \textit{(3 stages)}~\ref{HRNet:3s}, we use only the three first stages from~\ref{HRNet:filter} and omit
+For the HRNet \textit{(3 stages)}~\ref{HRNet:3s}, we only use the three first stages from~\ref{HRNet:filter} and omit
 $\mathcal{N}_{XS}$.\
 In HRNet \textit{(stide-down-up)}~\ref{HRNet:stride}, we stride down the Input from 240x320x3 to 120x160x36 and use this layer as Input layer
 and highest Level $\mathcal{N}_L$. Lower layers scale relatively to $\mathcal{N}_L$.
-The HRNet \textit{stride-down-up-input}~\ref{HRNet:stride-i} uses the intially strided down input layer as input for
+The HRNet \textit{stride-down-up-input}~\ref{HRNet:stride-i} uses the initially strided down Input layer as input for
 every stage instead of the concatenated results for lower levels.\\
-As presented in the mobilenet paper \cite{mobilenet} in~\ref{HRNet:add-dwconv} we experiment with depth-wise convolution
-and replace the concatenation layers after each stage with add layers.\\
+As presented in the MobileNet paper~\cite{mobilenet} in~\ref{HRNet:add-dwconv} we experiment with depth-wise convolution
+and replace the Concatenation layers after each stage with Add layers.\\
 In the UNet~\ref{UNet} we use all levels and combine them via concatenation according to the traditional UNet~\cite{unet}.\\
 Finally, we present our resulting high-to-low resolution network HRNet \textit{(v3)}~\ref{HRNet:v3}, where we fuse
 the first stages and only concatenate the last stage. Furthermore, we conducted some adjustments to the layer amount
-in the levels and stages as presented in~\autoref{Method}.
+in the levels and stages as presented in~\autoref{method}.
 \\\mbox{}\\
 The HRNet stride-down-up~\ref{HRNet:stride} seems to train the fastest, when looking at~\ref{fig:ablation-correct-px} the
 4.705kth step, it is only at three days and 13h closely followed by the traditional HRNet with the adjusted filters~\ref{HRNet:add-dwconv}
 which is at 3 days and 13h. All other trainings took more than four days at that time.
-However, one has to keep in mind that these both trainings where conducted at the same dates, and the other dates differ.
-So the server could have had other workload, nevertheless, our trainings were the only ones running on the server most
+However, one has to keep in mind that both trainings where conducted at the same dates, and the other dates differ.
+So the server could have had other workloads, nevertheless, our trainings were the only ones running on the server most
 of the time. This occasion as well is reflected in the training time of one epoch.
-There we measured the third epoch to omit starting warm up phases.
 There as well both the HRNet \textit{stride-down-up} and HRNet \textit{adjusted-filter} only took about ~63, ~66 seconds,
 where all the others took more then 80 seconds.
-However, we would have expected the U-Net or HRNet \textit{3 stages} to be the fastest, since they have the smallest
+However, we would have expected the U-Net or HRNet \textit{3 stages} to be the fastest since they have the smallest
 amount of layers and trainable parameters.
 Further, the HRNet \textit{stride-down-up-input} contains less trainable parameters then \textit{stride-down-up}, so
 we would have expected a faster training process here.
 This verifies that the measurements are dependent from various circumstances.
+Indeed, to improve comparability, we measured the third epoch to omit starting warm up phases.
 \\\mbox{}\\
 \paragraph{Comparison of network architectures}\mbox{}\\
 %
 The U-Net~\ref{UNet} has the smallest amount of layers with 88 and 654,261 trainable parameters.
 The HRNet \textit{stride-down-up}~\ref{HRNet:stride} composes most trainable parameters with 4,949,157 and 177 layers, since the input
-layer is first strided down and at the end transoped up again.
-On the other hand due to the reduces feature map sizes this reduces the computation effort as well.
+layer is first strided down and at the end transposed up again.
+On the other hand, due to the reduced feature map sizes, this reduces the computation effort as well.
 All comparison figures show very similar curves.
 Since we could only run our experiments one complete training each, the results must be viewed circumspectly.
 All figures~\ref{fig:ablation-accuracy, fig:ablation-correct-px, fig:correct-pixel-ratio} show very steep curves until
@@ -112,12 +112,12 @@ the 500th episode and start to flatten then.\\
 When looking at~\ref{fig:train-img-0} and~\ref{fig:train-img-20} this steep initial increase is visually reflected.
 When after the first episode the circumferences of the body shapes are predicted vaguely, after the 20th episode the
 networks have already learned to predict the locations of body parts relatively close.
-Of course here has to be regarded, that the different predictions were made on different poses, which might differ in
+Of course, there has to be regarded, that the different predictions were made on different poses, which might differ in
 their complexity.
 Nevertheless, the UNet~\ref{UNet} and the HRNetV3~\ref{fig:hp_accuracy_hrnet_v3} seem to accomplish superior performance.
-After the first episode, the body shape is already estimated precisly close to the input image.
-HRNetV3 even shows correct class estimations for different body parts such as torso, head, arms and legs already.
-The 20th episode then the labels seem to be estimated very close to the true labels.
+After the first episode, the body shape is already estimated precisely close to the input image.
+HRNetV3 even shows correct class estimations for different body parts such as the torso, head, arms, and legs already.
+In the 20th episode then the labels seem to be estimated very close to the true labels.
 
 \begin{figure}[H]
     \centering
@@ -129,11 +129,11 @@ The 20th episode then the labels seem to be estimated very close to the true lab
 
 The accuracy graph shows that the HRNet \textit{traditional} and HRNetV3 get the best results from epoch 500 onwards.
 At step 55.55k they reach 99 percent.
-However, the HRNet \textit{stride-down-up} has a lower courve until the 4.3kth epoch, it then makes a jump in accuracy
+However, the HRNet \textit{stride-down-up} has a lower curve until the 4.3kth epoch, it then makes a jump in Accuracy
 and at the end reaches 99 percent as well.
-Interestingly the U-Net with the by far fewest paramets and layers does receive very good results as well making almost
-99 percent in accuracy at the end.
-The HRNet with only three stages showes the lowest curve and reaches only 98.87 percent points on accuracy at the end.
+Interestingly the U-Net with the by far fewest parameters and layers does receive very good results as well making almost
+99 percent in Accuracy at the end.
+The HRNet with only three stages shows the lowest curve and reaches only 98.87 percent points on accuracy at the end.
 
 \begin{figure}[H]
     \centering
@@ -145,9 +145,9 @@ The HRNet with only three stages showes the lowest curve and reaches only 98.87 
 
 The correct pixel graph~\ref{fig:ablation-correct-px} measures how many pixels of the 240x320 image where labeled correctly
 in one batch. The maximum which could be reached here is $240\times320\times3=\numprint{230400}$.
-Since the single epochs vary a lot it makes more sence to look at the smoothed results.
-The courves again are very close to each other, with the best results coming from the HRNetV3 with umprint{219670} and
-the HRNet \textit{traditional} with \numprint{219640}.
+Since the single epochs vary a lot, it makes more sense to look at the smoothed results.
+The curves again are very close to each other, with the best results coming from the HRNetV3 with $\numprint{219670}$ and
+the HRNet \textit{traditional} with $\numprint{219640}$.
 The lowest curve again shows the HRNet \textit{3 stages}.
 
 \begin{figure}[H]
@@ -160,10 +160,10 @@ The lowest curve again shows the HRNet \textit{3 stages}.
 
 For~\ref{fig:correct-pixel-ratio} we summed up the amount of body part pixels and divided by the amount of correctly
 predicted pixels for one training batch.
-This figure as well displays high varieties for the different epochs, which is why it is important to take the smoothed
+This figure as well displays high variances for the different epochs, which is why it is important to take the smoothed
 values into account. We receive similar courses as already inspected in~\ref{fig:ablation-correct-px}.
 The HRNet \textit{traditional} and HRNetV3 take the lead wih the \textit{traditional} being slightly above the HRNetV3
-with 0.05 percent points. With 31.44 percent the HRNet \textit{traditional} shows best results, whereas HRNet
+with 0.05 percent points. With 31.44 percent the HRNet \textit{traditional} shows the best results, whereas HRNet
 \textit{3 blocks} performs worst with 30.38 percent at step 4.93k.
 
 \begin{figure}[H]
@@ -184,12 +184,12 @@ with 0.05 percent points. With 31.44 percent the HRNet \textit{traditional} show
 \end{figure}
 
 \paragraph{Summary}\mbox{}\\
-In summary our experiments show that our constructed HRNetV3 performs best, and the HRNet with only three stages performs
+In summary, our experiments show that our constructed HRNetV3 performs best, and the HRNet with only three stages performs
 worst.
 Interesting here would be different variations in the level of feature map sizes.
-For example what would happen if the level $\mathcal{N}_{XS}$ was maintained as smallest level and the level
-$\mathcal{N}_M$ was strided down slightly more.
-Insightful as well it the performance of the UNet, which has less than half of trainable parameters and layers compared to
+For instance what would happen if the level $\mathcal{N}_{XS}$ was maintained as smallest level and the level
+$\mathcal{N}_M$ was strided down slightly more?
+Insightful as well is the performance of the UNet, which has less than half of trainable parameters and layers compared to
 the HRNet \textit{traditional} or HRNetV3, but does not perform much worse.\\
 Additionally, further tweaks and studies in these network architectures applied to our different modules would be
 greatly enlightening.
@@ -221,20 +221,22 @@ greatly enlightening.
 \setcounter{rowcntr}{0}
 
 \paragraph{Network Architectures}\mbox{}\\
-We created three variations of keypoint detection network architechtures of which two\ref{kps-dense, kps-dense-blockl}
+We created three variations of keypoint detection network architectures of which two\ref{kps-dense, kps-dense-blockl}
 utilize Dense layers to estimate the keypoint locations and KPS-FCN~\ref{kps-hrnet} implements the third stage of our
 build HRNetV3.\\
-KPS-Dense~\ref{kps-dense-blockl} additionally to the dense stage utilizes the third stage of the HRNetV3.\\
-The dense stage first uses max pooling to reduce the feature map size from 240x230x9 to 120x160x1, 58x78x32 and then 28x38x64.
+KPS-Dense~\ref{kps-dense-blockl}, additionally to the dense stage, utilizes the third stage of the HRNetV3.\\
+The dense stage first uses max pooling to reduce the feature map size from 240x230x9 to 120x160x1, 58x78x32, and then 28x38x64.
 The resulting pooling layer is flattened and followed by two dense layers, which are combined with AlphaDropout and
-batch normalization. The layers include 1024 and 512 units. The first dense layer is conneted to a softmax activation function,
+batch normalization.
+The layers include 1024 and 512 units.
+The first Dense layer is connected to a Softmax activation function,
 the second to a linear activation function. The model estimates 38 x,y coordinates for the keypoint locations.
 The networks loss function calculates the distance from the predicted keypoint locations to the true locations and optimizes
-the networks via mean-squarred-error.\\
-For the KPS-FCN~\ref{kps-hrnet} only uses convolutional layers.
+the networks via mean-squared-error.\\
+In fact, the KPS-FCN~\ref{kps-hrnet} only uses convolutional layers.
 The true labels calculate gaussians with a radius size of three for the locations of the keypoints.
 We combined the keypoint classes for equal body locations such has legs and arms, resulting in 11 joint classes.
-This network predicts 11 different labels for the classes. The network is optimized as well with mean-squarred-error.
+This network predicts 11 different labels for the classes. The network is optimized as well with mean-squared-error.
 
 All networks are trained with an Adam optimizer and a learning rate of 0.001 and run for 5556 epochs.
 
@@ -250,7 +252,7 @@ All networks are trained with an Adam optimizer and a learning rate of 0.001 and
 Both figures~\ref{fig:kps-map-loss},~\ref{fig:kps-loss} show similar curves.
 Until the 500th episode they decrease steeply and then they start to flatten.
 KPS-Dense~\ref{kps-dense} has the fewest layers with 13, however KPS-FCN~\ref{kps-hrnet} contains only 1,109,991
-trainable parameters, the dense networks train ~20/ ~218 times more parameters.
+trainable parameters, the dense networks train \~20/ \~218 times more parameters.
 The networks only differ slightly in their training epoch time and are all between 63 and 69 seconds.\\
 The main difference though is visible in the predicted training images in~\ref{fig:kps-train-imgs}.
 The keypoint detection modules seem not to learn the locations of the body parts, but that the probability of the location
@@ -263,8 +265,7 @@ upward per epoch learning the other keypoint locations in a continuous way.
     \centering
     \includegraphics[width=\textwidth, height=\textheight, keepaspectratio]{Figures/ablation_study_kps_map_loss.png}
     \decoRule
-    \caption[Ablation Keypoints Detection Module: Predicted Training Images]{Predicted images of keypoint detection networks
-    after first, 20th and last episode}
+    \caption[Ablation Keypoints Detection Module: Loss FCN]{Ablation Keypoints Detection Module: Loss FCN}
     \label{fig:kps-map-loss}
 \end{figure}
 
@@ -273,8 +274,7 @@ upward per epoch learning the other keypoint locations in a continuous way.
     \centering
     \includegraphics[width=\textwidth, height=\textheight, keepaspectratio]{Figures/ablation_study_kps_loss.png}
     \decoRule
-    \caption[Ablation Keypoints Detection Module: Predicted Training Images]{Predicted images of keypoint detection networks
-    after first, 20th and last episode}
+    \caption[Ablation Keypoints Detection Module: Loss Dense Layers]{Ablation Keypoints Detection Module: Loss Dense Layers}
     \label{fig:kps-loss}
 \end{figure}
 
@@ -293,18 +293,18 @@ upward per epoch learning the other keypoint locations in a continuous way.
 \end{figure}
 Optimizing the weights of a neuronal network is a crucial step in the training life cycle of deep learning.
 When our neural network has processed the input image and calculated several feature maps throughout the process,
-at the end it predicts 9 feature maps of body parts for example for head, arms, torso and legs for the human parts
+at the end it predicts 9 feature maps of body parts for example for the head, arms, torso, and legs for the human parts
 detection module~\ref{fig:feature-maps-output}.
-With the help of a loss function we then calculate the error for the predicted pixels in comparison to the truly labeled
+With the help of a loss function, we then calculate the error for the predicted pixels in comparison to the truly labeled
 pixels.
 The optimizer updates the network parameters $\theta \in \mathbb{R}^d$, which result in learned filters predicting several feature maps at
 the different stages of the network.
 The updates are performed accordingly to the calculated error from the loss function $\mathcal{J}(\theta)$ via the
-so called Backpropagation process, since the updates are passed backward through the network.
+so-called Backpropagation process, since the updates are passed backward through the network.
 This backward optimization process is performed by the calculations of the chosen optimizer.
 The goal of the optimizer is to minimize the error.
 There, it makes use of gradient descent to update the network's weights, biases and activation functions, in opposite direction
-of the gradient.
+of the gradient.\\
 Figuratively speaking, a weight could be imagined as a hill.
 The updates then will follow the direction of the slope downhill until the valley is reached.
 Whereas the valley is equal to a local minimum~\cite{optimizersoverview}.
@@ -312,7 +312,7 @@ Whereas the valley is equal to a local minimum~\cite{optimizersoverview}.
 There are three variants for gradient descent:\\
 \textbf{Batch Gradient Descent (BGD)}, which calculates the gradients $\theta$ for the entire training dataset.
 The problem here is, that most of the time this would not fit into the RAM.
-We for example had problems with data overflow when we trained with more than 12 images at a time, however we even reduced
+We, for example, had problems with data overflow when we trained with more than 12 images at a time, however, we even reduced
 the image size to 320x240.
 Another drawback is, that gradients for similar examples must be recalculated before each update, leading in redundant computations.\\
 \textbf{Stochastic Gradient Descent (SGD)} confronts this problem by performing updates for each training example input image $x_i$
@@ -322,24 +322,24 @@ Moreover, the updates are of more variance when random training examples are cho
 A drawback however is, even if jumping around may result in finding another better local minimum, it may also
 lead to constantly overshooting the exact minimum.
 Against this problem, slowly decreasing the learning rate may help and lead to similar convergence as for BGD.\\
-\textbf{Mini-Batch Gradient Descent} is the most common variant for gradient descent since it combines the aspects of
+\textbf{Mini-Batch Gradient Descent} is the most common variant for gradient descent since it combines both the aspects of
 BGD and SGD.
-The updates are conducted for every mini-batch of n training samples.
+The updates are conducted for every mini-batch of \textit{n} training samples.
 This reduces the variance of parameter updates and leads to less jumping around, which all in all results in more stable
 convergence~\cite{optimizersoverview}.
 \\\mbox{}\\
-In the following section we will present an overview on optimizers targeting the optimizers we experimented on, which are
+In the following section, we will present an overview of optimizers targeting the optimizers we experimented on, which are
 SGD, Adam and Nadam.
 We conducted our training with Mini-Batch Gradient Descent with a batch size of three.
-In the upcoming section we will present some mathematical backgrounds of optimizer algorithms and explain further aspects of
+In addition, we will present some mathematical backgrounds of optimizer algorithms and explain further aspects of
 SGD in more detail.
 
 \subsection*{Overview of our used optimizers}
 %
 \textbf{Stochastic Gradient Descent (SGD)} is one of the first optimizers and still commonly in use.
-Already in 1951 it was publicly reported by Robins and Sutton et Al~\cite{sgd}.
-Now given a neural networks parameters $\theta$, such as weights, biases and activation functions, here via an input image
-$\mathfrak{x}$ and according labels $\mathfrak{y}$ the Backpropagation process is defined under the gradient $\nabla$
+Already in 1951, it was publicly reported by Robins and Sutton et Al~\cite{sgd}.
+Now given the parameters of a neural network $\theta$, such as weights, biases and activation functions, here via an input image
+$\mathfrak{x}$ and associate labels $\mathfrak{y}$ the Backpropagation process is defined under the gradient $\nabla$
 from the calculated loss function $\mathcal{J}$.
 The adaption of the parameters then is performed stepwise by the learning parameter $\eta$.
 
@@ -351,12 +351,12 @@ The adaption of the parameters then is performed stepwise by the learning parame
 
 The SGD optimizer updates a weight $\mathrm{w}$ in a way to reduce the loss function $\mathcal{J}(\mathrm{w})$ and find
 the local minima of the parameters.
-As already mentioned this is one of the problems with pure SGD, it will very likely become stuck in a local minimum or
+As already mentioned, this is one of the problems with pure SGD, since it will very likely become stuck in a local minimum or
 saddlepoint, where one slope goes up and the other one down.
 Furthermore, it converges slower compared to newer optimizers~\cite{optimizersoverview, optimizersexplained}.
 \\\mbox{}\\
 \textbf{Momentum}, first proposed in 1999 by Qian et Al.~\cite{momentum}, can help to get faster to the local minimum.
-This is accomplished by an additional term which is added to SGD.
+This is accomplished by an additional term that is added to SGD.
 A constant fraction $\gamma$ is multiplied with the last parameter update $\mathfrak{v}_t$ to $\theta$.
 
 %\begin{align}
@@ -372,10 +372,10 @@ A constant fraction $\gamma$ is multiplied with the last parameter update $\math
 Since the momentum term includes all previous updates~\ref{eqn:momentum:2}, it allows the optimizer to accelerate in terms of speed towards
 the local minimum and thus converge faster.\\
 This can be associated with a ball rolling down a hill.
-The momentum term increases as the ball rolls downhill accelerating in terms of speed, for subsequent gradients
-which pointing in the same direction.
-When the direction changes, the term decreases, the ball slows down.
-All in all this results in faster convergence and less oscillation or jumping around the minimum~\cite{optimizersoverview}.
+The momentum term increases, as the ball rolls downhill, accelerating in terms of speed for subsequent gradients
+which point in the same direction.
+When the direction changes, the term decreases, and the ball slows down.
+All in all, this results in faster convergence and less oscillation or jumping around the minimum~\cite{optimizersoverview}.
 \\\mbox{}\\
 \textbf{Adaptive Gradients (AdaGrad)}, a newer algorithm proposed in 2011 by Duchi et Al.~\cite{adagrad},
 adapts the size of an update to the importance of the individual parameters.
@@ -389,13 +389,13 @@ An additional smoothing term $\eta$ prevents the division by zero.
     \label{eqn:adagrad}
 \end{equation}
 This results in the learning rate decreasing when approaching a local minimum, meaning the overshooting problem is eased off.
-However, one weakness is the growing dominator, which makes the learning rate shrink to a infinitesimally small number until the step
+However, one weakness is the growing dominator, which makes the learning rate shrink to an infinitesimally small number until the step
 size almost dissolves to zero.
 \\\mbox{}\\
 \textbf{Root Mean Squared Propagation (RMSProp)} extends AdaGrad's root squared loss function.
 It is an unpublished optimization technique proposed by Hinton et Al.~\cite{rmsprop}.
-The dominator takes, additionally to the past squared gradients, the current gradient at the current time step t is
-taken into account, weighting the last update more than the current.
+The dominator takes, additionally to the past squared gradients, the current gradient at the current time step t,
+into account, weighting the last update more than the current.
 Hinton suggests to weight the last update with 90 and the current with 10 percent.
 \begin{align}
     \theta_{t} = \theta_{t-1} - \frac{\eta}{\epsilon+E[g^2]_t} \cdot \nabla_\theta\mathcal{J}(\theta_{t-1})\label{eqn:rmsprop:1}\\
@@ -408,11 +408,11 @@ Nevertheless, the issue with diminishing learning rates remains.
 \\\mbox{}\\
 \textbf{Adaptive Moment Estimation (Adam)}~\cite{adam}, as well as AdaGrad or RMSprop, calculates adaptive learning rates w.r.t. the
 the parameters $\theta_i$.
-As an extension it keeps track of an exponentially decaying average of past gradients $m_t$, as was already done in
+As an extension, it keeps track of an exponentially decaying average of past gradients $m_t$, as was already done in
 momentum.\\
 Coming back to the visual anecdote, the ball has a lot of weight and is very heavy~\cite{optimizersoverview}.
 It prefers flat minima.\\
-Past decaying average $m_t$ and past suqared errors $v_t$ estimate the first momentum (the mean) and the second momentum
+Past decaying average $m_t$ and past squared errors $v_t$ estimate the first momentum (the mean) and the second momentum
 (the uncentered variance).
 
 \begin{align}
@@ -447,9 +447,9 @@ This results in an update rule which reassembles RMSProp:
 %    v_t = (1-\beta_2)g_t^2 + \beta_2 v_{t-1} \label{eqn:adam:5}
 %\end{align}
 
-In particular, Adam makes use of two decay parameters $\beta_1$ and $\beta_2$, referred as exponential decay rates.
+In particular, Adam makes use of two decay parameters $\beta_1$ and $\beta_2$, referred to as exponential decay rates.
 These parameters $\beta_1$ and $\beta_2$ are close to the constant $\gamma$ term used in RMSprop and Momentum.
-The great advantage here is, that the learning rate can adabt in both directions solving the issue from AdaGrad or
+The great advantage here is, that the learning rate can adapt in both directions solving the issue from AdaGrad or
 RMSProp of vanishing learning rates.
 \\\mbox{}\\
 \textbf{Nesterov-accelerated Adaptive Moment Estimation (Nadam)},
@@ -475,7 +475,7 @@ This step can be interpreted as a correction step.
 \end{align}
 
 To combine Adam and Nadam, some steps must be done.
-We can write the gradient term as $g_t$ and recall the Momentum update and parameter update function $\theta_{t+1}$ with:
+The gradient term can be written as $g_t$ and recall the Momentum update and parameter update function $\theta_{t+1}$ with:
 
 \begin{align}
 g_t &= \nabla_{\theta_t}J(\theta_t) \label{eqn:nadam:1} \\
@@ -483,15 +483,15 @@ m_t &= \gamma m_{t-1} + \eta g_t \label{eqn:nadam:2}\\
 \theta_{t+1} &= \theta_t - m_t \label{eqn:nadam:3}
 \end{align}
 
-The \ref{eqn:nadam:3} $m_t$ term can be extended with \ref{eqn:nadam:2} resulting in \ref{eqn:nadam:4}:
+The~\ref{eqn:nadam:3} $m_t$ term can be extended with~\ref{eqn:nadam:2} resulting in~\ref{eqn:nadam:4}:
 
 \begin{align}
 \theta_{t+1} &= \theta_t - (\gamma m_{t-1} + \eta g_t) \label{eqn:nadam:5}
 \end{align}
 Momentum takes one step into the direction of the previous momentum update and another step into the direction of the current
 gradient.
-However, instead of the past Momentum vector, the current update rule is used in order to look ahead.
-Furthermore, expanding term \ref{eqn:adam:5} $\hat{m}_t$ with~\ref{eqn:adam:3} and~\ref{eqn:adam:3} $m_t$ with~\ref{eqn:adam:1}
+However, instead of the past Momentum vector, the current update rule is used to look ahead.
+Furthermore, expanding the term ~\ref{eqn:adam:5} $\hat{m}_t$ with~\ref{eqn:adam:3} and~\ref{eqn:adam:3} $m_t$ with~\ref{eqn:adam:1}
 results in the following:
 \begin{align}
  \theta_{t+1} = \theta_{t} - \dfrac{\eta}{\sqrt{\hat{v}_t} + \epsilon} (\dfrac{\beta_1 m_{t-1}}{1 - \beta^t_1} + \dfrac{(1 - \beta_1) g_t}{1 - \beta^t_1})
@@ -517,20 +517,20 @@ with the bias-corrected estimate of the current momentum $\hat{m}_{t}$ resulting
 
 
 
-\subsection{Experiments with optimizers}
+\subsection*{Experiments with optimizers}
 \begin{figure}[H]
     \centering
     \includegraphics[width=\textwidth,height=\textheight,keepaspectratio]{img/learning_rate2.png}
     \decoRule
-    \caption[Learning Rate SGD]{Learning Rate SGD.}
+    \caption[Experiments: Learning Rate SGD]{Experiments with Learning Rate SGD.}
     \label{fig:sgd-learning-rate}
 \end{figure}
-In our experimants we tested SGD, Adam and Nadam all with intial learning rates of $\eta=0.001$.
-We configured SGD to use Nesterov Momentum with a value of $\gamma=0.9$, Adam with  epsilon $\epsilon=1e-7$ and AMSGrad.
+In our experiments we tested SGD, Adam, and Nadam all with initial learning rates of $\eta=0.001$.
+We configured SGD to use Nesterov Momentum with a value of $\gamma=0.9$, Adam with epsilon $\epsilon=1e-7$ and AMSGrad.
 Nadam used the exponential decay parameters $\beta_1=0.9; \beta_2=0.999$ and epsilon $\epsilon=1e-7$.
-Additionally, we conducted several tests with the learning rate in SGD and it's influence on the training process.
-One SGD configuration is with a constant learning rate $\eta$ one is decaying by $\eta=0.01$ and one learning rate
-is dacaying with $\eta=0.01$ but will reset to the initial learning rate, when no significant learning or changes regarding
+Additionally, we conducted several tests with the learning rate in SGD and its influence on the training process.
+One SGD configuration is with a constant learning rate $\eta$, one decays with $\eta=0.01$, and one learning rate
+decays with $\eta=0.01$, but will reset to the initial learning rate, when no significant learning or changes regarding
 the loss value is observed over the last 50 epochs anymore.
 Another experiment with SGD increases the ascent of decay when a plateau is hit with increasing decay values
 $[1e-5, 1e-4, 1e-3, 1e-2]$ as visualized in ~\ref{fig:sgd-learning-rate}.
@@ -555,7 +555,7 @@ $[1e-5, 1e-4, 1e-3, 1e-2]$ as visualized in ~\ref{fig:sgd-learning-rate}.
     \centering
     \includegraphics[width=\textwidth,height=\textheight,keepaspectratio]{img/accuracy_all.png}
     \decoRule
-    \caption[Accuracy]{Accuracy}
+    \caption[Experiments: Accuracy]{Accuracy of different optimizer settings}
     \label{fig:accuracy}
 \end{figure}
 
@@ -566,7 +566,7 @@ However, the graph shows that SGD performs worse than Adam or Nadam, all network
 Adam and Nadam start to flatten a little bit later than SGD about 100 epochs.
 Furthermore, their curves flatten more evenly, whereas SGD
 seems to flatten more abruptly.
-Interestingly, the SGD optimizer, where we reset the learning rate on plateau, shows jumps in it's curve.
+Interestingly, the SGD optimizer, where we reset the learning rate on plateau, shows jumps in its curve.
 There one can observe the typical flattening of SGD and then, when a reset took place, the learning process starts again.
 This indicates that SGD hit local minima from which it seems to jump out and re-trigger the adjustment of $\theta$.
 
@@ -593,15 +593,15 @@ This indicates that SGD hit local minima from which it seems to jump out and re-
     \centering
     \includegraphics[width=\textwidth,height=\textheight,keepaspectratio]{img/loss_all.png}
     \decoRule
-    \caption[loss]{Loss}
+    \caption[Experiments: Loss curves]{Experiments: Loss curves}
     \label{fig:loss}
 \end{figure}
-Similar process curve trends can be observed in~\ref{fig:loss}, while the curves are mirrored at the x axis.
-This correlation of loss and accuracy trend proves the according learning process for the different optimizers.
+Similar process curve trends can be observed in~\ref{fig:loss}, while the curves are mirrored at the x-axis.
+This correlation of loss and accuracy trend proves the associate learning process for the different optimizers.
 \\\mbox{}\\
 \paragraph{Conclusions}\mbox{}\\
 Our results are reflected by the research from Choi et Al~\cite{empiricaloptimizers}.
-They conducted a very interesting research with the thesis that more general optimizers would never underperform
+They conducted very interesting research with the thesis that more general optimizers would never underperform
 the ones they approximate.
 Meaning RMSProp, Adam and Nadam would always perform at least as good if not better than Momentum, Nesterov or SGD.
 They impose to carefully tune the hyperparameters and not just conclude an optimizer would work better than another one.
@@ -631,16 +631,16 @@ neural network.
 It calculates how close a prediction $y_p$ from a neural network is to the true label $y_t$.
 
 \subsection{Commonly used loss functions}
-One classical loss function is Mean Squarred Error (MSE).
+One classical loss function is Mean Squared Error (MSE).
 The error represents the difference between $y_t$ and $y_p$.
-MSE then squares the error to even negative results and calculates the sum of all these errors.
-For our fully convolutional network each pixel presents a certain class.
+MSE then squares the error to even out negative results and calculates the sum of all these errors.
+For our fully convolutional network, each pixel presents a certain class.
 As visualized in~\ref{fig:feature-maps-output}, our Human Parts module predicts nine classes.
-This means, there are nine label possible for each pixel.
-Now the neural network estimates with a certain probability how likely a certain class would be true for a specific pixel.
-The error then calculates the difference between the estimation or predicition and the true label, which inludes a
+This means, there are nine labels possible for each pixel.
+Now, the neural network estimates with a certain probability of how likely a certain class would be true for a specific pixel.
+The error then calculates the difference between the estimation or prediction and the true label, which includes a
 value of 1 only for the true class.
-Additionally to the sumation of squarred errors, MSE divides this sum with the number of all squares resulting in the mean
+Additionally to the summation of squared errors, MSE divides this sum with the number of all squares resulting in the mean
 value:
 
 \begin{align}
@@ -649,12 +649,12 @@ value:
 
 We trained the Keypoint Detection and Body Part Extraction modules with MSE.
 
-However, with our Body Part Detection Module we initially had problems with class inbalances.
-First we conducted our training with Sparse Categorical Cross Entropy (SCCE), which is a common loss function used in image
+However, with our Body Part Detection Module we initially had problems with class imbalances.
+First, we conducted our training with Sparse Categorical Cross Entropy (SCCE), which is a common loss function used in image
 segmentation.
 Wrong predictions are weighed harder, especially the ones with a great wrong probability value.
-This is accomplished by the calculating the logarithm of the predicted values.
-Since the logarithm function $log(x)$ is negative for $x \in \Re and [0>x>1]$ and input values closer to zero mean
+This is accomplished by calculating the logarithm of the predicted values.
+Since the logarithm function $log(x)$ is negative for $x \in \Re and [0>x>1]$, and input values closer to zero mean
 an exponential decrease towards $-\infty$ and there is just one true label for the different classes of one pixel, if
 the prediction is clearly the wrong class, the cost will be exponentially higher.
 
@@ -667,35 +667,35 @@ Nevertheless, our first results~\ref{fig:cross_entropy_pred_img} made us believe
 learn the correct labels for the pixels.
 Especially the prediction after the 60th epoch shows, that the net mainly has learned to classify all body parts with the
 torso class.
-We assumed this was the case, because the liklyness of the pixel to be of class torso is higher than for
-example foot.
-Furthermore, however the accuracy graph shows descent results over 94 percent it started to flatten more and more becoming
+We assumed this was the case, because the likeliness of the pixel to be of class torso is higher than, for
+example, foot.
+Furthermore, however, the accuracy graph shows descent results over 94 percent it started to flatten more and more becoming
 almost flat after the 50th epoch already.
 \begin{figure}[H]
     \centering
     \includegraphics[width=\textwidth,height=\textheight,keepaspectratio]{Figures/accuracy_cross_entropy.png}
     \decoRule
-    \caption[SCCE: Accuracy]{Accuracy for training with Sparse Categorical Cross Enntropy loss function}
+    \caption[Loss Functions SCCE: Accuracy]{Accuracy for training with Sparse Categorical Cross Enntropy loss function}
     \label{fig:accuracy_cross_entropy}
 \end{figure}
 \begin{figure}[H]
     \centering
     \includegraphics[width=\textwidth,height=\textheight,keepaspectratio]{Figures/crossentropy_imgs_prediction_last_epoch.png}
     \decoRule
-    \caption[SCCE: predictions]{Predicted images for training with Sparse Categorical Cross Entropy loss function}
+    \caption[Loss Functions SCCE: predictions]{Predicted images for training with Sparse Categorical Cross Entropy loss function}
     \label{fig:cross_entropy_pred_img}
 \end{figure}
-We than created our own loss function for this class inbalance problem as explained in~\autoref{ciloss}.
-Furthermore, we reduced the amount of classes from 14 to nine accumulating left and right body parts such as foot and arm.
-A later experiment however shows, that our build network HRNetv3 even learns slightly better than with our own created
+We than created our own loss function for this class imbalance problem as explained in~\autoref{ciloss}.
+Moreover, we reduced the number of classes from 14 to nine accumulating left and right body parts such as foot and arm.
+A later experiment shows, on the contrary, that our build network HRNetv3 even learns slightly better than with our own created
 loss function CILoss~\ref{fig:ablation-accuracy}.
-However, this of course could be by chance due to current training settings.
+Even though, this of course could be by chance due to current training circumstances.
 
 
 \subsection{Our custom loss function CILoss}
 \label{ciloss}
 This loss function confronts the problem of class imbalance, which especially occurs in body part recognition.
-The background pixels appear most often, and the different body part classes occur much more less often and they even
+The background pixels appear most often, and the different body part classes occur much less often and they even
 differ a lot in their relative occurrence.
 \\\mbox{}\\
 We try to confront this problem with a weighed map $\mu$, which takes the body parts as a graph and calculates
@@ -704,12 +704,12 @@ This weighed map $\mu$ is applied to the true labels of $y_{true}$ so that wrong
 class will be punished more. For example if the network predicts hand instead of lower arm, the error will be less as if
 the network predicts foot.
 \\\mbox{}\\
-Additionally this weight map is evened out with a multiplier to reduce the distances and facilitate
+Additionally, this weight map is evened out with a multiplier to reduce the distances and facilitate
 the learning process for the network.
 \\\mbox{}\\
 As in MSE we calculate the difference $\mathcal{E}$ between $y_t$ and $y_p$, but do not square the result, we just use the absolute value.
 We multiply the resulting error $\mathcal{E}$ with our weighed map receiving $\delta$.
-To calculate the loss we then sum the error and delta pixel-wise:
+To calculate the loss we then sum the error $\mathcal{E}$ and delta $\delta$ pixel-wise:
 
 $$\mathcal{E}=y_t(x)-y_p(x)$$
 $$\delta=\theta\cdot\mu[argmax(y_t)] $$
@@ -720,6 +720,6 @@ $$L=\sum_{i=0}^{n}\mathcal{E}_i+\delta_i$$
     \centering
     \includegraphics[width=\textwidth,height=\textheight,keepaspectratio]{img/loss_calculation.png}
     \decoRule
-    \caption[CILoss]{Visualization of our custom loss function CILoss}
+    \caption[Loss Functions CILoss: Calculation]{Visualization of our custom loss function CILoss}
     \label{fig:ciloss-calc}
 \end{figure}
