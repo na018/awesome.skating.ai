@@ -2,8 +2,10 @@ from typing import List
 
 import tensorflow as tf
 
+import skatingAI.nets.bg as bgnet
 import skatingAI.nets.hrnet as hrnet
 import skatingAI.nets.keypoint as kp_net
+from skatingAI.utils.BGLoss import BGLoss
 from skatingAI.utils.KPSLoss import KPSLoss
 from skatingAI.utils.losses import CILoss
 
@@ -27,6 +29,7 @@ class HyperParameterParams(object):
 
 class GeneralTrainParams(object):
     def __init__(self, gpu: int = 1,
+                 wcounter_bg: int = -1,
                  wcounter_hp: int = -1,
                  wcounter_kps: int = -1,
                  epoch_start: int = 0,
@@ -35,6 +38,7 @@ class GeneralTrainParams(object):
                  epochs: int = 5556,
                  epoch_log_n: int = 5):
         self.gpu = gpu
+        self.wcounter_bg = wcounter_bg
         self.wcounter_hp = wcounter_hp
         self.wcounter_kps = wcounter_kps
         self.epoch_start = epoch_start
@@ -57,10 +61,21 @@ class HyperParameter(object):
         self.params = params
 
 
+BGExtractorHyperParameters = [
+    HyperParameter(
+        name='adam',
+        model=bgnet.v7.BGNet,
+        optimizer_name='adam',
+        learning_rate=1e-3,
+        loss_fct=BGLoss(2),
+        params=HyperParameterParams(epsilon=1e-8, amsgrad=True),
+        description='Test **adam** optimizer on hrnet v7',
+    )
+]
 BodyPoseDetectorHyperParameters = [
     HyperParameter(
         name='chrnet_adam',
-        model=hrnet.v7.HRNet,
+        model=hrnet.v7.HPNet,
         optimizer_name='adam',
         learning_rate=1e-3,
         loss_fct=CILoss(9),
@@ -69,7 +84,7 @@ BodyPoseDetectorHyperParameters = [
     ),
     HyperParameter(
         name='chrnet_nadam',
-        model=hrnet.v7.HRNet,
+        model=hrnet.v7.HPNet,
         optimizer_name='nadam',
         learning_rate=1e-3,
         loss_fct=CILoss(9),
@@ -79,7 +94,7 @@ BodyPoseDetectorHyperParameters = [
     ),
     HyperParameter(
         name='chrnet_sgd',
-        model=hrnet.v7.HRNet,
+        model=hrnet.v7.HPNet,
         optimizer_name='sgd',
         learning_rate=1e-3,
         loss_fct=CILoss(9),
@@ -88,7 +103,7 @@ BodyPoseDetectorHyperParameters = [
     ),
     HyperParameter(
         name='chrnet_sgd_decay',
-        model=hrnet.v7.HRNet,
+        model=hrnet.v7.HPNet,
         optimizer_name='sgd',
         learning_rate=1e-3,
         loss_fct=CILoss(9),
@@ -99,7 +114,7 @@ BodyPoseDetectorHyperParameters = [
     ),
     HyperParameter(
         name='chrnet_sgd_clr',
-        model=hrnet.v7.HRNet,
+        model=hrnet.v7.HPNet,
         optimizer_name='sgd_clr',
         learning_rate=0.1,
         loss_fct=CILoss(9),
@@ -110,7 +125,7 @@ BodyPoseDetectorHyperParameters = [
     ),
     HyperParameter(
         name='chrnet_crossentropy_adam',
-        model=hrnet.v7.HRNet,
+        model=hrnet.v7.HPNet,
         optimizer_name='adam',
         learning_rate=1e-3,
         loss_fct=tf.keras.losses.SparseCategoricalCrossentropy(),
@@ -119,16 +134,16 @@ BodyPoseDetectorHyperParameters = [
     ),
     HyperParameter(
         name='traditional_hrnet_64',
-        model=hrnet.v0.HRNet,
+        model=hrnet.v0.HPNet,
         optimizer_name='adam',
         learning_rate=1e-3,
         loss_fct=CILoss(9),
         params=HyperParameterParams(epsilon=1e-8, amsgrad=True),
-        description='Train HRNet as described in paper',
+        description='Train HPNet as described in paper',
     ),
     HyperParameter(
         name='traditional_hrnet_adjusted_filter',
-        model=hrnet.v1.HRNet,
+        model=hrnet.v1.HPNet,
         optimizer_name='adam',
         learning_rate=1e-3,
         loss_fct=CILoss(9),
@@ -137,7 +152,7 @@ BodyPoseDetectorHyperParameters = [
     ),
     HyperParameter(
         name='hrnet_stride_down_up',
-        model=hrnet.v2.HRNet,
+        model=hrnet.v2.HPNet,
         optimizer_name='adam',
         learning_rate=1e-3,
         loss_fct=CILoss(9),
@@ -146,7 +161,7 @@ BodyPoseDetectorHyperParameters = [
     ),
     HyperParameter(
         name='hrnet_stride_down_up_input',
-        model=hrnet.v3.HRNet,
+        model=hrnet.v3.HPNet,
         optimizer_name='adam',
         learning_rate=1e-3,
         loss_fct=CILoss(9),
@@ -155,7 +170,7 @@ BodyPoseDetectorHyperParameters = [
     ),
     HyperParameter(
         name='hrnet_3_blocks',
-        model=hrnet.v4.HRNet,
+        model=hrnet.v4.HPNet,
         optimizer_name='adam',
         learning_rate=1e-3,
         loss_fct=CILoss(9),
@@ -164,7 +179,7 @@ BodyPoseDetectorHyperParameters = [
     ),
     HyperParameter(
         name='UNet',
-        model=hrnet.v5.HRNet,
+        model=hrnet.v5.HPNet,
         optimizer_name='adam',
         learning_rate=1e-3,
         loss_fct=CILoss(9),
@@ -173,7 +188,7 @@ BodyPoseDetectorHyperParameters = [
     ),
     HyperParameter(
         name='chrnet_add_dwonv',
-        model=hrnet.v6.HRNet,
+        model=hrnet.v6.HPNet,
         optimizer_name='adam',
         learning_rate=1e-3,
         loss_fct=CILoss(9),

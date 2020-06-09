@@ -21,12 +21,12 @@
         - strided-down/-up convolution architecture: result converges worse
         - rescale in dataset generator: works far better (graphs will be included later)
     - u-net with mobilenetv2 as base (not able to learn body parts)
-    - u-net as base for HRNet (converges worse than just HRNet and is slower)
-    - improve HRNet with filter amount and layer amount according to evaluation analysis of layers
+    - u-net as base for HPNet (converges worse than just HPNet and is slower)
+    - improve HPNet with filter amount and layer amount according to evaluation analysis of layers
         - combine add and concat of layers
         - always add the initial Input layer to concat/ add
         - performs best
-    ![HRNet Model Architecture](skatingAI/nets/imgs/hrnet_v8.png)  
+    ![HPNet Model Architecture](skatingAI/nets/imgs/hrnet_v8.png)  
 - create new custom loss function for Class Imbalance
     - create weighed map according to a calculated graph with the relative body part distances
 - reduce classes to 9
@@ -45,7 +45,7 @@
     - add simple save functionality
     - show predicted images additionally to feature maps of layers
     - code refactoring & improvement
-    - evaluation of best performing net HRNet with Adam optimizer after epoch 1595 [v7_1595_adam_1595_mask](skatingAI/evaluate/img/v7_1595_adam_1595_mask)
+    - evaluation of best performing net HPNet with Adam optimizer after epoch 1595 [v7_1595_adam_1595_mask](skatingAI/evaluate/img/v7_1595_adam_1595_mask)
 - evaluate different optimizers, learning rates & learning rate adjustments
 #### Accuracy of different used optimizers
 > red: adam; learning rate: 0.01  
@@ -112,15 +112,15 @@ loss_fn = tf.keras.losses.SparseCategoricalCrossentropy(from_logits=True)
 ```
 
 #### Loss Plot
-![HRNet Model Architecture](skatingAI/docs/img/loss_custom_train_00.png)  
+![HPNet Model Architecture](skatingAI/docs/img/loss_custom_train_00.png)  
 #### Accuracy Plot
-![HRNet Model Architecture](skatingAI/docs/img/accuracy_custom_train_00.png)  
+![HPNet Model Architecture](skatingAI/docs/img/accuracy_custom_train_00.png)  
 #### Predition after 2nd epoch
-![HRNet Model Architecture](skatingAI/docs/img/custom_train_00_2_train.png)  
+![HPNet Model Architecture](skatingAI/docs/img/custom_train_00_2_train.png)  
 #### Predition after last epoch
-![HRNet Model Architecture](skatingAI/docs/img/custom_train_00_63_train.png)  
-### Custom HRNet Model
-![HRNet Model Architecture](skatingAI/docs/img/nadins_hrnet_1.png)
+![HPNet Model Architecture](skatingAI/docs/img/custom_train_00_63_train.png)  
+### Custom HPNet Model
+![HPNet Model Architecture](skatingAI/docs/img/nadins_hrnet_1.png)
 ------
 
 ## 2020-02-14 [Status Report]: Preprocess 3DHuman Dataset
@@ -167,7 +167,7 @@ loss_fn = tf.keras.losses.SparseCategoricalCrossentropy(from_logits=True)
 
 - discuss paper with Johannes Theodoridis
 - Result: 
-    - combine [HRNet](https://arxiv.org/pdf/1908.07919) pose recognition instead of PAF from 
+    - combine [HPNet](https://arxiv.org/pdf/1908.07919) pose recognition instead of PAF from 
     [STAF](https://arxiv.org/pdf/1811.11975) with Keypoint Recognition
     - implement step-wise
 

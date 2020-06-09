@@ -3,7 +3,7 @@
 
 \chapter{Figure Skating Pose Detection} % Main chapter title
 
-\label{Figure Skating} % Change X to a consecutive number; for referencing this chapter elsewhere, use \ref{ChapterX}
+\label{figureskating} % Change X to a consecutive number; for referencing this chapter elsewhere, use \ref{ChapterX}
 
 %----------------------------------------------------------------------------------------
 %	SECTION 1
@@ -12,13 +12,64 @@
 
 \section{Complexity of Figures}
 
-- existing KP detectors struggle (OpenPose, VideoPose)
+Figure ice skating includes very special movement sequences that stand out from other sports.
+Thanks to the surface of the ice, skaters perform gliding movements.
+Furthermore, their programs include highly artisitic
+movements with explosive take-offs, very high rotation speeds, and flexible positions.
+Current pose estimators such as \textit{OpenPose, VideoPose3d} or \textit{wrnch.ai} all fail to correctly predict keypoints
+for spins with their high
+rotation speed and difficult flexible positions.
+In this section, we try to explain why especially figure ice skating means a challenge in human pose estimation.
+\\\mbox{}\\
+In single figure ice skating, there are three main element types in a competitive program, which receive
+technical scores:
+jumps, steps, and spins.
+There are seven different listed jumps, which only differ in their take-off phase.
+Three
+of these
+are jumped just from one edge, the Axel, Loop, and Salchow.
+The other ones additionally use the skate toe as a catapult.
+In fact, they can be distinguished by the edge that is last skated on the ice before the skater takes off.
+This is one of the reasons, why many skaters have problems with the Lutz and Flip jumps.
+For the jury it is often hard to tell as well, whether the jump should get an edge deduction.
+All the jumps can include a different amount of rotation in the air,
+whereas four rotations were the maximum a skater could perform until today.
+All these jumps can be combined in various manners, include features such as lifted arms or difficult steps
+before or after the element to
+increase the level of difficulty, resulting in higher scores.
+\\\mbox{}\\
+For spins, there are four main positions: upright, sit, camel and layback.
+These positions as well can be combined with various features, as for example jumps or difficult elastic positions
+such as the famous Biellmann position.
+\\\mbox{}\\
+There are plenty of different step sequence elements including turns on the ice and steps.
+These as well can be combined with multiple additional features resulting in higher scores.
+\\\mbox{}\\
+The above-named elements only explain the absolute basics in figure ice skating.
+In practice scoring and the
+creation of ice skating
+programs is much more difficult.
+Nevertheless, this illustrates nicely, that however for the not professionalized
+audience many elements may
+look the same, there are plenty of different metrics and components.
+Moreover, each skater has their own style
+and performs these elements
+slightly different.
+This is what makes it so hard for machine-learning algorithms to correctly predict the elements.
+Which is
+why it is important that
+the basis, the keypoint recognition module, has to predict the poses correctly.
+Because otherwise the action
+recognition module has no
+chance to make correct estimations~\cite{isuguideleinesgoe, isujudginssystem}.
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam ultricies lacinia euismod. Nam tempus risus in dolor
-rhoncus in interdum enim tincidunt. Donec vel nunc neque. In condimentum ullamcorper quam non consequat. Fusce
-sagittis tempor feugiat. Fusce magna erat, molestie eu convallis ut, tempus sed arcu. Quisque molestie, ante a
-tincidunt ullamcorper, sapien enim dignissim lacus, in semper nibh erat lobortis purus. Integer dapibus ligula ac
-risus convallis pellentesque.
+%- existing KP detectors struggle (OpenPose, VideoPose)
+%
+%Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam ultricies lacinia euismod. Nam tempus risus in dolor
+%rhoncus in interdum enim tincidunt. Donec vel nunc neque. In condimentum ullamcorper quam non consequat. Fusce
+%sagittis tempor feugiat. Fusce magna erat, molestie eu convallis ut, tempus sed arcu. Quisque molestie, ante a
+%tincidunt ullamcorper, sapien enim dignissim lacus, in semper nibh erat lobortis purus. Integer dapibus ligula ac
+%risus convallis pellentesque.
 
 %----------------------------------------------------------------------------------------
 %	SECTION 2
@@ -26,14 +77,54 @@ risus convallis pellentesque.
 
 
 \section{Distinct Rating System}
-
-- human struggle as well -> rating system with points, many abstractions, still often experienced as not fair
-
-Sed ullamcorper quam eu nisl interdum at interdum enim egestas. Aliquam placerat justo sed lectus lobortis ut porta
-nisl porttitor. Vestibulum mi dolor, lacinia molestie gravida at, tempus vitae ligula. Donec eget quam sapien, in
-viverra eros. Donec pellentesque justo a massa fringilla non vestibulum metus vestibulum. Vestibulum in orci quis
-felis tempor lacinia. Vivamus ornare ultrices facilisis. Ut hendrerit volutpat vulputate. Morbi condimentum venenatis
-augue, id porta ipsum vulputate in. Curabitur luctus tempus justo. Vestibulum risus lectus, adipiscing nec
-condimentum quis, condimentum nec nisl. Aliquam dictum sagittis velit sed iaculis. Morbi tristique augue sit amet
-nulla pulvinar id facilisis ligula mollis. Nam elit libero, tincidunt ut aliquam at, molestie in quam. Aenean rhoncus
-vehicula hendrerit.
+First reported figure ice skating competitions with a registered scoring system took place in Vienna in 1881.
+The International Skating Union (ISU) regulates figure ice skating competitions since 1892 and is responsible for the
+construction
+and further development of its judging system.
+The old, still very well known judging system \textit{6.0} was officially used until the world championships in 2004,
+and
+is still used very rarely at tiny competitions or fun competitions, due to no special technical equipment requirements.
+This system allows grades from 0-6 with 6 standing for best outstanding skating.
+Further refinements could be rated via decimal numbers.
+A program receives grades \textit{A} and \textit{B}, with the A-Grade rating technical skills and the B-Grade judging
+performance gratitude and expression.
+Both grades added resulted in the placement of the skater, where placement proposals of the judges where combined via
+the majority principle, resulting in the final placement.
+\\\mbox{}\\
+Since the more and more rising complains~\cite{unfairjudge}, a new system was developed to increase fairness, today
+referenced as ISU
+Judging System.
+This new system was adjusted several times since it's first introduction in 2004, and only recently in 2019 got updated
+fundamentally in it's GOE scores.
+It assigns a base value to every jump, step sequence, or spin type in the still existing technical \textit{A-Grade}
+part.
+Furthermore, several features rise the GOE for jumps, as for example lifted arms or the base value as for spins.
+The step sequences as well include special regulations to achieve certain levels and gain a higher base score.
+These base scores can become higher or get deductions via the GOE part.
+For example, a fallen jump gets its jump value with a GOE of -5.\\
+The \textit{B-Grade} judges the skating skills, program transitions, performance or execution, choreography and
+interpretation.
+Also costume choice and interpretation of music play part in this grade.
+Great about the new system is, that the programs are recorded via video, and the technical specialists can review,
+slow down
+and zoom into the element.
+The GOEs then are given by separate judges.
+\\\mbox{}\\
+Another benefit of this new system is the comparability between competitions and the transparent display of how a
+certain final
+score was achieved.
+Skaters can even collect points from several competitions to get special sponsorships as for example the Kader.
+\\\mbox{}\\
+One drawback however is the complexity of the new judging system.
+Moreover, it requires special technical equipment calculating all the points and for reviewing the programs.
+Additionally today, all programs have very specific rules, which elements are allowed or have to be performed.
+Which is why some people complain about the resemblance of the different programs and the missing own interpretation
+freedom.
+\\\mbox{}\\
+However, the traceability of scores rose, there is still a very high degree of subjective input in the results,
+about which many people complain.
+This starts from the first stage of the technical specialist rating a jump with certain deductions or not, and then
+of course
+is passed to the judges, who pass in their GOE estimations for the elements.
+The \textit{B-Grade} still remains very subjective and unfairness is a topic at almost every
+competition~\cite{unfairjudge, isujudginssystem, isuguideleinesgoe}.

@@ -24,20 +24,21 @@
 %----------------------------------------------------------------------------------------
 
 \documentclass[
-11pt, % The default document font size, options: 10pt, 11pt, 12pt
-%oneside, % Two side (alternating margins) for binding by default, uncomment to switch to one side
-english, % ngerman for German
-doublespacing, % Single line spacing, alternatives: onehalfspacing or doublespacing
-%draft, % Uncomment to enable draft mode (no pictures, no links, overfull hboxes indicated)
-nolistspacing, % If the document is onehalfspacing or doublespacing, uncomment this to set spacing in lists to single
-%liststotoc, % Uncomment to add the list of figures/tables/etc to the table of contents
-%toctotoc, % Uncomment to add the main table of contents to the table of contents
-parskip, % Uncomment to add space between paragraphs
-%nohyperref, % Uncomment to not load the hyperref package
-headsepline, % Uncomment to get a line under the header
+    11pt, % The default document font size, options: 10pt, 11pt, 12pt
+    %oneside, % Two side (alternating margins) for binding by default, uncomment to switch to one side
+    english, % ngerman for German
+    doublespacing, % Single line spacing, alternatives: onehalfspacing or doublespacing
+    %draft, % Uncomment to enable draft mode (no pictures, no links, overfull hboxes indicated)
+    nolistspacing, % If the document is onehalfspacing or doublespacing, uncomment this to set spacing in lists to
+    single
+    %liststotoc, % Uncomment to add the list of figures/tables/etc to the table of contents
+    %toctotoc, % Uncomment to add the main table of contents to the table of contents
+    parskip, % Uncomment to add space between paragraphs
+    %nohyperref, % Uncomment to not load the hyperref package
+    headsepline, % Uncomment to get a line under the header
 %chapterinoneline, % Uncomment to place the chapter title next to the number on one line
 %consistentlayout, % Uncomment to change the layout of the declaration, abstract and acknowledgements pages to match
-the default layout
+%the default layout
 ]{MastersDoctoralThesis} % The class file specifying the document structure
 
 \usepackage[utf8]{inputenc} % Required for inputting international characters
@@ -51,6 +52,20 @@ the default layout
 \setabbreviationstyle[acronym]{long-short}
 \loadglsentries{glossy}
 
+\usepackage{numprint}
+\npthousandsep{\,}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{fancyvrb}
+\newcommand{\fontsmall}{\fontsize{10pt}{11pt}\selectfont}
+\newcounter{rowcntr}[table]
+\renewcommand{\therowcntr}{\thetable.\arabic{rowcntr}}
+% A new columntype to apply automatic stepping
+\newcolumntype{N}{>{\refstepcounter{rowcntr}\therowcntr}c}
+
+% Reset the rowcntr counter at each new tabular
+%\AtBeginEnvironment{tabular}{\setcounter{rowcntr}{0}}
 
 %\usepackage{hyperref}
 %\hypersetup{colorlinks=true, linkcolor=blue}
@@ -69,265 +84,296 @@ the default layout
 %\makeatother
 
 \usepackage{mathpazo} % Use the Palatino font by default
+\usepackage[backend=bibtex,style=numeric-comp,natbib=true]{biblatex} % Use the bibtex backend with the authoryear
+%citation style (which resembles APA)
 
-\usepackage[backend=bibtex,style=authoryear,natbib=true]{biblatex} % Use the bibtex backend with the authoryear citation style (which resembles APA)
-
-\addbibresource{example.bib} % The filename of the bibliography
+\addbibresource{main.bib} % The filename of the bibliography
 
 \usepackage[autostyle=true]{csquotes}
 \usepackage{graphicx} % Required to generate language-dependent quotes in the bibliography
 \usepackage{float}
+\usepackage{amsfonts}
+\usepackage{amsmath}
 
 %----------------------------------------------------------------------------------------
 %	MARGIN SETTINGS
 %----------------------------------------------------------------------------------------
 
 \geometry{
-	paper=a4paper, % Change to letterpaper for US letter
-	inner=2.5cm, % Inner margin
-	outer=3.8cm, % Outer margin
-	bindingoffset=.5cm, % Binding offset
-	top=1.5cm, % Top margin
-	bottom=1.5cm, % Bottom margin
-	%showframe, % Uncomment to show how the type block is set on the page
+    paper=a4paper, % Change to letterpaper for US letter
+    inner=2.5cm, % Inner margin
+    outer=3.8cm, % Outer margin
+    bindingoffset=.5cm, % Binding offset
+    top=1.5cm, % Top margin
+    bottom=1.5cm, % Bottom margin
+%showframe, % Uncomment to show how the type block is set on the page
 }
 
 %----------------------------------------------------------------------------------------
 %	THESIS INFORMATION
 %----------------------------------------------------------------------------------------
 
-\thesistitle{Applied Research of an End-to-End Human Keypoint Detection Network with Figure Ice Skating as Application Scope} % Your thesis title, this is used in the title and abstract, print it elsewhere with \ttitle
-\supervisor{Prof. Dr. J. \textsc{Maucher}\\Prof. Dr. S. \textsc{Radicke}} % Your supervisor's name, this is used in the title page, print it elsewhere with \supname
+\thesistitle{Applied Research of an End-to-End Human Keypoint Detection Network with Figure Ice Skating as
+Application Scope} % Your thesis title, this is used in the title and abstract, print it elsewhere with \ttitle
+\supervisor{Prof. Dr. J. \textsc{Maucher}\\Prof. Dr. S. \textsc{Radicke}} % Your supervisor's name, this is used in
+%the title page, print it elsewhere with \supname
 
-\examiner{} % Your examiner's name, this is not currently used anywhere in the template, print it elsewhere with \examname
-\degree{Master of Science} % Your degree name, this is used in the title page and abstract, print it elsewhere with \degreename
-\author{Nadin-Katrin \textsc{Apel}} % Your name, this is used in the title page and abstract, print it elsewhere with \authorname
+\examiner{} % Your examiner's name, this is not currently used anywhere in the template, print it elsewhere with
+\examname
+\degree{Master of Science} % Your degree name, this is used in the title page and abstract, print it elsewhere with
+%\degreename
+\author{Nadin-Katrin \textsc{Apel}} % Your name, this is used in the title page and abstract, print it elsewhere with
+%\authorname
 \addresses{} % Your address, this is not currently used anywhere in the template, print it elsewhere with \addressname
 
-\subject{Computer Sciences and Media} % Your subject area, this is not currently used anywhere in the template, print it elsewhere with \subjectname
-\keywords{} % Keywords for your thesis, this is not currently used anywhere in the template, print it elsewhere with \keywordnames
-\university{\href{http://www.hdm-dtuttgart.de}{Stuttgart Media University}} % Your university's name and URL, this is used in the title page and abstract, print it elsewhere with \univname
-\department{\href{https://www.hdm-stuttgart.de/en/prospective_students/academic_programs/all_programs/steckbrief?sgang_ID=550058}{Computer Science and Media}} % Your department's name and URL, this is used in the title page and abstract, print it elsewhere with \deptname
-\group{\href{http://researchgroup.university.com}{Research Group Name}} % Your research group's name and URL, this is used in the title page, print it elsewhere with \groupname
-\faculty{\href{http://faculty.university.com}{}} % Your faculty's name and URL, this is used in the title page and abstract, print it elsewhere with \facname
+\subject{Computer Sciences and Media} % Your subject area, this is not currently used anywhere in the template, print
+%it elsewhere with \subjectname
+\keywords{} % Keywords for your thesis, this is not currently used anywhere in the template, print it elsewhere with
+%\keywordnamesremove
+%the racket to remove the link
+\university{\href{http://www.hdm-dtuttgart.de}{Stuttgart Media University}} % Your university's name and URL, this is
+%used in the title page and abstract, print it elsewhere with \univname
+\department{\href{https://www.hdm-stuttgart.de/en/prospective_students/academic_programs/all_programs/steckbrief
+?sgang_ID=550058}{Computer Science and Media}} % Your department's name and URL, this is used in the title page and
+%abstract, print it elsewhere with \deptname
+\group{\href{http://researchgroup.university.com}{Research Group Name}} % Your research group's name and URL, this is
+%used in the title page, print it elsewhere with \groupname
+\faculty{\href{http://faculty.university.com}{}} % Your faculty's name and URL, this is used in the title page and
+%abstract, print it elsewhere with \facname
 
 \AtBeginDocument{
-\hypersetup{pdftitle=\ttitle} % Set the PDF's title to your title
-\hypersetup{pdfauthor=\authorname} % Set the PDF's author to your name
-\hypersetup{pdfkeywords=\keywordnames} % Set the PDF's keywords to your keywords
+    \hypersetup{pdftitle=\ttitle} % Set the PDF's title to your title
+    \hypersetup{pdfauthor=\authorname} % Set the PDF's author to your name
+    \hypersetup{pdfkeywords=\keywordnames} % Set the PDF's keywords to your keywords
 }
 
 \begin{document}
 
-\frontmatter % Use roman page numbering style (i, ii, iii, iv...) for the pre-content pages
+    \frontmatter % Use roman page numbering style (i, ii, iii, iv...) for the pre-content pages
 
-\pagestyle{plain} % Default to the plain heading style until the thesis style is called for the body content
+    \pagestyle{plain} % Default to the plain heading style until the thesis style is called for the body content
 
-%----------------------------------------------------------------------------------------
-%	TITLE PAGE
-%----------------------------------------------------------------------------------------
+    %----------------------------------------------------------------------------------------
+    %	TITLE PAGE
+    %----------------------------------------------------------------------------------------
 
-\begin{titlepage}
-\begin{center}
+    \begin{titlepage}
+        \begin{center}
 
-\vspace*{.06\textheight}
-{\scshape\LARGE \univname\par}\vspace{1.5cm} % University name
-\textsc{\Large Master Thesis}\\[0.5cm] % Thesis type
+            \vspace*{.06\textheight}
+            {\scshape\LARGE \univname\par}\vspace{1.5cm} % University name
+            \textsc{\Large Master Thesis}\\[0.5cm] % Thesis type
 
-\HRule \\[0.4cm] % Horizontal line
-{\huge \bfseries \ttitle\par}\vspace{0.4cm} % Thesis title
-\HRule \\[1.5cm] % Horizontal line
+            \HRule \\[0.4cm] % Horizontal line
+            {\huge \bfseries \ttitle\par}\vspace{0.4cm} % Thesis title
+            \HRule \\[1.5cm] % Horizontal line
 
-\begin{minipage}[t]{0.4\textwidth}
-\begin{flushleft} \large
-\emph{Author:}\\
-\href{http://nadin-katrin.de/}{\authorname} % Author name - remove the \href bracket to remove the link
-\end{flushleft}
-\end{minipage}
-\begin{minipage}[t]{0.4\textwidth}
-\begin{flushright} \large
-\emph{Supervisor:} \\
-\href{https://www.hdm-stuttgart.de/csm/studiengang/team/professoren}{\supname} % Supervisor name - remove the \href bracket to remove the link
-\end{flushright}
-\end{minipage}\\[2.2cm]
+            \begin{minipage}[t]{0.4\textwidth}
+                \begin{flushleft}
+                    \large
+                    \emph{Author:}\\
+                    \href{http://nadin-katrin.de/}{\authorname} % Author name - remove the \href bracket to remove
+                    %the link
+                \end{flushleft}
+            \end{minipage}
+            \begin{minipage}[t]{0.4\textwidth}
+                \begin{flushright}
+                    \large
+                    \emph{Supervisor:} \\
+                    \href{https://www.hdm-stuttgart.de/csm/studiengang/team/professoren}{\supname} % Supervisor name
+                    %- remove the \href bracket to remove the link
+                \end{flushright}
+            \end{minipage}\\[2.2cm]
 
-\vfill
+            \vfill
 
-\large \textit{A thesis submitted in fulfillment of the requirements\\ for the degree }\\[0.2cm] % University requirement text
-\huge \degreename\\[0.6cm]
-\large \deptname\\[0.2cm]
-%\today\\[2cm] % Research group name and department name
-%\today
-\vfill
-\textcolor{black}{\large \today}\\ % Date
-%\includegraphics{Logo} % University/department logo - uncomment to place it
+            \large \textit{A thesis submitted in fulfillment of the requirements\\ for the degree }\\[0.2cm]
+            \huge \degreename\\[0.6cm]
+            \large \deptname\\[0.2cm]
+            %\today\\[2cm] % Research group name and department name
+            %\today
+            \vfill
+            \textcolor{black}{\large \today}\\ % Date
+            %\includegraphics{Logo} % University/department logo - uncomment to place it
 
-\vfill
-\end{center}
-\end{titlepage}
+            \vfill
+        \end{center}
+    \end{titlepage}
 
-%----------------------------------------------------------------------------------------
-%	DECLARATION PAGE
-%----------------------------------------------------------------------------------------
-\hypersetup{citecolor=refC}
-\hypersetup{linkcolor=refC}
-\begin{declaration}
-	\addchaptertocentry{\authorshipname} % Add the declaration to the table of contents
-	\noindent I, \authorname, declare that this thesis titled, \enquote{\ttitle} and the work presented in it are my
-	own. I confirm that:
+    %----------------------------------------------------------------------------------------
+    %	DECLARATION PAGE
+    %----------------------------------------------------------------------------------------
+    \hypersetup{citecolor=refC}
+    \hypersetup{linkcolor=refC}
+    \begin{declaration}
+        \addchaptertocentry{\authorshipname} % Add the declaration to the table of contents
+        \noindent I, \authorname, declare that this thesis titled, \enquote{\ttitle} and the work presented in it are my
+        own. I confirm that:
 
-	\begin{itemize}
-		\item This work was done wholly or mainly while in candidature for a research degree at this University.
-		\item Where any part of this thesis has previously been submitted for a degree or any other qualification at
-		\item this University or any other institution, this has been clearly stated.
-		\item Where I have consulted the published work of others, this is always clearly attributed.
-		\item Where I have quoted from the work of others, the source is always given. With the exception of such
-		\item quotations, this thesis is entirely my own work.
-		\item I have acknowledged all main sources of help.
-		\item Where the thesis is based on work done by myself jointly with others, I have made clear exactly what was
-		\item done by others and what I have contributed myself.\\
-	\end{itemize}
+        \begin{itemize}
+            \item This work was done wholly or mainly while in candidature for a research degree at this University.
+            \item Where any part of this thesis has previously been submitted for a degree or any other qualification at
+            \item this University or any other institution, this has been clearly stated.
+            \item Where I have consulted the published work of others, this is always clearly attributed.
+            \item Where I have quoted from the work of others, the source is always given. With the exception of such
+            \item quotations, this thesis is entirely my own work.
+            \item I have acknowledged all main sources of help.
+            \item Where the thesis is based on work done by myself jointly with others, I have made clear exactly
+            what was
+            \item done by others and what I have contributed myself.\\
+        \end{itemize}
 
-	\noindent Signed:\\
-	\rule[0.5em]{25em}{0.5pt} % This prints a line for the signature
+        \noindent Signed:\\
+        \rule[0.5em]{25em}{0.5pt} % This prints a line for the signature
 
-	\noindent Date:\\
-	\rule[0.5em]{25em}{0.5pt} % This prints a line to write the date
-\end{declaration}
+        \noindent Date:\\
+        \rule[0.5em]{25em}{0.5pt} % This prints a line to write the date
+    \end{declaration}
 
-\cleardoublepage
+    \cleardoublepage
 
-%----------------------------------------------------------------------------------------
-%	QUOTATION PAGE
-%----------------------------------------------------------------------------------------
+    %----------------------------------------------------------------------------------------
+    %	QUOTATION PAGE
+    %----------------------------------------------------------------------------------------
 
-\vspace*{0.2\textheight}
+    \vspace*{0.2\textheight}
 
-\noindent\enquote{\itshape Data is a precious thing and will last longer than the systems themselves.}\bigbreak
+    \noindent\enquote{\itshape Data is a precious thing and will last longer than the systems themselves.}\bigbreak
 
-\hfill  Tim Berners-Lee
-%----------------------------------------------------------------------------------------
-%	ABSTRACT PAGE
-%----------------------------------------------------------------------------------------
-
-\begin{abstract}
-\addchaptertocentry{\abstractname} % Add the abstract to the table of contents
-The Thesis Abstract is written here (and usually kept to just this page). The page is kept centered vertically so can expand into the blank space above the title too\ldots
-\end{abstract}
-
-%----------------------------------------------------------------------------------------
-%	ACKNOWLEDGEMENTS
-%----------------------------------------------------------------------------------------
-
-\begin{acknowledgements}
-\addchaptertocentry{\acknowledgementname} % Add the acknowledgements to the table of contents
-The acknowledgments and the people to thank go here, don't forget to include your project advisor \gls{laser}\ldots
-\gls{laser}
-\end{acknowledgements}
-
-%----------------------------------------------------------------------------------------
-%	LIST OF CONTENTS/FIGURES/TABLES PAGES
-%----------------------------------------------------------------------------------------
-
-\begingroup
-\hypersetup{linkcolor=refC}
-\renewcommand{\baselinestretch}{1.1}\normalsize
-\tableofcontents % Prints the main table of contents
-\renewcommand{\baselinestretch}{1.5}\normalsize
-
-\printglossaries
-
-\listoffigures % Prints the list of figures
-
-\listoftables % Prints the list of tables
-
-%----------------------------------------------------------------------------------------
-%	ABBREVIATIONS
-%----------------------------------------------------------------------------------------
+    \hfill  Tim Berners-Lee
+    %----------------------------------------------------------------------------------------
+    %	ABSTRACT PAGE
+    %----------------------------------------------------------------------------------------
 
 
+    \begin{abstract}
+        \addchaptertocentry{\abstractname} % Add the abstract to the table of contents
+        Human joint detection is a key component for machines to understand human actions and behaviors.
+        Especially in figure ice skating, this understanding is an indispensability,
+        where there are many difficult figures and poses, even difficult to clearly understand
+        for the professionalized jury.
+        Herewith we present an end-to-end approach to detect the 2D poses of a person in images and videos.
+        In the architecture, we combine three branches: Image Segmentation, Body Part Detection, and Human joint
+        detection.
+        The applied research reveals multiple findings regarding different training settings, optimizing functions,
+        and motion capturing techniques the special application scope of figure ice skating.
+    \end{abstract}
 
-\begin{abbreviations}{ll} % Include a list of abbreviations (a table of two columns)
+    %----------------------------------------------------------------------------------------
+    %	ACKNOWLEDGEMENTS
+    %----------------------------------------------------------------------------------------
 
-\textbf{LAH} & \textbf{L}ist \textbf{A}bbreviations \textbf{H}ere\\
-\textbf{WSF} & \textbf{W}hat (it) \textbf{S}tands \textbf{F}or\\
+    \begin{acknowledgements}
+        \addchaptertocentry{\acknowledgementname} % Add the acknowledgements to the table of contents
+        The acknowledgments and the people to thank go here, don't forget to include your project advisor
+        %\gls{laser}\ldots
+        %\gls{laser}
+    \end{acknowledgements}
 
-\end{abbreviations}
+    %----------------------------------------------------------------------------------------
+    %	LIST OF CONTENTS/FIGURES/TABLES PAGES
+    %----------------------------------------------------------------------------------------
 
-%----------------------------------------------------------------------------------------
-%	PHYSICAL CONSTANTS/OTHER DEFINITIONS
-%----------------------------------------------------------------------------------------
+    \begingroup
+    \hypersetup{linkcolor=refC}
+    \renewcommand{\baselinestretch}{1.0}\normalsize
+    \tableofcontents % Prints the main table of contents
+    \renewcommand{\baselinestretch}{1.5}\normalsize
 
-\begin{constants}{lr@{${}={}$}l} % The list of physical constants is a three column table
+    \printglossaries
 
-% The \SI{}{} command is provided by the siunitx package, see its documentation for instructions on how to use it
+    \listoffigures % Prints the list of figures
 
-Speed of Light & $c_{0}$ & \SI{2.99792458e8}{\meter\per\second} (exact)\\
-%Constant Name & $Symbol$ & $Constant Value$ with units\\
+    \listoftables % Prints the list of tables
 
-\end{constants}
+    %----------------------------------------------------------------------------------------
+    %	ABBREVIATIONS
+    %----------------------------------------------------------------------------------------
 
-%----------------------------------------------------------------------------------------
-%	SYMBOLS
-%----------------------------------------------------------------------------------------
 
-\begin{symbols}{lll} % Include a list of Symbols (a three column table)
 
-$a$ & distance & \si{\meter} \\
-$P$ & power & \si{\watt} (\si{\joule\per\second}) \\
-%Symbol & Name & Unit \\
+%    \begin{abbreviations}{ll} % Include a list of abbreviations (a table of two columns)
+%
+%        \textbf{LAH} & \textbf{L}ist \textbf{A}bbreviations \textbf{H}ere\\
+%        \textbf{WSF} & \textbf{W}hat (it) \textbf{S}tands \textbf{F}or\\
+%
+%    \end{abbreviations}
+%
+%    %----------------------------------------------------------------------------------------
+%    %	PHYSICAL CONSTANTS/OTHER DEFINITIONS
+%    %----------------------------------------------------------------------------------------
+%
+%    \begin{constants}{lr@{${}={}$}l} % The list of physical constants is a three column table
+%
+%        % The \SI{}{} command is provided by the siunitx package, see its documentation for instructions on how to
+%        use it
+%
+%        Speed of Light & $c_{0}$ & \SI{2.99792458e8}{\meter\per\second} (exact)\\
+%        %Constant Name & $Symbol$ & $Constant Value$ with units\\
+%
+%    \end{constants}
 
-\addlinespace % Gap to separate the Roman symbols from the Greek
+%    %----------------------------------------------------------------------------------------
+%    %	SYMBOLS
+%    %----------------------------------------------------------------------------------------
+%
+%    \begin{symbols}{lll} % Include a list of Symbols (a three column table)
+%
+%        $a$ & distance & \si{\meter} \\
+%        $P$ & power & \si{\watt} (\si{\joule\per\second}) \\
+%        %Symbol & Name & Unit \\
+%
+%        \addlinespace % Gap to separate the Roman symbols from the Greek
+%
+%        $\omega$ & angular frequency & \si{\radian} \\
+%
+%    \end{symbols}
 
-$\omega$ & angular frequency & \si{\radian} \\
+    %----------------------------------------------------------------------------------------
+    %	DEDICATION
+    %----------------------------------------------------------------------------------------
 
-\end{symbols}
+    \dedicatory{For/Dedicated to/To my\ldots}
 
-%----------------------------------------------------------------------------------------
-%	DEDICATION
-%----------------------------------------------------------------------------------------
+    %----------------------------------------------------------------------------------------
+    %	THESIS CONTENT - CHAPTERS
+    %----------------------------------------------------------------------------------------
 
-\dedicatory{For/Dedicated to/To my\ldots}
+    \mainmatter % Begin numeric (1,2,3...) page numbering
 
-%----------------------------------------------------------------------------------------
-%	THESIS CONTENT - CHAPTERS
-%----------------------------------------------------------------------------------------
+    \pagestyle{thesis} % Return the page headers back to the "thesis" style
 
-\mainmatter % Begin numeric (1,2,3...) page numbering
+    % Include the chapters of the thesis as separate files from the Chapters folder
+    % Uncomment the lines as you write the chapters
 
-\pagestyle{thesis} % Return the page headers back to the "thesis" style
+    \include{Chapters/00_Introduction}
+    \include{Chapters/01_FigureSkating}
+    \include{Chapters/02_Dataset}
+    \include{Chapters/03_Method}
+    \include{Chapters/04_Experiments}
+    \include{Chapters/05_Conclusion}
+    %\include{Chapters/Chapter4}
+    %\include{Chapters/Chapter5}
 
-% Include the chapters of the thesis as separate files from the Chapters folder
-% Uncomment the lines as you write the chapters
+    %----------------------------------------------------------------------------------------
+    %	THESIS CONTENT - APPENDICES
+    %----------------------------------------------------------------------------------------
 
-\include{Chapters/00_Introduction}
-\include{Chapters/01_FigureSkating}
-\include{Chapters/02_Dataset}
-\include{Chapters/03_Method}
-\include{Chapters/04_Experiments}
-\include{Chapters/05_Conclusion}
-%\include{Chapters/Chapter4}
-%\include{Chapters/Chapter5}
+    \appendix % Cue to tell LaTeX that the following "chapters" are Appendices
 
-%----------------------------------------------------------------------------------------
-%	THESIS CONTENT - APPENDICES
-%----------------------------------------------------------------------------------------
+    % Include the appendices of the thesis as separate files from the Appendices folder
+    % Uncomment the lines as you write the Appendices
 
-\appendix % Cue to tell LaTeX that the following "chapters" are Appendices
+    %\include{Appendices/AppendixA}
+    %\include{Appendices/AppendixB}
+    %\include{Appendices/AppendixC}
 
-% Include the appendices of the thesis as separate files from the Appendices folder
-% Uncomment the lines as you write the Appendices
+    %----------------------------------------------------------------------------------------
+    %	BIBLIOGRAPHY
+    %----------------------------------------------------------------------------------------
 
-%\include{Appendices/AppendixA}
-%\include{Appendices/AppendixB}
-%\include{Appendices/AppendixC}
+    \printbibliography[heading=bibintoc]
 
-%----------------------------------------------------------------------------------------
-%	BIBLIOGRAPHY
-%----------------------------------------------------------------------------------------
-
-\printbibliography[heading=bibintoc]
-
-%----------------------------------------------------------------------------------------
-\endgroup
+    %----------------------------------------------------------------------------------------
+    \endgroup
 \end{document}

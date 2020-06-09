@@ -5,12 +5,16 @@ from enum import Enum
 from pathlib import Path
 from typing import List, Tuple
 
+# import matplotlib
+import matplotlib.pyplot as plt
 import numpy as np
 import tensorflow as tf
 from keras import backend as K
 from keras.utils.layer_utils import count_params
-from matplotlib import pyplot as plt
 from tensorflow import keras, summary
+
+# # needed for savefig to work
+# matplotlib.use("Qt4Agg")
 
 path = Path.cwd()
 
@@ -234,29 +238,26 @@ def plot2img(figure):
 
 
 class DisplayCallback(tf.keras.callbacks.TensorBoard):
-    def __init__(self, base_model, model, sub_dir: str,
-                 sample_image, sample_mask, sample_kp,
+    def __init__(self, model: tf.keras.Model,
                  epochs=5, gpu: int = 1,
-                 log_dir='logs',
+                 log_dir='logs', sub_dir="",
                  **kwargs):
         super().__init__(log_dir=f"{log_dir}/model/", histogram_freq=1, profile_batch='500,520', **kwargs)
         # log_dir = f"{log_dir}/model/train", histogram_freq = 1, profile_batch = '500,520', ** kwargs
         self.sub_dir = sub_dir
-        self.base_model = base_model
+
         self.model = model
-        self.sample_image = sample_image
-        self.sample_mask = sample_mask
-        self.sample_kp = kps_upscale_reshape(sample_mask.shape, sample_kp.numpy())
+
         self.epochs = epochs
         # self._file_writer = tf.summary.create_file_writer(f"{log_dir}/scalars/train")
-        self._file_writer = tf.summary.create_file_writer(f"{log_dir}/scalars/train")
+        self._file_writer = tf.summary.create_file_writer(f"{log_dir}/{sub_dir}/scalars/train")
         self.gpu = gpu
-        # self.log_dir = log_dir
-        # self.write_images = True
+
         self.histogram_freq = 10
 
     def track_metrics_on_train_start(self, model: tf.keras.Model, name, optimizer_name, loss_function, learning_rate,
-                                     train_hp: bool, train_kps: bool, training_time, epochs, epoch_steps, batch_size,
+                                     train_bg: bool, train_hp: bool, train_kps: bool, training_time, epochs,
+                                     epoch_steps, batch_size,
                                      description):
         text_summary = f'|name    |{name}    |\n|----|----|\n'
         trainable_params = count_params(model.trainable_weights)
@@ -266,6 +267,7 @@ class DisplayCallback(tf.keras.callbacks.TensorBoard):
         for item in (['optimizer_name', optimizer_name],
                      ['epochs:epoch_steps:batch_size', f"{epochs}:{epoch_steps}:{batch_size}"],
                      ['loss_function', loss_function],
+                     ['train_bg', train_bg],
                      ['train_body_parts', train_hp],
                      ['train_keypoints', train_kps],
                      ['learning_rate', str(learning_rate)],
@@ -282,64 +284,19 @@ class DisplayCallback(tf.keras.callbacks.TensorBoard):
         with self._file_writer.as_default():
             tf.summary.text(name, tf.constant(text_summary), description=text_summary, step=0)
 
-    def track_img_on_epoch_end(self, epoch: int, loss: float, metrics: List[Metric] = [], show_img=False):
+    def track_img_on_epoch_end(self, img, epoch: int, metrics: List[Metric] = []):
 
         self.model.save_weights(
             f"{Path.cwd()}/ckpt{self.gpu}/{self.sub_dir}-{epoch}.ckpt")
 
-        predicted_mask = create_mask(self.base_model.predict(self.sample_image[tf.newaxis, ...])[0])
-
-        predicted_kp = self.model.predict(self.sample_image[tf.newaxis, ...])[0]
-
-        # predicted_kp = self.model.predict(self.sample_image[tf.newaxis, ...])[0]
-
         K.clear_session()
 
-        true_circles, predicted_circles = [], []
-        if 'kps' in self.sub_dir:
-            for kp in self.sample_kp:
-                true_circles.append(plt.Circle(kp, 3, alpha=0.9, fill=False, linewidth=2., edgecolor='white'))
-            if self.sub_dir == 'kps':
-                predicted_kp = kps_upscale_reshape(predicted_mask.shape, predicted_kp)
-                for kp in predicted_kp:
-                    predicted_circles.append(plt.Circle(kp, 3, alpha=0.9, fill=False, linewidth=2., edgecolor='white'))
-
-        title = ['Input Image', 'True Mask', 'Predicted Mask & Keypoints']
-        if self.sub_dir == 'kps':
-            display_imgs = [[tf.keras.preprocessing.image.array_to_img(self.sample_image), []],
-                            [tf.keras.preprocessing.image.array_to_img(self.sample_mask), true_circles],
-                            [tf.keras.preprocessing.image.array_to_img(predicted_mask), predicted_circles]]
-        else:
-            predicted_kp_img = tf.argmax(predicted_kp, axis=-1)
-            display_imgs = [[tf.keras.preprocessing.image.array_to_img(self.sample_image), []],
-                            [tf.keras.preprocessing.image.array_to_img(self.sample_mask), true_circles],
-                            [predicted_kp_img, []]]
-
-        # plt.figure(figsize=(15, 4))
-        # fig, ax = plt.subplots()
-        fig = plt.figure(figsize=(15, 4))
-        for i, img in enumerate(display_imgs):
-            ax = fig.add_subplot(1, 3, i + 1)
-            for circle in img[1]:
-                ax.add_patch(circle)
-            ax.set_title(title[i], fontsize='small', alpha=0.6, color='blue')
-            ax.imshow(img[0])
-
-        if show_img:
-            plt.show()
-
-        # summary_images = tf.cast(summary_images, tf.uint8)
-
-        img = plot2img(fig)
-
         with self._file_writer.as_default():
-            tf.summary.image(f"{epoch}_img_train", img, step=epoch)
-            tf.summary.scalar(f'{self.sub_dir}_loss', loss, step=epoch)
+            tf.summary.image(f"{epoch}_{self.sub_dir}_img_train", img, step=epoch)
 
             for i, item in enumerate(metrics):
                 tf.summary.scalar(item.name, item.get_median(), step=epoch)
 
-        fig.savefig(f"{path}/img_train{self.gpu}/{epoch}_{self.sub_dir}_train.png")
         plt.close('all')
         self.on_epoch_end(epoch)
 
@@ -351,6 +308,13 @@ class DisplayCallback(tf.keras.callbacks.TensorBoard):
               f"For evaluation (loss/ accuracy) please run \n${' ' * 5}`tensorboard --logdir {Path.cwd()}/logs`\n" +
               f"and open your webbrowser at `http://localhost:6006`\n")
         self.on_train_end()
+
+
+def create_dir(path: str, msg: str = ''):
+    if not os.path.exists(path):
+        os.makedirs(path)
+    else:
+        raise AssertionError(f"{path} already exists. {msg}")
 
 
 def create_dir(path: str, msg: str = ''):

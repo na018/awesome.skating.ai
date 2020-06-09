@@ -13,14 +13,14 @@ from skatingAI.utils.DsGenerator import Frame, Mask, DsGenerator
 from skatingAI.utils.utils import create_mask, create_dir
 
 VERSIONS = {
-    'v0': v0.HRNet,
-    'v1': v1.HRNet,
-    'v2': v2.HRNet,
-    'v3': v3.HRNet,
-    'v4': v4.HRNet,
-    'v5': v5.HRNet,
-    'v6': v6.HRNet,
-    'v7': v7.HRNet,
+    'v0': v0.HPNet,
+    'v1': v1.HPNet,
+    'v2': v2.HPNet,
+    'v3': v3.HPNet,
+    'v4': v4.HPNet,
+    'v5': v5.HPNet,
+    'v6': v6.HPNet,
+    'v7': v7.HPNet,
     'u0': mobilenetv0.MobileNetV2,
 }
 
