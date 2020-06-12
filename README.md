@@ -29,17 +29,17 @@ with Tensorflow 2.
 
 Altogether, we created three sub-projects:
 
-1) 🎓 exercises: 
+1) 🎓  exercises: 
     - here we followed the [Image segmentation](https://www.tensorflow.org/tutorials/images/segmentation) 
     tutorial from Tensorflow to understand key aspects of neural network creation with Tensorflow 2
-2) 🖥️ skatingAI
+2) 🖥️  skatingAI
     - the main Python module for our research code base
-3) 🖋️ thesis
+3) 🖋️  thesis
     - master thesis regarding this investigative research
     
     
 
-# 🖥️ skatingAI
+# 🖥️  skatingAI
 
 <p style="text-align:center; background-color: gray;"><img src="skatingAI/docs/img/alena_step_labeled2.png" width="200px"></p>
 
