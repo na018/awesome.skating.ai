@@ -4,48 +4,115 @@
 
 <p style="text-align:center; background-color: gray;"><img src="axel_paf.gif" width="200px"></p>
 
-[Action Recognition in Figure Ice Skating](#action-recognition-in-figure-ice-skating)
+[Human Pose Recognition in Figure Ice Skating](#action-recognition-in-figure-ice-skating)
 
 # TOC
 
-- [Action Recognition in Figure Ice Skating](#action-recognition-in-figure-ice-skating)
-- [TOC](#toc)
-  - [Summary 🗒](#summary-%f0%9f%97%92)
-  - [Goals ⛳️](#goals-%e2%9b%b3%ef%b8%8f)
-    - [Minor](#minor)
-    - [Major](#major)
-  - [Team](#team)
+- [Installation](#installation)
+- [Start training process](#start-training-process)
+- [Test skatingAI - extract background, predict body parts or keypoints](#test-skatingAI---extract-background,-predict-body-parts-or-keypoints)
 
 ---
 
-## Summary 🗒
+In our research we investigated state-of-the art systems such as 
+[OpenPose](https://github.com/CMU-Perceptual-Computing-Lab/openpose)
+, [VideoPose3d](https://github.com/facebookresearch/VideoPose3D) or [wrnch.ai](https://wrnch.ai/) on 
+their performance on figure ice skating. 
+All systems we tested had problems with spins in figure ice skating. Especially the ones with 
+elastic poses such as the Biellmann pirouette.
 
-This investigative research project tries to build upon the very well created Part Affinity Field Python library from [OpenPose](https://arxiv.org/pdf/1812.08008.pdf) and map the resulting vectors to specific actions in figure ice skating.
+This is why we called this investigative project into life to understand, how pose recognition works in depth 
+and how to increase performance of keypoint recognition in figure ice skating.  
+With the here presented project we love to further spurn research work in the figure ice skating pose recognition or
+general human pose estimation field of artistic sports, with a well structured, easy to understand and follow code project 
+with Tensorflow 2.
 
-Here we will follow a bottom-up approach as suggested by the OpenPose [Paper](https://arxiv.org/pdf/1812.08008.pdf).
+Altogether, we created three sub-projects:
 
-> The research work of [PAF](https://github.com/CMU-Perceptual-Computing-Lab/openpose) was first published in 2017. Further development processes with additional facial and foot tracking were reported publicly in 2019. This project allows to track body parts in realtime thus will serve as the foundation for this project.  
-> A great benefit there is the publicly available sourcecode on [Github](https://github.com/CMU-Perceptual-Computing-Lab/openpose) and the Python library.
-> In this project, we will first concentrate on a single jump `the Axel` and later in our "Major Goals" try to extend the found knowledge.
-
-## Goals ⛳️
-### Short-term Objective
-- Investigate existing keypoint recognition applications and their suitability for recognition in figure ice-skating ✔
-    - OpenPose
-    - VideoPose3D
-    - Wrnch
-- find/ generate training data set ✔
-    - [3DPEOPLE DATASET](https://cv.iri.upc-csic.es/)
-        - skeleton [u,v] is x,y joints
-    - own data set via mocap/ blender 🛑🛑
+1) 🎓 exercises: 
+    - here we followed the [Image segmentation](https://www.tensorflow.org/tutorials/images/segmentation) 
+    tutorial from Tensorflow to understand key aspects of neural network creation with Tensorflow 2
+2) 🖥️ skatingAI
+    - the main Python module for our research code base
+3) 🖋️ thesis
+    - master thesis regarding this investigative research
     
-- create network to recognize body parts [extending the thoughts of PAF from OpenPose] ✔
-- extend network to recognize key-points for later action recognition
-### Intermediate Target
-- map vector movements of body parts to specific curves
-- map combination of curves to specific actions
+    
 
-### Long-term Objective
-- App to support coaches
-- Service to support competition's _(fairness, release jury)_
+# 🖥️ skatingAI
+
+<p style="text-align:center; background-color: gray;"><img src="skatingAI/docs/img/alena_step_labeled2.png" width="200px"></p>
+
+## Installation
+We build our project upon [Tensorflow 2](https://www.tensorflow.org/) with Python 3.6. 
+The easiest way to get started is to run everything inside a [Docker](https://docs.docker.com/) container.
+
+1) Create `skating-ai` docker image from our Dockerfile
+    ```bash
+    docker build -t skating-ai skatingAI/Docker/
+    ```
+2) Run `skating-ai` docker container from the above created container, bind local file system into docker container 
+and log into container *(you can choose a different container name, and restrict gpu usage for your likings)*
+    ```bash
+    docker run -it\
+        --name skating-ai\
+        --gpus all\
+        --mount type=bind,source="$(pwd)"/skatingAI,target=/skatingAI\
+        skating-ai:latest
+    ```
+> Prerequisite: you need an [nvidia-docker](https://github.com/NVIDIA/nvidia-docker) installation
+>
+3) Download video data and preprocess data from [3DPEOPLE DATASET](https://cv.iri.upc-csic.es/)
+    ```bash
+   cd skatingAI/Data/3dhuman
+   python data_admin.py
+   ```
+   This download of data takes a couple of hours.
+
+
+## Start training process
+We created three modules for background extraction, body part prediction and keypoint detection.
+These complete training modules can be found in `skatingAI/modules`.
+
+For our ablation study we created several network architectures for the different networks in 
+`skatingAI/nets`.
+
+Start the training process inside the docker container:
+```bash
+python train.py
+```
+After starting the training process a menu will appear in which you can choose the paramaters for the network.
+You can eiter choose the default ones, or define your custom parameters for gpu, batch_size etc.
+
+The second menu which appears allows you to choose between which module you want to train background extraction, 
+human part detection or keypoint detection.
+
+The menu which appears after that allows you to choose a certain training setting, which we experimented with in our 
+ablation study. Variations are between, network architecture, loss function and optimizer.
+In `skatingAI/utils/hyper_paramater.py` you can define your own custom setting.
+
+### Logging - images, weights, Tensorboard
+If sticked to the default parameters, every 5 epochs the predicted images and weights will be logged to your local 
+file system. So you can follow the training process.
+
+Furthermore, several variables will be logged additionally to `skatingAI/logs` such as the accuracy or loss curves, 
+histograms and distributions on how the network parameters progressed during training.
+Additionally, we log some descriptive information about the training setting in the text information of the Tensorboard.
+
+
+## Test skatingAI - extract background, predict body parts or keypoints
+To test skatingAI on some random videos from the [3DPEOPLE DATASET](https://cv.iri.upc-csic.es/) run:
+```bash
+python predict.py
+```
+Or with the `--video` parameter you can specify the path to a custom video file:
+
+```bash
+python predict.py --video /path/to/file/video.avi
+```
+
+
+
+
+
 

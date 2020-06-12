@@ -303,7 +303,7 @@ if __name__ == "__main__":
     parser.add_argument('--wcounter_hp', default=4430, help='Number of weight')
     parser.add_argument('--wcounter_kps', default=4885, help='Number of weight')
     parser.add_argument('--name', default='', help='unique name to save to save video/image')
-    parser.add_argument('--video', default='/home/nadin-katrin/Videos/youtube_skate/edited/alena_biellmann_no_sound.avi',# alina_biellmann_red_dress.avi',
+    parser.add_argument('--video', default='./edited/alena_biellmann_no_sound.avi',  # alina_biellmann_red_dress.avi',
                         # /home/nadin-katrin/awesome.skating.ai/Biellmann_2.avi
                         help='absolute path to video file', type=str)
     parser.add_argument('--video_sequence', default='/home/nadin-katrin/Videos/biellmann_sequence',

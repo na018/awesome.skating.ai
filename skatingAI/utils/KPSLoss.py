@@ -15,7 +15,7 @@ class KPSLoss(tf.keras.losses.Loss):
         Args:
             n_classes:
         """
-        super(tf.keras.losses.Loss, self)
+        super().__init__(name='KPSLoss')
         self.reduction = losses_utils.loss_reduction.ReductionV2.AUTO
         self.name = "KPSLoss"
         self._allow_sum_over_batch_size = True

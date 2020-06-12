@@ -9,12 +9,13 @@ from typing import List, Tuple
 import matplotlib.pyplot as plt
 import numpy as np
 import tensorflow as tf
-from keras import backend as K
-from keras.utils.layer_utils import count_params
+# from keras import backend as K
+# from keras.utils.layer_utils import count_params
 from tensorflow import keras, summary
-
 # # needed for savefig to work
 # matplotlib.use("Qt4Agg")
+from tensorflow.python.keras import backend as K
+from tensorflow.python.keras.utils.layer_utils import count_params
 
 path = Path.cwd()
 

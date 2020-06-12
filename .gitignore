@@ -116,3 +116,6 @@ venv.bak/
 */ckpt
 */logs
 skatingAI/docs/notes
+/skatingAI/coverage/
+/skatingAI/coverage2/
+/skatingAI/coverage3/

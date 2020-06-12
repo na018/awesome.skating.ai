@@ -2,10 +2,13 @@ from datetime import datetime
 from pathlib import Path
 
 import tensorflow as tf
-from tensorflow_core.python.ops.summary_ops_v2 import SummaryWriter
+from tensorflow.python.ops.summary_ops_v2 import SummaryWriter
 
 from skatingAI.utils.hyper_paramater import HyperParameterParams
 from skatingAI.utils.utils import DisplayCallback
+
+
+# from tensorflow_core.python.ops.summary_ops_v2 import SummaryWriter
 
 
 class TrainBase(object):
