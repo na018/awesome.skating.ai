@@ -7,8 +7,8 @@
 \chapter{Introduction} % Main chapter title
 
 \label{introduction} % Change X to a consecutive number; for referencing this chapter elsewhere, use \ref{ChapterX}
-Human 2D pose estimation has gained more and more attraction in recent years.
-For example, \textit{Facebook}, one of the BigFive technology companies, has published 73 research paper targeting the
+Human 2d pose estimation has gained more and more attraction in recent years.
+For example, \textit{Facebook}, one of the \textit{Big Five} technology companies, has published 73 research paper targeting the
 problem of pose estimation in the last three years.
 The most popular ones are \textit{DensePose, VideoPose3d} or \textit{Mask R-CNN}~\cite{fbPub, DensePose, videopose3d, maskrcnn}.
 A company in Canada \textit{wrnch.ai} even specialized on keypoint recognition from image and video data with a
@@ -16,8 +16,8 @@ lot of product options~\cite{wrnch}.
 Furthermore, many enterprises are becoming more and more interested in Sports Content Analysis (SPA)
 e.g. \textit{Bloomberg, SAP}, and \textit{Panasonic}, just naming a few~\cite{sappanasonic, spaBloomberg}.
 \\\mbox{}\\
-But how got this topic into such a demanded focal point?
-Probably this is due to the various application areas to which Pose estimation can be applied to.
+But how did this topic get into such a demanded focal point?
+One of the reasons are the various application areas to which pose estimation can be applied to.
 Main fields are sports, visual surveillance, autonomous driving, entertainment, health care and
 robotics~\cite{olympicsport, surveillance, kinectWalkDepression}.
 For example \textit{Vaak}, a Japanese startup, developed a software, which would detect shoplifters,
@@ -33,12 +33,12 @@ whether it was done right or wrong.
 So in 2020 more than ever was missed a technology, which is good at pose estimation, or even further, action
 recognition, in sports.
 \\\mbox{}\\
-Most investigations in this field target usual activities not including complex poses, which can be encountered in
+Most investigations in this field target everyday activities not including complex poses, which can be encountered in
 professional sports.
 This is why these architectures often fail when applied to more complex movements.
 For competitive sports, there are various metrics of high interest depending on the environment.
 Competition and training can be differentiated as can be sports executed by multiple athletes versus single combats.
-Basketball or soccer as team sports, for example, are interested in predictions about
+Team sports, such as Basketball or soccer, are interested in predictions about
 how the other team behaves during the game and which would be the best reaction to their behavior for winning
 the game.
 During practice, 2d pose recognition can help to optimize the sports-person movements by taking the role of a coach.
@@ -140,12 +140,12 @@ This is why this paper investigates 2d pose recognition with a special focus on 
 
     \section{Related Work}
 
-    2D Pose estimation sets the baseline for machines to understand actions.
+    2d pose estimation sets the baseline for machines to understand actions.
     It is the problem of localizing human joints or keypoints in images and videos.
     Many research studies explored and researched this topic already with the most popular ones being \textit{OpenPose}
     and \textit{VideoPose3d}~\cite{openpose, videopose3d}.
 \\\mbox{}\\
-    For 2D pose recognition there are mainly two general procedures: either \textit{top-down} or \textit{bottom-up}.
+    For 2d pose recognition there are mainly two general procedures: either \textit{top-down} or \textit{bottom-up}.
     \textit{Top-down} first detects a person and then finds their keypoints.
     Whereas \textit{bottom-up} first detects all keypoints in the image and then refers to the corresponding people.
     For top-down it is argued, that if a person is not detected via a bounding-box or alike, no keypoints can be
@@ -166,7 +166,7 @@ This is why this paper investigates 2d pose recognition with a special focus on 
     \textit{Deep High-Resolution Learning}~\cite{simplebaselines,pyramidnetwork, highres}.
 \\\mbox{}\\
     One of the most discussed and popular \textit{bottom-up} approaches as of today is \textit{OpenPose}.
-    Their net predicts vector fields for the joint connections, which they call \textit{Part Affinity Fields (PAF)}.
+    Their neural net predicts vector fields for the joint connections, which they call \textit{Part Affinity Fields (PAF)}.
     Additionally, it estimates candidate keypoint locations via Gaussian distributions.
     These they refer to as \textit{Part Confidence Maps}.
     From these detections, they refer to the associated human poses.
@@ -195,7 +195,7 @@ This is why this paper investigates 2d pose recognition with a special focus on 
     there have been only a few studies~\cite{dance, figureskatingsimulation, scorefigureskating, fsd10}.\\
     Studies on figure ice skating topics encounter three main problems:
     The first is domain knowledge.
-    In C. {Xu} et Al.'s research, they try to predict the technical and performance scores from video data with the
+    In C. {Xu} et Al.'s research, they try to predict the technical and performance scores from video data with
     only the
     ice skating program as video input and the judge scores as labels~\cite{scorefigureskating}.
     This will very likely not result in useful results since first, the figure ice skating judging system adjusts
@@ -203,8 +203,7 @@ This is why this paper investigates 2d pose recognition with a special focus on 
     second, there are always different judges on the competitions who all have their own rating style, and third
     however, the skater is one of the always winning
     ones, this skater can do a good program falling at the main elements and still score very well, because the
-    jury knows this skater and is just human in
-    their judgment.
+    jury tends to be biased.
     This is one of the main controversies in the figure ice skating fairness of program judgment.
     Another problem is the missing dataset.
     There didn't exist a dataset with joint labeling until FSD-10~\cite{fsd10}, which only came out at the
@@ -224,7 +223,7 @@ This is why this paper investigates 2d pose recognition with a special focus on 
 \\\mbox{}\\
     \subsection*{Our Work}
     In our work we tested the performance of \textit{VideoPose3d, OpenPose,} and \textit{wrnch.ai} on figure ice skating elements,
-with the outcome of a lot of frames especially spins, in specific the artistic Biellmann spin, on which they all failed.
+but the result showed a lot of failed frames, especially spins, such as the artistic Biellmann spin.
 This motivated us to further look into datasets, dataset creation and suitable neural network architectures for labeling
 figure ice skating videos, having in mind a good performing architecture, which would be able to run on mobile phones.\\
     In this regard, we elaborated the creation of a figure ice skating dataset with the help of the XSens motion capturing data in a
@@ -239,7 +238,7 @@ figure ice skating videos, having in mind a good performing architecture, which 
     Multiple experiments with the network architectures, learning optimizers, and loss functions resulted in decent
     results,
     which can be applied in figure ice-skating and run on usual hardware, which we demonstrate in~\autoref{experiments}.
-    At the end, we elaborate on several future thoughts, where these studies can continue to in~\autoref{conclusion}.
+    At the end, we elaborate several concept, where these studies should continue to in~\autoref{conclusion}.
 
 
 %    \begin{flushleft}

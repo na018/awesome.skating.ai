@@ -115,7 +115,7 @@ The amount of all layers for one network is 156.\\
 \end{figure}
 
 We trained the human parts module with the Adam optimizer for 5556 episodes, a batch size of 3, and 64 steps per epoch.
-One training epoch took on average 85.43 seconds and lasted about 5.5 days.
+One training epoch took on average 85.43 seconds. The whole training lasted about 5.5 days.
 For optimization, we have built a custom loss function as explained in
 \autoref{Experiments} to better deal with the class invariance of the occurring pixel labels.
 The \autoref{fig:hp_accuracy_hrnet_v3} shows, that the accuracy of our network
@@ -133,13 +133,13 @@ Again train and test datasets do not cross each other but show similar courses.
 %----------------------------------------------------------------------------------------
 \section{Inference Runtime Analysis}
 The time to predict one frame of size 640x480 pixel takes about 0.3 seconds to run on a Quad-Core Intel i7 CPU with 2.20 GHz,
-a simple laptop cpu.
+a simple laptop CPU.
 Predictions and training can run on simple hardware as the above mentioned CPU.
 The training speed will increase if the minimum version of Cuda
 3.5 is supported by the system, since then TensorFlow 2 is able to run on the GPU instead of the CPU.
 Due to the age of the named laptop Cuda 3.0 was the highest to be supported.
 Since recent developments targeting AI chips in the mobile world by the common companies Apple, Samsung or Huawei,
-we are very confident that the inference of our network does work as well on commonly sold mobile phones today~\cite{mobileAI}.
+it is to be expected that the inference of our network does work as well on commonly sold mobile phones today~\cite{mobileAI}.
 This sets apart our architecture from \textit{OpenPose}, which we could not use for inference on the mentioned laptop.
 
 %----------------------------------------------------------------------------------------

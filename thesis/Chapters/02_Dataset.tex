@@ -12,8 +12,8 @@
 
 \section{Figure Skating Dataset}
 
-The correct dataset with the according labels is what decides whether a neural network architecture will be able
-to successfully learn keypoints from image data or video sequence data.
+The correct dataset with the according labels, as the key factor of a neural network architecture, decides whether keypoints
+will be learned successfully from image- or video sequence data.
 As of today, there does not exist a publicly available dataset which labels keypoints to ice skating performances or
 elements.
 Famous existing ones such as FIS-V or the MIT datasets only include the total technical and performance scores of the
@@ -81,8 +81,8 @@ So the skaters had to mimic usual floor movements for the calibration to work co
 Since the recordings are very time-consuming we could not work with young professional competitive skaters, because
 the setup was too drawn-out.
 We then took recordings from a senior competitive skater. The inertial method was very beneficial here because other
-skaters on the ice did not intervene in the recordings. Additionally, however, sometimes the connection was lost to
-the hub, when the skater came back the recordings were transmitted correctly.
+skaters on the ice, did not intervene in the recordings. Additionally, however, sometimes the connection was lost to
+the hub, when the skater came back, the recordings were transmitted correctly.
 The post-processing from their software did work really good as well.
 What was disruptive, however, were the sensors and battery, which the skater had to carry.
 This made the movements feel constrained. Indeed, in figure ice skating falls are very common.
@@ -119,8 +119,8 @@ positions.
 
 
 \subsubsection*{Our conclusions on creating a synthetic dataset in figure ice skating}
-We are convinced that the above-described process to create a synthetic dataset for figure ice skating is an
-indispensability when it comes to figure ice skating,
+We are convinced that the above-described process to create a synthetic dataset for figure ice skating is mandatory
+when it comes to figure ice skating,
 because of the following reasons:\\
 First, with inertial motion tracking is very accurate especially in an environment such as an ice rink when recording
 can be easily be done during practice sessions.\\
@@ -158,7 +158,7 @@ The synthetic dataset 3DPeople as described in the next section corresponds to o
 The dataset 3DPeople was created via recorded motion capture files.
 They took 70 realistic action sequences from Mixamo~\cite{mixamomotionpac}.
 The sequences contain on average 110 frames and range from usual activities with little motions such as driving
-or drinking until breakdance moves or backflips.
+or drinking to breakdance moves or backflips.
 These actions they then retarget onto 80 armatures which are created with MakeHuman~\cite{makehuman} or Adobe
 Fuse~\cite{adobefuse}.
 There are 40 female and 40 male characters with plenty of variation in body shapes, skin tones, outfits, and hair.
@@ -188,7 +188,7 @@ environments.
 Each data package consists of five batches for women and men. There are five data packages available for download.
 We created a \textit{data\_admin python class}, which takes care of downloading the data, processing and storing the
 data
-in memory agnostic and efficient access structured compressed NumPy files, and delete the initial downloaded data.\\
+in memory agnostic and efficient access structured compressed NumPy files, and deletes the initial downloaded data.\\
 We included several processing steps:
 In sum, we created four compressed numpy archives.
 Every archived file included an array with all frames of one movement sequence to allow a faster reading process for

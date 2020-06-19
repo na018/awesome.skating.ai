@@ -10,7 +10,7 @@ All in all, we investigated eight network architecture variants differentiating 
 For the keypoint detection module, we conducted tests with and without Dense layers.
 On the human parts detection module, we tested the three state-of-the-art optimizers Adam, Nadam, and SGD and experimented with little
 modifications to the SGD optimizer.
-To overcome class invariance, we tried out three different loss functions under which one we have come up with
+To overcome class invariance, we tried out three different loss functions of which one we have come up with
 ourselves.
 In the subsequent sections we will present our experimental setup, results, and constructive thoughts behind the studies.
 %----------------------------------------------------------------------------------------
@@ -143,7 +143,7 @@ The HRNet with only three stages shows the lowest curve and reaches only 98.87 p
     \label{fig:ablation-correct-px}
 \end{figure}
 
-The correct pixel graph~\ref{fig:ablation-correct-px} measures how many pixels of the 240x320 image where labeled correctly
+The correct pixel graph~\ref{fig:ablation-correct-px} measures how many pixels of the 240x320 image where predicted correctly
 in one batch. The maximum which could be reached here is $240\times320\times3=\numprint{230400}$.
 Since the single epochs vary a lot, it makes more sense to look at the smoothed results.
 The curves again are very close to each other, with the best results coming from the HRNetV3 with $\numprint{219670}$ and
@@ -307,7 +307,7 @@ There, it makes use of gradient descent to update the network's weights, biases 
 of the gradient.\\
 Figuratively speaking, a weight could be imagined as a hill.
 The updates then will follow the direction of the slope downhill until the valley is reached.
-Whereas the valley is equal to a local minimum~\cite{optimizersoverview}.
+Whereas the valley represents a local minimum~\cite{optimizersoverview}.
 \\\mbox{}\\
 There are three variants for gradient descent:\\
 \textbf{Batch Gradient Descent (BGD)}, which calculates the gradients $\theta$ for the entire training dataset.
@@ -345,7 +345,7 @@ The adaption of the parameters then is performed stepwise by the learning parame
 
 
 \begin{equation}
-    \theta = \theta - \eta\cdot\Delta_\theta\mathcal{J}(\theta;x;y)
+    \theta = \theta - \eta\cdot\nabla_\theta\mathcal{J}(\theta;x;y)
     \label{eqn:sgd}
 \end{equation}
 
@@ -389,12 +389,12 @@ An additional smoothing term $\eta$ prevents the division by zero.
     \label{eqn:adagrad}
 \end{equation}
 This results in the learning rate decreasing when approaching a local minimum, meaning the overshooting problem is eased off.
-However, one weakness is the growing dominator, which makes the learning rate shrink to an infinitesimally small number until the step
+However, one weakness is the growing denominator, which makes the learning rate shrink to an infinitesimally small number until the step
 size almost dissolves to zero.
 \\\mbox{}\\
 \textbf{Root Mean Squared Propagation (RMSProp)} extends AdaGrad's root squared loss function.
 It is an unpublished optimization technique proposed by Hinton et Al.~\cite{rmsprop}.
-The dominator takes, additionally to the past squared gradients, the current gradient at the current time step t,
+The denominator takes, additionally to the past squared gradients, the current gradient at the current time step t,
 into account, weighting the last update more than the current.
 Hinton suggests to weight the last update with 90 and the current with 10 percent.
 \begin{align}
@@ -483,7 +483,7 @@ m_t &= \gamma m_{t-1} + \eta g_t \label{eqn:nadam:2}\\
 \theta_{t+1} &= \theta_t - m_t \label{eqn:nadam:3}
 \end{align}
 
-The~\ref{eqn:nadam:3} $m_t$ term can be extended with~\ref{eqn:nadam:2} resulting in~\ref{eqn:nadam:4}:
+The~\ref{eqn:nadam:3} $m_t$ term can be extended with~\ref{eqn:nadam:2} resulting in~\ref{eqn:nadam:5}:
 
 \begin{align}
 \theta_{t+1} &= \theta_t - (\gamma m_{t-1} + \eta g_t) \label{eqn:nadam:5}
@@ -497,7 +497,7 @@ results in the following:
  \theta_{t+1} = \theta_{t} - \dfrac{\eta}{\sqrt{\hat{v}_t} + \epsilon} (\dfrac{\beta_1 m_{t-1}}{1 - \beta^t_1} + \dfrac{(1 - \beta_1) g_t}{1 - \beta^t_1})
  \label{eqn:nadam:6}
 \end{align}
-Where $dfrac{\beta_1 m_{t-1}}{1 - \beta^t_1}$ is the correction step of the first step from NAG.
+Where $\dfrac{\beta_1 m_{t-1}}{1 - \beta^t_1}$ is the correction step of the first step from NAG.
 This term again, can be substituted by $\hat{m}_{t-1}$ resulting in:
 
 \begin{align}
@@ -685,7 +685,7 @@ almost flat after the 50th epoch already.
     \caption[Loss Functions SCCE: predictions]{Predicted images for training with Sparse Categorical Cross Entropy loss function}
     \label{fig:cross_entropy_pred_img}
 \end{figure}
-We than created our own loss function for this class imbalance problem as explained in~\autoref{ciloss}.
+We then created our own loss function for this class imbalance problem as explained in~\autoref{ciloss}.
 Moreover, we reduced the number of classes from 14 to nine accumulating left and right body parts such as foot and arm.
 A later experiment shows, on the contrary, that our build network HRNetv3 even learns slightly better than with our own created
 loss function CILoss~\ref{fig:ablation-accuracy}.
