@@ -406,7 +406,14 @@ Application Scope} % Your thesis title, this is used in the title and abstract, 
     %	BIBLIOGRAPHY
     %----------------------------------------------------------------------------------------
 
-    \printbibliography[heading=bibintoc]
+    %\printbibliography[heading=bibintoc]
+    \chapter{Bibliography}
+    {\let\cleardoublepage\relax
+    \printbibliography[type=book,title={Books}]
+    \printbibliography[type=article,title={Books and Articles}]
+
+    \printbibliography[type=online,title={Online}]
+    \printbibliography[type=misc,title={Further Bibliography}]}
 
     %----------------------------------------------------------------------------------------
     \endgroup

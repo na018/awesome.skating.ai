@@ -23,38 +23,38 @@
 \contentsline {subsection}{\numberline {3.1.4}Non-Linearity Layer}{13}{subsection.29}
 \contentsline {subsubsection}{Activation Functions}{13}{section*.34}
 \contentsline {subsection}{\numberline {3.1.5}Regularization}{15}{subsection.37}
-\contentsline {subsection}{\numberline {3.1.6}Optimization Algorithms and Backpropagation}{16}{subsection.38}
+\contentsline {subsection}{\numberline {3.1.6}Optimization Algorithms}{16}{subsection.38}
 \contentsline {subsubsection}{Backpropagation Process}{17}{section*.40}
-\contentsline {subsubsection}{Stochastic Gradient Descent (SGD)}{18}{section*.41}
-\contentsline {subsubsection}{Adaptive Gradients (AdaGrad)}{19}{section*.45}
-\contentsline {subsubsection}{Adaptive Moment Estimation (Adam)}{20}{section*.50}
-\contentsline {subsubsection}{Nesterov-accelerated Adaptive Moment Estimation (Nadam)}{21}{section*.56}
-\contentsline {subsection}{\numberline {3.1.7}Cost Functions}{22}{subsection.66}
-\contentsline {subsection}{\numberline {3.1.8}Concepts}{22}{subsection.67}
-\contentsline {section}{\numberline {3.2}CNN Detection Tasks}{24}{section.68}
-\contentsline {subsection}{\numberline {3.2.1}Classification}{24}{subsection.69}
-\contentsline {subsection}{\numberline {3.2.2}Image Segmentation}{24}{subsection.70}
-\contentsline {subsection}{\numberline {3.2.3}Localization of Human Joints}{25}{subsection.71}
-\contentsline {chapter}{\numberline {4}Dataset}{27}{chapter.72}
-\contentsline {section}{\numberline {4.1}Figure Skating Dataset}{27}{section.73}
-\contentsline {subsection}{\numberline {4.1.1}Motion capturing techniques}{27}{subsection.74}
-\contentsline {subsection}{\numberline {4.1.2}XSens: Inertial motion capturing recordings on the ice rink}{28}{subsection.75}
-\contentsline {section}{\numberline {4.2}Synthetic Dataset: 3DPeople}{31}{section.79}
-\contentsline {section}{\numberline {4.3}Data Processing}{32}{section.81}
-\contentsline {chapter}{\numberline {5}Method}{35}{chapter.83}
-\contentsline {section}{\numberline {5.1}Training Performance (human parts)}{37}{section.86}
-\contentsline {section}{\numberline {5.2}Inference Runtime Analysis}{38}{section.89}
-\contentsline {section}{\numberline {5.3}Implementation Details}{39}{section.90}
-\contentsline {chapter}{\numberline {6}Experiments}{41}{chapter.91}
-\contentsline {section}{\numberline {6.1}Ablation Study}{41}{section.92}
-\contentsline {subsection}{\numberline {6.1.1}Body Parts Detection Module }{41}{subsection.103}
-\contentsline {paragraph}{Comparison of network architectures}{43}{section*.104}
-\contentsline {paragraph}{Summary}{46}{section*.110}
-\contentsline {subsection}{\numberline {6.1.2}Joint Detection Module }{46}{subsection.111}
-\contentsline {paragraph}{Network Architectures}{47}{section*.116}
-\contentsline {paragraph}{Conclusions}{51}{section*.125}
-\contentsline {section}{\numberline {6.2}Performance of loss functions}{51}{section.126}
-\contentsline {subsection}{\numberline {6.2.1}Commonly used loss functions}{52}{subsection.127}
-\contentsline {subsection}{\numberline {6.2.2}Our custom loss function CILoss}{53}{subsection.132}
-\contentsline {chapter}{\numberline {7}Conclusion and future thoughts}{57}{chapter.134}
-\contentsline {chapter}{Bibliography}{61}{appendix*.135}
+\contentsline {subsubsection}{\gls {SGD}}{18}{section*.41}
+\contentsline {subsubsection}{\gls {AdaGrad}}{19}{section*.45}
+\contentsline {subsubsection}{\gls {RMSProp}}{19}{section*.47}
+\contentsline {subsubsection}{\gls {Adam}}{20}{section*.51}
+\contentsline {subsubsection}{\gls {Nadam}}{21}{section*.57}
+\contentsline {subsection}{\numberline {3.1.7}Cost Functions}{22}{subsection.67}
+\contentsline {subsection}{\numberline {3.1.8}Concepts}{23}{subsection.70}
+\contentsline {section}{\numberline {3.2}CNN Detection Tasks}{25}{section.71}
+\contentsline {subsection}{\numberline {3.2.1}Classification}{25}{subsection.72}
+\contentsline {subsection}{\numberline {3.2.2}Image Segmentation}{25}{subsection.73}
+\contentsline {subsection}{\numberline {3.2.3}Localization of Human Joints}{26}{subsection.74}
+\contentsline {chapter}{\numberline {4}Dataset}{27}{chapter.75}
+\contentsline {section}{\numberline {4.1}Figure Skating Dataset}{27}{section.76}
+\contentsline {subsection}{\numberline {4.1.1}Motion capturing techniques}{27}{subsection.77}
+\contentsline {subsection}{\numberline {4.1.2}XSens: Inertial motion capturing recordings on the ice rink}{28}{subsection.78}
+\contentsline {section}{\numberline {4.2}Synthetic Dataset: 3DPeople}{31}{section.82}
+\contentsline {section}{\numberline {4.3}Data Processing}{32}{section.84}
+\contentsline {chapter}{\numberline {5}Method}{35}{chapter.86}
+\contentsline {section}{\numberline {5.1}Training Performance (human parts)}{37}{section.89}
+\contentsline {section}{\numberline {5.2}Inference Runtime Analysis}{38}{section.92}
+\contentsline {section}{\numberline {5.3}Implementation Details}{39}{section.93}
+\contentsline {chapter}{\numberline {6}Experiments}{41}{chapter.94}
+\contentsline {section}{\numberline {6.1}Ablation Study}{41}{section.95}
+\contentsline {subsection}{\numberline {6.1.1}Body Parts Detection Module }{41}{subsection.106}
+\contentsline {paragraph}{Comparison of network architectures}{43}{section*.107}
+\contentsline {paragraph}{Summary}{46}{section*.113}
+\contentsline {subsection}{\numberline {6.1.2}Joint Detection Module }{46}{subsection.114}
+\contentsline {paragraph}{Network Architectures}{47}{section*.119}
+\contentsline {paragraph}{Conclusions}{51}{section*.128}
+\contentsline {section}{\numberline {6.2}Performance of loss functions}{51}{section.129}
+\contentsline {subsection}{\numberline {6.2.1}Our custom loss function CILoss}{52}{subsection.132}
+\contentsline {chapter}{\numberline {7}Conclusion and future thoughts}{55}{chapter.134}
+\contentsline {chapter}{\numberline {A}Bibliography}{59}{appendix.135}

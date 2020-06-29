@@ -283,17 +283,19 @@ A drawback however is, even if jumping around may result in finding another bett
 lead to constantly overshooting the exact minimum.
 Against this problem, slowly decreasing the learning rate may help and lead to similar convergence as for BGD.\\
 \textbf{Mini-Batch Gradient Descent} is the most common variant for gradient descent since it combines both the aspects of
-BGD and SGD.
+\gls{BGD} and \gls{SGD}.
 The updates are conducted for every mini-batch of \textit{n} training samples.
 This reduces the variance of parameter updates and leads to less jumping around, which all in all results in more stable
 convergence~\cite{optimizersoverview}.
 \\\mbox{}\\
 In the following section an overview of optimizers will be presented in reference to the used ones in ~\autoref{experiments}, which are
-SGD, Adam and Nadam.
+\gls{SGD}, \gls{Adam} and \gls{Nadam}.
 
 
 %
-\subsubsection{Stochastic Gradient Descent (SGD)} is one of the first optimizers and still commonly in use.
+\glsreset{SGD}
+\subsubsection{\gls{SGD}}
+\gls{SGD} is one of the first optimizers and still commonly in use.
 Already in 1951, it was publicly reported by Robins and Sutton et Al~\cite{sgd}.
 Now given the parameters of a neural network $\theta$, such as weights, biases and activation functions, here via an input image
 $\mathfrak{x}$ and associate labels $\mathfrak{y}$ the Backpropagation process is defined under the gradient $\nabla$
@@ -306,14 +308,14 @@ The adaption of the parameters then is performed stepwise by the learning parame
     \label{eqn:sgd}
 \end{equation}
 
-The SGD optimizer updates a weight $\mathrm{w}$ in a way to reduce the loss function $\mathcal{J}(\mathrm{w})$ and find
+The \gls{SGD} optimizer updates a weight $\mathrm{w}$ in a way to reduce the loss function $\mathcal{J}(\mathrm{w})$ and find
 the local minima of the parameters.
-As already mentioned, this is one of the problems with pure SGD, since it will very likely become stuck in a local minimum or
+As already mentioned, this is one of the problems with pure \gls{SGD}, since it will very likely become stuck in a local minimum or
 saddlepoint, where one slope goes up and the other one down.
 Furthermore, it converges slower compared to newer optimizers~\cite{optimizersoverview, optimizersexplained}.
 \\\mbox{}\\
 \textbf{Momentum}, first proposed in 1999 by Qian et Al.~\cite{momentum}, can help to get faster to the local minimum.
-This is accomplished by an additional term that is added to SGD.
+This is accomplished by an additional term that is added to \gls{SGD}.
 A constant fraction $\gamma$ is multiplied with the last parameter update $\mathfrak{v}_t$ to $\theta$.
 
 %\begin{align}
@@ -334,7 +336,9 @@ which point in the same direction.
 When the direction changes, the term decreases, and the ball slows down.
 All in all, this results in faster convergence and less oscillation or jumping around the minimum~\cite{optimizersoverview}.
 \\\mbox{}\\
-\subsubsection{Adaptive Gradients (AdaGrad)}, a newer algorithm proposed in 2011 by Duchi et Al.~\cite{adagrad},
+\glsreset{AdaGrad}
+\subsubsection{\gls{AdaGrad}}
+\gls{AdaGrad}, a newer algorithm proposed in 2011 by Duchi et Al.~\cite{adagrad},
 adapts the size of an update to the importance of the individual parameters.
 This is a great benefit for the occurrence of sparse data, which is the case for image data or word embedding tasks.
 It adjusts the learning rate term, by dividing the learning rate through the sum
@@ -349,7 +353,8 @@ This results in the learning rate decreasing when approaching a local minimum, m
 However, one weakness is the growing denominator, which makes the learning rate shrink to an infinitesimally small number until the step
 size almost dissolves to zero.
 \\\mbox{}\\
-\textbf{Root Mean Squared Propagation (RMSProp)} extends AdaGrad's root squared loss function.
+\glsreset{RMSProp}
+\subsubsection{\gls{RMSProp}} extends \gls{AdaGrad}'s root squared loss function.
 It is an unpublished optimization technique proposed by Hinton et Al.~\cite{rmsprop}.
 The denominator takes, additionally to the past squared gradients, the current gradient at the current time step t,
 into account, weighting the last update more than the current.
@@ -359,11 +364,13 @@ Hinton suggests to weight the last update with 90 and the current with 10 percen
     E[g^2]_t = (1-\gamma)g^2+\gamma E[g^2]_{t-1}\label{eqn:rmsprop:2}\\
     g = \nabla_\theta\mathcal{J}(\theta_{t,i})\label{eqn:rmsprop:3}
 \end{align}
-Unlike AdaGrad, RMSProp does not decrease monotonously, but can adapt the size of adaption.
+Unlike \gls{AdaGrad}, \gls{RMSProp} does not decrease monotonously, but can adapt the size of adaption.
 Now larger or smaller updates are possible in reference to their impact.
 Nevertheless, the issue with diminishing learning rates remains.
 \\\mbox{}\\
-\subsubsection{Adaptive Moment Estimation (Adam)}~\cite{adam}, as well as AdaGrad or RMSprop, calculates adaptive learning rates w.r.t. the
+\glsreset{Adam}
+\subsubsection{\gls{Adam}}
+\gls{Adam}~\cite{adam}, as well as \gls{AdaGrad} or \gls{RMSProp}, calculates adaptive learning rates w.r.t. the
 the parameters $\theta_i$.
 As an extension, it keeps track of an exponentially decaying average of past gradients $m_t$, as was already done in
 momentum.\\
@@ -385,7 +392,7 @@ Which is why $\hat{m}_t$ and $\hat{v}_t$ bias these terms:
 \hat{v}_t &= \dfrac{v_t}{1 - \beta^t_2} \label{eqn:adam:4}
 \end{align}
 
-This results in an update rule which reassembles RMSProp:
+This results in an update rule which reassembles \gls{RMSProp}:
 
 \begin{align}
     \theta_{t+1} = \theta_{t} - \dfrac{\eta}{\sqrt{\hat{v}_t} + \epsilon} \hat{m}_t \label{eqn:adam:5}
@@ -404,20 +411,20 @@ This results in an update rule which reassembles RMSProp:
 %    v_t = (1-\beta_2)g_t^2 + \beta_2 v_{t-1} \label{eqn:adam:5}
 %\end{align}
 
-In particular, Adam makes use of two decay parameters $\beta_1$ and $\beta_2$, referred to as exponential decay rates.
-These parameters $\beta_1$ and $\beta_2$ are close to the constant $\gamma$ term used in RMSprop and Momentum.
-The great advantage here is, that the learning rate can adapt in both directions solving the issue from AdaGrad or
-RMSProp of vanishing learning rates.
+In particular, \gls{Adam} makes use of two decay parameters $\beta_1$ and $\beta_2$, referred to as exponential decay rates.
+These parameters $\beta_1$ and $\beta_2$ are close to the constant $\gamma$ term used in \gls{RMSProp} and Momentum.
+The great advantage here is, that the learning rate can adapt in both directions solving the issue from \gls{AdaGrad} or
+\gls{RMSProp} of vanishing learning rates.
 \\\mbox{}\\
-\subsubsection{Nesterov-accelerated Adaptive Moment Estimation (Nadam)},
-now replaces Momentum with the better performing
-Nesterov accelerated gradient (NAG).
+\glsreset{Nadam}
+\subsubsection{\gls{Nadam}},
+now replaces Momentum with the better performing \gls{NAG}.
 It was first presented in 2016 by Dozat et Al~\cite{nadam}.\\
 \\\mbox{}\\
-\textbf{NAG} allows to approximately calculate the future position of the parameters.
-Referring back to Momentum, NAG is like a smarter ball, which knows that it has to slow down and not naively go up an upcoming
+\textbf{\gls{NAG}} allows to approximately calculate the future position of the parameters.
+Referring back to Momentum, \gls{NAG} is like a smarter ball, which knows that it has to slow down and not naively go up an upcoming
 slope again just to roll back down.
-NAG's first step is according to the last parameter update and taking the fraction $\gamma$ into account.
+\gls{NAG}'s first step is according to the last parameter update and taking the fraction $\gamma$ into account.
 The second step approximates the future position of the parameters by calculating the loss function from $\theta$ w.r.t.
 the previous update step.
 This step can be interpreted as a correction step.
@@ -431,7 +438,7 @@ This step can be interpreted as a correction step.
     \mathfrak{v}_t = \gamma\mathfrak{v}_{t-1} + \eta\cdot\nabla_\theta\mathcal{J}(\theta-\gamma\mathfrak{v}_{t-1}) \label{eqn:nag:2}
 \end{align}
 
-To combine Adam and Nadam, some steps must be done.
+To combine \gls{Adam} and \gls{Nadam}, some steps must be done.
 The gradient term can be written as $g_t$ and recall the Momentum update and parameter update function $\theta_{t+1}$ with:
 
 \begin{align}
@@ -462,8 +469,8 @@ This term again, can be substituted by $\hat{m}_{t-1}$ resulting in:
     \label{eqn:nadam:7}
 \end{align}
 
-As a final step the bias-corrected estimate of the momentum vector of the past time step $\hat{m}_{t-1}$ is replaced
-with the bias-corrected estimate of the current momentum $\hat{m}_{t}$ resulting in the optimization function for Nadam~\cite{optimizersoverview}:
+As a final step the bias-corrected estimate of the Momentum vector of the past time step $\hat{m}_{t-1}$ is replaced
+with the bias-corrected estimate of the current Momentum $\hat{m}_{t}$ resulting in the optimization function for \gls{Nadam}~\cite{optimizersoverview}:
 
 
 
@@ -474,6 +481,41 @@ with the bias-corrected estimate of the current momentum $\hat{m}_{t}$ resulting
 
 \subsection{Cost Functions}
 \label{cost}
+As already mentioned in~\autoref{opt} loss functions closely work together with optimizer algorithms.
+The loss function is used in the optimizer algorithm as seminal feedback deciding about the success of the learning process of a
+neural network.
+It calculates how close a prediction $y_p$ from a neural network is to the true label $y_t$.
+
+One classical loss function is \gls{MSE}.
+The error represents the difference between $y_t$ and $y_p$.
+\gls{MSE} then squares the error to even out negative results and calculates the sum of all these errors.
+For the fully convolutional network in the body part detection module, each pixel presents a certain class.
+As visualized in~\ref{fig:feature-maps-output}, nine classes are predicted.
+This means, there are nine labels possible for each pixel.
+Now, the neural network estimates with a certain probability of how likely a certain class would be true for a specific pixel.
+The error function then calculates the difference between the estimation or prediction and the true label, which includes a
+value of 1 only for the true class.
+Additionally to the summation of squared errors, \gls{MSE} divides this sum with the number of all squares resulting in the mean
+value:
+
+\begin{align}
+    MSE(y_t,y_p) = \frac{1}{n}\cdot\sum_[i=1]^n(y_t-y_p)^2
+\end{align}
+
+Another commonly used cost function in image segmentation is \gls{SCCE}, which is a common loss function used in image
+segmentation.
+It is said to help with class imbalances.
+Wrong predictions are weighed harder, especially the ones with a great wrong probability value.
+This is accomplished by calculating the logarithm of the predicted values.
+Since the logarithm function $log(x)$ is negative for $x \in \Re and [0>x>1]$, and input values closer to zero mean
+an exponential decrease towards $-\infty$ and there is just one true label for the different classes of one pixel, if
+the prediction is clearly the wrong class, the cost will be exponentially higher.
+
+\begin{align}
+    SCCE(y_t,y_p) = -\sum_{i,j=1}^{i,j}y_{t_{i,j}}\cdot log(y_{p_{i,j}})
+\end{align}
+Here \textit{i,j} stands for the column and row pixels of the image.
+
 
 \subsection{Concepts}
 

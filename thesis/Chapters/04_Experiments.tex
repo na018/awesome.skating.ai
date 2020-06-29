@@ -396,43 +396,11 @@ learned network parameters $\theta$.
 
 \section{Performance of loss functions}
 
-As already mentioned in~\autoref{optimizers} loss functions $\mathfrak{J}$ closely work together with optimizer algorithms.
-The loss function is used in the optimizer algorithm as seminal feedback deciding about the success of the learning process of a
-neural network.
-It calculates how close a prediction $y_p$ from a neural network is to the true label $y_t$.
-
-\subsection{Commonly used loss functions}
-One classical loss function is Mean Squared Error (MSE).
-The error represents the difference between $y_t$ and $y_p$.
-MSE then squares the error to even out negative results and calculates the sum of all these errors.
-For our fully convolutional network, each pixel presents a certain class.
-As visualized in~\ref{fig:feature-maps-output}, our Human Parts module predicts nine classes.
-This means, there are nine labels possible for each pixel.
-Now, the neural network estimates with a certain probability of how likely a certain class would be true for a specific pixel.
-The error then calculates the difference between the estimation or prediction and the true label, which includes a
-value of 1 only for the true class.
-Additionally to the summation of squared errors, MSE divides this sum with the number of all squares resulting in the mean
-value:
-
-\begin{align}
-    MSE(y_t,y_p) = \frac{1}{n}\cdot\sum_[i=1]^n(y_t-y_p)^2
-\end{align}
-
 We trained the Keypoint Detection and Body Part Extraction modules with MSE.
 
 However, with our Body Part Detection Module we initially had problems with class imbalances.
-First, we conducted our training with Sparse Categorical Cross Entropy (SCCE), which is a common loss function used in image
-segmentation.
-Wrong predictions are weighed harder, especially the ones with a great wrong probability value.
-This is accomplished by calculating the logarithm of the predicted values.
-Since the logarithm function $log(x)$ is negative for $x \in \Re and [0>x>1]$, and input values closer to zero mean
-an exponential decrease towards $-\infty$ and there is just one true label for the different classes of one pixel, if
-the prediction is clearly the wrong class, the cost will be exponentially higher.
+First, we conducted our training with Sparse Categorical Cross Entropy (SCCE)
 
-\begin{align}
-    SCCE(y_t,y_p) = -\sum_{i,j=1}^{i,j}y_{t_{i,j}}\cdot log(y_{p_{i,j}})
-\end{align}
-Here \textit{i,j} stands for the column and row pixels of the image.
 
 Nevertheless, our first results~\ref{fig:cross_entropy_pred_img} made us believe that with SCCE our net was not able to
 learn the correct labels for the pixels.

@@ -17,18 +17,24 @@
 \endgroup
 
 \datalist[entry]{nty/global//global/global}
-  \entry{wikitumcnn}{online}{}
-    \verb{url}
-    \verb https://wiki.tum.de/display/lfdv/Layers+of+a+Convolutional+Neural+Net
-    \verb work/
-    \endverb
-    \field{year}{2017}
-    \field{urlday}{25}
-    \field{urlmonth}{06}
-    \field{urlyear}{2020}
-  \endentry
-
   \entry{xsensabout}{online}{}
+    \name{author}{1}{}{%
+      {{hash=eAX}{%
+         prefix={et},
+         prefixi={e\bibinitperiod},
+         family={Al.},
+         familyi={A\bibinitperiod},
+         given={XSens},
+         giveni={X\bibinitperiod},
+      }}%
+    }
+    \strng{namehash}{AXe1}
+    \strng{fullhash}{AXe1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{sortinit}{A}
+    \field{sortinithash}{A}
+    \field{title}{How do the Xsens suits actually work}
     \verb{url}
     \verb https://base.xsens.com/hc/en-us/community/posts/115003027934-How-do-t
     \verb he-Xsens-suits-actually-work
@@ -92,7 +98,7 @@
     \field{urlyear}{2020}
   \endentry
 
-  \entry{coronalife}{article}{}
+  \entry{coronalife}{online}{}
     \name{author}{1}{}{%
       {{hash=BS}{%
          family={Barr},
@@ -511,7 +517,7 @@
     \field{year}{2017}
   \endentry
 
-  \entry{sappanasonic}{article}{}
+  \entry{sappanasonic}{online}{}
     \name{author}{1}{}{%
       {{hash=FD}{%
          family={Fox},
@@ -1456,7 +1462,7 @@
     \field{urlyear}{2020}
   \endentry
 
-  \entry{coronarki}{article}{}
+  \entry{coronarki}{online}{}
     \name{author}{1}{}{%
       {{hash=R}{%
          family={RKI},
@@ -1554,7 +1560,7 @@
     \field{year}{2015}
   \endentry
 
-  \entry{spaBloomberg}{article}{}
+  \entry{spaBloomberg}{online}{}
     \name{author}{1}{}{%
       {{hash=RBP}{%
          family={Room},
@@ -1894,6 +1900,33 @@
     \field{urlyear}{2020}
   \endentry
 
+  \entry{wikitumcnn}{online}{}
+    \name{author}{1}{}{%
+      {{hash=TTUM}{%
+         family={(TUM)},
+         familyi={T\bibinitperiod},
+         given={Technical University\bibnamedelima Munich},
+         giveni={T\bibinitperiod\bibinitdelim U\bibinitperiod\bibinitdelim
+  M\bibinitperiod},
+      }}%
+    }
+    \strng{namehash}{TTUM1}
+    \strng{fullhash}{TTUM1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{sortinit}{T}
+    \field{sortinithash}{T}
+    \field{title}{Layers of a Convolutional Neural Network}
+    \verb{url}
+    \verb https://wiki.tum.de/display/lfdv/Layers+of+a+Convolutional+Neural+Net
+    \verb work/
+    \endverb
+    \field{year}{2017}
+    \field{urlday}{25}
+    \field{urlmonth}{06}
+    \field{urlyear}{2020}
+  \endentry
+
   \entry{ungerjuryinterview}{misc}{}
     \name{author}{1}{}{%
       {{hash=UC}{%
@@ -1913,7 +1946,7 @@
     \field{title}{Jury work from point of view of german figure ice skating
   coach and technical specialist Claudia Unger}
     \field{month}{05}
-    \field{year}{202}
+    \field{year}{2020}
   \endentry
 
   \entry{2020european}{online}{}
