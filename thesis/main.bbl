@@ -17,6 +17,17 @@
 \endgroup
 
 \datalist[entry]{nty/global//global/global}
+  \entry{wikitumcnn}{online}{}
+    \verb{url}
+    \verb https://wiki.tum.de/display/lfdv/Layers+of+a+Convolutional+Neural+Net
+    \verb work/
+    \endverb
+    \field{year}{2017}
+    \field{urlday}{25}
+    \field{urlmonth}{06}
+    \field{urlyear}{2020}
+  \endentry
+
   \entry{xsensabout}{online}{}
     \verb{url}
     \verb https://base.xsens.com/hc/en-us/community/posts/115003027934-How-do-t
@@ -53,6 +64,32 @@
     \field{journaltitle}{The IEEE Conference on Computer Vision and Pattern
   Recognition (CVPR)}
     \field{year}{2018}
+  \endentry
+
+  \entry{humanpose2dguide}{online}{}
+    \name{author}{1}{}{%
+      {{hash=BSC}{%
+         family={Babu},
+         familyi={B\bibinitperiod},
+         given={Sudharshan\bibnamedelima Chandra},
+         giveni={S\bibinitperiod\bibinitdelim C\bibinitperiod},
+      }}%
+    }
+    \strng{namehash}{BSC1}
+    \strng{fullhash}{BSC1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{sortinit}{B}
+    \field{sortinithash}{B}
+    \field{title}{A 2019 guide to Human Pose Estimation with Deep Learning}
+    \verb{url}
+    \verb https://nanonets.com/blog/human-pose-estimation-2d-guide/
+    \endverb
+    \field{journaltitle}{Nanonets}
+    \field{year}{2019}
+    \field{urlday}{26}
+    \field{urlmonth}{06}
+    \field{urlyear}{2020}
   \endentry
 
   \entry{coronalife}{article}{}
@@ -569,6 +606,48 @@
     \field{year}{2017}
   \endentry
 
+  \entry{resnet}{article}{}
+    \name{author}{4}{}{%
+      {{hash=HK}{%
+         family={He},
+         familyi={H\bibinitperiod},
+         given={Kaiming},
+         giveni={K\bibinitperiod},
+      }}%
+      {{hash=ZX}{%
+         family={Zhang},
+         familyi={Z\bibinitperiod},
+         given={Xiangyu},
+         giveni={X\bibinitperiod},
+      }}%
+      {{hash=RS}{%
+         family={Ren},
+         familyi={R\bibinitperiod},
+         given={Shaoqing},
+         giveni={S\bibinitperiod},
+      }}%
+      {{hash=SJ}{%
+         family={Sun},
+         familyi={S\bibinitperiod},
+         given={Jian},
+         giveni={J\bibinitperiod},
+      }}%
+    }
+    \strng{namehash}{HK+2}
+    \strng{fullhash}{HKZXRSSJ1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{sortinit}{H}
+    \field{sortinithash}{H}
+    \verb{doi}
+    \verb 10.1109/CVPR.2016.90
+    \endverb
+    \field{pages}{770\bibrangedash 778}
+    \field{title}{Deep Residual Learning for Image Recognition}
+    \field{month}{06}
+    \field{year}{2016}
+  \endentry
+
   \entry{rmsprop}{online}{}
     \name{author}{3}{}{%
       {{hash=HG}{%
@@ -787,6 +866,44 @@
     \field{year}{2014}
   \endentry
 
+  \entry{seluorigin}{article}{}
+    \name{author}{4}{}{%
+      {{hash=KG}{%
+         family={Klambauer},
+         familyi={K\bibinitperiod},
+         given={Günter},
+         giveni={G\bibinitperiod},
+      }}%
+      {{hash=UT}{%
+         family={Unterthiner},
+         familyi={U\bibinitperiod},
+         given={Thomas},
+         giveni={T\bibinitperiod},
+      }}%
+      {{hash=MA}{%
+         family={Mayr},
+         familyi={M\bibinitperiod},
+         given={Andreas},
+         giveni={A\bibinitperiod},
+      }}%
+      {{hash=HS}{%
+         family={Hochreiter},
+         familyi={H\bibinitperiod},
+         given={Sepp},
+         giveni={S\bibinitperiod},
+      }}%
+    }
+    \strng{namehash}{KG+1}
+    \strng{fullhash}{KGUTMAHS1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{sortinit}{K}
+    \field{sortinithash}{K}
+    \field{title}{Self-Normalizing Neural Networks}
+    \field{month}{06}
+    \field{year}{2017}
+  \endentry
+
   \entry{pifpaf}{article}{}
     \name{author}{3}{}{%
       {{hash=KS}{%
@@ -819,6 +936,35 @@
     \field{pages}{11969\bibrangedash 11978}
     \field{title}{PifPaf: Composite Fields for Human Pose Estimation}
     \field{year}{2019}
+  \endentry
+
+  \entry{ILSVRC15}{online}{}
+    \name{author}{1}{}{%
+      {{hash=LSV}{%
+         family={Lab},
+         familyi={L\bibinitperiod},
+         given={Stanford\bibnamedelima Vision},
+         giveni={S\bibinitperiod\bibinitdelim V\bibinitperiod},
+      }}%
+    }
+    \strng{namehash}{LSV1}
+    \strng{fullhash}{LSV1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{sortinit}{L}
+    \field{sortinithash}{L}
+    \field{title}{{ImageNet Large Scale Visual Recognition Challenge (ILSVRC}}
+    \verb{url}
+    \verb http://www.image-net.org/challenges/LSVRC/#:~:text=The%20ImageNet%20L
+    \verb arge%20Scale%20Visual,image%20classification%20at%20large%20scale.&te
+    \verb xt=Another%20motivation%20is%20to%20measure,indexing%20for%20retrieva
+    \verb l%20and%20annotation.
+    \endverb
+    \field{journaltitle}{International Journal of Computer Vision (IJCV)}
+    \field{year}{2015}
+    \field{urlday}{26}
+    \field{urlmonth}{06}
+    \field{urlyear}{2020}
   \endentry
 
   \entry{fsd10}{article}{}
@@ -1836,6 +1982,27 @@
     \field{urlyear}{2020}
   \endentry
 
+  \entry{advanceddeeplearningpython}{article}{}
+    \name{author}{1}{}{%
+      {{hash=VI}{%
+         family={Vasilev},
+         familyi={V\bibinitperiod},
+         given={Ivan},
+         giveni={I\bibinitperiod},
+      }}%
+    }
+    \strng{namehash}{VI1}
+    \strng{fullhash}{VI1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{sortinit}{V}
+    \field{sortinithash}{V}
+    \field{title}{Advanced Deep Learning with Python}
+    \field{journaltitle}{Packt Publishing}
+    \field{month}{12}
+    \field{year}{2019}
+  \endentry
+
   \entry{mocapoptical}{online}{}
     \name{author}{1}{}{%
       {{hash=V}{%
@@ -1984,6 +2151,33 @@
     \field{journaltitle}{IEEE Transactions on Pattern Analysis and Machine
   Intelligence}
     \field{year}{2020}
+  \endentry
+
+  \entry{alexnet}{online}{}
+    \name{author}{1}{}{%
+      {{hash=WJ}{%
+         family={Wei},
+         familyi={W\bibinitperiod},
+         given={Jerri},
+         giveni={J\bibinitperiod},
+      }}%
+    }
+    \strng{namehash}{WJ1}
+    \strng{fullhash}{WJ1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{sortinit}{W}
+    \field{sortinithash}{W}
+    \field{title}{AlexNet: The Architecture that Challenged CNNs}
+    \verb{url}
+    \verb https://towardsdatascience.com/alexnet-the-architecture-that-challeng
+    \verb ed-cnns-e406d5297951
+    \endverb
+    \field{journaltitle}{towards data science}
+    \field{year}{2019}
+    \field{urlday}{26}
+    \field{urlmonth}{06}
+    \field{urlyear}{2020}
   \endentry
 
   \entry{convpose}{article}{}
@@ -2182,6 +2376,46 @@
     \field{journaltitle}{Computer Graphics Forum}
     \field{month}{10}
     \field{year}{2019}
+  \endentry
+
+  \entry{deconv}{article}{}
+    \name{author}{4}{}{%
+      {{hash=ZMD}{%
+         family={{Zeiler}},
+         familyi={Z\bibinitperiod},
+         given={M.\bibnamedelima D.},
+         giveni={M\bibinitperiod\bibinitdelim D\bibinitperiod},
+      }}%
+      {{hash=KD}{%
+         family={{Krishnan}},
+         familyi={K\bibinitperiod},
+         given={D.},
+         giveni={D\bibinitperiod},
+      }}%
+      {{hash=TGW}{%
+         family={{Taylor}},
+         familyi={T\bibinitperiod},
+         given={G.\bibnamedelima W.},
+         giveni={G\bibinitperiod\bibinitdelim W\bibinitperiod},
+      }}%
+      {{hash=FR}{%
+         family={{Fergus}},
+         familyi={F\bibinitperiod},
+         given={R.},
+         giveni={R\bibinitperiod},
+      }}%
+    }
+    \strng{namehash}{ZMD+1}
+    \strng{fullhash}{ZMDKDTGWFR1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{sortinit}{Z}
+    \field{sortinithash}{Z}
+    \field{booktitle}{2010 IEEE Computer Society Conference on Computer Vision
+  and Pattern Recognition}
+    \field{pages}{2528\bibrangedash 2535}
+    \field{title}{Deconvolutional networks}
+    \field{year}{2010}
   \endentry
 
   \entry{kinectWalkDepression}{article}{}

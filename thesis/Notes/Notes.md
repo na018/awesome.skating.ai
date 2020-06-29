@@ -611,3 +611,18 @@ gradient descent variants: accuracy of parameter update vs time to update
             - lr scheduels - define in advance, do not adapt to ds charachteristics 
             - same lr to all parameter updates -- sparse data, differenct feature frequences: larger updates for rarely occuring features
         - trapped in local minima, or saddle point (one dimension slopes up/ one down)
+        
+        
+Therefore, it is absolutely critical 
+
+# CNN
+
+https://learning.oreilly.com/library/view/advanced-deep-learning/9781789956177/3ef4f35a-744f-459f-8c96-4c52896af866.xhtml
+Depth-wise conv
+
+https://learning.oreilly.com/library/view/deep-learning-for/9781788295628/4fe36c40-7612-44b8-8846-43c0c4e64157.xhtml
+Detection or localization and segmentation
+
+
+https://heartbeat.fritz.ai/the-5-computer-vision-techniques-that-will-change-how-you-see-the-world-1ee19334354b
+examples for computer vision object detection etc

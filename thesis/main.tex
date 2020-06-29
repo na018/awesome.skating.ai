@@ -43,20 +43,32 @@
 
 \usepackage[utf8]{inputenc} % Required for inputting international characters
 \usepackage[T1]{fontenc} % Output font encoding for international characters
+
+\usepackage{tikz}
+\usepackage{pgfplots}
+\usepackage{pgfplotstable}
+
+\pgfplotsset{compat = newest}
+
+\newenvironment{poliabstract}[1]
+    {\renewcommand{\abstractname}{#1}\begin{abstract}
+    \end{abstract}}
+
 \usepackage{color}
 %\definecolor{refC}{rgb}{0.2,0.2,0.6}
 \definecolor{refC}{rgb}{0.1,0.1,0.55}
 \usepackage[colorlinks,linkcolor=refC]{hyperref}
-\usepackage[nomain,acronym,postdot, automake]{glossaries-extra}
+%\usepackage[nomain,acronym,postdot, automake]{glossaries-extra}
+\usepackage[acronym,automake]{glossaries-extra}
+
 \makeglossaries
+
 \setabbreviationstyle[acronym]{long-short}
 \loadglsentries{glossy}
 
 \usepackage{numprint}
 \npthousandsep{\,}
 
-\usepackage[utf8]{inputenc}
-\usepackage[T1]{fontenc}
 \usepackage{fancyvrb}
 \newcommand{\fontsmall}{\fontsize{10pt}{11pt}\selectfont}
 \newcounter{rowcntr}[table]
@@ -173,6 +185,7 @@ Application Scope} % Your thesis title, this is used in the title and abstract, 
                     \large
                     \emph{Author:}\\
                     \href{http://nadin-katrin.de/}{\authorname} % Author name - remove the \href bracket to remove
+                    \emph{36411/} % Author name - remove the \href bracket to remove
                     %the link
                 \end{flushleft}
             \end{minipage}
@@ -246,19 +259,39 @@ Application Scope} % Your thesis title, this is used in the title and abstract, 
     %----------------------------------------------------------------------------------------
 
 
-    \begin{abstract}
+    \begin{poliabstract}{Abstract}
         \addchaptertocentry{\abstractname} % Add the abstract to the table of contents
-        Human joint detection is a key component for machines to understand human actions and behaviors.
+        Human joint detection is a key component for machines to understand physical human actions and behaviors.
         Especially in figure ice skating, this understanding is an indispensability.
         There are many difficult figures and poses, even difficult to clearly understand
         for the professionalized jury.
-        In this paper we present an end-to-end approach to detect the 2D poses of a person in images and videos.
-        In the architecture, we combine three branches: image segmentation, body part detection, and human joint
+        This thesis presents an end-to-end approach to detect the 2D poses of a person in images and videos.
+        The underlying architecture combines three branches: image segmentation, body part recognition, and human joint
         detection.
         The applied research reveals multiple findings regarding different training settings, optimizing functions,
         and motion capturing techniques for the special application scope of figure ice skating.
-        In particular, we elaborated multiple concepts on how to further spurn research of pose recognition in artistic sports.
-    \end{abstract}
+        In particular, multiple elaborated concepts are meant to further spurn research of pose recognition in artistic sports.
+        \null\vspace{\fill}
+    \end{poliabstract}
+
+
+    \begin{poliabstract}{Abstrakt}
+        Die Erkennung von Gelenken beim Menschen dient als Fundament für maschinelle Algorithmen,
+        um menschliche Bewegungsabläufe erkennen zu können.
+        Dieses Verständins ist vor allem im Eiskunstlauf von großer Bedeutung.
+        Ein Sport mit vielen complexen Figuren und Posen, welche sogar teilweise für die professionelle Jurie eine
+        Herausforderung darstellen.
+        Die folgende Thesis zeigt einen Ende-zu-Ende Vorgang auf für die Erkennung von 2d Posen einer Person in Bild- sowie
+        Videodaten.
+        Dabei werden verschiedene Erkenntnisse hinsichtlich Trainingseinstellung, Optimizer Funktionen, und Motion Capture Techniken
+        näher untersucht und ausgewertet.
+        Insbesondere verucht diese Arbeit mit dessen Ergebnissen und Erkenntnissen weitergehende Recherche in dem Feld
+        der Posenerkennung in artistischen Sportarten voran zu treiben.
+        \null\vspace{\fill}
+    \end{poliabstract}
+
+
+
 
     %----------------------------------------------------------------------------------------
     %	ACKNOWLEDGEMENTS
@@ -268,7 +301,6 @@ Application Scope} % Your thesis title, this is used in the title and abstract, 
         \addchaptertocentry{\acknowledgementname} % Add the acknowledgements to the table of contents
         The acknowledgments and the people to thank go here, don't forget to include your project advisor
         %\gls{laser}\ldots
-        %\gls{laser}
     \end{acknowledgements}
 
     %----------------------------------------------------------------------------------------
@@ -349,6 +381,7 @@ Application Scope} % Your thesis title, this is used in the title and abstract, 
 
     \include{Chapters/00_Introduction}
     \include{Chapters/01_FigureSkating}
+    \include{Chapters/01_02_TheoreticalBackground}
     \include{Chapters/02_Dataset}
     \include{Chapters/03_Method}
     \include{Chapters/04_Experiments}

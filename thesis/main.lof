@@ -3,27 +3,29 @@
 \addvspace {10\p@ }
 \addvspace {10\p@ }
 \addvspace {10\p@ }
-\contentsline {figure}{\numberline {3.1}{\ignorespaces 3DPeople: Woman stiff walk (labeled)}}{15}{figure.caption.24}
-\contentsline {figure}{\numberline {3.2}{\ignorespaces RGB-Classes Mappings\relax }}{17}{figure.caption.26}
+\contentsline {figure}{\numberline {3.1}{\ignorespaces \gls {ReLU} activation function: $Y_i^l=max(0,Y_i^{l-1})$\relax }}{14}{figure.caption.35}
+\contentsline {figure}{\numberline {3.2}{\ignorespaces HRNetV3: Prediceted Feature Maps}}{16}{figure.caption.39}
 \addvspace {10\p@ }
-\contentsline {figure}{\numberline {4.1}{\ignorespaces HRNetV3: Our HRNet Architecture}}{19}{figure.caption.28}
-\contentsline {figure}{\numberline {4.2}{\ignorespaces HRNetV3: Predictions from Alena Kostornaia's Steps}}{20}{figure.caption.29}
-\contentsline {figure}{\numberline {4.3}{\ignorespaces HRNetv3 Training Process: Accuracy}}{22}{figure.caption.31}
-\contentsline {figure}{\numberline {4.4}{\ignorespaces HRNetv3 Training Process: Loss}}{22}{figure.caption.32}
+\contentsline {figure}{\numberline {4.1}{\ignorespaces 3DPeople: Woman stiff walk (labeled)}}{31}{figure.caption.80}
+\contentsline {figure}{\numberline {4.2}{\ignorespaces RGB-Classes Mappings\relax }}{33}{figure.caption.82}
 \addvspace {10\p@ }
-\contentsline {figure}{\numberline {5.1}{\ignorespaces Ablation Human Parts Module: Accuracy}}{28}{figure.caption.49}
-\contentsline {figure}{\numberline {5.2}{\ignorespaces Ablation Human Parts Module: Correct Pixel}}{28}{figure.caption.50}
-\contentsline {figure}{\numberline {5.3}{\ignorespaces Ablation Human Parts Module: Correctness Ratio}}{29}{figure.caption.51}
-\contentsline {figure}{\numberline {5.4}{\ignorespaces Ablation Human Parts Module: 1st Episode Predictions}}{29}{figure.caption.52}
-\contentsline {figure}{\numberline {5.5}{\ignorespaces Ablation Human Parts Module: 20th Episode Predictions}}{30}{figure.caption.53}
-\contentsline {figure}{\numberline {5.6}{\ignorespaces Ablation Keypoints Detection Module: Predicted Training Images}}{32}{figure.caption.61}
-\contentsline {figure}{\numberline {5.7}{\ignorespaces Ablation Keypoints Detection Module: Loss FCN}}{33}{figure.caption.62}
-\contentsline {figure}{\numberline {5.8}{\ignorespaces Ablation Keypoints Detection Module: Loss Dense Layers}}{33}{figure.caption.63}
-\contentsline {figure}{\numberline {5.9}{\ignorespaces HRNetV3: Prediceted Feature Maps}}{34}{figure.caption.65}
-\contentsline {figure}{\numberline {5.10}{\ignorespaces Experiments: Learning Rate SGD}}{40}{figure.caption.89}
-\contentsline {figure}{\numberline {5.11}{\ignorespaces Experiments: Accuracy}}{41}{figure.caption.91}
-\contentsline {figure}{\numberline {5.12}{\ignorespaces Experiments: Loss curves}}{41}{figure.caption.92}
-\contentsline {figure}{\numberline {5.13}{\ignorespaces Loss Functions SCCE: Accuracy}}{44}{figure.caption.98}
-\contentsline {figure}{\numberline {5.14}{\ignorespaces Loss Functions SCCE: predictions}}{44}{figure.caption.99}
-\contentsline {figure}{\numberline {5.15}{\ignorespaces Loss Functions CILoss: Calculation}}{45}{figure.caption.101}
+\contentsline {figure}{\numberline {5.1}{\ignorespaces HRNetV3: Our HRNet Architecture}}{35}{figure.caption.84}
+\contentsline {figure}{\numberline {5.2}{\ignorespaces HRNetV3: Predictions from Alena Kostornaia's Steps}}{36}{figure.caption.85}
+\contentsline {figure}{\numberline {5.3}{\ignorespaces HRNetv3 Training Process: Accuracy}}{38}{figure.caption.87}
+\contentsline {figure}{\numberline {5.4}{\ignorespaces HRNetv3 Training Process: Loss}}{38}{figure.caption.88}
+\addvspace {10\p@ }
+\contentsline {figure}{\numberline {6.1}{\ignorespaces Ablation Human Parts Module: Accuracy}}{44}{figure.caption.105}
+\contentsline {figure}{\numberline {6.2}{\ignorespaces Ablation Human Parts Module: Correct Pixel}}{44}{figure.caption.106}
+\contentsline {figure}{\numberline {6.3}{\ignorespaces Ablation Human Parts Module: Correctness Ratio}}{45}{figure.caption.107}
+\contentsline {figure}{\numberline {6.4}{\ignorespaces Ablation Human Parts Module: 1st Episode Predictions}}{45}{figure.caption.108}
+\contentsline {figure}{\numberline {6.5}{\ignorespaces Ablation Human Parts Module: 20th Episode Predictions}}{46}{figure.caption.109}
+\contentsline {figure}{\numberline {6.6}{\ignorespaces Ablation Keypoints Detection Module: Predicted Training Images}}{48}{figure.caption.117}
+\contentsline {figure}{\numberline {6.7}{\ignorespaces Ablation Keypoints Detection Module: Loss FCN}}{49}{figure.caption.118}
+\contentsline {figure}{\numberline {6.8}{\ignorespaces Ablation Keypoints Detection Module: Loss Dense Layers}}{49}{figure.caption.119}
+\contentsline {figure}{\numberline {6.9}{\ignorespaces Experiments: Learning Rate SGD}}{49}{figure.caption.121}
+\contentsline {figure}{\numberline {6.10}{\ignorespaces Experiments: Accuracy}}{50}{figure.caption.123}
+\contentsline {figure}{\numberline {6.11}{\ignorespaces Experiments: Loss curves}}{51}{figure.caption.124}
+\contentsline {figure}{\numberline {6.12}{\ignorespaces Loss Functions SCCE: Accuracy}}{53}{figure.caption.130}
+\contentsline {figure}{\numberline {6.13}{\ignorespaces Loss Functions SCCE: predictions}}{53}{figure.caption.131}
+\contentsline {figure}{\numberline {6.14}{\ignorespaces Loss Functions CILoss: Calculation}}{55}{figure.caption.133}
 \addvspace {10\p@ }
