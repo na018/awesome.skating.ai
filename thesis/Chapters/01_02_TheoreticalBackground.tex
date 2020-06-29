@@ -7,13 +7,14 @@
 \chapter{Theoretical Background} % Main chapter title
 
 \label{theory} % Change X to a consecutive number; for referencing this chapter elsewhere, use \ref{ChapterX}
-
+The subsequent chapter introduces basic concepts on which this thesis builds up.
+Following questions will be answered:
 
 \begin{itemize}
-    \item How to choose the correct dataset?
-    \item Which base architecture does learn human keypoints?
-    \item How can Neural Networks understand image- and video data?
-    \item How to optimize the inference of neural networks?
+    \item How do machines understand image and video data?
+    \item Which basic building blocks make up \glspl{CNN}?
+    \item Which basic concepts of \glspl{CNN} are use in the presented method in \autoref{method} and experimented with in \autoref{experiments}?
+    \item What typical detection tasks do \glspl{CNN} learn to predict?
 
 \end{itemize}
 
@@ -25,7 +26,7 @@
 \glspl{CNN} help machines to understand image and video data.
 The main building blocks of \glspl{CNN} are convolutional, pooling and fully connected layers.
 \subsection{Types of convolutional layers}
-The Convolutional Layers learn to detect specific features in the image data.
+The \textbf{convolutional Layers} learn to detect specific features in the image data.
 They do this with learned filters and activation functions presented in \autoref{activations}.
 The learning process will be deeper discussed in \autoref{opt} and \autoref{cost}.
 Via the stride $s$ and kernel size $k$ the feature maps can be reduced in size resulting in
@@ -37,10 +38,11 @@ Given an input of size $I$ and filter of size $F$ the size of the output $O$ can
     O_{conv}=\frac{I+2p-F}{s}+1
 \end{align}
 
-On the other hand, transposed convolution increases the size of the feature map.
+On the other hand, \textbf{transposed convolution} increases the size of the feature map.
 It implements convolution with a modified input slice or convolutional filter, where this modification leads
 to an increase of the feature map sizes~\cite{deconv}.
-\glspl{DSC} combine depthwise and 1x1 pointwise convolutions, which can reduce the calculation efforts and increase
+
+\textbf{\gls{DSC}} combine depthwise and 1x1 pointwise convolutions, which can reduce the calculation efforts and increase
 training and inference performance.
 Having an input layer with three channels and a 3x3 kernel, the kernel is applied to each channel
 separately depthwise on the input.
@@ -104,11 +106,16 @@ Where $m_1$ is the number of two dimensional feature maps or filters in convolut
 with size $m_2 x m_3$.
 As the calculus suggests, this layer is combined with a convolutional layer, where the filters ought to be
  learned~\cite{wikitumcnn}.
+
 In the following commonly used activation functions for convolutional networks will be presented.
 
 \subsubsection{Activation Functions}
-\gls{ReLU} is a very popular activation function applied in the non-linearity layer.
-With a threshhold at zero it is a piecewise linear function:
+\label{activations}
+In \glspl{CNN} convolutional layers are usually connected with activation functions.
+These functions hold the learnable parameters of these layers and help to learn the filters.
+
+\textbf{\gls{ReLU}} is a very popular activation function applied in the non-linearity layer.
+With a threshold at zero it is a piecewise linear function:
 
 \begin{figure}
 \centering
