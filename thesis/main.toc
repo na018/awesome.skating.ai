@@ -30,10 +30,10 @@
 \contentsline {subsubsection}{\gls {RMSProp}}{19}{section*.47}
 \contentsline {subsubsection}{\gls {Adam}}{20}{section*.51}
 \contentsline {subsubsection}{\gls {Nadam}}{21}{section*.57}
-\contentsline {subsection}{\numberline {3.1.7}Cost Functions}{23}{subsection.67}
-\contentsline {subsection}{\numberline {3.1.8}Concepts}{24}{subsection.70}
-\contentsline {section}{\numberline {3.2}CNN Detection Tasks}{26}{section.71}
-\contentsline {subsection}{\numberline {3.2.1}Classification}{26}{subsection.72}
+\contentsline {subsection}{\numberline {3.1.7}Cost Functions}{22}{subsection.67}
+\contentsline {subsection}{\numberline {3.1.8}Concepts}{23}{subsection.70}
+\contentsline {section}{\numberline {3.2}CNN Detection Tasks}{25}{section.71}
+\contentsline {subsection}{\numberline {3.2.1}Classification}{25}{subsection.72}
 \contentsline {subsection}{\numberline {3.2.2}Image Segmentation}{26}{subsection.73}
 \contentsline {subsection}{\numberline {3.2.3}Localization of Human Joints}{26}{subsection.74}
 \contentsline {chapter}{\numberline {4}Dataset}{27}{chapter.75}

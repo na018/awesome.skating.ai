@@ -44,6 +44,7 @@
 \glossaryentry{AdaGrad?\glossentry{AdaGrad}|setentrycounter[]{page}\glsnumberformat}{19}
 \glossaryentry{AdaGrad?\glossentry{AdaGrad}|setentrycounter[]{page}\glsnumberformat}{19}
 \glossaryentry{RMSProp?\glossentry{RMSProp}|setentrycounter[]{page}\glsnumberformat}{19}
+\glossaryentry{RMSProp?\glossentry{RMSProp}|setentrycounter[]{page}\glsnumberformat}{19}
 \glossaryentry{AdaGrad?\glossentry{AdaGrad}|setentrycounter[]{page}\glsnumberformat}{19}
 \glossaryentry{AdaGrad?\glossentry{AdaGrad}|setentrycounter[]{page}\glsnumberformat}{20}
 \glossaryentry{RMSProp?\glossentry{RMSProp}|setentrycounter[]{page}\glsnumberformat}{20}
@@ -57,6 +58,7 @@
 \glossaryentry{AdaGrad?\glossentry{AdaGrad}|setentrycounter[]{page}\glsnumberformat}{21}
 \glossaryentry{RMSProp?\glossentry{RMSProp}|setentrycounter[]{page}\glsnumberformat}{21}
 \glossaryentry{Nadam?\glossentry{Nadam}|setentrycounter[]{page}\glsnumberformat}{21}
+\glossaryentry{Nadam?\glossentry{Nadam}|setentrycounter[]{page}\glsnumberformat}{21}
 \glossaryentry{NAG?\glossentry{NAG}|setentrycounter[]{page}\glsnumberformat}{21}
 \glossaryentry{NAG?\glossentry{NAG}|setentrycounter[]{page}\glsnumberformat}{21}
 \glossaryentry{NAG?\glossentry{NAG}|setentrycounter[]{page}\glsnumberformat}{21}
@@ -64,12 +66,12 @@
 \glossaryentry{Adam?\glossentry{Adam}|setentrycounter[]{page}\glsnumberformat}{21}
 \glossaryentry{Nadam?\glossentry{Nadam}|setentrycounter[]{page}\glsnumberformat}{21}
 \glossaryentry{Nadam?\glossentry{Nadam}|setentrycounter[]{page}\glsnumberformat}{22}
-\glossaryentry{MSE?\glossentry{MSE}|setentrycounter[]{page}\glsnumberformat}{23}
-\glossaryentry{MSE?\glossentry{MSE}|setentrycounter[]{page}\glsnumberformat}{23}
+\glossaryentry{MSE?\glossentry{MSE}|setentrycounter[]{page}\glsnumberformat}{22}
+\glossaryentry{MSE?\glossentry{MSE}|setentrycounter[]{page}\glsnumberformat}{22}
 \glossaryentry{MSE?\glossentry{MSE}|setentrycounter[]{page}\glsnumberformat}{23}
 \glossaryentry{SCCE?\glossentry{SCCE}|setentrycounter[]{page}\glsnumberformat}{23}
-\glossaryentry{ImageNet?\glossentry{ImageNet}|setentrycounter[]{page}\glsnumberformat}{24}
-\glossaryentry{CNN?\glossentry{CNN}|setentrycounter[]{page}\glsnumberformat}{24}
+\glossaryentry{ImageNet?\glossentry{ImageNet}|setentrycounter[]{page}\glsnumberformat}{23}
+\glossaryentry{CNN?\glossentry{CNN}|setentrycounter[]{page}\glsnumberformat}{23}
 \glossaryentry{ImageNet?\glossentry{ImageNet}|setentrycounter[]{page}\glsnumberformat}{24}
 \glossaryentry{ImageNet?\glossentry{ImageNet}|setentrycounter[]{page}\glsnumberformat}{24}
 \glossaryentry{FC?\glossentry{FC}|setentrycounter[]{page}\glsnumberformat}{24}

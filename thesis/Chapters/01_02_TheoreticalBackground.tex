@@ -63,9 +63,9 @@ One network which intensively makes use of this trait, for example, is the Mobil
 
 
 \subsection{Pooling Layers}
-Pooling layers can be used to increase the receptive field of deeper neurons and reduce the size of the filters
+Pooling layers can be used to increase the receptive field of deeper neurons and reduce the size of the filters,
 thus save calculation effort and speedup performance.
-As for the convolution, the pooling operation is applied on the input in regard to $s$.
+As for the convolution, the pooling operation is applied on the input in regard to the stride factor $s$.
 The size of each grid on which the pooling operation is calculated on the input slice is defined by the kernel $k$.
 In contrast to the convolutional layers, no filters are learned.
 The output size $O$ of the pooling operation can be calculated as follows:
@@ -77,8 +77,8 @@ The output size $O$ of the pooling operation can be calculated as follows:
 There are three very common pooling operations:
 \begin{itemize}
     \item \textbf{Max pooling}: the maximum of each of the receptive fields is chosen.
-    \item \textbf{Average pooling}: the average of each grid is calculated
-    \item \textbf{Global Average Pooling (GAP)}: the average is calculated on the whole feature map with $I=F$
+    \item \textbf{Average pooling}: the average of each grid is calculated.
+    \item \textbf{Global Average Pooling (GAP)}: the average is calculated on the whole feature map with $I=F$.
 \end{itemize}
 Pooling operations are usually combined with convolutions~\cite{advanceddeeplearningpython}.
 
@@ -107,7 +107,7 @@ with size $m_2 x m_3$.
 As the calculus suggests, this layer is combined with a convolutional layer, where the filters ought to be
  learned~\cite{wikitumcnn}.
 
-In the following commonly used activation functions for convolutional networks will be presented.
+In the following, commonly used activation functions for convolutional networks will be presented.
 
 \subsubsection{Activation Functions}
 \label{activations}
@@ -151,7 +151,7 @@ the target label.
 Third, the efficiency towards computation effort, thanks to the simple operations~\cite{wikitumcnn, advanceddeeplearningpython}.
 
 However, one common problem is dying \glspl{ReLU}.
-This happens when a weights' change is very high in $Y_i^{l-1}$ and in the next iteration $Y_i^l$ become very small
+This happens when a weights' change is very high in $Y_i^{l-1}$ and in the next iteration $Y_i^l$ becomes very small
 and thus stuck at the left side of \gls{ReLU}.
 As a result learning stagnates and weights
 stop adjusting properly in the backpropagation process.
@@ -167,7 +167,7 @@ the next section further explains this function.
 
 In 2017 Klambauer et Al. first introduced \glspl{SELU} in their research work of
 \textit{Self-Normalizing Neural Networks} in which they successfully confront the named problem of dying
-\gls{ReLU}~\cite{seluorigin}.
+\glspl{ReLU}~\cite{seluorigin}.
 In comparison to the prior named activation function, \gls{SELU} additionally introduces normalization.
 Each layer preserves the mean and variance from the previous layer, since positive and negative output values
 are possible. These enable a shift process of the mean.
@@ -260,7 +260,7 @@ Furthermore, overfitting is less likely to take place~\cite{advanceddeeplearning
 Optimizing the weights of a neuronal network is a crucial step in the training life cycle of deep learning.
 When the in \autoref{method} presented neural network has processed the input image and calculated several feature maps throughout the process,
 at the end it predicts 9 feature maps of body parts for example for the head, arms, torso, and legs for the human parts
-detection module~\ref{fig:feature-maps-output}.
+detection module as visualized in~\ref{fig:feature-maps-output}.
 With the help of a loss function, the error is then calculated for the predicted pixels in comparison to the truly labeled
 pixels.
 \subsubsection{Backpropagation Process}
@@ -278,10 +278,12 @@ Whereas the valley represents a local minimum~\cite{optimizersoverview}.
 \\\mbox{}\\
 There are three variants for gradient descent:\\
 \textbf{\gls{BGD}}, which calculates the gradients $\theta$ for the entire training dataset.
-The problem here is, that most of the time this would not fit into the RAM.
-For example, there were problems with data overflow when training was conducted with more than 12 images at a time, however, the image size was even reduced
+The problem there is, that most of the time this would not fit into the RAM.
+For example, there were problems with data overflow when training was conducted with more than 12 images
+at a time on the in~\autoref{method} presented network, however, the image size was even reduced
 to 320x240.
 Another drawback is, that gradients for similar examples must be recalculated before each update, leading in redundant computations.\\
+\glsreset{SGD}
 \textbf{\gls{SGD}} confronts this problem by performing updates for each training example input image $x_i$
 and mask label $y_i$.
 This optimization process is much faster.
@@ -305,7 +307,7 @@ In the following section an overview of optimizers will be presented in referenc
 \gls{SGD} is one of the first optimizers and still commonly in use.
 Already in 1951, it was publicly reported by Robins and Sutton et Al~\cite{sgd}.
 Now given the parameters of a neural network $\theta$, such as weights, biases and activation functions, here via an input image
-$\mathfrak{x}$ and associate labels $\mathfrak{y}$ the Backpropagation process is defined under the gradient $\nabla$
+$x$ and associate labels $y$ the Backpropagation process is defined under the gradient $\nabla$
 from the calculated loss function $\mathcal{J}$.
 The adaption of the parameters then is performed stepwise by the learning parameter $\eta$.
 
@@ -321,7 +323,7 @@ As already mentioned, this is one of the problems with pure \gls{SGD}, since it 
 saddlepoint, where one slope goes up and the other one down.
 Furthermore, it converges slower compared to newer optimizers~\cite{optimizersoverview, optimizersexplained}.
 \\\mbox{}\\
-\textbf{Momentum}, first proposed in 1999 by Qian et Al.~\cite{momentum}, can help to get faster to the local minimum.
+\textbf{Momentum}, first proposed in 1999 by Qian et Al.~\cite{momentum}, it can help to get faster to the local minimum.
 This is accomplished by an additional term that is added to \gls{SGD}.
 A constant fraction $\gamma$ is multiplied with the last parameter update $\mathfrak{v}_t$ to $\theta$.
 
@@ -335,14 +337,14 @@ A constant fraction $\gamma$ is multiplied with the last parameter update $\math
     \mathfrak{v}_t = \gamma\mathfrak{v}_{t-1} + \eta\cdot\nabla_\theta\mathcal{J}(\theta) \label{eqn:momentum:2}
 \end{align}
 
-Since the momentum term includes all previous updates~\ref{eqn:momentum:2}, it allows the optimizer to accelerate in terms of speed towards
+Since the momentum term includes all previous updates in~\ref{eqn:momentum:2}, this allows the optimizer to accelerate in terms of speed towards
 the local minimum and thus converge faster.\\
 This can be associated with a ball rolling down a hill.
 The momentum term increases, as the ball rolls downhill, accelerating in terms of speed for subsequent gradients
 which point in the same direction.
 When the direction changes, the term decreases, and the ball slows down.
 All in all, this results in faster convergence and less oscillation or jumping around the minimum~\cite{optimizersoverview}.
-\\\mbox{}\\
+
 \glsreset{AdaGrad}
 \subsubsection{\gls{AdaGrad}}
 \gls{AdaGrad}, a newer algorithm proposed in 2011 by Duchi et Al.~\cite{adagrad},
@@ -350,7 +352,7 @@ adapts the size of an update to the importance of the individual parameters.
 This is a great benefit for the occurrence of sparse data, which is the case for image data or word embedding tasks.
 It adjusts the learning rate term, by dividing the learning rate through the sum
 of previous updates w.r.t the network parameter $\theta_i$ at time step t.
-An additional smoothing term $\eta$ prevents the division by zero.
+An additional smoothing term $\epsilon$ prevents the division by zero.
 
 \begin{equation}
     \theta_{t+1,i} = \theta_{t,i} - \frac{\eta}{\sqrt{\epsilon+\sum_{t=1}^{t}(\nabla_\theta\mathcal{J}(\nabla_{\theta_{t,i}}))^2}} \cdot \nabla_\theta\mathcal{J}(\theta_{t,i})
@@ -359,9 +361,10 @@ An additional smoothing term $\eta$ prevents the division by zero.
 This results in the learning rate decreasing when approaching a local minimum, meaning the overshooting problem is eased off.
 However, one weakness is the growing denominator, which makes the learning rate shrink to an infinitesimally small number until the step
 size almost dissolves to zero.
-\\\mbox{}\\
+
 \glsreset{RMSProp}
-\subsubsection{\gls{RMSProp}} extends \gls{AdaGrad}'s root squared loss function.
+\subsubsection{\gls{RMSProp}}
+\gls{RMSProp} extends \gls{AdaGrad}'s root squared loss function.
 It is an unpublished optimization technique proposed by Hinton et Al.~\cite{rmsprop}.
 The denominator takes, additionally to the past squared gradients, the current gradient at the current time step t,
 into account, weighting the last update more than the current.
@@ -374,7 +377,7 @@ Hinton suggests to weight the last update with 90 and the current with 10 percen
 Unlike \gls{AdaGrad}, \gls{RMSProp} does not decrease monotonously, but can adapt the size of adaption.
 Now larger or smaller updates are possible in reference to their impact.
 Nevertheless, the issue with diminishing learning rates remains.
-\\\mbox{}\\
+
 \glsreset{Adam}
 \subsubsection{\gls{Adam}}
 \gls{Adam}~\cite{adam}, as well as \gls{AdaGrad} or \gls{RMSProp}, calculates adaptive learning rates w.r.t. the
@@ -422,11 +425,11 @@ In particular, \gls{Adam} makes use of two decay parameters $\beta_1$ and $\beta
 These parameters $\beta_1$ and $\beta_2$ are close to the constant $\gamma$ term used in \gls{RMSProp} and Momentum.
 The great advantage here is, that the learning rate can adapt in both directions solving the issue from \gls{AdaGrad} or
 \gls{RMSProp} of vanishing learning rates.
-\\\mbox{}\\
+
 \glsreset{Nadam}
-\subsubsection{\gls{Nadam}},
-now replaces Momentum with the better performing \gls{NAG}.
-It was first presented in 2016 by Dozat et Al~\cite{nadam}.\\
+\subsubsection{\gls{Nadam}}
+\gls{Nadam} replaces Momentum with the better performing \gls{NAG}.
+It was first presented in 2016 by Dozat et Al~\cite{nadam}.
 \\\mbox{}\\
 \textbf{\gls{NAG}} allows to approximately calculate the future position of the parameters.
 Referring back to Momentum, \gls{NAG} is like a smarter ball, which knows that it has to slow down and not naively go up an upcoming
@@ -484,16 +487,16 @@ with the bias-corrected estimate of the current Momentum $\hat{m}_{t}$ resulting
 \begin{align}
     \theta_{t+1} = \theta_{t} - \frac{\eta}{\epsilon+\sqrt{\hat{v}_t}} \cdot (\beta_1\hat{m}_t+\frac{(1-\beta_1)g_t}{1-\beta_1^t}) \label{eqn:nadam:8}
 \end{align}
-\\ \par
+
 
 \subsection{Cost Functions}
 \label{cost}
-As already mentioned in~\autoref{opt} loss functions closely work together with optimizer algorithms.
+As already mentioned in~\autoref{opt} loss functions closely work together with optimization algorithms.
 The loss function is used in the optimizer algorithm as seminal feedback deciding about the success of the learning process of a
 neural network.
 It calculates how close a prediction $y_p$ from a neural network is to the true label $y_t$.
-
-One classical loss function is \gls{MSE}.
+\\\mbox{}\\
+One classical loss function is \textbf{\gls{MSE}}.
 The error represents the difference between $y_t$ and $y_p$.
 \gls{MSE} then squares the error to even out negative results and calculates the sum of all these errors.
 For the fully convolutional network in the body part detection module, each pixel presents a certain class.
@@ -504,13 +507,12 @@ The error function then calculates the difference between the estimation or pred
 value of 1 only for the true class.
 Additionally to the summation of squared errors, \gls{MSE} divides this sum with the number of all squares resulting in the mean
 value:
-
+\\
 \begin{align}
     MSE(y_t,y_p) = \frac{1}{n}\cdot\sum_[i=1]^n(y_t-y_p)^2
 \end{align}
-
-Another commonly used cost function in image segmentation is \gls{SCCE}, which is a common loss function used in image
-segmentation.
+\\
+Another commonly used cost function in image segmentation is \textbf{\gls{SCCE}}.
 It is said to help with class imbalances.
 Wrong predictions are weighed harder, especially the ones with a great wrong probability value.
 This is accomplished by calculating the logarithm of the predicted values.
@@ -527,10 +529,11 @@ Here \textit{i,j} stands for the column and row pixels of the image.
 \subsection{Concepts}
 
 
-AlexNet, a convolutional network, which won the \gls{ImageNet} competition in 2012 set a milestone in the development
+\textbf{AlexNet}, a convolutional network, which won the \gls{ImageNet} competition in 2012 set a milestone in the development
 of \glspl{CNN} in Computer Vision.
 It achieved 37.5\% top-1 and 17\% top-5 error rates, compared to the second place which received a top-5 error
 of 26.2\%.
+\\\mbox{}\\
 The \gls{ImageNet} is a popular competition which
 \enquote{evaluates algorithms for object detection and image classification at large scale}~\cite{ILSVRC15}
 since 2010.
@@ -539,36 +542,36 @@ The \gls{ImageNet} competition though uses a subset of this database.
 Competitors strive to receive good top-1 and top-5 error rates.
 The numbers of the error rates stand for the amount of occurrence of a specific label.
 With top-5 not being one of the model's five most likely labels.
-
+\\\mbox{}\\
 AlexNet uses five convolutional layers with max pooling resumed by three \gls{FC} layers, of which the last one
-is connected to a softmax which predicts the likelyness of $1000$ classes.
+is connected to a softmax, which predicts the likeliness to be one out of $1000$ classes.
 What was revolutionary about the their network was the use of \gls{ReLU} in the non-linearity layer instead of tanh,
 which was common at that time.
 With this modification they were able to train six times faster.
 Additionally, they introduced multiple GPU training, placing half of the model's neurons on one and the other half
 on another GPU.
 This allowed training bigger models and speeding up training.
-Overlapping pooling leaded to an error reduction of 0.5\% plus overfitting would less likely take place.
+Overlapping pooling operations leaded to an error reduction of 0.5\% plus overfitting would less likely take place.
 Moreover, they confront the overlapping problem with data augmentation and dropout~\cite{advanceddeeplearningpython, alexnet}.
-
-Another popular finding in the history of convolutional networks is presented by the \gls{VGG}.
+\\\mbox{}\\
+Another popular finding in the history of convolutional networks is presented by the \textbf{\gls{VGG}}.
 Same as the AlexNet, they combine convolutional layers with max pooling, and round up their network with
-three \glspl{FC} layers and a softmax at the end.
+three \gls{FC} layers and a softmax at the end.
 What is new though, is that they prove in their research that large filter sizes can be replaced with multiple layers of smaller filter sizes, namely
 factorized convolution.
 Before, convolutional networks had rather large receptive fields, as for example the AlexNet with 11x11.
-Via factorized convolution 7x7 layers can be replaced with three 3x3 layers.
+Via factorized convolution 7x7 layers, for instance, can be replaced with three 3x3 layers.
 This results in a reduction of trainable weights and operations and thus speeds up performance.
 OpenPose as well makes use of these findings with their second paper on human pose recognition in image and video data~\cite{openpose}.
-The increased volume depth in deeper layers of 128, 256, 512 is still commonly used today.
+Furthermore, they applied increased volume depth in deeper layers of 128, 256, 512, which is still commonly in use today.
 Their famous networks VGG-16 and VGG-19, named after the amount of weighted layers, are commonly used as benchmark or
 backbone of other networks~\cite{advanceddeeplearningpython}.
 As already mentioned OpenPose uses the 10 first layers of the VGG-19 network with additional fine-tuning~\cite{openpose}.
 
-Another discovery in the history of \glspl{CNN} are residual blocks presented 2016 in the ResNet publication ~\cite{resnet}.
+A further discovery in the history of \glspl{CNN} are residual blocks presented 2016 in the \textbf{ResNet} publication ~\cite{resnet}.
 A residual block consists of the block itself and a skip connection from the input layer of the block to the output layer.
 The block includes two or three sequential convolutional layers. The first layer is a pointwise downsample layer,
-followed by a convolutional layer with an applied 3x3 filter, the so called bottleneck and concluded with a upsample 1x1 layer.
+followed by a convolutional layer with an applied 3x3 filter, the so called bottleneck and concluded with an upsample 1x1 layer.
 
 The special feature of this residual block is the skip connection.
 There, an element-wise sum is applied to the input and
@@ -576,10 +579,10 @@ output layer of the block.
 With this, the network itself can decide whether to skip blocks, leading to a reduction of depth of the network.
 Moreover, the propagation of the unmodified signal and learned features
 of the block is closer to the original input.
-In Tensorflow this element-wise sum corresponds to the \textbf{tensorflow.keras.Add} layer and is used in the developed
+In Tensorflow this element-wise sum corresponds to the \code{tensorflow.keras.Add} layer and is used in the developed
 method of this thesis.
 
-In 2014 the \textit{Inception} network introduced a novel method to find different sized features which appear closer or
+In 2014 the \textbf{Inception} network introduced a novel method to find different sized features which appear closer or
 further away from the observer.
 In their work, they split the input into parallel paths which they refer as towers.
 An \textit{Inception} block starts with an input layer, several towers with convolutional and pooling layers and at the end
@@ -631,9 +634,6 @@ presented method.
 
 %neural architecture search (NAS):
 
-
-In the following two sections the computer vision task has to additionally keep track of the location
-not only the label of the found objects.
 \section{CNN Detection Tasks}
 \subsection{Classification}
 \label{classification}
@@ -646,7 +646,7 @@ used for the last layer to find the labels which most probably belong to the inp
 \label{imagesegmentation}
 Image segmentation is the pixel-wise classification of an image.
 The network detects for each pixel, which class it belongs to, such as person, vehicle, background etc.
-In the thesis presented method this pixel-wise labeling is applied to the body-part detection module.
+In the thesis' presented method this pixel-wise labeling is applied to the body-part detection module.
 Each pixel is classified of being one of the body parts or the background class.
 %class label - to each pixel of an image
 %- semantic segmentation
@@ -666,7 +666,7 @@ In particular, 2d pose estimations finds (x,y) coordinates, whereas 3d pose esti
 (x,y,z) coordinates.
 Nevertheless, this thesis focuses on 2d pose estimation.
 
-DensePose~\cite{DensePose} was one of the first proposals to initial research work in 2d pose estimation.
+\textbf{DensePose}~\cite{DensePose} was one of the first proposals to initial research work in 2d pose estimation.
 They used the AlexNet as backbone and added a (x,y) 2k output dense layer to predict the 2k joint positions in the image.
 
 Later studies however revealed, that the estimation of confidence maps for the joint locations works better.

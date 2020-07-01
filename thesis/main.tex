@@ -75,7 +75,7 @@
 \renewcommand{\therowcntr}{\thetable.\arabic{rowcntr}}
 % A new columntype to apply automatic stepping
 \newcolumntype{N}{>{\refstepcounter{rowcntr}\therowcntr}c}
-
+\newcommand{\code}[1]{\texttt{#1}}
 % Reset the rowcntr counter at each new tabular
 %\AtBeginEnvironment{tabular}{\setcounter{rowcntr}{0}}
 
