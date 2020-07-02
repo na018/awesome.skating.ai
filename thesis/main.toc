@@ -8,53 +8,53 @@
 \contentsline {section}{\numberline {1.1}Motivation}{2}{section.12}
 \contentsline {section}{\numberline {1.2}Related Work}{3}{section.13}
 \contentsline {section}{\numberline {1.3}Purpose and Research Question}{5}{section.14}
-\contentsline {section}{\numberline {1.4}Approach and Methodology}{6}{section.15}
+\contentsline {section}{\numberline {1.4}Approach and Methodology}{5}{section.15}
 \contentsline {section}{\numberline {1.5}Scope and Limitation}{6}{section.16}
 \contentsline {section}{\numberline {1.6}Target Group}{6}{section.17}
-\contentsline {section}{\numberline {1.7}Outline}{6}{section.18}
-\contentsline {chapter}{\numberline {2}Figure Skating Pose Detection}{7}{chapter.19}
-\contentsline {section}{\numberline {2.1}Complexity of Figures}{7}{section.20}
-\contentsline {section}{\numberline {2.2}Distinct Rating System}{8}{section.21}
-\contentsline {chapter}{\numberline {3}Theoretical Background}{11}{chapter.22}
-\contentsline {section}{\numberline {3.1}Architecture of Convolutional Neural Networks}{11}{section.23}
-\contentsline {subsection}{\numberline {3.1.1}Types of convolutional layers}{11}{subsection.24}
-\contentsline {subsection}{\numberline {3.1.2}Pooling Layers}{12}{subsection.26}
-\contentsline {subsection}{\numberline {3.1.3}Fully Connected layers}{13}{subsection.28}
-\contentsline {subsection}{\numberline {3.1.4}Non-Linearity Layer}{13}{subsection.29}
-\contentsline {subsubsection}{Activation Functions}{13}{section*.34}
-\contentsline {subsection}{\numberline {3.1.5}Regularization}{16}{subsection.37}
-\contentsline {subsection}{\numberline {3.1.6}Optimization Algorithms}{16}{subsection.38}
-\contentsline {subsubsection}{Backpropagation Process}{17}{section*.40}
-\contentsline {subsubsection}{\gls {SGD}}{18}{section*.41}
-\contentsline {subsubsection}{\gls {AdaGrad}}{19}{section*.45}
-\contentsline {subsubsection}{\gls {RMSProp}}{19}{section*.47}
-\contentsline {subsubsection}{\gls {Adam}}{20}{section*.51}
-\contentsline {subsubsection}{\gls {Nadam}}{21}{section*.57}
-\contentsline {subsection}{\numberline {3.1.7}Cost Functions}{22}{subsection.67}
-\contentsline {subsection}{\numberline {3.1.8}Concepts}{23}{subsection.70}
-\contentsline {section}{\numberline {3.2}CNN Detection Tasks}{25}{section.71}
-\contentsline {subsection}{\numberline {3.2.1}Classification}{25}{subsection.72}
-\contentsline {subsection}{\numberline {3.2.2}Image Segmentation}{26}{subsection.73}
-\contentsline {subsection}{\numberline {3.2.3}Localization of Human Joints}{26}{subsection.74}
-\contentsline {chapter}{\numberline {4}Dataset}{27}{chapter.75}
-\contentsline {section}{\numberline {4.1}Figure Skating Dataset}{27}{section.76}
-\contentsline {subsection}{\numberline {4.1.1}Motion capturing techniques}{27}{subsection.77}
-\contentsline {subsection}{\numberline {4.1.2}XSens: Inertial motion capturing recordings on the ice rink}{28}{subsection.78}
-\contentsline {section}{\numberline {4.2}Synthetic Dataset: 3DPeople}{31}{section.82}
-\contentsline {section}{\numberline {4.3}Data Processing}{32}{section.84}
-\contentsline {chapter}{\numberline {5}Method}{35}{chapter.86}
-\contentsline {section}{\numberline {5.1}Training Performance (human parts)}{37}{section.89}
-\contentsline {section}{\numberline {5.2}Inference Runtime Analysis}{38}{section.92}
-\contentsline {section}{\numberline {5.3}Implementation Details}{39}{section.93}
-\contentsline {chapter}{\numberline {6}Experiments}{41}{chapter.94}
-\contentsline {section}{\numberline {6.1}Ablation Study}{41}{section.95}
-\contentsline {subsection}{\numberline {6.1.1}Body Parts Detection Module }{41}{subsection.106}
-\contentsline {paragraph}{Comparison of network architectures}{43}{section*.107}
-\contentsline {paragraph}{Summary}{46}{section*.113}
-\contentsline {subsection}{\numberline {6.1.2}Joint Detection Module }{46}{subsection.114}
-\contentsline {paragraph}{Network Architectures}{47}{section*.119}
-\contentsline {paragraph}{Conclusions}{51}{section*.128}
-\contentsline {section}{\numberline {6.2}Performance of loss functions}{51}{section.129}
-\contentsline {subsection}{\numberline {6.2.1}Our custom loss function CILoss}{52}{subsection.132}
-\contentsline {chapter}{\numberline {7}Conclusion and future thoughts}{55}{chapter.134}
-\contentsline {chapter}{\numberline {A}Bibliography}{59}{appendix.135}
+\contentsline {section}{\numberline {1.7}Outline}{7}{section.18}
+\contentsline {chapter}{\numberline {2}Figure Skating Pose Detection}{9}{chapter.19}
+\contentsline {section}{\numberline {2.1}Complexity of Figures}{9}{section.20}
+\contentsline {section}{\numberline {2.2}Distinct Rating System}{10}{section.21}
+\contentsline {chapter}{\numberline {3}Theoretical Background}{13}{chapter.22}
+\contentsline {section}{\numberline {3.1}Architecture of \gls {CNN}}{13}{section.23}
+\contentsline {subsection}{\numberline {3.1.1}Types of convolutional layers}{13}{subsection.24}
+\contentsline {subsection}{\numberline {3.1.2}Pooling Layers}{14}{subsection.26}
+\contentsline {subsection}{\numberline {3.1.3}Fully Connected layers}{15}{subsection.28}
+\contentsline {subsection}{\numberline {3.1.4}Non-Linearity Layer}{15}{subsection.29}
+\contentsline {subsubsection}{Activation Functions}{15}{section*.34}
+\contentsline {subsection}{\numberline {3.1.5}Regularization}{18}{subsection.37}
+\contentsline {subsection}{\numberline {3.1.6}Optimization Algorithms}{18}{subsection.38}
+\contentsline {subsubsection}{Backpropagation Process}{19}{section*.40}
+\contentsline {subsubsection}{\gls {SGD}}{20}{section*.41}
+\contentsline {subsubsection}{\gls {AdaGrad}}{21}{section*.45}
+\contentsline {subsubsection}{\gls {RMSProp}}{21}{section*.47}
+\contentsline {subsubsection}{\gls {Adam}}{22}{section*.51}
+\contentsline {subsubsection}{\gls {Nadam}}{23}{section*.57}
+\contentsline {subsection}{\numberline {3.1.7}Cost Functions}{24}{subsection.67}
+\contentsline {subsection}{\numberline {3.1.8}Concepts}{25}{subsection.70}
+\contentsline {section}{\numberline {3.2}CNN Detection Tasks}{27}{section.71}
+\contentsline {subsection}{\numberline {3.2.1}Classification}{27}{subsection.72}
+\contentsline {subsection}{\numberline {3.2.2}Image Segmentation}{28}{subsection.73}
+\contentsline {subsection}{\numberline {3.2.3}Localization of Human Joints}{28}{subsection.74}
+\contentsline {chapter}{\numberline {4}Dataset}{29}{chapter.75}
+\contentsline {section}{\numberline {4.1}Figure Skating Dataset}{29}{section.76}
+\contentsline {subsection}{\numberline {4.1.1}Motion capturing techniques}{29}{subsection.77}
+\contentsline {subsection}{\numberline {4.1.2}XSens: Inertial motion capturing recordings on the ice rink}{30}{subsection.78}
+\contentsline {section}{\numberline {4.2}Synthetic Dataset: 3DPeople}{33}{section.82}
+\contentsline {section}{\numberline {4.3}Data Processing}{34}{section.84}
+\contentsline {chapter}{\numberline {5}Method}{37}{chapter.86}
+\contentsline {section}{\numberline {5.1}Training Performance (human parts)}{39}{section.89}
+\contentsline {section}{\numberline {5.2}Inference Runtime Analysis}{40}{section.92}
+\contentsline {section}{\numberline {5.3}Implementation Details}{41}{section.93}
+\contentsline {chapter}{\numberline {6}Experiments}{43}{chapter.94}
+\contentsline {section}{\numberline {6.1}Ablation Study}{43}{section.95}
+\contentsline {subsection}{\numberline {6.1.1}Body Parts Detection Module }{43}{subsection.106}
+\contentsline {paragraph}{Comparison of network architectures}{45}{section*.107}
+\contentsline {paragraph}{Summary}{48}{section*.113}
+\contentsline {subsection}{\numberline {6.1.2}Joint Detection Module }{48}{subsection.114}
+\contentsline {paragraph}{Network Architectures}{49}{section*.119}
+\contentsline {paragraph}{Conclusions}{53}{section*.128}
+\contentsline {section}{\numberline {6.2}Performance of loss functions}{53}{section.129}
+\contentsline {subsection}{\numberline {6.2.1}Our custom loss function CILoss}{54}{subsection.132}
+\contentsline {chapter}{\numberline {7}Conclusion and future thoughts}{57}{chapter.134}
+\contentsline {chapter}{\numberline {A}Bibliography}{61}{appendix.135}
