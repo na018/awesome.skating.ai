@@ -12,19 +12,18 @@
 
 \section{Figure Skating Dataset}
 
-The correct dataset with the according labels, as the key factor of a neural network architecture, decides whether keypoints
+The problem agnostic dataset decides whether human keypoints
 will be learned successfully from image- or video sequence data.
 As of today, there does not exist a publicly available dataset which labels keypoints to ice skating performances or
 elements.
-Famous existing ones such as FIS-V or the MIT datasets only include the total technical and performance scores of the
-complete performances, which are not applicable here as explained in \autoref{figureskating}.
+Famous existing ones such as \textit{FIS-V} or the \textit{MIT} datasets only include the total technical and performance scores of the
+complete programs, which are not applicable here as explained in \autoref{figureskating}.
 \\\mbox{}\\
 To create a reasonable dataset for figure ice skating there are various possibilities.
 Most straightforward would be to make use of the huge amount of videos published everyday on online platforms such as
-\textit{YouTube} and label the videos by hand. This however would cost a huge amount of time and includes outliers coming from
+\textit{YouTube} and label the videos by hand. This however would cost a huge amount of time and include outliers coming from
 human errors.
-Another possibility would be to work with motion capture.
-\\\mbox{}\\
+Another possibility would be to work with motion capture as presented in the next section.
 %# Neuron: what is motion capture
 %- https://neuronmocap.com/content/mocap-101-what-motion-capture
 
@@ -32,17 +31,17 @@ Another possibility would be to work with motion capture.
 \subsection{Motion capturing techniques}
 \label{motioncapture}
 There are three main methods for recording motion capturing data.\\
-Markerless capture is a method where videos are recorded via a single or multiple depth cameras.
+\textbf{Markerless capture} is a method where videos are recorded via a single or multiple depth cameras.
 This comes with the advantage that the athletes are not distracted or feel uncomfortable by any
 markers~\cite{mocapopticalradical, mocapopticalcapture, mocapmarkerless3dscans}.\\
 When working with markers there are two sensor types: optical or inertial.
-Optical markers are reflective markers, which are attached to characteristic parts of the body.
-These reflections are tracked via multiple cameras to make sure the motion movements are taken especially when a
-person is moving, so the markers are not concealed~\cite{mocapoptical}.\\
-Inertial motion capture uses IMU sensors that are attached to body parts~\cite{xsens, mocapinterialneuron}.
+\textbf{Optical markers} are reflective markers, which are attached to characteristic parts of the body.
+These reflections are tracked via multiple cameras to make sure the motion movements are tracked especially when a
+person is moving. These markers must be in the visual field of at least one of the cameras~\cite{mocapoptical}.\\
+\textbf{Inertial motion capture} uses \gls{IMU} sensors that are attached to body parts~\cite{xsens, mocapinterialneuron}.
 3D positions then are calculated via multiple sensor metrics.
 The XSens system for example includes several trackers that contain magnetometers, gyroscopes, and accelerometers.
-Via their MVN Animate and Anlaze systems, the tracked data is post-processed on a biomechanical model
+Via their \textit{MVN Animate} and \textit{Anlaze} systems, the tracked data is post-processed on a biomechanical model
 and then can be used in game engines such as \textit{Unity} or \textit{Unreal}, or in 3D animation software such as \textit{Blender} or
 \textit{3DSMax}~\cite{xsensabout}.
 % https://www.xsens.com/inertial-sensor-modules
@@ -54,36 +53,40 @@ Moreover, it is very difficult to get the whole ice rink for a recording, becaus
 booked with figure ice skating, ice hockey, public skating or short track speed skating.
 Further, many ice rinks are governed by the local community~\cite{stuttgarteiswelt}, or are highly expensive to rent.
 This makes markerless and optical recordings very challenging.
-On the other hand, inertial recordings as by the XSens technology seem very promising.
+On the other hand, inertial recordings as by the \textit{XSens} technology seem very promising.
 Even when there are multiple skaters on the ice, recordings can be tracked in usual practice time slots.
 
 \subsection{XSens: Inertial motion capturing recordings on the ice rink}
-In our research study, we tested recordings on the ice rink with the MVN Link product from XSens.
-This product includes 17 wired IMU motion trackers which can be either attached into a suit or onto straps.
+In this research study, recordings on the ice rink were created with the \textit{MVN Link} product from \textit{XSens}~\cite{xsensmvnanimate}.
+This product includes 17 wired \gls{IMU} motion trackers which can be either attached into a suit or onto straps.
 The sensors are connected via cables to a battery with a lifetime of 9.5 h.
-These trackers are then connected via a router to their MVN Animate software.
+These trackers are then connected via a router to their \textit{MVN Animate} software.
 The wireless range of the trackers is 50 to 150 meters, however, the trackers are able to buffer the recordings
 and transmit these later when there is a connection to the hub.
-Their MVN Animate software helps with calibration and shows the recording results as soon as the trackers are close
+Their \textit{MVN Animate} software helps with calibration and shows the recording results as soon as the trackers are close
 enough
 for transmission.
-Furthermore, it processes the data and performs adjustments in a postprocessing step~\cite{xsensmvnanimate}.
+Furthermore, this software processes the data and performs adjustments in a postprocessing step~\cite{xsensmvnanimate}.
 
 
 
-\subsubsection*{Our experiences with MVN Link from XSens}
-The overall setup was very time-consuming. To correctly attach all the straps and align the cables took us a
-minimum of 20 minutes. Here we tried out the suit and the straps with equal preparation times.
-Then the calibration on the ice with the MVN Analyze software was very time-consuming again and took about 20 minutes.
+\subsubsection*{Experiences with MVN Link from XSens}
+The overall setup of the \textit{MVN Link} system from {XSens} was very time-consuming.
+To correctly attach all the straps and align the cables took a
+minimum of 20 minutes.
+There recordings were conducted with the suit and the straps with equal preparation times.
+Further, the calibration on the ice with the \textit{MVN Analyze} software was very time-consuming again and took about 20 minutes.
 The calibration process had to be repeated several times when the calibration failed.
-These problems probably came from the different gliding movements on the ice.
-So the skaters had to mimic usual floor movements for the calibration to work correctly.
-Since the recordings are very time-consuming we could not work with young professional competitive skaters, because
-the setup was too drawn-out.
-We then took recordings from a senior competitive skater. The inertial method was very beneficial here because other
-skaters on the ice, did not intervene in the recordings. Additionally, however, sometimes the connection was lost to
+These problems probably came from the unique gliding movements on the ice, which differentiates this sport from other sports.
+This meant for the skaters to having to mimic usual floor movements for the calibration to work correctly.
+Since the recordings are very time-consuming, the work with young professional competitive skaters was not possible, because
+the drawn-out setup.
+Further recordings were then captured from a senior competitive skater.
+The inertial method was very beneficial due to the fact that other
+skaters practicing on the ice, did not intervene in the recordings.
+Additionally, however, sometimes the connection was lost to
 the hub, when the skater came back, the recordings were transmitted correctly.
-The post-processing from their software did work really good as well.
+The post-processing from \textit{XSens} software did work really well.
 What was disruptive, however, were the sensors and battery, which the skater had to carry.
 This made the movements feel constrained. Indeed, in figure ice skating falls are very common.
 A fall on the battery or one of the sensors would have been harmful, which again influenced the movement of the
@@ -97,46 +100,43 @@ motion captures.
 
 
 \subsubsection*{Dataset Creation with Blender and MakeHuman}
-We processed the recorded data from the XSens trackers in \textit{MVN Animate} and then exported a short sequence as BVH file
-to test possible dataset creation procedures.
-Further, we used the open-source \textit{MakeHuman}~\cite{makehuman} program to create a figure ice skating avatar.
-Here we used the figure ice skating dress and ice skates, which are freely available from the MakeHuman
-community~\cite{makehumanassets}.
-With the help of the MakeHuman plugin in Blender 2.7~\cite{blender} we then imported the created avatar from MakeHuman
-and retargeted the BVH motion capture file onto the rig.
-We then set up a default scene with lighting and a moving camera.
-To obtain the keypoints, we wrote a Python script in Blender to calculate the joint locations in relation to the camera
-view and exported the resulting keypoints into NumPy files.
+The recorded data from the XSens trackers was processed in \textit{MVN Animate} and then for the prototypical dataset
+a short sequence was exported as BVH file.
+Moreover, the open-source \textit{MakeHuman}~\cite{makehuman} program supported the creation of a figure ice skating avatar.
+A figure ice skating dress and ice skates, which are freely available from the \textit{MakeHuma}n
+community, were applied to the avatar~\cite{makehumanassets}.
+With the help of the \textit{MakeHuman }plugin in \textit{Blender 2.7}~\cite{blender} the created avatar was imported from \textit{MakeHuman}
+and retargeted the \textit{BVH} motion capture file onto the rig.
+A default scene with lighting and a moving camera was set up for the animation.
+To obtain the keypoints, a created Python script in \textit{Blender} allowed to calculate the joint locations in relation to the camera
+view and exported the resulting keypoints into \textit{NumPy} files.
 \\\mbox{}\\
-However, the above-described process seemed to be smooth to conduct, we did face a couple of challenges.
+However, the above-described process seemed to be smooth to conduct, a couple of challenges occurred.
 For one, artistic elastic movements yielded in errors on the armature, since the joints were restricted to certain
 regions of movement, which seemed to work for usual daily activities but not figure ice skating ones.
 Another one was that with the moving camera the keypoints were not calculated correctly and drawn with a small offset.
-Recent research studies suggest to export the animation as BVH files and later calculate the joint positions with a
-program such as Matlab~\cite{synpose300, 3dpeople, gaitblender}. So this could improve the calculations of joint
+Recent research studies suggest to export the animation as BVH files and later calculate the joint positions with another
+program such as for example Matlab~\cite{synpose300, 3dpeople, gaitblender}. This could improve the calculations of joint
 positions.
 
 
-
-\subsubsection*{Our conclusions on creating a synthetic dataset in figure ice skating}
-We are convinced that the above-described process to create a synthetic dataset for figure ice skating is mandatory
-when it comes to figure ice skating,
+\subsubsection*{Creation of Synthetic Datasets in Figure Ice Skating: Conclusions}
+The above-described process seems very convincing
+The creation of a synthetic dataset for figure ice is highly beneficial
 because of the following reasons:\\
-First, with inertial motion tracking is very accurate especially in an environment such as an ice rink when recording
-can be easily be done during practice sessions.\\
-Second, much fewer recordings are necessary thanks to the large arbitrary degrees of variation which is possible with
-an animation software such as blender.\\
-Third, the diversity of data is exceptionally vast.\\
+First, inertial motion tracking leads to very accurate mapping of joints and synthetic animation image data.
+Second, much fewer recordings are necessary thanks to the large arbitrary degrees of variation possible with
+an animation software such as \textit{Blender}.
+Meaning, the diversity of data is exceptionally vast.
 From one small motion capture file, multiple different avatars can be retargeted, female and male, age variations,
 clothes and race variances.
 Further, multiple different light sources and camera views can be applied and the background randomly selected.\\
-Fourth, calculated labels by the associate animation software or post-processing program are just more exact than
-human labeled data.
+Third, practicing slots can be used to capture the recordings.
 \\\mbox{}\\
 All these points confirm the legitimacy of synthetic datasets in figure ice skating.
-Which is why we researched on already existing synthetic datasets since in the scope of this thesis creating our own
-dataset was not possible due to the huge time efforts.
-The synthetic dataset 3DPeople as described in the next section corresponds to our expectations of an appropriate dataset.
+Due to the described limitations in \autoref{limitations} existing synthetic datasets were investigated.
+
+The synthetic dataset \textit{3DPeople}, as described in the next section, corresponds to the described expectations of an appropriate dataset.
 
 
 %----------------------------------------------------------------------------------------
@@ -155,25 +155,26 @@ The synthetic dataset 3DPeople as described in the next section corresponds to o
 \end{figure}
 
 
-The dataset 3DPeople was created via recorded motion capture files.
-They took 70 realistic action sequences from Mixamo~\cite{mixamomotionpac}.
+The dataset \textit{3DPeople}~\cite{3dpeople} was created via recorded motion capture files.
+They took 70 realistic action sequences from \textit{Mixamo}~\cite{mixamomotionpac}.
 The sequences contain on average 110 frames and range from usual activities with little motions such as driving
 or drinking to breakdance moves or backflips.
-These actions they then retarget onto 80 armatures which are created with MakeHuman~\cite{makehuman} or Adobe
-Fuse~\cite{adobefuse}.
-There are 40 female and 40 male characters with plenty of variation in body shapes, skin tones, outfits, and hair.
-In detail, they record the actions with a projective camera and 800 nm focal length from four different viewpoints
+These actions are retargetted onto 80 armatures, which are created with \textit{MakeHuman}~\cite{makehuman} or \textit{Adobe
+Fuse}~\cite{adobefuse}.
+There are 40 female and 40 male characters with plenty of variations in body shapes, skin tones, outfits, and hair.
+In detail, they record the actions with a projective camera and 800 nm focal length from four different viewpoints,
 which are orthogonally aligned with the ground.
 The distance to the subjects varies arbitrarily as do light sources and static background images.
 In sum, the dataset includes 22,400 clips with the rendered video sequences as 640x480 pixel image frames, the associate
 depth maps, optical flow, and semantic information such as body parts and cloth labels~\cite{3dpeople}.
 \\\mbox{}\\
-We found this dataset highly sophisticated due to the wide variance and diversity of the data.
+The \textit{3DPeople} dataset is highly sophisticated due to the wide variance and diversity of the data.
 Especially in terms of clothes, it stands out from other famous datasets such as Human3.6M~\cite{humaneva}.
 They use a variety of wide and tight clothes. For example do they include dresses and shorts.
-There variance is greater compared to their freely available combats~\cite{human36m, humaneva}.
-In \autoref{fig:woman_step_3dpeople} we demonstrate the learned labels of our modules from a random image of the
-3DPeople dataset.
+Their variance is greater compared to their freely available combats~\cite{human36m, humaneva}.
+In \autoref{fig:woman_step_3dpeople} a demonstration shows the learned labels from the in this thesis presented method
+of a random image of the
+\textit{3DPeople} dataset.
 
 
 
@@ -186,25 +187,25 @@ In \autoref{fig:woman_step_3dpeople} we demonstrate the learned labels of our mo
 The 3DPeople dataset can be requested through their project homepage and is allowed for use in research
 environments.
 Each data package consists of five batches for women and men. There are five data packages available for download.
-We created a \textit{data\_admin python class}, which takes care of downloading the data, processing and storing the
+A \textit{data\_admin Python class} was created to take care of downloading the data, processing and storing the
 data
-in memory agnostic and efficient access structured compressed NumPy files, and deletes the initial downloaded data.\\
-We included several processing steps:
-In sum, we created four compressed numpy archives.
-Every archived file included an array with all frames of one movement sequence to allow a faster reading process for
-our neuronal network training later.
-The four archives consist of the usual RGB sequence frames, one archive without background, one for the body part
+in memory agnostic and efficient access structured compressed \textit{NumPy} files, and deletes the initially downloaded data.\\
+Several processing steps were included:
+In sum, four compressed numpy archives were created.
+Every archived file includes an array with all frames of one movement sequence to allow a faster reading process for
+the neural network training.
+The four archives consist of the usual \textit{RGB} sequence frames, one archive without background, one for the body part
 labels,
 and one for the joint keypoints.
-The NumPy archive without background only shows the actors in RGB colors.
-Therefore, we used the clothes labels and replaced all colored pixels with black pixels when the pixels were not
+The \textit{NumPy} archive without background only shows the actors in RGB colors.
+Therefore, the clothes labels were used and all colored pixels replaced with black pixels when the pixels were not
 inside the mask.
-Initially, we did this to test, weather our network ideas would converge with easier data.
-Later, when we trained our background-extractor module for getting an end-to-end architecture, this data served as
+Initially, this was done to test, whether some network ideas would converge with easier data.
+Later, when the background-extractor module was trained for getting an end-to-end architecture, this data served as
 labels.\\
-Furthermore, we cleaned up the body masks and mapped the resulting three-dimensional pixels to one-dimensional class
-values~\autoref{fig:rgb-mappings}.
-The borders of the body-parts often contained a mixture of RGB values, which were of no use to our network.\\
+Furthermore, the body masks needed to be cleaned up and mapping of the resulting three-dimensional pixels to one-dimensional class
+values had to be performed as shown in~\autoref{fig:rgb-mappings}.
+The borders of the body-parts often contained a mixture of \textit{RGB} values, which were of no use to the network.\\
 \begin{figure}
 
     \fontsmall

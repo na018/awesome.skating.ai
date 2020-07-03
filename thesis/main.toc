@@ -40,21 +40,21 @@
 \contentsline {section}{\numberline {4.1}Figure Skating Dataset}{29}{section.76}
 \contentsline {subsection}{\numberline {4.1.1}Motion capturing techniques}{29}{subsection.77}
 \contentsline {subsection}{\numberline {4.1.2}XSens: Inertial motion capturing recordings on the ice rink}{30}{subsection.78}
-\contentsline {section}{\numberline {4.2}Synthetic Dataset: 3DPeople}{33}{section.82}
-\contentsline {section}{\numberline {4.3}Data Processing}{34}{section.84}
-\contentsline {chapter}{\numberline {5}Method}{37}{chapter.86}
-\contentsline {section}{\numberline {5.1}Training Performance (human parts)}{39}{section.89}
-\contentsline {section}{\numberline {5.2}Inference Runtime Analysis}{40}{section.92}
-\contentsline {section}{\numberline {5.3}Implementation Details}{41}{section.93}
-\contentsline {chapter}{\numberline {6}Experiments}{43}{chapter.94}
-\contentsline {section}{\numberline {6.1}Ablation Study}{43}{section.95}
-\contentsline {subsection}{\numberline {6.1.1}Body Parts Detection Module }{43}{subsection.106}
-\contentsline {paragraph}{Comparison of network architectures}{45}{section*.107}
-\contentsline {paragraph}{Summary}{48}{section*.113}
-\contentsline {subsection}{\numberline {6.1.2}Joint Detection Module }{48}{subsection.114}
-\contentsline {paragraph}{Network Architectures}{49}{section*.119}
-\contentsline {paragraph}{Conclusions}{53}{section*.128}
-\contentsline {section}{\numberline {6.2}Performance of loss functions}{53}{section.129}
-\contentsline {subsection}{\numberline {6.2.1}Our custom loss function CILoss}{54}{subsection.132}
-\contentsline {chapter}{\numberline {7}Conclusion and future thoughts}{57}{chapter.134}
-\contentsline {chapter}{\numberline {A}Bibliography}{61}{appendix.135}
+\contentsline {section}{\numberline {4.2}Synthetic Dataset: 3DPeople}{32}{section.82}
+\contentsline {section}{\numberline {4.3}Data Processing}{33}{section.84}
+\contentsline {chapter}{\numberline {5}Method}{35}{chapter.86}
+\contentsline {section}{\numberline {5.1}Training Performance (human parts)}{37}{section.89}
+\contentsline {section}{\numberline {5.2}Inference Runtime Analysis}{38}{section.92}
+\contentsline {section}{\numberline {5.3}Implementation Details}{39}{section.93}
+\contentsline {chapter}{\numberline {6}Experiments}{41}{chapter.94}
+\contentsline {section}{\numberline {6.1}Ablation Study}{41}{section.95}
+\contentsline {subsection}{\numberline {6.1.1}Body Parts Detection Module }{41}{subsection.106}
+\contentsline {paragraph}{Comparison of network architectures}{43}{section*.107}
+\contentsline {paragraph}{Summary}{46}{section*.113}
+\contentsline {subsection}{\numberline {6.1.2}Joint Detection Module }{46}{subsection.114}
+\contentsline {paragraph}{Network Architectures}{47}{section*.119}
+\contentsline {paragraph}{Conclusions}{51}{section*.128}
+\contentsline {section}{\numberline {6.2}Performance of loss functions}{51}{section.129}
+\contentsline {subsection}{\numberline {6.2.1}Our custom loss function CILoss}{52}{subsection.132}
+\contentsline {chapter}{\numberline {7}Conclusion and future thoughts}{55}{chapter.134}
+\contentsline {chapter}{\numberline {A}Bibliography}{59}{appendix.135}
