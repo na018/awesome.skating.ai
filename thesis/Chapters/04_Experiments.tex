@@ -400,19 +400,17 @@ learned network parameters $\theta$~\cite{gridsearch}.
 
 \section{Performance of loss functions}
 
-We trained the Keypoint Detection and Body Part Extraction modules with MSE.
+The Keypoint Detection and Body Part Extraction modules were trained with MSE.
 
-However, with our Body Part Detection Module we initially had problems with class imbalances.
-First, we conducted our training with Sparse Categorical Cross Entropy (SCCE)
+Initially class imbalance problems occured when training the Body Part Detection Module.
 
-
-Nevertheless, our first results~\ref{fig:cross_entropy_pred_img} made us believe that with SCCE our net was not able to
+Nevertheless, first results~\ref{fig:cross_entropy_pred_img} rose thoughts that with \gls{SCCE} the neural net was not able to
 learn the correct labels for the pixels.
 Especially the prediction after the 60th epoch shows, that the net mainly has learned to classify all body parts with the
 torso class.
-We assumed this was the case, because the likeliness of the pixel to be of class torso is higher than, for
+There, one could assume that this was the case, because the likeliness of a pixel to be of class torso is higher than, for
 example, foot.
-Furthermore, however, the accuracy graph shows descent results over 94 percent it started to flatten more and more becoming
+Furthermore, however, the accuracy graph shows descent results over 94 percent, it started to flatten more and more becoming
 almost flat after the 50th epoch already.
 \begin{figure}[H]
     \centering
@@ -428,9 +426,9 @@ almost flat after the 50th epoch already.
     \caption[Loss Functions SCCE: predictions]{Predicted images for training with Sparse Categorical Cross Entropy loss function}
     \label{fig:cross_entropy_pred_img}
 \end{figure}
-We then created our own loss function for this class imbalance problem as explained in~\autoref{ciloss}.
-Moreover, we reduced the number of classes from 14 to nine accumulating left and right body parts such as foot and arm.
-A later experiment shows, on the contrary, that our build network HRNetv3 even learns slightly better than with our own created
+As a result a custom loss function was crafted to meet the named problem of class imbalances as explained in~\autoref{ciloss}.
+Moreover, the number of classes were reduced from 14 to nine, accumulating left and right body parts such as foot and arm.
+A later experiment shows, on the contrary, that the built network HRNetv3 even learns slightly better using \gls{SCCE} than with the created
 loss function CILoss~\ref{fig:ablation-accuracy}.
 Even though, this of course could be by chance due to current training circumstances.
 
@@ -441,18 +439,17 @@ This loss function confronts the problem of class imbalance, which especially oc
 The background pixels appear most often, and the different body part classes occur much less often and they even
 differ a lot in their relative occurrence.
 \\\mbox{}\\
-We try to confront this problem with a weighed map $\mu$, which takes the body parts as a graph and calculates
-the distances from each body part $b_x$ to all other body parts $b_n$, and store this data inside a table.
-This weighed map $\mu$ is applied to the true labels of $y_{true}$ so that wrong predictions further away from the true
-class will be punished more. For example if the network predicts hand instead of lower arm, the error will be less as if
-the network predicts foot.
-\\\mbox{}\\
+This problem is confronted with a weighed map $\mu$, which takes the body parts as a graph and calculates
+the distances from each body part $b_x$ to all other body parts $b_n$, and stores the data inside a table.
+The weighed map $\mu$ is applied to the true labels of $y_{true}$ so that wrong predictions further away from the true
+class will be punished more. For example, if the network predicts hand instead of lower arm, the error will be less than if
+the network would have had predicted foot.
 Additionally, this weight map is evened out with a multiplier to reduce the distances and facilitate
 the learning process for the network.
-\\\mbox{}\\
-As in MSE we calculate the difference $\mathcal{E}$ between $y_t$ and $y_p$, but do not square the result, we just use the absolute value.
-We multiply the resulting error $\mathcal{E}$ with our weighed map receiving $\delta$.
-To calculate the loss we then sum the error $\mathcal{E}$ and delta $\delta$ pixel-wise:
+As in \gls{MSE} the difference $\mathcal{E}$ between $y_t$ and $y_p$ is calculated, but the result is not squared.
+Instead the absolute values are used.
+The resulting error $\mathcal{E}$ is multiplied with the weighed map receiving $\delta$.
+To calculate the loss, then sum of the error $\mathcal{E}$ and delta $\delta$ are calculated pixel-wise:
 
 $$\mathcal{E}=y_t(x)-y_p(x)$$
 $$\delta=\theta\cdot\mu[argmax(y_t)] $$
@@ -463,6 +460,6 @@ $$L=\sum_{i=0}^{n}\mathcal{E}_i+\delta_i$$
     \centering
     \includegraphics[width=\textwidth,height=\textheight,keepaspectratio]{img/loss_calculation.png}
     \decoRule
-    \caption[Loss Functions CILoss: Calculation]{Visualization of our custom loss function CILoss}
+    \caption[Loss Functions CILoss: Calculation]{Visualization of the in this thesis custom developed loss function CILoss}
     \label{fig:ciloss-calc}
 \end{figure}
