@@ -3,51 +3,51 @@
 \chapter{Conclusion and future thoughts}
 \label{conclusion}
 Inspired by popular research from \textit{OpenPose, VidePose3d} or \textit{Simulation of figure skating} ~\cite{openpose, videopose3d, figureskatingsimulation}
-which all have problems to correctly predict keypoints for spins in figure ice skating, we covered several
-analytical aspects such as motion capture, network architectures, and the analysis of optimizer and loss functions.
+which all have problems to correctly predict human joint locations for spins in figure ice skating, this thesis analyzed
+several aspects such as motion capture with connection to dataset creation techniques and network architectures with influence of optimizer and loss functions.
 \\\mbox{}\\
-We successfully created a new high resolution fully convolutional neural network HRNetv3, which includes state-of-the-art
+The result of this research work is a successfully created new high resolution fully convolutional neural network HRNetv3, which includes state-of-the-art
 research findings from I.a. HRNet, HRNetV2, and MobileNet~\cite{HRNetv1, HRNetv2, mobilenet}.
-\\\mbox{}\\
-Our architecture accomplished to predict keypoints by learning from the synthetic dataset 3DPeople~\cite{3dpeople}.
-In sum, we have built three modules for background extraction, human parts detection, and keypoint recognition.
-These modules partly correspond to concepts used in other state-of-the-art research such as \textit{OpenPose}, however, our
+This algorithm accomplished to predict human joint locations by learning from the synthetic dataset 3DPeople~\cite{3dpeople}.
+In sum, three modules for background extraction, human parts detection, and keypoint recognition were created.
+These modules partly correspond to concepts used in other state-of-the-art research such as \textit{OpenPose}, however, the
 single ice skating domain specific background extraction module stands out other architectures.
 \\\mbox{}\\
-For our applied research, we have created a Python 3.7 project with Tensorflow 2~\cite{tensorflow2} as core library.
-We conducted our experiments in multiple Docker containers with the Tensorflow:\textit{latest-devel-gpu} as base
+For the applied research, a Python 3.7 project  was built with Tensorflow 2~\cite{tensorflow2} as core library.
+Several experiments were performed in multiple Docker containers with the Tensorflow:\textit{latest-devel-gpu} as base
 image~\cite{tensorflowdocker}
-In fact, we have spent lots of efforts to write good readable code with a decent OO-style following the \textit{SOLID} principle.
-So our Github repository, which we plan to make publicly available, might help to promote further research in this topic.
-Especially, our feature-driven approach making use of Github's feature pull request style and the formulation of proper
-commits helped us to iteratively improve our project architecture.
+In fact, lots of efforts was spent to write good readable code with a decent OO-style following the \textit{SOLID} principle.
+So our Github repository, which is planned to be made publicly available, might help to promote further research in this topic.
+Especially, the in this work used feature-driven approach making use of Github's feature pull request style and the formulation of proper
+commit messages helped to iteratively improve our project architecture in a continuous style.
 \\\mbox{}\\
-Since the data is one of the main aspects deciding whether a neural network learns the desired predictions, we looked into
-motion capturing as well, since we could not find an appropriate figure ice skating dataset for keypoint recognition.
-We took some captures with the inertial motion capture set from XSens.
+Since the data is one of the main aspects deciding whether a neural network learns the desired predictions, a look at
+motion capturing was taken and the generation of an according dataset investigated.
+Further, an appropriate figure ice skating dataset for human joint recognition did not exist at the writing time of this thesis.
+Some recordings were captured with the inertial motion capturing set from XSens.
 The setup felt very time-consuming and the cables all over the body connected to the battery and sensors felt very uncomfortable
-for recording on the ice.
-Additionally, multiple calibrations had to be done, probably because the system was not prepared
-for sliding movements.
+for the skaters on the ice.
+Additionally, multiple calibrations had to be conducted, probably because the system was not prepared
+for the typical gliding movements on the ice surface.
 Nevertheless, after the imposing capture, the integration into Blender and use of MakeHuman for creating a synthetic dataset
 became very promising.
-We especially value the diversity of data or video sequences that are possible from just one motion capture recording.
-Which is why we are absolutely convinced that this is the way to gain decent data for an artistic sport such as figure
+Especially the diversity of data or video sequences possible from just one motion capture recording is highly valuable.
+This is why it is very convincing that this is the way to gain decent data for an artistic sport such as figure
 ice skating.
-Yet, we think that in comparison to 3DPeople, where random background images are put behind the person in action, even
-better results would be possible, if an ice arena simulation was added to Blender, producing even more realistic scenes.
-Another caveat we encountered when looking closely at the spins from figure ice skaters winning world championships such as
-Evgenia Medvedeva or Alina Zagitova~\cite{2018world}, we observed that these spins include a high level of motion blur.
-Nevertheless, our data from 3DPose included only image sequences without any blurriness, which is why we believe that
-predictions in the wild on spins such as the Biellmann with a lot of blurriness, keypoints could not be predicted accurately.
+Yet, whey critically reviewing \textit{3DPeople}, where they used random background images which they put behind the moving actors,
+results could improve, if an ice arena simulation was added to Blender, producing even more realistic scenes.
+Another encountered caveat regarding spins was the huge amount of motion blurriness especially for skaters with high levels such as olympic or world championships winning
+Evgenia Medvedeva or Alina Zagitova~\cite{2018world}.
+Nevertheless, the data from \textit{3DPeople} included only image sequences without any blurriness, being one of the reasons why
+the algorithm has difficulties to correctly predict human joints for spins such as the Biellmann pirouette.
 \\\mbox{}\\
-Throughout our research, we spurned further ideas on how to continue in this topic of keypoint recognition.
+Throughout this research, further ideas on how to continue in this topic of human joint recognition arose.
 First, creating a decent synthetic dataset for figure ice skating adding motion blurriness and improving the recorded scene
 in Blender.\\
 Furthermore, test other motion capturing methods as for example the \textit{Awinda} set from XSens, which could be much more comfortable
-and faster to apply, because the sensors are wireless, and no cables restricting movements on the ice, must be delt with.
+and faster to apply, because the sensors are wireless, and no cables restricting movements on the ice, must be dealt with.
 Additionally, tests could be conducted with a markerless system such as Vicon~\cite{mocapoptical}.
-\\\mbox{}\\
+\\\mbox{}\\%%%%
 Our network architecture could become more compact and better in performance by applying a grid search with multiple different
 parameters.
 Moreover, the temporal information from a video could add additional information, allowing to faster and more efficiently
