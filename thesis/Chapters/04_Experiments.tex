@@ -4,15 +4,15 @@
 \chapter{Experiments} % Main chapter title
 
 \label{experiments} % Change X to a consecutive number; for referencing this chapter elsewhere, use \ref{ChapterX}
-We conducted several experiments on our human parts and keypoint detection module.
-In fact, we applied the resulting network architecture from the human parts module later to the background extraction module.
-All in all, we investigated eight network architecture variants differentiating in commonly discussed parameters.
-For the keypoint detection module, we conducted tests with and without Dense layers.
-On the human parts detection module, we tested the three state-of-the-art optimizers Adam, Nadam, and SGD and experimented with little
-modifications to the SGD optimizer.
-To overcome class invariance, we tried out three different loss functions of which one we have come up with
-ourselves.
-In the subsequent sections we will present our experimental setup, results, and constructive thoughts behind the studies.
+Several experiments were conducted on the human parts and keypoint detection modules.
+In fact, the resulting network architecture from the human parts module was applied later to the background extraction module.
+All in all, eight network architecture variants differentiating in commonly discussed parameters presented in \autoref{theory}
+were investigated.
+For the keypoint detection module, tests with and without \code{Dense} layers were conducted.
+On the human parts detection module, the three state-of-the-art optimizers \textit{Adam, Nadam,} and \textit{SGD} were tested and little
+modifications to the \textit{SGD} optimizer were experimented with.
+To overcome class invariance, three different loss functions were examined of which one as developed in the scope of this research work.
+In the subsequent sections the experimental setup, results, and constructive thoughts behind the studies will be explained.
 %----------------------------------------------------------------------------------------
 %	SECTION 1
 %----------------------------------------------------------------------------------------
@@ -58,60 +58,63 @@ In the subsequent sections we will present our experimental setup, results, and 
 \subsection{Body Parts Detection Module }
 \label{RBP}
 
-In~\ref{fig:ablation-accuracy} we demonstrate our network architectures, which range from 88 until 177 layers and are
+In~\ref{fig:ablation-accuracy} the in this research work developed network architectures are outlined.
+These range from 88 until 177 layers and are
 all fully convolutional networks.
-For the HRNet \textit{(traditional)}~\ref{HRNet:traditional} we slightly deviate the HRNetV2 presented in~\cite{HRNetv2} by replacing the pooling
-layers with strided-down and transposed convolutional layers.
+For the HRNet \textit{(traditional)}~\ref{HRNet:traditional} the HRNetV2 presented in~\cite{HRNetv2} was slightly deviated
+by replacing the \code{Pooling}
+layers with \code{strided-down} and \code{transposed convolutional} layers.
 The amount of levels and sizes of the feature maps correspond to~\ref{fig:custom_hrnet}.
-As in HRNetV2 we use 4 stages with a filter size of 64 for each stage.
-We add one level per stage starting with just the highest level $\mathcal{N}_L$
-and concatenate the levels from stage 2 ongoing as demonstrated in HRNetV2.\\
-For the HRNet \textit{(filters)}~\ref{HRNet:filter}, we adjust the filters in a way, so that higher levels use fewer filters then lower levels.
-Additionally, we decrease the filters from the convolutional layers in the level blocks, starting from the highest filter
-amount reducing until 36.
-All levels are concatenated with a filter size of 36.\\
+As in HRNetV2 4 stages are used with a filter size of 64 for each stage.
+One additional level per stage starting with just the highest level $\mathcal{N}_L$
+and the concatenations of the levels from stage 2 ongoing are demonstrated with HRNetV2.\\
+For the HRNet \textit{(filters)}~\ref{HRNet:filter}, the filters are adjusted in a way, so that higher levels use fewer filters then lower levels.
+Additionally, the filter amount of the \code{convolutional} layers is decreased in the level blocks, starting from the highest filter
+amount, and reducing until 36.
+All levels are \code{concatenated} with a filter size of 36.\\
 Subsequent architectures all make use of the adjusted filter amount.\\
-For the HRNet \textit{(3 stages)}~\ref{HRNet:3s}, we only use the three first stages from~\ref{HRNet:filter} and omit
-$\mathcal{N}_{XS}$.\
-In HRNet \textit{(stide-down-up)}~\ref{HRNet:stride}, we stride down the Input from 240x320x3 to 120x160x36 and use this layer as Input layer
-and highest Level $\mathcal{N}_L$. Lower layers scale relatively to $\mathcal{N}_L$.
-The HRNet \textit{stride-down-up-input}~\ref{HRNet:stride-i} uses the initially strided down Input layer as input for
-every stage instead of the concatenated results for lower levels.\\
-As presented in the MobileNet paper~\cite{mobilenet} in~\ref{HRNet:add-dwconv} we experiment with depth-wise convolution
-and replace the Concatenation layers after each stage with Add layers.\\
-In the UNet~\ref{UNet} we use all levels and combine them via concatenation according to the traditional UNet~\cite{unet}.\\
-Finally, we present our resulting high-to-low resolution network HRNet \textit{(v3)}~\ref{HRNet:v3}, where we fuse
-the first stages and only concatenate the last stage. Furthermore, we conducted some adjustments to the layer amount
-in the levels and stages as presented in~\autoref{method}.
+For the HRNet \textit{(3 stages)}~\ref{HRNet:3s}, only the three first stages from~\ref{HRNet:filter} are used and
+$\mathcal{N}_{XS}$ is omitted.\\
+In HRNet \textit{(stide-down-up)}~\ref{HRNet:stride}, the Input from 240x320x3 is strided down to 120x160x36 and this layer is used as \code{Input} layer
+and highest level block $\mathcal{N}_L$. Lower layers scale relatively to $\mathcal{N}_L$.
+The HRNet \textit{stride-down-up-input}~\ref{HRNet:stride-i} uses the initially strided down \code{Input} layer as input for
+every stage instead of the concatenated results of lower levels.\\
+As presented in the \textit{MobileNet} paper~\cite{mobilenet} in~\ref{HRNet:add-dwconv} \code{depth-wise convolution} is experimented with
+and the \code{Concatenation} layers are replayed after each stage with \code{Add} layers.\\
+In the UNet~\ref{UNet} all levels are used and combined via \code{concatenation} according to the traditional UNet~\cite{unet}.\\
+Finally, the resulting high-to-low resolution network HRNet \textit{(v3)}~\ref{HRNet:v3} is presented, where
+the first stages are fused and only concatenate the last stage is concatenated. Furthermore, some adjustments to the layer amount
+in the levels and stages where applied as presented in~\autoref{method}.
 \\\mbox{}\\
 The HRNet stride-down-up~\ref{HRNet:stride} seems to train the fastest, when looking at~\ref{fig:ablation-correct-px} the
 4.705kth step, it is only at three days and 13h closely followed by the traditional HRNet with the adjusted filters~\ref{HRNet:add-dwconv}
 which is at 3 days and 13h. All other trainings took more than four days at that time.
 However, one has to keep in mind that both trainings where conducted at the same dates, and the other dates differ.
-So the server could have had other workloads, nevertheless, our trainings were the only ones running on the server most
+So the server could have had other workloads, nevertheless, the trainings were the only ones running on the server most
 of the time. This occasion as well is reflected in the training time of one epoch.
 There as well both the HRNet \textit{stride-down-up} and HRNet \textit{adjusted-filter} only took about ~63, ~66 seconds,
 where all the others took more then 80 seconds.
-However, we would have expected the U-Net or HRNet \textit{3 stages} to be the fastest since they have the smallest
+However, one would have expected the U-Net or HRNet \textit{3 stages} to be the fastest since they have the smallest
 amount of layers and trainable parameters.
 Further, the HRNet \textit{stride-down-up-input} contains less trainable parameters then \textit{stride-down-up}, so
-we would have expected a faster training process here.
-This verifies that the measurements are dependent from various circumstances.
-Indeed, to improve comparability, we measured the third epoch to omit starting warm up phases.
-\\\mbox{}\\
-\paragraph{Comparison of network architectures}\mbox{}\\
+one would have expected a faster training process there.
+This verifies that the measurements are dependent on various circumstances.
+Indeed, to improve comparability, only the third epoch was measured to omit starting warm up phases.
+
+
+\subsubsection{Comparison of Network Architectures}
 %
 The U-Net~\ref{UNet} has the smallest amount of layers with 88 and 654,261 trainable parameters.
-The HRNet \textit{stride-down-up}~\ref{HRNet:stride} composes most trainable parameters with 4,949,157 and 177 layers, since the input
+The HRNet \textit{stride-down-up}~\ref{HRNet:stride} composes most trainable parameters with 4,949,157 and 177 layers, since the Input
 layer is first strided down and at the end transposed up again.
 On the other hand, due to the reduced feature map sizes, this reduces the computation effort as well.
 All comparison figures show very similar curves.
-Since we could only run our experiments one complete training each, the results must be viewed circumspectly.
+Since the experiments could only be performed one complete training each, the results must be viewed circumspectly.
 All figures~\ref{fig:ablation-accuracy, fig:ablation-correct-px, fig:correct-pixel-ratio} show very steep curves until
 the 500th episode and start to flatten then.\\
 When looking at~\ref{fig:train-img-0} and~\ref{fig:train-img-20} this steep initial increase is visually reflected.
-When after the first episode the circumferences of the body shapes are predicted vaguely, after the 20th episode the
-networks have already learned to predict the locations of body parts relatively close.
+Even if, after the first episode the circumferences of the body shapes are predicted vaguely, after the 20th episode the
+networks have already learned to predict the locations of body parts relatively close to the real ones.
 Of course, there has to be regarded, that the different predictions were made on different poses, which might differ in
 their complexity.
 Nevertheless, the UNet~\ref{UNet} and the HRNetV3~\ref{fig:hp_accuracy_hrnet_v3} seem to accomplish superior performance.
@@ -127,12 +130,12 @@ In the 20th episode then the labels seem to be estimated very close to the true 
     \label{fig:ablation-accuracy}
 \end{figure}
 
-The accuracy graph shows that the HRNet \textit{traditional} and HRNetV3 get the best results from epoch 500 onwards.
+The accuracy graph shows that the HRNet \textit{(traditional)} and HRNetV3 get the best results from epoch 500 onwards.
 At step 55.55k they reach 99 percent.
-However, the HRNet \textit{stride-down-up} has a lower curve until the 4.3kth epoch, it then makes a jump in Accuracy
+However, the HRNet \textit{(stride-down-up)} has a lower curve until the 4.3k$^{th}$ epoch, it then makes a jump in accuracy
 and at the end reaches 99 percent as well.
 Interestingly the U-Net with the by far fewest parameters and layers does receive very good results as well making almost
-99 percent in Accuracy at the end.
+99 percent in accuracy at the end.
 The HRNet with only three stages shows the lowest curve and reaches only 98.87 percent points on accuracy at the end.
 
 \begin{figure}[H]
@@ -144,7 +147,7 @@ The HRNet with only three stages shows the lowest curve and reaches only 98.87 p
 \end{figure}
 
 The correct pixel graph~\ref{fig:ablation-correct-px} measures how many pixels of the 240x320 image where predicted correctly
-in one batch. The maximum which could be reached here is $240\times320\times3=\numprint{230400}$.
+in one batch. The maximum which could be reached is $240\times320\times3=\numprint{230400}$.
 Since the single epochs vary a lot, it makes more sense to look at the smoothed results.
 The curves again are very close to each other, with the best results coming from the HRNetV3 with $\numprint{219670}$ and
 the HRNet \textit{traditional} with $\numprint{219640}$.
@@ -158,13 +161,13 @@ The lowest curve again shows the HRNet \textit{3 stages}.
     \label{fig:correct-pixel-ratio}
 \end{figure}
 
-For~\ref{fig:correct-pixel-ratio} we summed up the amount of body part pixels and divided by the amount of correctly
+For~\ref{fig:correct-pixel-ratio} the amount of body part pixels was summed up and divided by the amount of correctly
 predicted pixels for one training batch.
 This figure as well displays high variances for the different epochs, which is why it is important to take the smoothed
-values into account. We receive similar courses as already inspected in~\ref{fig:ablation-correct-px}.
-The HRNet \textit{traditional} and HRNetV3 take the lead wih the \textit{traditional} being slightly above the HRNetV3
-with 0.05 percent points. With 31.44 percent the HRNet \textit{traditional} shows the best results, whereas HRNet
-\textit{3 blocks} performs worst with 30.38 percent at step 4.93k.
+values into account. Similar courses are received as already inspected in~\ref{fig:ablation-correct-px}.
+The HRNet \textit{(traditional)} and HRNetV3 take the lead wih the \textit{(traditional)} one being slightly above the HRNetV3
+with 0.05 percent points. With 31.44 percent the HRNet \textit{(traditional)} shows the best results, whereas HRNet
+\textit{(3 blocks)} performs worst with 30.38 percent at step 4.93k.
 
 \begin{figure}[H]
     \centering
@@ -184,15 +187,15 @@ with 0.05 percent points. With 31.44 percent the HRNet \textit{traditional} show
 \end{figure}
 
 \paragraph{Summary}\mbox{}\\
-In summary, our experiments show that our constructed HRNetV3 performs best, and the HRNet with only three stages performs
+In summary, the here presented experiments show that the in this thesis constructed HRNetV3 performs best, and the HRNet with only three stages performs
 worst.
-Interesting here would be different variations in the level of feature map sizes.
+Interesting here would be to investigate the different variations in the level of feature map sizes.
 For instance what would happen if the level $\mathcal{N}_{XS}$ was maintained as smallest level and the level
 $\mathcal{N}_M$ was strided down slightly more?
 Insightful as well is the performance of the UNet, which has less than half of trainable parameters and layers compared to
-the HRNet \textit{traditional} or HRNetV3, but does not perform much worse.\\
-Additionally, further tweaks and studies in these network architectures applied to our different modules would be
-greatly enlightening.
+the HRNet \textit{traditional} or HRNetV3, but does not perform much worse.
+Additionally, further tweaks and studies in these network architectures applied to the different modules would be
+greatly enlightening for further studies.
 
 
 %-----------------------------------
@@ -220,26 +223,27 @@ greatly enlightening.
 \end{table}
 \setcounter{rowcntr}{0}
 
-\paragraph{Network Architectures}\mbox{}\\
-We created three variations of keypoint detection network architectures of which two\ref{kps-dense, kps-dense-blockl}
+\subsubsection{Network Architectures}
+The subsequent presented experiments are based on
+three created variations of keypoint detection network architectures of which two\ref{kps-dense, kps-dense-blockl}
 utilize Dense layers to estimate the keypoint locations and KPS-FCN~\ref{kps-hrnet} implements the third stage of our
-build HRNetV3.\\
-KPS-Dense~\ref{kps-dense-blockl}, additionally to the dense stage, utilizes the third stage of the HRNetV3.\\
-The dense stage first uses max pooling to reduce the feature map size from 240x230x9 to 120x160x1, 58x78x32, and then 28x38x64.
-The resulting pooling layer is flattened and followed by two dense layers, which are combined with AlphaDropout and
+build HRNetV3.
+KPS-Dense~\ref{kps-dense-blockl}, additionally to the Dense stage, utilizes the third stage of the HRNetV3.\\
+The Dense stage first uses max pooling to reduce the feature map size from 240x230x9 to 120x160x1, 58x78x32, and then 28x38x64.
+The resulting \code{Pooling} layer is flattened and followed by two Dense layers, which are combined with Dropout and
 batch normalization.
 The layers include 1024 and 512 units.
 The first Dense layer is connected to a Softmax activation function,
-the second to a linear activation function. The model estimates 38 x,y coordinates for the keypoint locations.
-The networks loss function calculates the distance from the predicted keypoint locations to the true locations and optimizes
-the networks via mean-squared-error.\\
+the second to a linear activation function. The model estimates 38 x,y coordinates for the human joint locations.
+The network's loss function calculates the distance from the predicted keypoint locations to the true locations and optimizes
+the network's via mean-squared-error.
 In fact, the KPS-FCN~\ref{kps-hrnet} only uses convolutional layers.
-The true labels calculate gaussians with a radius size of three for the locations of the keypoints.
-We combined the keypoint classes for equal body locations such has legs and arms, resulting in 11 joint classes.
-This network predicts 11 different labels for the classes. The network is optimized as well with mean-squared-error.
-
-All networks are trained with an Adam optimizer and a learning rate of 0.001 and run for 5556 epochs.
-
+The true labels calculate Gaussians with a radius size of three for the locations of the keypoints.
+The keypoint classes are combined for equal body locations such has legs and arms, resulting in 11 joint classes.
+This network predicts 11 different labels for the classes, and is further optimized with mean-squared-error.
+%
+All networks are trained with an Adam optimizer with a learning rate of 0.001 and run for 5556 epochs.
+%
 \begin{figure}[H]
     \centering
     \includegraphics[width=\textwidth, height=\textheight, keepaspectratio]{Figures/ablation_study_kps_imgs.png}
@@ -248,7 +252,7 @@ All networks are trained with an Adam optimizer and a learning rate of 0.001 and
     after first, 20th and last episode}
     \label{fig:kps-train-imgs}
 \end{figure}
-
+%
 Both figures~\ref{fig:kps-map-loss},~\ref{fig:kps-loss} show similar curves.
 Until the 500th episode they decrease steeply and then they start to flatten.
 KPS-Dense~\ref{kps-dense} has the fewest layers with 13, however KPS-FCN~\ref{kps-hrnet} contains only 1,109,991
@@ -285,10 +289,9 @@ upward per epoch learning the other keypoint locations in a continuous way.
 
 
 
-\subsection*{Experiments with optimizers}
-We conducted our training with Mini-Batch Gradient Descent with a batch size of three.
-In addition, we will present some mathematical backgrounds of optimizer algorithms and explain further aspects of
-SGD in more detail.
+\subsection{Experiments with Optimizers}
+All trainings were conducted with Mini-Batch Gradient Descent and a batch size of three.
+
 \begin{figure}[H]
     \centering
     \includegraphics[width=\textwidth,height=\textheight,keepaspectratio]{img/learning_rate2.png}
@@ -296,14 +299,14 @@ SGD in more detail.
     \caption[Experiments: Learning Rate SGD]{Experiments with Learning Rate SGD.}
     \label{fig:sgd-learning-rate}
 \end{figure}
-In our experiments we tested SGD, Adam, and Nadam all with initial learning rates of $\eta=0.001$.
-We configured SGD to use Nesterov Momentum with a value of $\gamma=0.9$, Adam with epsilon $\epsilon=1e-7$ and AMSGrad.
+In the here presented experiments \gls{SGD}, \gls{Adam}, and \gls{Nadam} optimization algorithms were tested, all with initial learning rates of $\eta=0.001$.
+\gls{SGD} was configured in a way to use Nesterov Momentum with a value of $\gamma=0.9$, \gls{Adam} with epsilon $\epsilon=1e-7$ and AMSGrad.
 Nadam used the exponential decay parameters $\beta_1=0.9; \beta_2=0.999$ and epsilon $\epsilon=1e-7$.
-Additionally, we conducted several tests with the learning rate in SGD and its influence on the training process.
-One SGD configuration is with a constant learning rate $\eta$, one decays with $\eta=0.01$, and one learning rate
+Additionally, several tests on the learning rate variations for \gls{SGD} were tested and its influence on the training process was investigated.
+One \gls{SGD} configuration is with a constant learning rate $\eta$, one decays with $\eta=0.01$, and one learning rate
 decays with $\eta=0.01$, but will reset to the initial learning rate, when no significant learning or changes regarding
 the loss value is observed over the last 50 epochs anymore.
-Another experiment with SGD increases the ascent of decay when a plateau is hit with increasing decay values
+Another experiment with \gls{SGD} increases the ascent of decay when a plateau is hit with increasing decay values
 $[1e-5, 1e-4, 1e-3, 1e-2]$ as visualized in ~\ref{fig:sgd-learning-rate}.
 
 
@@ -321,7 +324,7 @@ $[1e-5, 1e-4, 1e-3, 1e-2]$ as visualized in ~\ref{fig:sgd-learning-rate}.
 
 %https://mlfromscratch.com/optimizers-explained/#/
 
-\subsubsection*{Comparison of Adam, Nadam and SGD}
+\subsubsection{Comparison of Adam, Nadam and SGD}
 \begin{figure}[H]
     \centering
     \includegraphics[width=\textwidth,height=\textheight,keepaspectratio]{img/accuracy_all.png}
@@ -330,16 +333,16 @@ $[1e-5, 1e-4, 1e-3, 1e-2]$ as visualized in ~\ref{fig:sgd-learning-rate}.
     \label{fig:accuracy}
 \end{figure}
 
-The Figure on accuracy~\ref{fig:accuracy} shows that our network makes huge learn progress in the first
+The Figure on accuracy~\ref{fig:accuracy} shows that our network makes huge learning progresses in the first
 200 to 300 epochs with an ascent of almost 90 degrees.
-However, the graph shows that SGD performs worse than Adam or Nadam, all networks reach a commendable accuracy above
-98 percent, whereas Nadam even gets over the 99 percent mark.
-Adam and Nadam start to flatten a little bit later than SGD about 100 epochs.
-Furthermore, their curves flatten more evenly, whereas SGD
+However, the graph shows that \gls{SGD} performs worse than \gls{Adam} or \gls{Nadam}, all networks reach a commendable accuracy above
+98 percent, whereas \gls{Nadam} even gets over the 99 percent mark.
+\gls{Adam} and \gls{Nadam} start to flatten a little bit later than \gls{SGD} about 100 epochs.
+Furthermore, their curves flatten more evenly, whereas \gls{SGD}
 seems to flatten more abruptly.
-Interestingly, the SGD optimizer, where we reset the learning rate on plateau, shows jumps in its curve.
-There one can observe the typical flattening of SGD and then, when a reset took place, the learning process starts again.
-This indicates that SGD hit local minima from which it seems to jump out and re-trigger the adjustment of $\theta$.
+Interestingly, the \gls{SGD} optimizer shows jumps in its curve, when the learning rate is resetted when facing a plateau.
+There one can observe the typical flattening of \gls{SGD} and then, when a reset took place, the learning process starts again.
+This indicates that \gls{SGD} hit a local minimum from which it seems to jump out and re-trigger the adjustment of $\theta$.
 
 %\begin{figure}[H]
 %    \centering
@@ -369,16 +372,17 @@ This indicates that SGD hit local minima from which it seems to jump out and re-
 \end{figure}
 Similar process curve trends can be observed in~\ref{fig:loss}, while the curves are mirrored at the x-axis.
 This correlation of loss and accuracy trend proves the associate learning process for the different optimizers.
-\\\mbox{}\\
-\paragraph{Conclusions}\mbox{}\\
-Our results are reflected by the research from Choi et Al~\cite{empiricaloptimizers}.
-They conducted very interesting research with the thesis that more general optimizers would never underperform
+
+
+\subsubsection{Conclusions}
+The here presented results are reflected by the research from Choi et Al~\cite{empiricaloptimizers}.
+They conducted a very interesting research with the thesis that more general optimizers would never underperform
 the ones they approximate.
-Meaning RMSProp, Adam and Nadam would always perform at least as good if not better than Momentum, Nesterov or SGD.
+Meaning \gls{RMSProp}, \gls{Adam} and \gls{Nadam} would always perform at least as good if not better than Momentum, Nesterov or \gls{SGD}.
 They impose to carefully tune the hyperparameters and not just conclude an optimizer would work better than another one.
-This is why we used very commonly recommended hyperparameters.
+This is why in this investigative work very commonly recommended hyperparameters were used and experimented with.
 A continuing grid search could help to find an even more efficient way for training and probably even result in better
-learned network parameters $\theta$.
+learned network parameters $\theta$~\cite{gridsearch}.
 %\begin{figure}[H]
 %    \centering
 %    \includegraphics[width=\textwidth,height=\textheight,keepaspectratio]{img/loss_sgd.png}
@@ -431,7 +435,7 @@ loss function CILoss~\ref{fig:ablation-accuracy}.
 Even though, this of course could be by chance due to current training circumstances.
 
 
-\subsection{Our custom loss function CILoss}
+\subsection{Custom Developed Loss Function: CILoss}
 \label{ciloss}
 This loss function confronts the problem of class imbalance, which especially occurs in body part recognition.
 The background pixels appear most often, and the different body part classes occur much less often and they even
