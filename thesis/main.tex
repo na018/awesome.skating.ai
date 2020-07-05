@@ -43,10 +43,24 @@
 
 \usepackage[utf8]{inputenc} % Required for inputting international characters
 \usepackage[T1]{fontenc} % Output font encoding for international characters
-
+\usepackage{subcaption}
 \usepackage{tikz}
 \usepackage{pgfplots}
 \usepackage{pgfplotstable}
+\usepackage{amsmath}
+\DeclareMathOperator{\logsumexp}{logsumexp}
+\pgfmathdeclarefunction{sumexp}{3}{%
+\begingroup%
+\pgfkeys{/pgf/fpu,/pgf/fpu/output format=fixed}%
+\pgfmathsetmacro{\myx}{#1}%
+\pgfmathtruncatemacro{\myxmin}{#2}%
+\pgfmathtruncatemacro{\myxmax}{#3}%
+\pgfmathsetmacro{\mysum}{0}%
+\pgfplotsforeachungrouped\XX in {\myxmin,...,\myxmax}%
+{\pgfmathsetmacro{\mysum}{\mysum+exp(\XX)}}%
+\pgfmathparse{\mysum+exp(#1)}%
+\pgfmathsmuggle\pgfmathresult\endgroup%
+}%
 
 \pgfplotsset{compat = newest}
 
@@ -272,7 +286,7 @@ Application Scope} % Your thesis title, this is used in the title and abstract, 
         detection.
         The applied research reveals multiple findings regarding different training settings, optimizing functions,
         and motion capturing techniques for the special application scope of figure ice skating.
-        In particular, multiple elaborated concepts are meant to further spurn research of pose recognition in artistic sports.
+        In particular, multiple elaborated concepts are meant to further spur research of pose recognition in artistic sports.
         \null\vspace{\fill}
     \end{poliabstract}
 
@@ -281,7 +295,7 @@ Application Scope} % Your thesis title, this is used in the title and abstract, 
         Die Erkennung von Gelenken beim Menschen dient als Fundament für maschinelle Algorithmen,
         um menschliche Bewegungsabläufe erkennen zu können.
         Dieses Verständins ist vor allem im Eiskunstlauf von großer Bedeutung.
-        Ein Sport mit vielen complexen Figuren und Posen, welche sogar teilweise für die professionelle Jurie eine
+        Ein Sport mit vielen komplexen Figuren und Posen, welche sogar teilweise für die professionelle Jurie eine
         Herausforderung darstellen.
         Die folgende Thesis zeigt einen Ende-zu-Ende Vorgang für die Erkennung von 2d Posen einer Person in Bild- sowie
         Videodaten auf.

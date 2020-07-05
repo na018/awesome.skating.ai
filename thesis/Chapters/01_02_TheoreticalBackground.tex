@@ -7,7 +7,7 @@
 \chapter{Theoretical Background} % Main chapter title
 
 \label{theory} % Change X to a consecutive number; for referencing this chapter elsewhere, use \ref{ChapterX}
-The subsequent chapter introduces basic concepts on which this thesis builds up.
+The subsequent chapter introduces basic concepts, which are applied in this work.
 Following questions will be answered:
 \glsreset{CNN}
 \begin{itemize}
@@ -26,7 +26,7 @@ Following questions will be answered:
 \glspl{CNN} help machines to understand image and video data.
 The main building blocks of \glspl{CNN} are convolutional, pooling and fully connected layers.
 \subsection{Types of convolutional layers}
-The \textbf{convolutional Layers} learn to detect specific features in the image data.
+The \textbf{convolutional layers} learn to detect specific features in the image data.
 They do this with learned filters and activation functions presented in \autoref{activations}.
 The learning process will be deeper discussed in \autoref{opt} and \autoref{cost}.
 Via the stride $s$ and kernel size $k$ the feature maps can be reduced in size resulting in
@@ -103,10 +103,9 @@ with,
     m_1^l = m_1^{l-1} \land m_2^l = m_2^{l-1} \land m_3^l = m_3^{l-1}
 \end{align}
 Where $m_1$ is the number of two dimensional feature maps or filters in convolutional layer $l-1$
-with size $m_2 x m_3$.
+with size $m_2 \times m_3$.
 As the calculus suggests, this layer is combined with a convolutional layer, where the filters ought to be
- learned~\cite{wikitumcnn}.
-
+ learned~\cite{wikitumcnn}.\\
 In the following, commonly used activation functions for convolutional networks will be presented.
 
 \subsubsection{Activation Functions}
@@ -114,35 +113,64 @@ In the following, commonly used activation functions for convolutional networks 
 In \glspl{CNN} convolutional layers are usually connected with activation functions.
 These functions hold the learnable parameters of these layers and help to learn the filters.
 
-\textbf{\gls{ReLU}} is a very popular activation function applied in the non-linearity layer.
-With a threshold at zero it is a piecewise linear function:
-
-\begin{figure}
+\begin{figure}[ht]
 \centering
-\caption{\gls{ReLU} activation function: $Y_i^l=max(0,Y_i^{l-1})$} \label{fig:ReLU}
+\caption{Plots of ReLU and SELU activation functions}
+%\caption{\gls{ReLU} activation function: $max(0,x)$ and \\SELU activation function $max(\alpha\cdot e^x-\alpha,x)$} \label{fig:ReLU}
 \begin{tikzpicture}
-  \draw[->] (-1, 0) -- (1, 0) node[right] {$x$};
-  \draw[->] (0, -1) -- (0, 1) node[above] {$y$};
-  \draw[scale=0.8, domain=-1.3:0, smooth, variable=\y, red] plot ({\y}, {0});
-  \draw[scale=0.8, domain=0:1, smooth, variable=\y, red]  plot ({\y}, {\y});
-  \draw[scale=0.8, domain=-1:0, dashed, variable=\y, blue] plot ({\y}, {0});
-  \draw[scale=0.8, domain=0:0, dotted, variable=\y, blue] plot ({\y}, {\y});
-  \draw[scale=0.8, domain=0:1.5, dashed, variable=\y, blue]  plot ({\y}, {1});
+\begin{axis}[
+    axis lines=middle,
+    xmax=6,
+    xmin=-6,
+    ymin=-2.05,
+    ymax=5.05,
+    xlabel={$x$},
+    ylabel={$y$},
+    legend style={at={(-0.20,0.80)},anchor=north west,nodes={scale=0.7, transform shape}}
+]
+\addplot [domain=-5.5:5.5, samples=100, thick, blue] {max(0, x)};
+\addplot [domain=-5.5:0.0, samples=100, thin, red] {max(1.01 *e^x - 1.01, x)};
+\addplot [domain=0.0:5.5, samples=100, thick, dashed, red] {max(0, x)};
+\legend{ReLU, SeLU}
+\end{axis}
 \end{tikzpicture}
-
 \end{figure}
-\[ f(x) =
+\begin{figure}[ht]
+\begin{subfigure}{.45\textwidth}
+\[ ReLU(x) =
   \begin{cases}
     x       & \quad \text{if } x \geq 0\\
     0  & \quad \text{if } x < 0
   \end{cases}
 \]
-\[ f'(x) =
+\[ ReLU'(x) =
   \begin{cases}
     1       & \quad \text{if } x > 0\\
     0  & \quad \text{if } x < 0
   \end{cases}
 \]
+\caption{\gls{ReLU} activation function: $max(0,x)$}\label{fig:ReLU}
+\end{subfigure}
+\begin{subfigure}{.55\textwidth}
+\[ SELU(x) = \lambda
+  \begin{cases}
+    x       & \quad \text{if } x \geq 0\\
+    \alpha (e^x-1) & \quad \text{if } x < 0
+  \end{cases}
+\]
+\[ SELU'(x) =
+  \begin{cases}
+    1       & \quad \text{if } x > 0\\
+    \alpha e^x  & \quad \text{if } x < 0
+  \end{cases}
+\]
+\caption{SELU activation function $max(\alpha (e^x-1),x)$}\label{fig:SELU}
+\end{subfigure}
+\label{fig:fig}
+\end{figure}
+
+\textbf{\gls{ReLU}} is a very popular activation function applied in the non-linearity layer.
+With a threshold at zero it is a piecewise linear function as visualized in~\autoref{fig:ReLU}.
 Reasons for its popularity are first the efficient propagation of the gradient, which helps with vanishing gradients.
 Second, since negative values become zero, the output volume is much more sparse, which provides robustness to
 small changes and helps with noisy input data.
@@ -177,61 +205,40 @@ Due to the fact, that this parameter is larger than one, the gradient becomes la
 the activation function to increase the variance.
 On the other hand a gradient very close to zero decreases variance.
 Altogether, \glspl{SELU} confront the problem of vanishing gradients and in comparison to \glspl{ReLU} they do
-not die.
+not die. A visualization can be seen in~\autoref{fig:SELU}.
 
 Another activation function, which is usually used for the output layer of classification tasks in
-convolutional networks is \textbf{softmax}.
+convolutional neural networks is \textbf{softmax}:
 \begin{equation}
-    f(z_i)=\frac{exp(z_i)}{\sum_j=1^n exp(z_j)}
+    f(x_i)=\frac{exp(x_i)}{\sum_{j=1}^n exp(x_j)}
 \end{equation}
-Since this function outputs values between zero and one and the sum of $z$ is equal one $\sum_j=1^n exp(z_j)=1$
+Since this function outputs values between zero and one and the sum of $x$ is equal one $\sum_i f(x_i)=1$
 it will distribute the probabilities of the output neurons according to the amount of classes.
 This means that this function will assign the probabilities to the given classes in a sequential order and help
-to transfer the target labels.
+to transfer the target labels~\cite{advanceddeeplearningpython}.
 
-
+\begin{figure}[ht]
+\centering
+\caption{Plot of the softmax activation function}
+%\caption{\gls{ReLU} activation function: $max(0,x)$ and \\SELU activation function $max(\alpha\cdot e^x-\alpha,x)$} \label{fig:ReLU}
 \begin{tikzpicture}
-    \begin{axis}[
-        xmin = -3, xmax = 10,
-        ymin = -3, ymax = 1,
-        xtick distance = 1,
-        ytick distance = 0.25,
-        grid = both,
-        minor tick num = 1,
-        major grid style = {lightgray},
-        minor grid style = {lightgray!25},
-        width = \textwidth,
-        height = 0.75\textwidth,
-        legend cell align = {left},
-        legend pos = north west
-    ]
-        \addplot[
-            domain = 0:30,
-            samples = 200,
-            smooth,
-            thick,
-            blue,
-            ] {exp(-x/10)*( cos(deg(x)) + sin(deg(x))/10 )};
-        \addplot[
-            domain = 0:30,
-            samples = 200,
-            smooth,
-            thick,
-            red,
-            ] {exp(-x)*( cos(deg(x)) + sin(deg(x))/10 )};
-        \addplot[
-            domain = 0:30,
-            samples = 200,
-            smooth,
-            thick,
-            green,
-            ] {exp(-x/5)*( cos(deg(x)) + sin(deg(x))/10 )};
-        \legend{
-            Plot with marks and line,
-            Plot only with marks,
-            Plot with other type of marks}
-    \end{axis}
+\begin{axis}[
+    axis lines=middle,
+    height=4cm,
+    width=6cm,
+    xmax=5,
+    xmin=-5,
+    ymin=0,
+    ymax=1,
+    ytick={0,1},
+    xlabel=$x$,
+   ylabel=$y$,
+    legend style={at={(-0.20,0.80)},anchor=north west,nodes={scale=0.7, transform shape}}
+]
+\addplot [domain=-5:5, samples=51, thick, blue] {exp(x)/sumexp(x,-4,0)};
+\end{axis}
 \end{tikzpicture}
+\end{figure}
 
 \subsection{Regularization}
 Dropout and Batch normalization are commonly used regularization techniques for \glspl{CNN}.
@@ -516,7 +523,7 @@ Another commonly used cost function in image segmentation is \textbf{\gls{SCCE}}
 It is said to help with class imbalances.
 Wrong predictions are weighed harder, especially the ones with a great wrong probability value.
 This is accomplished by calculating the logarithm of the predicted values.
-Since the logarithm function $log(x)$ is negative for $x \in \Re and [0>x>1]$, and input values closer to zero mean
+Since the logarithm function $log(x)$ is negative for $x \in \Re \text{and} [0>x>1]$, and input values closer to zero mean
 an exponential decrease towards $-\infty$ and there is just one true label for the different classes of one pixel, if
 the prediction is clearly the wrong class, the cost will be exponentially higher.
 
@@ -545,7 +552,7 @@ With top-5 not being one of the model's five most likely labels.
 \\\mbox{}\\
 AlexNet uses five convolutional layers with max pooling resumed by three \gls{FC} layers, of which the last one
 is connected to a softmax, which predicts the likeliness to be one out of $1000$ classes.
-What was revolutionary about the their network was the use of \gls{ReLU} in the non-linearity layer instead of tanh,
+What was revolutionary about their network was the use of \gls{ReLU} in the non-linearity layer instead of tanh,
 which was common at that time.
 With this modification they were able to train six times faster.
 Additionally, they introduced multiple GPU training, placing half of the model's neurons on one and the other half
