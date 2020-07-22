@@ -13,7 +13,8 @@ Following questions will be answered:
 \begin{itemize}
     \item How do machines understand image and video data?
     \item Which basic building blocks make up \gls{CNN}?
-    \item Which basic concepts of \glspl{CNN} are use in the presented method in \autoref{method} and experimented with in \autoref{experiments}?
+    \item Which basic concepts of \glspl{CNN} are used in the presented method in \autoref{method} and experimented
+    \item with in \autoref{experiments}?
     \item What typical detection tasks do \glspl{CNN} learn to predict?
 
 \end{itemize}
@@ -98,8 +99,8 @@ $Y_i^l-1$ by creating the output activation map $Y_i^l$:
 \end{equation}
 with,
 \begin{align}
-    Y_i^l\in\mathbb{R}^{m_1^l\cdot m_2^l\cdot m_3^l} \\
-    Y_i^l-1\in\mathbb{R}^{m_1^{l-1}\cdot m_2^{l-1}\cdot m_3^{l-1}} \\
+    Y_i^l\in\mathbb{R}^{m_1^l\times m_2^l\times m_3^l} \\
+    Y_i^l-1\in\mathbb{R}^{m_1^{l-1}\times m_2^{l-1}\times m_3^{l-1}} \\
     m_1^l = m_1^{l-1} \land m_2^l = m_2^{l-1} \land m_3^l = m_3^{l-1}
 \end{align}
 Where $m_1$ is the number of two dimensional feature maps or filters in convolutional layer $l-1$
@@ -212,17 +213,18 @@ convolutional neural networks is \textbf{softmax}:
 \begin{equation}
     f(x_i)=\frac{exp(x_i)}{\sum_{j=1}^n exp(x_j)}
 \end{equation}
-Since this function outputs values between zero and one and the sum of $x$ is equal one $\sum_i f(x_i)=1$
+Since this function outputs values between zero and one and the sum of $x$ is equal one \code{($\sum_i f(x_i)=1$)}
 it will distribute the probabilities of the output neurons according to the amount of classes.
 This means that this function will assign the probabilities to the given classes in a sequential order and help
 to transfer the target labels~\cite{advanceddeeplearningpython}.
 
 \begin{figure}[ht]
-\centering
-\caption{Plot of the softmax activation function}
-%\caption{\gls{ReLU} activation function: $max(0,x)$ and \\SELU activation function $max(\alpha\cdot e^x-\alpha,x)$} \label{fig:ReLU}
-\begin{tikzpicture}
-\begin{axis}[
+    \centering
+    \caption{Plot of the softmax activation function}
+    %\caption{\gls{ReLU} activation function: $max(0,x)$ and \\SELU activation function $max(\alpha\cdot e^x-\alpha,
+    x)$} \label{fig:ReLU}
+    \begin{tikzpicture}
+        \begin{axis}[
     axis lines=middle,
     height=4cm,
     width=6cm,
@@ -265,19 +267,24 @@ Furthermore, overfitting is less likely to take place~\cite{advanceddeeplearning
     \label{fig:feature-maps-output}
 \end{figure}
 Optimizing the weights of a neuronal network is a crucial step in the training life cycle of deep learning.
-When the in \autoref{method} presented neural network has processed the input image and calculated several feature maps throughout the process,
+When the in \autoref{method} presented neural network has processed the input image and calculated several feature
+maps throughout the process,
 at the end it predicts 9 feature maps of body parts for example for the head, arms, torso, and legs for the human parts
 detection module as visualized in~\ref{fig:feature-maps-output}.
-With the help of a loss function, the error is then calculated for the predicted pixels in comparison to the truly labeled
+With the help of a loss function, the error is then calculated for the predicted pixels in comparison to the truly
+labeled
 pixels.
+
 \subsubsection{Backpropagation Process}
-The optimizer updates the network parameters $\theta \in \mathbb{R}^d$, which result in learned filters predicting several feature maps at
+The optimizer updates the network parameters $\theta \in \mathbb{R}^d$, which results in learned filters predicting
+several feature maps at
 the different stages of the network.
 The updates are performed accordingly to the calculated error from the loss function $\mathcal{J}(\theta)$ via the
 so-called Backpropagation process, since the updates are passed backwards through the network.
 This backward optimization process is performed by the calculations of the chosen optimizer.
 The goal of the optimizer is to minimize the error.
-There, it makes use of gradient descent to update the network's weights, biases and activation functions, in opposite direction
+There, it makes use of gradient descent to update the network's weights, biases and activation functions, in opposite
+direction
 of the gradient.\\
 Figuratively speaking, a weight could be imagined as a hill.
 The updates then will follow the direction of the slope downhill until the valley is reached.
@@ -298,22 +305,26 @@ Moreover, the updates are of more variance when random training examples are cho
 A drawback however is, even if jumping around may result in finding another better local minimum, it may also
 lead to constantly overshooting the exact minimum.
 Against this problem, slowly decreasing the learning rate may help and lead to similar convergence as for BGD.\\
-\textbf{Mini-Batch Gradient Descent} is the most common variant for gradient descent since it combines both the aspects of
+\textbf{Mini-Batch Gradient Descent} is the most common variant for gradient descent since it combines both the
+aspects of
 \gls{BGD} and \gls{SGD}.
 The updates are conducted for every mini-batch of \textit{n} training samples.
 This reduces the variance of parameter updates and leads to less jumping around, which all in all results in more stable
 convergence~\cite{optimizersoverview}.
 \\\mbox{}\\
-In the following section an overview of optimizers will be presented in reference to the used ones in ~\autoref{experiments}, which are
+In the following an overview of optimizers will be presented in reference to the used ones in ~\autoref{experiments},
+which are
 \gls{SGD}, \gls{Adam} and \gls{Nadam}.
 
 
 %
 \glsreset{SGD}
+
 \subsubsection{\gls{SGD}}
 \gls{SGD} is one of the first optimizers and still commonly in use.
 Already in 1951, it was publicly reported by Robins and Sutton et Al~\cite{sgd}.
-Now given the parameters of a neural network $\theta$, such as weights, biases and activation functions, here via an input image
+Now given the parameters of a neural network $\theta$, such as weights, biases and activation functions, here via an
+input image
 $x$ and associate labels $y$ the Backpropagation process is defined under the gradient $\nabla$
 from the calculated loss function $\mathcal{J}$.
 The adaption of the parameters then is performed stepwise by the learning parameter $\eta$.
@@ -452,47 +463,54 @@ This step can be interpreted as a correction step.
 %\end{align}
 \begin{align}
     \theta = \theta - \mathfrak{v}_t \label{eqn:nag:1}\\
-    \mathfrak{v}_t = \gamma\mathfrak{v}_{t-1} + \eta\cdot\nabla_\theta\mathcal{J}(\theta-\gamma\mathfrak{v}_{t-1}) \label{eqn:nag:2}
+    \mathfrak{v}_t = \gamma\mathfrak{v}_{t-1} + \eta\cdot\nabla_\theta\mathcal{J}(\theta-\gamma\mathfrak{v}_{t-1})
+\label{eqn:nag:2}
 \end{align}
 
 To combine \gls{Adam} and \gls{Nadam}, some steps must be done.
-The gradient term can be written as $g_t$ and recall the Momentum update and parameter update function $\theta_{t+1}$ with:
+The gradient term can be written as $g_t$ and recall the Momentum update and parameter update function $\theta_{t+1}$
+with:
 
 \begin{align}
-g_t &= \nabla_{\theta_t}J(\theta_t) \label{eqn:nadam:1} \\
-m_t &= \gamma m_{t-1} + \eta g_t \label{eqn:nadam:2}\\
-\theta_{t+1} &= \theta_t - m_t \label{eqn:nadam:3}
+    g_t &= \nabla_{\theta_t}J(\theta_t) \label{eqn:nadam:1} \\
+    m_t &= \gamma m_{t-1} + \eta g_t \label{eqn:nadam:2}\\
+    \theta_{t+1} &= \theta_t - m_t \label{eqn:nadam:3}
 \end{align}
 
-The~\ref{eqn:nadam:3} $m_t$ term can be extended with~\ref{eqn:nadam:2} resulting in~\ref{eqn:nadam:5}:
+Solving~\ref{eqn:nadam:3} for $m_t$ and inserting this in ~\ref{eqn:nadam:2} gives~\ref{eqn:nadam:5}:
 
 \begin{align}
-\theta_{t+1} &= \theta_t - (\gamma m_{t-1} + \eta g_t) \label{eqn:nadam:5}
+    \theta_{t+1} &= \theta_t - (\gamma m_{t-1} + \eta g_t) \label{eqn:nadam:5}
 \end{align}
-Momentum takes one step into the direction of the previous momentum update and another step into the direction of the current
+Momentum takes one step into the direction of the previous momentum update and another step into the direction of the
+current
 gradient.
 However, instead of the past Momentum vector, the current update rule is used to look ahead.
-Furthermore, expanding the term ~\ref{eqn:adam:5} $\hat{m}_t$ with~\ref{eqn:adam:3} and~\ref{eqn:adam:3} $m_t$ with~\ref{eqn:adam:1}
+Furthermore, expanding the term ~\ref{eqn:adam:5} $\hat{m}_t$ with~\ref{eqn:adam:3} and~\ref{eqn:adam:3} $m_t$
+with~\ref{eqn:adam:1}
 results in the following:
 \begin{align}
- \theta_{t+1} = \theta_{t} - \dfrac{\eta}{\sqrt{\hat{v}_t} + \epsilon} (\dfrac{\beta_1 m_{t-1}}{1 - \beta^t_1} + \dfrac{(1 - \beta_1) g_t}{1 - \beta^t_1})
- \label{eqn:nadam:6}
+    \theta_{t+1} = \theta_{t} - \dfrac{\eta}{\sqrt{\hat{v}_t} + \epsilon} (\dfrac{\beta_1 m_{t-1}}{1 - \beta^t_1} +
+\dfrac{(1 - \beta_1) g_t}{1 - \beta^t_1})
+    \label{eqn:nadam:6}
 \end{align}
-Where $\dfrac{\beta_1 m_{t-1}}{1 - \beta^t_1}$ is the correction step of the first step from NAG.
+where $\dfrac{\beta_1 m_{t-1}}{1 - \beta^t_1}$ is the correction step of the first step from NAG.
 This term again, can be substituted by $\hat{m}_{t-1}$ resulting in:
 
 \begin{align}
-    \theta_{t+1} = \theta_{t} - \dfrac{\eta}{\sqrt{\hat{v}_t} + \epsilon} (\beta_1 \hat{m}_{t-1} + \dfrac{(1 - \beta_1) g_t}{1 - \beta^t_1})
-    \label{eqn:nadam:7}
+    \theta_{t+1} = \theta_{t} - \dfrac{\eta}{\sqrt{\hat{v}_t} + \epsilon} (\beta_1 \hat{m}_{t-1} + \dfrac{(1 -
+\beta_1) g_t}{1 - \beta^t_1})
+    \label{eqn:nadam:7}.
 \end{align}
 
 As a final step the bias-corrected estimate of the Momentum vector of the past time step $\hat{m}_{t-1}$ is replaced
-with the bias-corrected estimate of the current Momentum $\hat{m}_{t}$ resulting in the optimization function for \gls{Nadam}~\cite{optimizersoverview}:
+with the bias-corrected estimate of the current Momentum $\hat{m}_{t}$ resulting in the optimization function for
+\gls{Nadam}~\cite{optimizersoverview}:
 
 
 
 \begin{align}
-    \theta_{t+1} = \theta_{t} - \frac{\eta}{\epsilon+\sqrt{\hat{v}_t}} \cdot (\beta_1\hat{m}_t+\frac{(1-\beta_1)g_t}{1-\beta_1^t}) \label{eqn:nadam:8}
+    \theta_{t+1} = \theta_{t} - \frac{\eta}{\epsilon+\sqrt{\hat{v}_t}} \cdot (\beta_1\hat{m}_t+\frac{(1-\beta_1)g_t}{1-\beta_1^t}) \label{eqn:nadam:8}.
 \end{align}
 
 
@@ -512,26 +530,27 @@ This means, there are nine labels possible for each pixel.
 Now, the neural network estimates with a certain probability of how likely a certain class would be true for a specific pixel.
 The error function then calculates the difference between the estimation or prediction and the true label, which includes a
 value of 1 only for the true class.
-Additionally to the summation of squared errors, \gls{MSE} divides this sum with the number of all squares resulting in the mean
+Additionally to the summation of squared errors, \gls{MSE} divides this sum with the number of all squares resulting
+in the mean
 value:
 \\
 \begin{align}
-    MSE(y_t,y_p) = \frac{1}{n}\cdot\sum_[i=1]^n(y_t-y_p)^2
+    MSE(y_t,y_p) = \frac{1}{n}\cdot\sum_{i=1}^n(y_t-y_p)^2
 \end{align}
 \\
 Another commonly used cost function in image segmentation is \textbf{\gls{SCCE}}.
 It is said to help with class imbalances.
 Wrong predictions are weighed harder, especially the ones with a great wrong probability value.
 This is accomplished by calculating the logarithm of the predicted values.
-Since the logarithm function $log(x)$ is negative for $x \in \Re \text{and} [0>x>1]$, and input values closer to zero mean
+Since the logarithm function $log(x)$ is negative for $x \in \Re \text{and} [0>x>1]$, and input values closer to zero
+mean
 an exponential decrease towards $-\infty$ and there is just one true label for the different classes of one pixel, if
 the prediction is clearly the wrong class, the cost will be exponentially higher.
-
+\textbf{\gls{SCCE}} can be written as:
 \begin{align}
-    SCCE(y_t,y_p) = -\sum_{i,j=1}^{i,j}y_{t_{i,j}}\cdot log(y_{p_{i,j}})
+    SCCE(y_t,y_p) = -\sum_{i,j=1}^{i,j}y_{t_{i,j}}\cdot log(y_{p_{i,j}}).
 \end{align}
 Here \textit{i,j} stands for the column and row pixels of the image.
-
 
 \subsection{Concepts}
 
@@ -559,24 +578,31 @@ Additionally, they introduced multiple GPU training, placing half of the model's
 on another GPU.
 This allowed training bigger models and speeding up training.
 Overlapping pooling operations leaded to an error reduction of 0.5\% plus overfitting would less likely take place.
-Moreover, they confront the overlapping problem with data augmentation and dropout~\cite{advanceddeeplearningpython, alexnet}.
+Moreover, they confront the overlapping problem with data augmentation and dropout~\cite{advanceddeeplearningpython,
+alexnet}.
 \\\mbox{}\\
 Another popular finding in the history of convolutional networks is presented by the \textbf{\gls{VGG}}.
 Same as the AlexNet, they combine convolutional layers with max pooling, and round up their network with
 three \gls{FC} layers and a softmax at the end.
-What is new though, is that they prove in their research that large filter sizes can be replaced with multiple layers of smaller filter sizes, namely
+What is new though, is that they prove in their research that large filter sizes can be replaced with multiple layers
+of smaller filter sizes, namely
 factorized convolution.
 Before, convolutional networks had rather large receptive fields, as for example the AlexNet with 11x11.
 Via factorized convolution 7x7 layers, for instance, can be replaced with three 3x3 layers.
 This results in a reduction of trainable weights and operations and thus speeds up performance.
-OpenPose as well makes use of these findings with their second paper on human pose recognition in image and video data~\cite{openpose}.
-Furthermore, they applied increased volume depth in deeper layers of 128, 256, 512, which is still commonly in use today.
+OpenPose makes use of these findings as well with their second paper on human pose recognition in image and video
+data~\cite{openpose}.
+Furthermore, they applied increased volume depth in deeper layers of 128, 256, 512, which is still commonly in use
+today.
 Their famous networks VGG-16 and VGG-19, named after the amount of weighted layers, are commonly used as benchmark or
 backbone of other networks~\cite{advanceddeeplearningpython}.
-As already mentioned OpenPose uses the 10 first layers of the VGG-19 network with additional fine-tuning~\cite{openpose}.
+As already mentioned OpenPose uses the 10 first layers of the VGG-19 network with additional
+fine-tuning~\cite{openpose}.
 
-A further discovery in the history of \glspl{CNN} are residual blocks presented 2016 in the \textbf{ResNet} publication ~\cite{resnet}.
-A residual block consists of the block itself and a skip connection from the input layer of the block to the output layer.
+A further discovery in the history of \glspl{CNN} are residual blocks presented 2016 in the \textbf{ResNet}
+publication ~\cite{resnet}.
+A residual block consists of the block itself and a skip connection from the input layer of the block to the output
+layer.
 The block includes two or three sequential convolutional layers. The first layer is a pointwise downsample layer,
 followed by a convolutional layer with an applied 3x3 filter, the so called bottleneck and concluded with an upsample 1x1 layer.
 
@@ -669,12 +695,14 @@ Each pixel is classified of being one of the body parts or the background class.
 
 \subsection{Localization of Human Joints}
 As already introduced in the previous chapters human pose estimation is the localization of human joints or keypoints.
-In particular, 2d pose estimations finds (x,y) coordinates, whereas 3d pose estimation additionally locates the depth with
+In particular, 2d pose estimations finds (x,y) coordinates, whereas 3d pose estimation additionally locates the depth
+with
 (x,y,z) coordinates.
 Nevertheless, this thesis focuses on 2d pose estimation.
 
-\textbf{DensePose}~\cite{DensePose} was one of the first proposals to initial research work in 2d pose estimation.
-They used the AlexNet as backbone and added a (x,y) 2k output dense layer to predict the 2k joint positions in the image.
+\textbf{DensePose}~\cite{DensePose} was one of the initial research works in 2d pose estimation.
+They used the AlexNet as backbone and added a (x,y) 2k output dense layer to predict the 2k joint positions in the
+image.
 
 Later studies however revealed, that the estimation of confidence maps for the joint locations works better.
 Therefore 2d Gaussians of constant variance are calculated as labels around the ground-truth 2d keypoint locations

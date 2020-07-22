@@ -70,6 +70,15 @@ BGExtractorHyperParameters = [
         loss_fct=BGLoss(2),
         params=HyperParameterParams(epsilon=1e-8, amsgrad=True),
         description='Test **adam** optimizer on hrnet v7',
+    ),
+    HyperParameter(
+        name='adam',
+        model=bgnet.v0.BGNet,
+        optimizer_name='adam',
+        learning_rate=1e-3,
+        loss_fct=BGLoss(2),
+        params=HyperParameterParams(epsilon=1e-8, amsgrad=True),
+        description='Test **adam** optimizer on hrnet v0',
     )
 ]
 BodyPoseDetectorHyperParameters = [

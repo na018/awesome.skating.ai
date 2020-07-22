@@ -25,6 +25,7 @@ class TrainBG(TrainBase):
 
         if train:
             self.model.summary()
+            tf.keras.utils.plot_model(self.model, 'nets/imgs/bg_model.png', show_shapes=True, expand_nested=True)
 
             self.decay_rate, self.optimizer_decay = params.sgd_clr_decay_rate, params.decay
             self.optimizer, self.decay_rate_counter = self._get_optimizer(optimizer_name, lr_start,
@@ -50,39 +51,39 @@ class TrainBG(TrainBase):
         return model
 
     def track_logs(self, sample_image, sample_mask, epoch, **kwargs):
-        if self._train:
-            predicted_bg = create_mask(self.model.predict(sample_image[tf.newaxis, ...])[0])
 
-            display_imgs = [sample_image.numpy(),
-                            np.reshape(sample_mask, sample_mask.shape[:-1]),
-                            np.array(np.reshape(predicted_bg, sample_mask.shape[:-1]), dtype=np.float32),
-                            ]
-            title = ['Input Image', 'True Mask', 'Predicted Mask']
-            fig = plt.figure(figsize=(15, 4))
-            for i, img in enumerate(display_imgs):
-                ax = fig.add_subplot(1, 3, i + 1)
+        predicted_bg = create_mask(self.model.predict(sample_image[tf.newaxis, ...])[0])
 
-                ax.set_title(title[i], fontsize='small', alpha=0.6, color='blue')
-                ax.imshow(cv2.cvtColor(img, cv2.COLOR_BGR2RGB))
+        display_imgs = [sample_image.numpy(),
+                        np.reshape(sample_mask, sample_mask.shape[:-1]),
+                        np.array(np.reshape(predicted_bg, sample_mask.shape[:-1]), dtype=np.float32),
+                        ]
+        title = ['Input Image', 'True Mask', 'Predicted Mask']
+        fig = plt.figure(figsize=(15, 4))
+        for i, img in enumerate(display_imgs):
+            ax = fig.add_subplot(1, 3, i + 1)
 
-            fig.savefig(f"{Path.cwd()}/img_train{self.gpu}/{epoch}_bg_train.png")
+            ax.set_title(title[i], fontsize='small', alpha=0.6, color='blue')
+            ax.imshow(cv2.cvtColor(img, cv2.COLOR_BGR2RGB))
 
-            img = plot2img(fig)
+        fig.savefig(f"{Path.cwd()}/img_train{self.gpu}/{epoch}_bg_train.png")
 
-            self.progress_tracker.track_img_on_epoch_end(img, epoch, metrics=[
-                self.metric_loss_train,
-                self.metric_loss_test
-            ])
+        img = plot2img(fig)
+
+        self.progress_tracker.track_img_on_epoch_end(img, epoch, metrics=[
+            self.metric_loss_train,
+            self.metric_loss_test
+        ])
 
     def track_metrics_on_train_start(self, do_train_hp, do_train_kp, time, epoch_steps, batch_size):
-        if self._train:
-            self.progress_tracker \
-                .track_metrics_on_train_start(self.model, self.name, self.optimizer_name,
-                                              self.loss_fct.name, self.lr_start,
-                                              self._train, do_train_hp, do_train_kp,
-                                              time, self.epochs,
-                                              epoch_steps, batch_size,
-                                              description=self.description)
+
+        self.progress_tracker \
+            .track_metrics_on_train_start(self.model, self.name, self.optimizer_name,
+                                          self.loss_fct.name, self.lr_start,
+                                          self._train, do_train_hp, do_train_kp,
+                                          time, self.epochs,
+                                          epoch_steps, batch_size,
+                                          description=self.description)
 
     def test_model(self, epoch: int, epoch_steps: int, iter_test) -> float:
         if self._train:

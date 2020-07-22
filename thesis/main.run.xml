@@ -41,17 +41,17 @@
   >
 ]>
 <requests version="1.0">
-  <internal package="biblatex" priority="9" active="1">
-    <generic>latex</generic>
-    <provides type="dynamic">
-      <file>main.aux</file>
-      <file>main-blx.bib</file>
-    </provides>
-    <requires type="dynamic">
-      <file>main.bbl</file>
-    </requires>
-    <requires type="static">
-      <file>blx-dm.def</file>
+  <internal package="biblatex" priority="9" active="0">
+      <generic>latex</generic>
+      <provides type="dynamic">
+          <file>main.aux</file>
+          <file>main-blx.bib</file>
+      </provides>
+      <requires type="dynamic">
+          <file>main.bbl</file>
+      </requires>
+      <requires type="static">
+          <file>blx-dm.def</file>
       <file>blx-compat.def</file>
       <file>blx-bibtex.def</file>
       <file>biblatex.def</file>
@@ -64,17 +64,17 @@
       <file>english.lbx</file>
     </requires>
   </internal>
-  <external package="biblatex" priority="5" active="1">
-    <generic>bibtex</generic>
-    <cmdline>
-      <binary>bibtex</binary>
-      <option>-min-crossrefs 2</option>
-      <infile>main</infile>
-    </cmdline>
-    <input>
-      <file>main.aux</file>
-    </input>
-    <output>
+    <external package="biblatex" priority="5" active="0">
+        <generic>bibtex</generic>
+        <cmdline>
+            <binary>bibtex</binary>
+            <option>-min-crossrefs 2</option>
+            <infile>main</infile>
+        </cmdline>
+        <input>
+            <file>main.aux</file>
+        </input>
+        <output>
       <file>main.bbl</file>
     </output>
     <provides type="dynamic">

@@ -18,7 +18,7 @@
     \centering
     \includegraphics[width=150mm]{Figures/custom_hrnet_lines.png}
     \decoRule
-    \caption[HRNetV3: Our HRNet Architecture]{HRNetV3: Our created High-to-low resolution network architecture}
+    \caption[HRNetV3: HRNet Architecture]{HRNetV3: Developed High-to-low resolution network architecture}
     \label{fig:custom_hrnet}
 \end{figure}
 For the here presented end-to-end keypoint recognition architecture three modules were built to extract the background,
@@ -32,7 +32,7 @@ in a way to not recognize vector
 fields, which the joints connect, but recognize the visible body parts.
 This method can be assumed to work seamlessly, and probably this approach was not chosen before due to the missing
 accurate labels for body part detection.
-For the keypoint recognition module, a gaussian with a radius of three pixels and a standard deviation of
+For the keypoint recognition module, a Gaussian with a radius of three pixels and a standard deviation of
 three was calculated.
 In \autoref{fig:alena_step_labeled} a demonstration shows an example frame labeled by these three modules,
 showing Alena Kostornaia, the 2020 European champion during her program.
@@ -53,10 +53,12 @@ $\mathcal{N}_L$, $\mathcal{N}_M$,$\mathcal{N}_S$ and $\mathcal{N}_{XS}$.
 These subsequent blocks combine feature maps with lower coarser representations with the original sized input image
 feature maps and thus learn the features of the different levels equal to the HRNet strategy~\cite{HRNetv2, HRNetv1}.
 \\\mbox{}\\
-However, different from the \textit{HRNetV1} and \textit{HRNetV2} Pooling is not used to decrease or increase the size of the feature
-maps. These changes of receptive fields are conducted with usual convolutions and associate strides $\mathtt{s}$ and kernel sizes
+However, different from the \textit{HRNetV1} and \textit{HRNetV2} Pooling is not used to decrease or increase the
+size of the feature
+maps. These changes of receptive fields are conducted with usual convolutions and associate strides $\mathtt{s}$ and
+kernel sizes
 $\mathtt{k}$, with $\mathtt{s}=\mathtt{k}$.
-To increase the feature maps a transposed convolutions is applied with again $\mathtt{s}=\mathtt{k}$ according to the
+To increase the feature maps a transposed convolution is applied with again $\mathtt{s}=\mathtt{k}$ according to the
 strided down convolutions.
 This allows the network to learn additional weights for the upward and downward convolutions and improve these level
 exchange processes.
@@ -67,18 +69,21 @@ as argued in \textit{HRNetV2}~\cite{HRNetv2}.
 \\\mbox{}\\
 As visualized in~\ref{fig:custom_hrnet} the number of feature maps was adjusted for the different blocks.
 Moreover, in the first stage, only three convolutional layers were used for one block, in the other stages four layers
-where used for the lower levels and only in $\mathcal{N}_L$ three convolutional layers were applied for the blocks throughout the network.
+where used for the lower levels and only in $\mathcal{N}_L$ three convolutional layers were applied for the blocks
+throughout the network.
 \\\mbox{}\\
 Another adjustment is, that the input image as initial input was added to all block levels but the $\mathcal{N}_{XS}$
 block, which uses the fused layers of all the preceding levels as input.
-To every the input block $\mathcal{N}_I$ was added.
+Every last block of the stages combines the information from all previos block levels and additionally
+the input block $\mathcal{N}_I$ was added.
 \\\mbox{}\\
 This network architecture resulted after several experiments and investigations of the estimated feature maps of the
 different blocks and stages.
 Every block is completed with batch normalization and a \textit{selu} activation function.
 The output of the network is predicted by a linear softmax activation function.
 For the background-extraction and keypoint detection network \textit{mean-squared-error} calculates the loss, and in the
-human part detection network a custom loss function was developed~\autoref{Experiments} to optimize the network's weights.
+human part detection network a custom loss function was developed, as described in~\autoref{experiments}, to optimize
+the network's weights.
 In sum, the presented network comprises 3,008,562 parameters of which 3,003,930 can be learned.
 The amount of all layers for the network is 156.\\
 
@@ -111,7 +116,7 @@ The amount of all layers for the network is 156.\\
     \centering
     \includegraphics[width=130mm]{Figures/hp_loss_custom_hrnet_v3.png}
     \decoRule
-    \caption[HRNetv3 Training Process: Loss]{Decreasing Loss  of Training HRNetV3}
+    \caption[HRNetv3 Training Process: Loss]{Decreasing Loss of Training HRNetV3}
     \label{fig:hp_loss_hrnet_v3}
 \end{figure}
 
@@ -119,10 +124,11 @@ The human parts module was trained with the Adam optimizer for 5556 episodes, a 
 and 64 steps per epoch.
 One training epoch took on average 85.43 seconds.
 The whole training lasted about 5.5 days.
-For optimization, a custom developed loss function was used as explained in
-\autoref{Experiments} to better deal with the class invariance of the occurring pixel labels.
+For optimization, a custom developed loss function was used as will be explained in
+\autoref{experiments} to better deal with the class invariance of the occurring pixel labels.
 The \autoref{fig:hp_accuracy_hrnet_v3} shows, that the accuracy of the here presented network
-\autoref{fig:hp_accuracy_hrnet_v3} rises very steep until the 500th episode and then flattens more and more until the last
+\autoref{fig:hp_accuracy_hrnet_v3} rises very steep until the 500th episode and then flattens more and more until the
+last
 episode, where the network reaches an excellent accuracy level of 0.99.
 In detail, the data was divided into a distinct 90 percent train and 10 percent test dataset.
 The figure shows equal trends for both datasets, which means the network did not overfit on the data.\

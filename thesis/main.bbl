@@ -47,21 +47,30 @@
   \endentry
 
   \entry{DensePose}{article}{}
-    \name{author}{1}{}{%
-      {{hash=RizAGIKNN}{%
-         prefix={R\~{i}\bibnamedelima za},
-         prefixi={R\bibinitperiod\bibinitdelim i\bibinitperiod\bibinitdelim
-  z\bibinitperiod},
+    \name{author}{3}{}{%
+      {{hash=zAGRi}{%
+         prefix={za},
+         prefixi={z\bibinitperiod},
          family={Alp\bibnamedelima G\"uler},
          familyi={A\bibinitperiod\bibinitdelim G\bibinitperiod},
-         suffix={Natalia\bibnamedelima Neverova},
-         suffixi={N\bibinitperiod\bibinitdelim N\bibinitperiod},
-         given={Iasonas\bibnamedelima Kokkinos},
-         giveni={I\bibinitperiod\bibinitdelim K\bibinitperiod},
+         given={R\~{i}},
+         giveni={R\bibinitperiod\bibinitdelim i\bibinitperiod},
+      }}%
+      {{hash=NN}{%
+         family={Neverova},
+         familyi={N\bibinitperiod},
+         given={Natalia},
+         giveni={N\bibinitperiod},
+      }}%
+      {{hash=KI}{%
+         family={Kokkinos},
+         familyi={K\bibinitperiod},
+         given={Iasonas},
+         giveni={I\bibinitperiod},
       }}%
     }
-    \strng{namehash}{AGNNIKRiz1}
-    \strng{fullhash}{AGNNIKRiz1}
+    \strng{namehash}{AGRizNNKI1}
+    \strng{fullhash}{AGRizNNKI1}
     \field{labelnamesource}{author}
     \field{labeltitlesource}{title}
     \field{sortinit}{A}
@@ -239,6 +248,7 @@
     \field{sortinit}{C}
     \field{sortinithash}{C}
     \field{title}{Let's Dance: Learning From Online Dance Videos}
+    \field{month}{01}
     \field{year}{2018}
   \endentry
 
@@ -314,14 +324,14 @@
     \field{labeltitlesource}{title}
     \field{sortinit}{C}
     \field{sortinithash}{C}
-    \field{booktitle}{2018 IEEE/CVF Conference on Computer Vision and Pattern
-  Recognition}
     \field{pages}{7103\bibrangedash 7112}
     \field{title}{Cascaded Pyramid Network for Multi-person Pose Estimation}
+    \field{journaltitle}{2018 IEEE/CVF Conference on Computer Vision and
+  Pattern Recognition}
     \field{year}{2018}
   \endentry
 
-  \entry{empiricaloptimizers}{article}{}
+  \entry{empiricaloptimizers}{online}{}
     \name{author}{6}{}{%
       {{hash=CD}{%
          family={Choi},
@@ -509,11 +519,11 @@
     \field{labeltitlesource}{title}
     \field{sortinit}{F}
     \field{sortinithash}{F}
-    \field{booktitle}{2017 IEEE Conference on Computer Vision and Pattern
-  Recognition Workshops (CVPRW)}
     \field{pages}{85\bibrangedash 93}
     \field{title}{Hockey Action Recognition via Integrated Stacked Hourglass
   Network}
+    \field{journaltitle}{2017 IEEE Conference on Computer Vision and Pattern
+  Recognition Workshops (CVPRW)}
     \field{year}{2017}
   \endentry
 
@@ -605,10 +615,10 @@
     \field{labeltitlesource}{title}
     \field{sortinit}{H}
     \field{sortinithash}{H}
-    \field{booktitle}{2017 IEEE International Conference on Computer Vision
-  (ICCV)}
     \field{pages}{2980\bibrangedash 2988}
     \field{title}{Mask R-CNN}
+    \field{journaltitle}{2017 IEEE International Conference on Computer Vision
+  (ICCV)}
     \field{year}{2017}
   \endentry
 
@@ -766,6 +776,33 @@
     \endverb
     \field{journaltitle}{International Skating Union (ISU)}
     \field{urlday}{02}
+    \field{urlmonth}{06}
+    \field{urlyear}{2020}
+  \endentry
+
+  \entry{gridsearch}{online}{}
+    \name{author}{1}{}{%
+      {{hash=JR}{%
+         family={Joseph},
+         familyi={J\bibinitperiod},
+         given={Rohan},
+         giveni={R\bibinitperiod},
+      }}%
+    }
+    \strng{namehash}{JR1}
+    \strng{fullhash}{JR1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{sortinit}{J}
+    \field{sortinithash}{J}
+    \field{title}{Grid Search for model tuning}
+    \verb{url}
+    \verb https://towardsdatascience.com/grid-search-for-model-tuning-3319b2593
+    \verb 67e
+    \endverb
+    \field{journaltitle}{towards data science}
+    \field{year}{2018}
+    \field{urlday}{26}
     \field{urlmonth}{06}
     \field{urlyear}{2020}
   \endentry
@@ -937,10 +974,10 @@
     \field{labeltitlesource}{title}
     \field{sortinit}{K}
     \field{sortinithash}{K}
-    \field{booktitle}{2019 IEEE/CVF Conference on Computer Vision and Pattern
-  Recognition (CVPR)}
     \field{pages}{11969\bibrangedash 11978}
     \field{title}{PifPaf: Composite Fields for Human Pose Estimation}
+    \field{journaltitle}{2019 IEEE/CVF Conference on Computer Vision and
+  Pattern Recognition (CVPR)}
     \field{year}{2019}
   \endentry
 
@@ -1037,6 +1074,7 @@
     \field{sortinit}{L}
     \field{sortinithash}{L}
     \field{title}{FSD-10: A Dataset for Competitive Sports Content Analysis}
+    \field{month}{02}
     \field{year}{2020}
   \endentry
 
@@ -1319,11 +1357,11 @@
     \field{labeltitlesource}{title}
     \field{sortinit}{P}
     \field{sortinithash}{P}
-    \field{booktitle}{2019 IEEE/CVF Conference on Computer Vision and Pattern
-  Recognition (CVPR)}
     \field{pages}{7745\bibrangedash 7754}
     \field{title}{3D Human Pose Estimation in Video With Temporal Convolutions
   and Semi-Supervised Training}
+    \field{journaltitle}{2019 IEEE/CVF Conference on Computer Vision and
+  Pattern Recognition (CVPR)}
     \field{year}{2019}
   \endentry
 
@@ -1431,11 +1469,11 @@
     \field{labeltitlesource}{title}
     \field{sortinit}{R}
     \field{sortinithash}{R}
-    \field{booktitle}{2019 IEEE/CVF Conference on Computer Vision and Pattern
-  Recognition (CVPR)}
     \field{pages}{4615\bibrangedash 4623}
     \field{title}{Efficient Online Multi-Person 2D Pose Tracking With Recurrent
   Spatio-Temporal Affinity Fields}
+    \field{journaltitle}{2019 IEEE/CVF Conference on Computer Vision and
+  Pattern Recognition (CVPR)}
     \field{year}{2019}
   \endentry
 
@@ -1788,11 +1826,11 @@
     \field{labeltitlesource}{title}
     \field{sortinit}{S}
     \field{sortinithash}{S}
-    \field{booktitle}{2019 IEEE/CVF Conference on Computer Vision and Pattern
-  Recognition (CVPR)}
     \field{pages}{5686\bibrangedash 5696}
     \field{title}{Deep High-Resolution Representation Learning for Human Pose
   Estimation}
+    \field{journaltitle}{2019 IEEE/CVF Conference on Computer Vision and
+  Pattern Recognition (CVPR)}
     \field{year}{2019}
   \endentry
 
@@ -2089,11 +2127,11 @@
     \field{labeltitlesource}{title}
     \field{sortinit}{V}
     \field{sortinithash}{V}
-    \field{booktitle}{2017 IEEE Conference on Computer Vision and Pattern
-  Recognition Workshops (CVPRW)}
     \field{pages}{122\bibrangedash 131}
     \field{title}{Continuous Video to Simple Signals for Swimming Stroke
   Detection with Convolutional Neural Networks}
+    \field{journaltitle}{2017 IEEE Conference on Computer Vision and Pattern
+  Recognition Workshops (CVPRW)}
     \field{year}{2017}
   \endentry
 
@@ -2246,10 +2284,10 @@
     \field{labeltitlesource}{title}
     \field{sortinit}{W}
     \field{sortinithash}{W}
-    \field{booktitle}{2016 IEEE Conference on Computer Vision and Pattern
-  Recognition (CVPR)}
     \field{pages}{4724\bibrangedash 4732}
     \field{title}{Convolutional Pose Machines}
+    \field{journaltitle}{2016 IEEE Conference on Computer Vision and Pattern
+  Recognition (CVPR)}
     \field{year}{2016}
   \endentry
 
@@ -2294,8 +2332,8 @@
     \field{labeltitlesource}{title}
     \field{sortinit}{X}
     \field{sortinithash}{X}
-    \field{booktitle}{2018 European Conference on Computer Vision (ECCV)}
     \field{title}{Simple Baselines for Human Pose Estimation and Tracking}
+    \field{journaltitle}{2018 European Conference on Computer Vision (ECCV)}
     \field{year}{2018}
   \endentry
 
@@ -2444,10 +2482,10 @@
     \field{labeltitlesource}{title}
     \field{sortinit}{Z}
     \field{sortinithash}{Z}
-    \field{booktitle}{2010 IEEE Computer Society Conference on Computer Vision
-  and Pattern Recognition}
     \field{pages}{2528\bibrangedash 2535}
     \field{title}{Deconvolutional networks}
+    \field{journaltitle}{2010 IEEE Computer Society Conference on Computer
+  Vision and Pattern Recognition}
     \field{year}{2010}
   \endentry
 

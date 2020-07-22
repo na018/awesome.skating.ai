@@ -7,12 +7,12 @@ BN_MOMENTUM = 0.01
 
 
 class KPDetectorBase(object):
-    def __init__(self, input_shape, hrnet_input: tf.keras.Model, output_channels=15):
+    def __init__(self, input_shape, hrnet_input: tf.keras.Model, output_channels=12):
         self.inputs = tf.keras.Input(shape=input_shape, name='input_hrnet')
         self.output_channels = output_channels
         self.outputs = None
         self.hrnet_input: tf.keras.Model = hrnet_input(self.inputs)
-        self.hrnet_input_layer = self.hrnet_input
+        self.hrnet_input_layer: tf.Tensor = self.hrnet_input
         self.model = self._build_model()
 
     def conv3x3_block(self, inputs: tf.Tensor,

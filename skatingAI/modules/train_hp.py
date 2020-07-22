@@ -19,12 +19,13 @@ class TrainHP(TrainBase):
 
         super().__init__(name, img_shape, optimizer_name, lr_start, loss_fct, params, description, train, w_counter,
                          gpu, epochs)
-
+        self.bg_extractor: tf.keras.Model = bg_extractor
         self.model = self._get_model(NN)
         self.progress_tracker, self.file_writer_test = self._create_display_cb(self.model, 'hp')
 
         if train:
             self.model.summary()
+            tf.keras.utils.plot_model(self.model, 'nets/imgs/hp_model.png', show_shapes=True, expand_nested=True)
 
             self.decay_rate, self.optimizer_decay = params.sgd_clr_decay_rate, params.decay
             self.optimizer, self.decay_rate_counter = self._get_optimizer(optimizer_name, lr_start,
@@ -34,11 +35,9 @@ class TrainHP(TrainBase):
             self.metric_loss_train = Metric(f'hp_loss')
             self.metric_loss_test: Metric = Metric(f'hp_loss')
 
-            self.bg_extractor: tf.keras.Model = bg_extractor
-
     def _get_model(self, NN) -> tf.keras.Model:
 
-        hpnet = NN(self.img_shape, 9)
+        hpnet = NN(self.img_shape, bgnet_input=self.bg_extractor, output_channels=9)
 
         model = hpnet.model
 
@@ -116,13 +115,13 @@ class TrainHP(TrainBase):
         if self._train:
             batch: DsPair = next(iter)
 
-            extracted_bg = self.bg_extractor.predict([batch['frame']])
-            imgs = np.argmax(extracted_bg, axis=-1)
-            frames_extracted_bg = np.array(batch['frame'])
-            frames_extracted_bg[imgs == 0] = 2
+            # extracted_bg = self.bg_extractor.predict([batch['frame']])
+            # imgs = np.argmax(extracted_bg, axis=-1)
+            # frames_extracted_bg = np.array(batch['frame'])
+            # frames_extracted_bg[imgs == 0] = 2
 
             with tf.GradientTape() as tape:
-                logits = self.model(frames_extracted_bg, training=True)
+                logits = self.model(batch, training=True)
                 loss_value = self.loss_fct(batch['mask_hp'], logits)
 
             grads = tape.gradient(loss_value, self.model.trainable_weights)

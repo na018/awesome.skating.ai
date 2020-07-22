@@ -12,7 +12,7 @@
 
 \section{Figure Skating Dataset}
 
-The problem agnostic dataset decides whether human keypoints
+The problem agnostic dataset decides whether human joint locations
 will be learned successfully from image- or video sequence data.
 As of today, there does not exist a publicly available dataset which labels keypoints to ice skating performances or
 elements.
@@ -74,19 +74,22 @@ Furthermore, this software processes the data and performs adjustments in a post
 The overall setup of the \textit{MVN Link} system from {XSens} was very time-consuming.
 To correctly attach all the straps and align the cables took a
 minimum of 20 minutes.
-There recordings were conducted with the suit and the straps with equal preparation times.
-Further, the calibration on the ice with the \textit{MVN Analyze} software was very time-consuming again and took about 20 minutes.
+Recordings were conducted with the suit and the straps with equal preparation times.
+Further, the calibration on the ice with the \textit{MVN Analyze} software was very time-consuming again and took
+about 20 minutes.
 The calibration process had to be repeated several times when the calibration failed.
-These problems probably came from the unique gliding movements on the ice, which differentiates this sport from other sports.
+These problems probably came from the unique gliding movements on the ice, which differentiates this sport from other
+sports.
 This meant for the skaters to having to mimic usual floor movements for the calibration to work correctly.
-Since the recordings are very time-consuming, the work with young professional competitive skaters was not possible, because
-the drawn-out setup.
+Since the recordings are very time-consuming, the work with young professional competitive skaters was not possible,
+because
+of the drawn-out setup.
 Further recordings were then captured from a senior competitive skater.
 The inertial method was very beneficial due to the fact that other
 skaters practicing on the ice, did not intervene in the recordings.
 Additionally, however, sometimes the connection was lost to
 the hub, when the skater came back, the recordings were transmitted correctly.
-The post-processing from \textit{XSens} software did work really well.
+The post-processing from the \textit{XSens} software did work really well.
 What was disruptive, however, were the sensors and battery, which the skater had to carry.
 This made the movements feel constrained. Indeed, in figure ice skating falls are very common.
 A fall on the battery or one of the sensors would have been harmful, which again influenced the movement of the
@@ -121,7 +124,7 @@ positions.
 
 
 \subsubsection*{Creation of Synthetic Datasets in Figure Ice Skating: Conclusions}
-The above-described process seems very convincing
+The above-described process seems very convincing.
 The creation of a synthetic dataset for figure ice is highly beneficial
 because of the following reasons:\\
 First, inertial motion tracking leads to very accurate mapping of joints and synthetic animation image data.
@@ -135,7 +138,6 @@ Third, practicing slots can be used to capture the recordings.
 \\\mbox{}\\
 All these points confirm the legitimacy of synthetic datasets in figure ice skating.
 Due to the described limitations in \autoref{limitations} existing synthetic datasets were investigated.
-
 The synthetic dataset \textit{3DPeople}, as described in the next section, corresponds to the described expectations of an appropriate dataset.
 
 
@@ -171,11 +173,10 @@ depth maps, optical flow, and semantic information such as body parts and cloth 
 The \textit{3DPeople} dataset is highly sophisticated due to the wide variance and diversity of the data.
 Especially in terms of clothes, it stands out from other famous datasets such as Human3.6M~\cite{humaneva}.
 They use a variety of wide and tight clothes. For example do they include dresses and shorts.
-Their variance is greater compared to their freely available combats~\cite{human36m, humaneva}.
+Their variance is higher compared to their freely available combats~\cite{human36m, humaneva}.
 In \autoref{fig:woman_step_3dpeople} a demonstration shows the learned labels from the in this thesis presented method
 of a random image of the
 \textit{3DPeople} dataset.
-
 
 
 %----------------------------------------------------------------------------------------
@@ -206,16 +207,17 @@ labels.\\
 Furthermore, the body masks needed to be cleaned up and mapping of the resulting three-dimensional pixels to one-dimensional class
 values had to be performed as shown in~\autoref{fig:rgb-mappings}.
 The borders of the body-parts often contained a mixture of \textit{RGB} values, which were of no use to the network.\\
+Which is why these were replaced by the background class values.
 \begin{figure}
 
     \fontsmall
-\begin{minipage}{0.29\linewidth}
-    \begin{Verbatim}[frame=topline,label=Mapping to classes,framesep=1mm]
-body_part_classes = {
-    BodyParts.bg.name: 0,
-    BodyParts.Head.name: 1,
-    BodyParts.RUpArm.name: 2,
-    BodyParts.RForeArm.name: 3,
+    \begin{minipage}{0.29\linewidth}
+        \begin{Verbatim}[frame=topline,label=Mapping to classes,framesep=1mm]
+            body_part_classes = {
+                BodyParts.bg.name: 0,
+                BodyParts.Head.name: 1,
+                BodyParts.RUpArm.name: 2,
+                BodyParts.RForeArm.name: 3,
     BodyParts.RHand.name: 4,
     BodyParts.LUpArm.name: 2,
     BodyParts.LForeArm.name: 3,

@@ -22,7 +22,7 @@ Main fields are sports, visual surveillance, autonomous driving, entertainment, 
 robotics~\cite{olympicsport, surveillance, kinectWalkDepression}.
 For example \textit{Vaak}, a Japanese startup, developed a software, which would detect shoplifters,
 even before they were able to remove items from a store.
-This yielded in a drastic reduction in stealing crimes in stores~\cite{vaak}.
+This yielded in a drastic reduction of stealing crimes in stores~\cite{vaak}.
 \\\mbox{}\\
 The exercise of sport not via visiting a sports course, gym or club became of fundamental severance in 2020,
 when the Coronavirus SARS-CoV-2 spread the entire world~\cite{coronarki}.
@@ -56,7 +56,7 @@ poses.
 %In fact, people often complain scoring is not executed fairly~\cite{ungerjuryinterview, juryunger3minutes, unfairjudge}.
 %\\\mbox{}\\
 Especially in figure ice skating an accurate 2d pose recognition module could make a huge contribution.
-This is why this paper investigates 2d pose recognition with a special focus on figure ice skating.
+This is why this thesis investigates 2d pose recognition with a special focus on figure ice skating.
 %
 %Don't forget to sum thesis up here
 
@@ -96,26 +96,26 @@ This is why this paper investigates 2d pose recognition with a special focus on 
 
 \section{Motivation}
 
-    A working 2d pose estimator could make a huge contribution to figure ice skating.
-    In particular when building an action recognizer on top of it.
-    However, as of today, this was not possible yet due to the complex poses and the different gliding movements
-    on the ice.
-    Indeed, spins with their fast rotation and stretching poses are of high complexity to these estimators.
-    Such an estimator could support fair scoring during competitions or help to improve motion sequences during
-    practice.
-    \\\mbox{}\\
-    With the downward trend of jury staff and the increasing demand for more small competitions, the jury is asked
-    more and more in figure ice skating.
-    Particularly the role of the technical specialist or controller diagnosing the individual elements on the ice
-    is of high demand.
-    In recent years, some competitions were even canceled, because they were not able to find the inevitable jury.
-    In addition, sitting all day in the cold ice rink for only a very low salary is not attractive at all.
-    These long demanding days challenge concentration and many competition participants often complain about jury
-    not rating fairly enough,
-    completely forgetting the demanding work the jury has to do~\cite{ungerjuryinterview, juryunger3minutes, unfairjudge}.
-    Here a 2d pose estimator could contribute by recognizing the different elements or even scoring.
-    This would not only relieve the jury but also could increase fairness.
-    \\\mbox{}\\
+A working 2d pose estimator could make a huge contribution to figure ice skating.
+In particular when building an action recognizer on top of it.
+However, as of today, this was not possible yet due to the complex poses and the different gliding movements
+on the ice.
+Indeed, spins with their fast rotation and stretching poses are of high complexity to these estimators.
+Such an estimator could support fair scoring during competitions or help to improve motion sequences during
+practice.
+\\\mbox{}\\
+With the downward trend of jury staff and the increasing demand for more small competitions, the jury is needed
+more and more often in figure ice skating.
+Particularly the role of the technical specialist or controller diagnosing the individual elements on the ice
+is of high demand.
+In recent years, some competitions were even canceled, because they were not able to find the inevitable jury.
+In addition, sitting all day in the cold ice rink for only a very low salary is not attractive at all.
+These long demanding days challenge concentration and many competition participants often complain about jury
+not rating fairly enough,
+completely forgetting the demanding work the jury has to do~\cite{ungerjuryinterview, juryunger3minutes, unfairjudge}.
+Here a 2d pose estimator could contribute by recognizing the different elements or even scoring.
+This would not only relieve the jury but could also increase fairness.
+\\\mbox{}\\
     During practice, 2d pose estimators could examine the specific motions of elements and give hints on how to
     improve these.
     Probably they could even suggest certain exercises to learn an element like a spin, jump, or certain step.
@@ -214,13 +214,15 @@ This is why this paper investigates 2d pose recognition with a special focus on 
     However, they were able to successfully predict jumps and simple steps from videos into 3d
     simulation.
 
-    \section{Purpose and Research Question}
+
+\section{Purpose and Research Question}
 In this thesis an approach will be presented on human pose detection in single figure ice skating.
 In particular, the developed architecture ought to run on devices with lower computation power such as mobile phones.
 Several experiments will be conducted and evaluated leading to the proposed architecture.
-Due to the thesis' application scope of figure ice skating, the resulting algorithm should only detect the main character in the image
+Due to the thesis' application scope of figure ice skating, the resulting algorithm should only detect the main
+character in the image
 and neglect background noise or other people.
-In regard to these requirements, following research questions will be addressed:
+In regard to these requirements, the following research questions will be addressed:
 \begin{itemize}
     \item How can an appropriate dataset be created for 2d human pose detection in figure ice skating?
     \item Which network architecture efficiently detects human joints from image data and at the same time is able to

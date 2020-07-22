@@ -1,10 +1,10 @@
-\glossaryentry{CNN?\glossentry{CNN}|setentrycounter[]{page}\glsnumberformat}{xiii}
-\glossaryentry{SGD?\glossentry{SGD}|setentrycounter[]{page}\glsnumberformat}{xiii}
-\glossaryentry{AdaGrad?\glossentry{AdaGrad}|setentrycounter[]{page}\glsnumberformat}{xiii}
-\glossaryentry{RMSProp?\glossentry{RMSProp}|setentrycounter[]{page}\glsnumberformat}{xiii}
-\glossaryentry{Adam?\glossentry{Adam}|setentrycounter[]{page}\glsnumberformat}{xiii}
-\glossaryentry{Nadam?\glossentry{Nadam}|setentrycounter[]{page}\glsnumberformat}{xiii}
-\glossaryentry{ReLU?\glossentry{ReLU}|setentrycounter[]{page}\glsnumberformat}{xv}
+\glossaryentry{CNN?\glossentry{CNN}|setentrycounter[]{page}\glsnumberformat}{xi}
+\glossaryentry{SGD?\glossentry{SGD}|setentrycounter[]{page}\glsnumberformat}{xi}
+\glossaryentry{AdaGrad?\glossentry{AdaGrad}|setentrycounter[]{page}\glsnumberformat}{xi}
+\glossaryentry{RMSProp?\glossentry{RMSProp}|setentrycounter[]{page}\glsnumberformat}{xi}
+\glossaryentry{Adam?\glossentry{Adam}|setentrycounter[]{page}\glsnumberformat}{xi}
+\glossaryentry{Nadam?\glossentry{Nadam}|setentrycounter[]{page}\glsnumberformat}{xi}
+\glossaryentry{ReLU?\glossentry{ReLU}|setentrycounter[]{page}\glsnumberformat}{xiii}
 \glossaryentry{CNN?\glossentry{CNN}|setentrycounter[]{page}\glsnumberformat}{6}
 \glossaryentry{NAS?\glossentry{NAS}|setentrycounter[]{page}\glsnumberformat}{6}
 \glossaryentry{ISU?\glossentry{ISU}|setentrycounter[]{page}\glsnumberformat}{6}
@@ -85,6 +85,7 @@
 \glossaryentry{MSE?\glossentry{MSE}|setentrycounter[]{page}\glsnumberformat}{24}
 \glossaryentry{MSE?\glossentry{MSE}|setentrycounter[]{page}\glsnumberformat}{24}
 \glossaryentry{CNN?\glossentry{CNN}|setentrycounter[]{page}\glsnumberformat}{25}
+\glossaryentry{SCCE?\glossentry{SCCE}|setentrycounter[]{page}\glsnumberformat}{25}
 \glossaryentry{SCCE?\glossentry{SCCE}|setentrycounter[]{page}\glsnumberformat}{25}
 \glossaryentry{ImageNet?\glossentry{ImageNet}|setentrycounter[]{page}\glsnumberformat}{25}
 \glossaryentry{CNN?\glossentry{CNN}|setentrycounter[]{page}\glsnumberformat}{25}

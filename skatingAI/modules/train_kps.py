@@ -27,6 +27,7 @@ class TrainKP(TrainBase):
 
             self.model = self._get_model(NN)
             self.model.summary()
+            tf.keras.utils.plot_model(self.model, 'nets/imgs/kps_model.png', show_shapes=True, expand_nested=True)
 
             self.decay_rate, self.optimizer_decay = params.sgd_clr_decay_rate, params.decay
             self.optimizer, self.decay_rate_counter = self._get_optimizer(optimizer_name, lr_start,
@@ -79,7 +80,7 @@ class TrainKP(TrainBase):
                 ax.set_title(title[i], fontsize='small', alpha=0.6, color='blue')
                 ax.imshow(img[0])
 
-            fig.savefig(f"{Path.cwd()}/img_train{self.gpu}/{epoch}_hp_train.png")
+            fig.savefig(f"{Path.cwd()}/img_train{self.gpu}/{epoch}_kps_train.png")
 
             img = plot2img(fig)
 
@@ -125,13 +126,13 @@ class TrainKP(TrainBase):
         if self._train:
             batch: DsPair = next(iter)
 
-            extracted_bg = self.bg_extractor.predict([batch['frame']])
-            imgs = np.argmax(extracted_bg, axis=-1)
-            frames_extracted_bg = np.array(batch['frame'])
-            frames_extracted_bg[imgs == 0] = 2
+            # extracted_bg = self.bg_extractor.predict([batch['frame']])
+            # imgs = np.argmax(extracted_bg, axis=-1)
+            # frames_extracted_bg = np.array(batch['frame'])
+            # frames_extracted_bg[imgs == 0] = 2
 
             with tf.GradientTape() as tape:
-                logits = self.model(frames_extracted_bg, training=True)
+                logits = self.model(batch, training=True)
                 loss_value = self.loss_fct(batch['kps'], logits)
 
             grads = tape.gradient(loss_value, self.model.trainable_weights)
