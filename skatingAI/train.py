@@ -79,7 +79,8 @@ class MainLoop(object):
                 self.lg.log(f'[{step}] train step', True)
 
                 for trainModule in self.trainModules:
-                    trainModule.train_model(self.iter)
+                    loss = trainModule.train_model(self.iter)
+                    self.lg.log(f'[{step}] loss: -{loss}')
 
             if epoch == start + 3:
                 for trainModule in self.trainModules:

@@ -103,17 +103,17 @@ class TrainBG(TrainBase):
             return loss_value
 
     def train_model(self, iter):
-        if self._train:
-            batch: DsPair = next(iter)
 
-            with tf.GradientTape() as tape:
-                logits = self.model(batch['frame'], training=True)
-                loss_value = self.loss_fct(batch['mask_bg'], logits)
+        batch: DsPair = next(iter)
 
-            grads = tape.gradient(loss_value, self.model.trainable_weights)
+        with tf.GradientTape() as tape:
+            logits = self.model(batch['frame'], training=True)
+            loss_value = self.loss_fct(batch['mask_bg'], logits)
 
-            self.optimizer.apply_gradients(zip(grads, self.model.trainable_weights))
-            self.metric_loss_train.append(float(loss_value))
+        grads = tape.gradient(loss_value, self.model.trainable_weights)
 
-            return loss_value
-            # return self.loss_fct.y_true_maps, tf.abs(logits)
+        self.optimizer.apply_gradients(zip(grads, self.model.trainable_weights))
+        self.metric_loss_train.append(float(loss_value))
+
+        return loss_value
+        # return self.loss_fct.y_true_maps, tf.abs(logits)
