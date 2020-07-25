@@ -21,6 +21,7 @@ class TrainKP(TrainBase):
         super().__init__(name, img_shape, optimizer_name, lr_start, loss_fct, params, description, train, w_counter,
                          gpu, epochs)
 
+        self.name = 'KPS'
         if train:
             self.bg_extractor: tf.keras.Model = bg_extractor
             self.hp_model = hp_model

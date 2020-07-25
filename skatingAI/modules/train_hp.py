@@ -19,6 +19,7 @@ class TrainHP(TrainBase):
 
         super().__init__(name, img_shape, optimizer_name, lr_start, loss_fct, params, description, train, w_counter,
                          gpu, epochs)
+        self.name = 'HP'
         self.bg_extractor: tf.keras.Model = bg_extractor
         self.model = self._get_model(NN)
         self.progress_tracker, self.file_writer_test = self._create_display_cb(self.model, 'hp')

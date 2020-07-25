@@ -107,8 +107,10 @@ RUN apt-get install -y libsm6 libxext6 libxrender-dev
 RUN pip install opencv-python\
     matplotlib=3.2.1 \
     typing_extensions=3.7.4.2 \
-    pick=0.6.7
-    Pillow=7.1.2
+    pick=0.6.7 \
+    Pillow=7.1.2 \
+    tensorflow-addons=0.10.0
+
 
 
 ENV PYTHONPATH "${PYTHONPATH}:/skatingAI"

@@ -4,6 +4,7 @@ import random
 from pathlib import Path
 from typing import NewType, Tuple, Generator, List
 
+import cv2
 import numpy as np
 import tensorflow as tf
 from typing_extensions import TypedDict
@@ -61,6 +62,7 @@ class DsGenerator(object):
 
         video: np.ndarray = np.load(
             f"{self.video_path_rgbs}/{self.file_names[random_n]}")['arr_0']
+
         rgbb: np.ndarray = np.load(
             f"{self.video_path_rgbbs}/{self.file_names[random_n]}")['arr_0']
         rgbb = np.sum(rgbb, axis=-1)
@@ -88,7 +90,6 @@ class DsGenerator(object):
     def set_new_video(self, test: bool = False):
         self.video, self.mask_hp, self.mask_bg, self.kps, self.video_name = self._get_random_video_mask_kp(test)
 
-
     def get_next_pair(self) -> Generator:
         for _ in itertools.count(1):
             if self.sequential:
@@ -104,7 +105,9 @@ class DsGenerator(object):
                 video_i, mask_bg_i, mask_hp_i, kps_i = video[_frame_i], mask_bg[_frame_i], mask_hp[_frame_i], kps[
                     _frame_i]
 
-            frame_n: Frame = video_i / 255
+            randKernel = np.random.randint(1, 15, size=1)
+            video_i_blur = cv2.blur(np.array(video_i), (randKernel, randKernel))
+            frame_n: Frame = video_i_blur / 255
             mask_bg_n: Mask = mask_bg_i
             mask_hp_n: Mask = mask_hp_i
 
@@ -128,7 +131,6 @@ class DsGenerator(object):
 
             yield {'frame': frame_n, 'mask_bg': mask_bg_n, 'mask_hp': mask_hp_n, 'kps': kps_n_rs}
 
-    @tf.function
     def build_iterator(self, batch_size: int = 10,
                        prefetch_batch_buffer: int = 5) -> tf.data.Dataset:
 

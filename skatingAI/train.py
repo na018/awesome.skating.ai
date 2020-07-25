@@ -76,11 +76,11 @@ class MainLoop(object):
                 time_start = time.perf_counter()
 
             for step in range(self.epoch_steps):
-                self.lg.log(f'[{step}] train step', True)
+                self.lg.log(f'[{epoch}:{step}] train step', True)
 
                 for trainModule in self.trainModules:
                     loss = trainModule.train_model(self.iter)
-                    self.lg.log(f'[{step}] loss: -{loss}')
+                    self.lg.log(f'[{epoch}:{step}] loss-{trainModule.name}: -{loss}')
 
             if epoch == start + 3:
                 for trainModule in self.trainModules:
