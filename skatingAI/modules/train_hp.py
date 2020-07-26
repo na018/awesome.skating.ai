@@ -25,7 +25,7 @@ class TrainHP(TrainBase):
         self.progress_tracker, self.file_writer_test = self._create_display_cb(self.model, 'hp')
 
         if train:
-            self.model.summary()
+            # self.model.summary()
             tf.keras.utils.plot_model(self.model, 'nets/imgs/hp_model.png', show_shapes=True, expand_nested=True)
 
             self.decay_rate, self.optimizer_decay = params.sgd_clr_decay_rate, params.decay

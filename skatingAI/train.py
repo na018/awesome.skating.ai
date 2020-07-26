@@ -36,7 +36,8 @@ class MainLoop(object):
                                params_BG.loss_fct, params_BG.params, params_BG.description,
                                do_train_BG,
                                w_counter_BG, gpu, epochs)
-        self.trainModules.append(self.trainBG)
+        if do_train_BG:
+            self.trainModules.append(self.trainBG)
 
         if do_train_HP or do_train_KP:
             self.trainHP = TrainHP(params_HP.model, name, self.img_shape,
