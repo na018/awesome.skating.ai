@@ -113,21 +113,21 @@ class TrainHP(TrainBase):
             return loss_value
 
     def train_model(self, iter):
-        if self._train:
-            batch: DsPair = next(iter)
 
-            # extracted_bg = self.bg_extractor.predict([batch['frame']])
-            # imgs = np.argmax(extracted_bg, axis=-1)
-            # frames_extracted_bg = np.array(batch['frame'])
-            # frames_extracted_bg[imgs == 0] = 2
+        batch: DsPair = next(iter)
 
-            with tf.GradientTape() as tape:
-                logits = self.model(batch, training=True)
-                loss_value = self.loss_fct(batch['mask_hp'], logits)
+        # extracted_bg = self.bg_extractor.predict([batch['frame']])
+        # imgs = np.argmax(extracted_bg, axis=-1)
+        # frames_extracted_bg = np.array(batch['frame'])
+        # frames_extracted_bg[imgs == 0] = 2
 
-            grads = tape.gradient(loss_value, self.model.trainable_weights)
+        with tf.GradientTape() as tape:
+            logits = self.model(batch, training=True)
+            loss_value = self.loss_fct(batch['mask_hp'], logits)
 
-            self.optimizer.apply_gradients(zip(grads, self.model.trainable_weights))
-            self.metric_loss_train.append(float(loss_value))
+        grads = tape.gradient(loss_value, self.model.trainable_weights)
 
-            return loss_value
+        self.optimizer.apply_gradients(zip(grads, self.model.trainable_weights))
+        self.metric_loss_train.append(float(loss_value))
+
+        return loss_value

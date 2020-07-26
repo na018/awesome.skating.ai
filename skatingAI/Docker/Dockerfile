@@ -110,6 +110,7 @@ RUN pip install opencv-python\
     pick=0.6.7 \
     Pillow=7.1.2 \
     tensorflow-addons=0.10.0
+    tensorflow==2.1.0
 
 
 

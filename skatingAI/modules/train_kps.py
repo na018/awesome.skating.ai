@@ -57,10 +57,9 @@ class TrainKP(TrainBase):
             extracted_bg = self.bg_extractor.predict(sample_image[tf.newaxis, ...])[0]
             imgs = np.argmax(extracted_bg, axis=-1)
             frames_extracted_bg = sample_image.numpy()
-            frames_extracted_bg[imgs == 0] = 2
 
-            predicted_kp = self.model.predict(frames_extracted_bg[tf.newaxis, ...])[0]
-            predicted_mask = mask2rgb(create_mask(self.hp_model.predict(frames_extracted_bg[tf.newaxis, ...])[0]))
+            predicted_kp = self.model.predict(sample_image[tf.newaxis, ...])[0]
+            predicted_mask = mask2rgb(create_mask(self.hp_model.predict(sample_image[tf.newaxis, ...])[0]))
             true_circles, predicted_circles = [], []
 
             sample_kp = kps_upscale_reshape(predicted_mask.shape, sample_kp.numpy())
@@ -124,21 +123,21 @@ class TrainKP(TrainBase):
             return loss_value
 
     def train_model(self, iter):
-        if self._train:
-            batch: DsPair = next(iter)
+        # if self._train:
+        batch: DsPair = next(iter)
 
-            # extracted_bg = self.bg_extractor.predict([batch['frame']])
-            # imgs = np.argmax(extracted_bg, axis=-1)
-            # frames_extracted_bg = np.array(batch['frame'])
-            # frames_extracted_bg[imgs == 0] = 2
+        # extracted_bg = self.bg_extractor.predict([batch['frame']])
+        # imgs = np.argmax(extracted_bg, axis=-1)
+        # frames_extracted_bg = np.array(batch['frame'])
+        # frames_extracted_bg[imgs == 0] = 2
 
-            with tf.GradientTape() as tape:
-                logits = self.model(batch, training=True)
-                loss_value = self.loss_fct(batch['kps'], logits)
+        with tf.GradientTape() as tape:
+            logits = self.model(batch, training=True)
+            loss_value = self.loss_fct(batch['kps'], logits)
 
-            grads = tape.gradient(loss_value, self.model.trainable_weights)
+        grads = tape.gradient(loss_value, self.model.trainable_weights)
 
-            self.optimizer.apply_gradients(zip(grads, self.model.trainable_weights))
-            self.metric_loss_train.append(float(loss_value))
+        self.optimizer.apply_gradients(zip(grads, self.model.trainable_weights))
+        self.metric_loss_train.append(float(loss_value))
 
-            return loss_value
+        return loss_value

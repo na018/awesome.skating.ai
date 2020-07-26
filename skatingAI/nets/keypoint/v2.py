@@ -9,7 +9,7 @@ BN_MOMENTUM = 0.01
 
 
 class KPDetector(KPDetectorBase):
-    def __init__(self, input_shape, hrnet_input: tf.keras.Model, output_channels=15):
+    def __init__(self, input_shape, hrnet_input: tf.keras.Model, output_channels=12):
         super().__init__(input_shape, hrnet_input, output_channels)
 
     def _build_model(self):

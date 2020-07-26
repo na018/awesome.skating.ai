@@ -123,9 +123,8 @@ class DsGenerator(object):
             kps_n = np.reshape(kps_i, (kps_i.shape[0] // 2, 2))
             kps_n_0 = kps_n[:, 0] / mask_hp_n.shape[0]
             kps_n_1 = kps_n[:, 1] / mask_hp_n.shape[1]
-            kps_n_rs = np.array([kps_n_0, kps_n_1])
-            kps_n_rs = np.reshape(kps_n_rs, (-1))
-            kps_n_rs = tf.convert_to_tensor(kps_n_rs)
+            kps_n_rs = tf.transpose([kps_n_0, kps_n_1], perm=[1, 0])
+            kps_n_rs = tf.reshape(kps_n_rs, [-1])
 
             self.seen_samples += 1
 
