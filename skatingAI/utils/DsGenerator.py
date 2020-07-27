@@ -46,8 +46,11 @@ class DsGenerator(object):
         self.sequential: bool = sequential
         self.test: bool = test
         self.new_video_counter = batch_size * epoch_steps
+        self.batch_size = batch_size
+        self.batch_counter = 0
 
         self.video, self.mask_bg, self.mask_hp, self.kps, self.video_name = self._get_random_video_mask_kp(test)
+        self.videos, self.mask_bgs, self.mask_hps, self.kpss, self.video_names = [], [], [], [], []
         self.video_size: int = len(self.kps)
         self.frame_i: int = 0
 
@@ -102,12 +105,20 @@ class DsGenerator(object):
                 if self.frame_i + 1 < self.video_size:
                     self.frame_i += 1
             else:
-                if self.seen_samples % self.new_video_counter == 0:
-                    self.video, self.mask_bg, self.mask_hp, self.kps, self.video_name = self._get_random_video_mask_kp(
-                        self.test)
-                    print(f'{"-" * 20}-> train random frames from [{self.video_name}]')
+                if self.seen_samples % self.new_video_counter == 0 or self.seen_samples == 1:
+                    for _ in range(self.batch_size):
+                        video, mask_bg, mask_hp, kps, video_name = self._get_random_video_mask_kp(
+                            self.test)
+                        self.videos.append(video)
+                        self.mask_bgs.append(mask_bg)
+                        self.mask_hps.append(mask_hp)
+                        self.kpss.append(kps)
+                        self.video_names.append(video_name)
+                        print(f'{"-" * 20}-> train random frames from [{video_name}]')
 
-                video, mask_bg, mask_hp, kps, video_name = self.video, self.mask_bg, self.mask_hp, self.kps, self.video_name
+                video, mask_bg, mask_hp, kps, video_name = self.videos[self.batch_counter], self.mask_bgs[
+                    self.batch_counter], self.mask_hps[self.batch_counter], self.kpss[self.batch_counter], \
+                                                           self.video_names[self.batch_counter]
 
                 _frame_i: int = random.randint(0, video.shape[0] - 1)
 
@@ -136,6 +147,10 @@ class DsGenerator(object):
             kps_n_rs = tf.reshape(kps_n_rs, [-1])
 
             self.seen_samples += 1
+            self.batch_counter += 1
+
+            if self.batch_counter == self.batch_size:
+                self.batch_counter = 0
 
             yield {'frame': frame_n, 'mask_bg': mask_bg_n, 'mask_hp': mask_hp_n, 'kps': kps_n_rs}
 
