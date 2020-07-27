@@ -56,7 +56,8 @@ class MainLoop(object):
             self.trainModules.append(self.trainKP)
 
     def _generate_dataset(self, test: bool = False, sequential: bool = False):
-        generator = DsGenerator(resize_shape_x=240, test=test, sequential=sequential)
+        generator = DsGenerator(resize_shape_x=240, test=test, sequential=sequential,
+                                batch_size=self.batch_size, epoch_steps=self.epoch_steps)
         sample_pair: DsPair = next(generator.get_next_pair())
         ds = generator.build_iterator(self.batch_size, 1)
 

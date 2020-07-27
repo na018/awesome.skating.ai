@@ -27,7 +27,8 @@ class DsPair(TypedDict):
 
 class DsGenerator(object):
 
-    def __init__(self, resize_shape_x: int = None, test: bool = False, sequential: bool = False):
+    def __init__(self, resize_shape_x: int = None, test: bool = False, sequential: bool = False, batch_size=2,
+                 epoch_steps=12):
         """dataset generator yielding processed images from the `3DPEOPLE DATASET <https://cv.iri.upc-csic.es/>`
 
         Args:
@@ -41,9 +42,10 @@ class DsGenerator(object):
         self.video_amount: int = len(self.file_names)
         self.test_start = int(self.video_amount * 0.9)
         self.train_end = self.test_start - 1
-        self.seen_samples: int = 0
+        self.seen_samples: int = 1
         self.sequential: bool = sequential
         self.test: bool = test
+        self.new_video_counter = batch_size * epoch_steps
 
         self.video, self.mask_bg, self.mask_hp, self.kps, self.video_name = self._get_random_video_mask_kp(test)
         self.video_size: int = len(self.kps)
@@ -53,7 +55,7 @@ class DsGenerator(object):
             self.resize_factor = self.video.shape[1] // resize_shape_x
             self.resize_shape = (resize_shape_x, self.video.shape[2] // self.resize_factor)
 
-    @tf.function
+    # @tf.function
     def _get_random_video_mask_kp(self, test: bool = False) -> Tuple[Video, VideoMask, VideoMask, KeyPoints, str]:
         if test or self.test:
             random_n: int = int(random.randint(self.test_start, self.video_amount - 1))
@@ -100,9 +102,14 @@ class DsGenerator(object):
                 if self.frame_i + 1 < self.video_size:
                     self.frame_i += 1
             else:
-                video, mask_bg, mask_hp, kps, video_name = self._get_random_video_mask_kp(self.test)
+                if self.new_video_counter % self.seen_samples == 0:
+                    self.video, self.mask_bg, self.mask_hp, self.kps, self.video_name = self._get_random_video_mask_kp(
+                        self.test)
+
+                video, mask_bg, mask_hp, kps, video_name = self.video, self.mask_bg, self.mask_hp, self.kps, self.video_name
+
                 _frame_i: int = random.randint(0, video.shape[0] - 1)
-                print(f'[{_frame_i}] random pair nr', video_name)
+                print(f'[{_frame_i}] {"-" * 20} ', video_name)
                 video_i, mask_bg_i, mask_hp_i, kps_i = video[_frame_i], mask_bg[_frame_i], mask_hp[_frame_i], kps[
                     _frame_i]
 

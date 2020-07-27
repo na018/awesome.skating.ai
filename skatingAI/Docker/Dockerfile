@@ -109,7 +109,7 @@ RUN pip install opencv-python\
     typing_extensions=3.7.4.2 \
     pick=0.6.7 \
     Pillow=7.1.2 \
-    tensorflow-addons=0.10.0\
+    tensorflow-addons=0.10.0 \
     tensorflow=2.1.0
 
 
