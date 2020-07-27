@@ -9,7 +9,7 @@ import tensorflow as tf
 from PIL import Image, ImageDraw, ImageFont
 from matplotlib import pyplot as plt
 
-from skatingAI.nets.bg.v7 import BGNet
+from skatingAI.nets.bg.v0 import BGNet
 from skatingAI.nets.hrnet.v7 import HPNet
 from skatingAI.nets.keypoint.v3 import KPDetector
 from skatingAI.utils.DsGenerator import DsGenerator, Frame, Mask, DsPair
@@ -48,7 +48,7 @@ class Predictor(object):
 
         self.bg_weight_path = f"{os.getcwd()}/ckpt/bg-{bg_weight_counter}.ckpt"
         self.hp_weight_path = f"{os.getcwd()}/ckpt/hp-{hp_weight_counter}.ckpt"
-        self.kps_weight_path = f"{os.getcwd()}/ckpt/kp-{kps_weight_counter}.ckpt"
+        self.kps_weight_path = f"{os.getcwd()}/ckpt/kps-{kps_weight_counter}.ckpt"
         self.dir_save = f"{os.getcwd()}/predictions/{self.name}_{kps_weight_counter}"
         self.Logger = Logger()
         self.file_name = self._prepare_file_saving()
@@ -148,9 +148,9 @@ class Predictor(object):
             frames_extracted_bg = np.array(fi)
             frames_extracted_bg[imgs == 0] = 0
             self.Logger.log('Start prediction fun:body_parts', block=True)
-            body_parts = self.base_model.predict([frames_extracted_bg])
+            body_parts = self.base_model.predict([fi])
             self.Logger.log('Start prediction fun:keypoints', block=True)
-            kps = self.model.predict([frames_extracted_bg])
+            kps = self.model.predict([fi])
 
             if len(pred_hp) > 0:
                 pred_bg = np.concatenate((pred_bg, frames_extracted_bg))
@@ -245,7 +245,7 @@ class Predictor(object):
         return model
 
     def _get_hrnet_model(self) -> tf.keras.Model:
-        hrnet = HPNet(self.IMG_SHAPE, 9)
+        hrnet = HPNet(self.IMG_SHAPE, bgnet_input=self.bg_extractor, output_channels=9)
         model = hrnet.model
 
         model.load_weights(self.hp_weight_path)
@@ -299,9 +299,9 @@ if __name__ == "__main__":
     # image sequence: /home/nadin-katrin/Videos/biellmann_sequence
     parser = argparse.ArgumentParser(
         description='Predict body parts from images or videos')
-    parser.add_argument('--wcounter_bg', default=5450, help='Number of weight')
-    parser.add_argument('--wcounter_hp', default=4430, help='Number of weight')
-    parser.add_argument('--wcounter_kps', default=4885, help='Number of weight')
+    parser.add_argument('--wcounter_bg', default=530, help='Number of weight')
+    parser.add_argument('--wcounter_hp', default=530, help='Number of weight')
+    parser.add_argument('--wcounter_kps', default=530, help='Number of weight')
     parser.add_argument('--name', default='', help='unique name to save to save video/image')
     parser.add_argument('--video', default='./edited/alena_biellmann_no_sound.avi',  # alina_biellmann_red_dress.avi',
                         # /home/nadin-katrin/awesome.skating.ai/Biellmann_2.avi

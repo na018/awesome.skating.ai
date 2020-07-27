@@ -102,6 +102,7 @@ class DsGenerator(object):
             else:
                 video, mask_bg, mask_hp, kps, video_name = self._get_random_video_mask_kp(self.test)
                 _frame_i: int = random.randint(0, video.shape[0] - 1)
+                print(f'[{_frame_i}] random pair nr', video_name)
                 video_i, mask_bg_i, mask_hp_i, kps_i = video[_frame_i], mask_bg[_frame_i], mask_hp[_frame_i], kps[
                     _frame_i]
 

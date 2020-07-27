@@ -19,7 +19,7 @@ class TrainHP(TrainBase):
 
         super().__init__(name, img_shape, optimizer_name, lr_start, loss_fct, params, description, train, w_counter,
                          gpu, epochs)
-        self.name = 'HP'
+        self.name = 'hp'
         self.bg_extractor: tf.keras.Model = bg_extractor
         self.model = self._get_model(NN)
         self.progress_tracker, self.file_writer_test = self._create_display_cb(self.model, 'hp')
@@ -56,9 +56,8 @@ class TrainHP(TrainBase):
             extracted_bg = self.bg_extractor.predict(sample_image[tf.newaxis, ...])[0]
             imgs = np.argmax(extracted_bg, axis=-1)
             frames_extracted_bg = sample_image.numpy()
-            frames_extracted_bg[imgs == 0] = 2
 
-            predicted_hp = mask2rgb(create_mask(self.model.predict(frames_extracted_bg[tf.newaxis, ...])[0]))
+            predicted_hp = mask2rgb(create_mask(self.model.predict(sample_image[tf.newaxis, ...])[0]))
 
             display_imgs = [cv2.cvtColor(frames_extracted_bg, cv2.COLOR_BGR2RGB),
                             np.reshape(sample_mask, sample_mask.shape[:-1]),
@@ -73,6 +72,9 @@ class TrainHP(TrainBase):
             fig.savefig(f"{Path.cwd()}/img_train{self.gpu}/{epoch}_hp_train.png")
 
             img = plot2img(fig)
+
+            self.model.save_weights(
+                f"{Path.cwd()}/ckpt/{self.name}-{epoch}.ckpt")
 
             self.progress_tracker.track_img_on_epoch_end(img, epoch, metrics=[
                 self.metric_loss_train,
@@ -110,7 +112,7 @@ class TrainHP(TrainBase):
 
             self.metric_loss_test.append(loss_value)
 
-            return loss_value
+            return self.metric_loss_test.get_median(False)
 
     def train_model(self, iter):
 

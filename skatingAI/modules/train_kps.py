@@ -21,7 +21,7 @@ class TrainKP(TrainBase):
         super().__init__(name, img_shape, optimizer_name, lr_start, loss_fct, params, description, train, w_counter,
                          gpu, epochs)
 
-        self.name = 'KPS'
+        self.name = 'kps'
         if train:
             self.bg_extractor: tf.keras.Model = bg_extractor
             self.hp_model = hp_model
@@ -47,7 +47,7 @@ class TrainKP(TrainBase):
         model = kpnet.model
 
         if self.w_counter != -1:
-            model.load_weights(f"{Path.cwd()}/ckpt{self.gpu}/kp-{self.w_counter}.ckpt")
+            model.load_weights(f"{Path.cwd()}/ckpt{self.gpu}/kps-{self.w_counter}.ckpt")
 
         return model
 
@@ -84,10 +84,14 @@ class TrainKP(TrainBase):
 
             img = plot2img(fig)
 
+            self.model.save_weights(
+                f"{Path.cwd()}/ckpt/{self.name}-{epoch}.ckpt")
+
             self.progress_tracker.track_img_on_epoch_end(img, epoch, metrics=[
                 self.metric_loss_train,
                 self.metric_loss_test
             ])
+
 
     def track_metrics_on_train_start(self, do_train_bg, do_train_hp, time, epoch_steps, batch_size):
         if self._train:
@@ -101,6 +105,7 @@ class TrainKP(TrainBase):
 
     def test_model(self, epoch: int, epoch_steps: int, iter_test) -> float:
         if self._train:
+            print('test kps')
 
             loss_value = 0
 
@@ -114,13 +119,14 @@ class TrainKP(TrainBase):
                 logits = self.model(frames_extracted_bg, training=False)
                 loss_value = self.loss_fct(batch['mask_hp'], logits)
                 self.metric_loss_test.append(float(loss_value))
+                print('[kps]', loss_value)
 
             with self.file_writer_test.as_default():
                 tf.summary.scalar(self.metric_loss_test.name, self.metric_loss_test.get_median(),
                                   step=epoch)
 
             self.metric_loss_test.append(loss_value)
-            return loss_value
+            return self.metric_loss_test.get_median(False)
 
     def train_model(self, iter):
         # if self._train:

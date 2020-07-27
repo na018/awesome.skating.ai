@@ -19,7 +19,7 @@ class TrainBG(TrainBase):
 
         super().__init__(name, img_shape, optimizer_name, lr_start, loss_fct, params, description, train, w_counter,
                          gpu, epochs)
-        self.name = 'BG'
+        self.name = 'bg'
         self.model = self._get_model(NN)
         self.progress_tracker, self.file_writer_test = self._create_display_cb(self.model, 'bg')
 
@@ -70,10 +70,14 @@ class TrainBG(TrainBase):
 
         img = plot2img(fig)
 
+        self.model.save_weights(
+            f"{Path.cwd()}/ckpt/{self.name}-{epoch}.ckpt")
+
         self.progress_tracker.track_img_on_epoch_end(img, epoch, metrics=[
             self.metric_loss_train,
             self.metric_loss_test
         ])
+
 
     def track_metrics_on_train_start(self, do_train_hp, do_train_kp, time, epoch_steps, batch_size):
 
@@ -100,7 +104,7 @@ class TrainBG(TrainBase):
                 tf.summary.scalar(self.metric_loss_test.name, self.metric_loss_test.get_median(), step=epoch)
 
             self.metric_loss_test.append(loss_value)
-            return loss_value
+            return self.metric_loss_test.get_median(False)
 
     def train_model(self, iter):
         batch: DsPair = next(iter)
