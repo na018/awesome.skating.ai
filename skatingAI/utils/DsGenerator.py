@@ -106,6 +106,7 @@ class DsGenerator(object):
                     self.frame_i += 1
             else:
                 if self.seen_samples % self.new_video_counter == 0 or self.seen_samples == 1:
+                    self.videos, self.mask_bgs, self.mask_hps, self.kpss, self.video_names = [], [], [], [], []
                     for _ in range(self.batch_size):
                         video, mask_bg, mask_hp, kps, video_name = self._get_random_video_mask_kp(
                             self.test)
