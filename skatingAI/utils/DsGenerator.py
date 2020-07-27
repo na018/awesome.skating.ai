@@ -102,14 +102,15 @@ class DsGenerator(object):
                 if self.frame_i + 1 < self.video_size:
                     self.frame_i += 1
             else:
-                if self.new_video_counter % self.seen_samples == 0:
+                if self.seen_samples % self.new_video_counter == 0:
                     self.video, self.mask_bg, self.mask_hp, self.kps, self.video_name = self._get_random_video_mask_kp(
                         self.test)
+                    print(f'{"-" * 20}-> train random frames from [{self.video_name}]')
 
                 video, mask_bg, mask_hp, kps, video_name = self.video, self.mask_bg, self.mask_hp, self.kps, self.video_name
 
                 _frame_i: int = random.randint(0, video.shape[0] - 1)
-                print(f'[{_frame_i}] {"-" * 20} ', video_name)
+
                 video_i, mask_bg_i, mask_hp_i, kps_i = video[_frame_i], mask_bg[_frame_i], mask_hp[_frame_i], kps[
                     _frame_i]
 
