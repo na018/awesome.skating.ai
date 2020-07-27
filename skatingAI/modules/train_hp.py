@@ -91,12 +91,11 @@ class TrainHP(TrainBase):
                                               epoch_steps, batch_size,
                                               description=self.description)
 
-    def test_model(self, epoch: int, epoch_steps: int, iter_test) -> float:
+    def test_model(self, epoch: int, epoch_steps: int, test_batch) -> float:
         if self._train:
             loss_value = 0
 
-            for _ in range(epoch_steps):
-                batch: DsPair = next(iter_test)
+            for i, batch in enumerate(test_batch):
                 extracted_bg = self.bg_extractor.predict([batch['frame']])
                 imgs = np.argmax(extracted_bg, axis=-1)
                 frames_extracted_bg = np.array(batch['frame'])

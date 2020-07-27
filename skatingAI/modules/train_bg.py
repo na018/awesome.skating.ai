@@ -89,13 +89,12 @@ class TrainBG(TrainBase):
                                           epoch_steps, batch_size,
                                           description=self.description)
 
-    def test_model(self, epoch: int, epoch_steps: int, iter_test) -> float:
+    def test_model(self, epoch: int, epoch_steps: int, test_batch) -> float:
         if self._train:
 
             loss_value = 0
 
-            for _ in range(epoch_steps):
-                batch = next(iter_test)
+            for i, batch in enumerate(test_batch):
                 logits = self.model(batch['frame'], training=False)
                 loss_value = self.loss_fct(batch['mask_bg'], logits)
                 self.metric_loss_test.append(float(loss_value))

@@ -28,6 +28,7 @@ class MainLoop(object):
 
         self.generator, self.iter, self.sample_pair = self._generate_dataset()
         _, self.iter_test, _ = self._generate_dataset(test=True)
+        self.test_batch = self._get_test_batch()
         self.img_shape = self.sample_pair['frame'].shape
         self.trainModules = []
 
@@ -63,6 +64,14 @@ class MainLoop(object):
 
         return generator, ds.as_numpy_iterator(), sample_pair
 
+    def _get_test_batch(self):
+        test_batch = []
+        for _ in range(self.epoch_steps):
+            batch: DsPair = next(self.iter_test)
+            test_batch.append(batch)
+
+        return test_batch
+
     def start_train_loop(self):
 
         time_start = 0
@@ -92,7 +101,7 @@ class MainLoop(object):
 
             if epoch % self.epoch_log_n == 0:
                 for trainModule in self.trainModules:
-                    trainModule.test_model(epoch, self.epoch_steps, self.iter_test)
+                    trainModule.test_model(epoch, self.epoch_steps, self.test_batch)
 
                 if self.do_train_BG:
                     self.trainBG.track_logs(self.sample_pair['frame'],
