@@ -70,8 +70,6 @@ class TrainBG(TrainBase):
 
         img = plot2img(fig)
 
-        self.model.save_weights(
-            f"{Path.cwd()}/ckpt/{self.name}-{epoch}.ckpt")
 
         self.progress_tracker.track_img_on_epoch_end(img, epoch, metrics=[
             self.metric_loss_train,
@@ -118,4 +116,3 @@ class TrainBG(TrainBase):
         self.metric_loss_train.append(float(loss_value))
 
         return loss_value
-        # return self.loss_fct.y_true_maps, tf.abs(logits)

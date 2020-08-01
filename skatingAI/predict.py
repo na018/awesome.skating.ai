@@ -13,7 +13,7 @@ from skatingAI.nets.bg.v0 import BGNet
 from skatingAI.nets.hrnet.v7 import HPNet
 from skatingAI.nets.keypoint.v3 import KPDetector
 from skatingAI.utils.DsGenerator import DsGenerator, Frame, Mask, DsPair
-from skatingAI.utils.utils import create_mask, mask2rgb, create_dir, Logger
+from skatingAI.utils.utils import create_mask, mask2rgb, create_dir, Logger, kps2frame
 
 
 class Predictor(object):
@@ -46,9 +46,9 @@ class Predictor(object):
         self.video_path = video_path
         self.save = save_path
 
-        self.bg_weight_path = f"{os.getcwd()}/ckpt/bg-{bg_weight_counter}.ckpt"
-        self.hp_weight_path = f"{os.getcwd()}/ckpt/hp-{hp_weight_counter}.ckpt"
-        self.kps_weight_path = f"{os.getcwd()}/ckpt/kps-{kps_weight_counter}.ckpt"
+        self.bg_weight_path = f"{os.getcwd()}/ckpt1/bg-{bg_weight_counter}.ckpt"
+        self.hp_weight_path = f"{os.getcwd()}/ckpt1/hp-{hp_weight_counter}.ckpt"
+        self.kps_weight_path = f"{os.getcwd()}/ckpt1/kps-{kps_weight_counter}.ckpt"
         self.dir_save = f"{os.getcwd()}/predictions/{self.name}_{kps_weight_counter}"
         self.Logger = Logger()
         self.file_name = self._prepare_file_saving()
@@ -96,6 +96,35 @@ class Predictor(object):
                                  np.reshape(pairs['masks'][i], pairs['masks'][i].shape[:-1]),
                                  predicted_mask, i)
 
+    def _create_video_kp(self, frames, frames_extracted_bg, body_part_predictions, kps_predictions):
+        offset = 10
+        width_total = frames[0].shape[1]
+        height_total = frames[0].shape[0]
+        new_img = Image.new('RGB', (width_total, height_total))
+        out = cv2.VideoWriter(f"{self.dir_save}/{self.name}-kp.avi", cv2.VideoWriter_fourcc(*'DIVX'), 12,
+                              new_img.size)
+
+        for i, frame in enumerate(frames):
+            # kps =  tf.keras.preprocessing.image.array_to_img(kps2frame(create_mask(kps_predictions[i]), frame))
+
+            frame_kps = kps2frame(create_mask(kps_predictions[i]),
+                                  np.array(tf.keras.preprocessing.image.array_to_img(frame)))
+
+            fnt = ImageFont.truetype('/usr/share/fonts/truetype/open-sans/OpenSans-Semibold.ttf', 15)
+            f_prep = tf.keras.preprocessing.image.array_to_img(frame)
+            new_img.paste(tf.keras.preprocessing.image.array_to_img(frame_kps), (0, 0))
+            d = ImageDraw.Draw(new_img)
+            d.text((100, 5), "Predictect Keypoints", font=fnt,
+                   fill=(255, 255, 255))
+
+            # if i == 0:
+            #     out = cv2.VideoWriter(f"{self.dir_save}/{self.file_name}.avi", cv2.VideoWriter_fourcc(*'DIVX'), 12,
+            #                           new_img.size)
+            out.write(np.array(new_img))
+            self.Logger.log(f"Add frame {i} to video writer")
+        out.release()
+        self.Logger.log(f'successfully created video: {self.name}')
+
     def _create_video(self, frames, frames_extracted_bg, body_part_predictions, kps_predictions):
         offset = 10
         width_total = body_part_predictions[0].shape[1] * 3 + offset * 4
@@ -105,7 +134,7 @@ class Predictor(object):
                               new_img.size)
 
         for i, bp_prediction in enumerate(body_part_predictions):
-            frames_extracted_bg[i][frames_extracted_bg[i] == 2] = 0
+            #frames_extracted_bg[i][frames_extracted_bg[i] == 2] = 0
             images = [
 
                 tf.keras.preprocessing.image.array_to_img(frames_extracted_bg[i]),
@@ -160,6 +189,9 @@ class Predictor(object):
                 pred_bg, pred_hp, pred_kp = frames_extracted_bg, body_parts, kps
 
         self.Logger.log('Prediction finished.\n start to generate video', block=True)
+        self._create_video_kp(frames, pred_bg,
+                              pred_hp,
+                              pred_kp)
         self._create_video(frames, pred_bg,
                            pred_hp,
                            pred_kp)
@@ -183,7 +215,6 @@ class Predictor(object):
         eof = True
         while eof:
             eof, frame = video_handle.read()
-            print(eof, i)
             if eof:
                 frame = cv2.resize(frame, (320, 240))
                 frame = frame / 255
@@ -299,9 +330,9 @@ if __name__ == "__main__":
     # image sequence: /home/nadin-katrin/Videos/biellmann_sequence
     parser = argparse.ArgumentParser(
         description='Predict body parts from images or videos')
-    parser.add_argument('--wcounter_bg', default=530, help='Number of weight')
-    parser.add_argument('--wcounter_hp', default=530, help='Number of weight')
-    parser.add_argument('--wcounter_kps', default=530, help='Number of weight')
+    parser.add_argument('--wcounter_bg', default=6560, help='Number of weight')
+    parser.add_argument('--wcounter_hp', default=6560, help='Number of weight')
+    parser.add_argument('--wcounter_kps', default=6560, help='Number of weight')
     parser.add_argument('--name', default='', help='unique name to save to save video/image')
     parser.add_argument('--video', default='./edited/alena_biellmann_no_sound.avi',  # alina_biellmann_red_dress.avi',
                         # /home/nadin-katrin/awesome.skating.ai/Biellmann_2.avi

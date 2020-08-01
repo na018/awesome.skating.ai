@@ -25,7 +25,7 @@ class TrainHP(TrainBase):
         self.progress_tracker, self.file_writer_test = self._create_display_cb(self.model, 'hp')
 
         if train:
-            # self.model.summary()
+            self.model.summary()
             tf.keras.utils.plot_model(self.model, 'nets/imgs/hp_model.png', show_shapes=True, expand_nested=True)
 
             self.decay_rate, self.optimizer_decay = params.sgd_clr_decay_rate, params.decay
@@ -73,8 +73,6 @@ class TrainHP(TrainBase):
 
             img = plot2img(fig)
 
-            self.model.save_weights(
-                f"{Path.cwd()}/ckpt/{self.name}-{epoch}.ckpt")
 
             self.progress_tracker.track_img_on_epoch_end(img, epoch, metrics=[
                 self.metric_loss_train,
@@ -116,11 +114,6 @@ class TrainHP(TrainBase):
     def train_model(self, iter):
 
         batch: DsPair = next(iter)
-
-        # extracted_bg = self.bg_extractor.predict([batch['frame']])
-        # imgs = np.argmax(extracted_bg, axis=-1)
-        # frames_extracted_bg = np.array(batch['frame'])
-        # frames_extracted_bg[imgs == 0] = 2
 
         with tf.GradientTape() as tape:
             logits = self.model(batch, training=True)

@@ -58,7 +58,6 @@ class DsGenerator(object):
             self.resize_factor = self.video.shape[1] // resize_shape_x
             self.resize_shape = (resize_shape_x, self.video.shape[2] // self.resize_factor)
 
-    # @tf.function
     def _get_random_video_mask_kp(self, test: bool = False) -> Tuple[Video, VideoMask, VideoMask, KeyPoints, str]:
         if test or self.test:
             random_n: int = int(random.randint(self.test_start, self.video_amount - 1))

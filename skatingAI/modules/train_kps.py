@@ -42,7 +42,8 @@ class TrainKP(TrainBase):
 
     def _get_model(self, NN) -> tf.keras.Model:
 
-        kpnet = NN(input_shape=self.img_shape, hrnet_input=self.hp_model, output_channels=12)
+        kpnet = NN(input_shape=self.img_shape, bgnet_input=self.bg_extractor,
+                   hrnet_input=self.hp_model, output_channels=12)
 
         model = kpnet.model
 
@@ -84,8 +85,6 @@ class TrainKP(TrainBase):
 
             img = plot2img(fig)
 
-            self.model.save_weights(
-                f"{Path.cwd()}/ckpt/{self.name}-{epoch}.ckpt")
 
             self.progress_tracker.track_img_on_epoch_end(img, epoch, metrics=[
                 self.metric_loss_train,
@@ -105,7 +104,6 @@ class TrainKP(TrainBase):
 
     def test_model(self, epoch: int, epoch_steps: int, test_batch) -> float:
         if self._train:
-            print('test kps')
 
             loss_value = 0
 
@@ -118,7 +116,6 @@ class TrainKP(TrainBase):
                 logits = self.model(frames_extracted_bg, training=False)
                 loss_value = self.loss_fct(batch['mask_hp'], logits)
                 self.metric_loss_test.append(float(loss_value))
-                print('[kps]', loss_value)
 
             with self.file_writer_test.as_default():
                 tf.summary.scalar(self.metric_loss_test.name, self.metric_loss_test.get_median(),
@@ -128,13 +125,8 @@ class TrainKP(TrainBase):
             return self.metric_loss_test.get_median(False)
 
     def train_model(self, iter):
-        # if self._train:
         batch: DsPair = next(iter)
 
-        # extracted_bg = self.bg_extractor.predict([batch['frame']])
-        # imgs = np.argmax(extracted_bg, axis=-1)
-        # frames_extracted_bg = np.array(batch['frame'])
-        # frames_extracted_bg[imgs == 0] = 2
 
         with tf.GradientTape() as tape:
             logits = self.model(batch, training=True)
