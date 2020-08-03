@@ -12,7 +12,9 @@ class HPNet(HPNetBase):
 
     def _build_model(self) -> tf.keras.Model:
         # --------------first-block-------------------#
-        block_l = self.conv3x3_block(self.inputs, block_nr=1, filter_counts=[64, 64, 64, 64], name="bl")
+        input = self.conv3x3_block(self.bgnet_input, filter_counts=[16, 16, 33], name="input")
+        input = layers.concatenate([input, self.inputs])
+        block_l = self.conv3x3_block(input, block_nr=1, filter_counts=[64, 64, 64, 64], name="bl")
         block_m = self.stride_down(block_l, block_nr=1, name="bm")
 
         # --------------second-block-------------------#

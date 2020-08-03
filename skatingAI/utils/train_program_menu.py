@@ -7,7 +7,7 @@ from skatingAI.utils.hyper_paramater import KeyPointDetectorHyperParameters, Bod
 class TrainProgram(object):
     def _parse_if_int(self, value):
         try:
-            if int(value) >= 0:
+            if int(value) >= -1:
                 return True
             else:
                 return False
@@ -54,7 +54,8 @@ class TrainProgram(object):
             general_train_params.wcounter_hp = int(wcounter_hp) if self._parse_if_int(
                 wcounter_hp) else general_train_params.wcounter_hp
             wcounter_kps = input(
-                f'Please choose a weight counter index for the keypoints pre-training: [{general_train_params.wcounter_kps}] ')
+                f'Please choose a weight counter index for the keypoints pre-traini'
+                f'ng: [{general_train_params.wcounter_kps}] ')
             general_train_params.wcounter_kps = int(wcounter_kps) if self._parse_if_int(
                 wcounter_kps) else general_train_params.wcounter_kps
             epoch_start = input(
@@ -76,7 +77,7 @@ class TrainProgram(object):
                 epoch_log_n) else general_train_params.epoch_log_n
 
         title = f'Which model do you want to train?'
-        options = ['background extraction', 'body part detection', 'key point detection', 'background & body part',
+        options = ['background extraction', 'background & body part',
                    'all together']
         option, index = pick(options, title)
 

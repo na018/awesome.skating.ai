@@ -28,32 +28,49 @@ class MainLoop(object):
 
         self.generator, self.iter, self.sample_pair = self._generate_dataset()
         _, self.iter_test, _ = self._generate_dataset(test=True)
+        self.test_batch = self._get_test_batch()
         self.img_shape = self.sample_pair['frame'].shape
+        self.trainModules = []
 
         self.trainBG = TrainBG(params_BG.model, name, self.img_shape,
                                params_BG.optimizer_name, params_BG.learning_rate,
                                params_BG.loss_fct, params_BG.params, params_BG.description,
                                do_train_BG,
                                w_counter_BG, gpu, epochs)
+        if do_train_BG:
+            self.trainModules.append(self.trainBG)
 
-        self.trainHP = TrainHP(params_HP.model, name, self.img_shape,
-                               params_HP.optimizer_name, params_HP.learning_rate,
-                               params_HP.loss_fct, params_HP.params, params_HP.description,
-                               do_train_HP,
-                               w_counter_HP, gpu, epochs, self.trainBG.model)
+        if do_train_HP or do_train_KP:
+            self.trainHP = TrainHP(params_HP.model, name, self.img_shape,
+                                   params_HP.optimizer_name, params_HP.learning_rate,
+                                   params_HP.loss_fct, params_HP.params, params_HP.description,
+                                   do_train_HP,
+                                   w_counter_HP, gpu, epochs, self.trainBG.model)
+            self.trainModules.append(self.trainHP)
 
-        self.trainKP = TrainKP(params_KP.model, name, self.img_shape,
-                               params_KP.optimizer_name, params_KP.learning_rate,
-                               params_KP.loss_fct, params_KP.params, params_KP.description,
-                               do_train_KP,
-                               w_counter_KP, gpu, epochs, self.trainBG.model, self.trainHP.model)
+        if do_train_KP:
+            self.trainKP = TrainKP(params_KP.model, name, self.img_shape,
+                                   params_KP.optimizer_name, params_KP.learning_rate,
+                                   params_KP.loss_fct, params_KP.params, params_KP.description,
+                                   do_train_KP,
+                                   w_counter_KP, gpu, epochs, self.trainBG.model, self.trainHP.model)
+            self.trainModules.append(self.trainKP)
 
     def _generate_dataset(self, test: bool = False, sequential: bool = False):
-        generator = DsGenerator(resize_shape_x=240, test=test, sequential=sequential)
+        generator = DsGenerator(resize_shape_x=240, test=test, sequential=sequential,
+                                batch_size=self.batch_size, epoch_steps=self.epoch_steps)
         sample_pair: DsPair = next(generator.get_next_pair())
         ds = generator.build_iterator(self.batch_size, 1)
 
         return generator, ds.as_numpy_iterator(), sample_pair
+
+    def _get_test_batch(self):
+        test_batch = []
+        for _ in range(self.epoch_steps):
+            batch: DsPair = next(self.iter_test)
+            test_batch.append(batch)
+
+        return test_batch
 
     def start_train_loop(self):
 
@@ -70,39 +87,38 @@ class MainLoop(object):
                 time_start = time.perf_counter()
 
             for step in range(self.epoch_steps):
-                self.lg.log(f'[{step}] train step', True)
+                self.lg.log(f'[{epoch}:{step}] train step', True)
 
-                self.trainBG.train_model(self.iter)
-                self.trainHP.train_model(self.iter)
-                self.trainKP.train_model(self.iter)
+                for trainModule in self.trainModules:
+                    loss = trainModule.train_model(self.iter)
+                    self.lg.log(f'[{epoch}:{step}] loss-{trainModule.name}: -{loss}')
 
             if epoch == start + 3:
-                self.trainBG.track_metrics_on_train_start(self.do_train_HP, self.do_train_KP,
-                                                          f"{time.perf_counter() - time_start:#.2f}s",
-                                                          self.epoch_steps, self.batch_size)
-                self.trainHP.track_metrics_on_train_start(self.do_train_BG, self.do_train_KP,
-                                                          f"{time.perf_counter() - time_start:#.2f}s",
-                                                          self.epoch_steps, self.batch_size)
-                self.trainKP.track_metrics_on_train_start(self.do_train_BG, self.do_train_HP,
-                                                          f"{time.perf_counter() - time_start:#.2f}s",
-                                                          self.epoch_steps, self.batch_size)
+                for trainModule in self.trainModules:
+                    trainModule.track_metrics_on_train_start(self.do_train_HP, self.do_train_KP,
+                                                             f"{time.perf_counter() - time_start:#.2f}s",
+                                                             self.epoch_steps, self.batch_size)
 
             if epoch % self.epoch_log_n == 0:
-                self.trainBG.test_model(epoch, self.epoch_steps, self.iter_test)
-                self.trainBG.track_logs(self.sample_pair['frame'],
-                                        self.sample_pair['mask_bg'],
-                                        epoch)
-                self.trainHP.test_model(epoch, self.epoch_steps, self.iter_test)
-                self.trainHP.track_logs(self.sample_pair['frame'],
-                                        self.sample_pair['mask_hp'],
-                                        epoch)
-                self.trainKP.test_model(epoch, self.epoch_steps, self.iter_test)
-                self.trainKP.track_logs(self.sample_pair['frame'],
-                                        self.sample_pair['kps'],
-                                        epoch)
+                for trainModule in self.trainModules:
+                    trainModule.test_model(epoch, self.epoch_steps, self.test_batch)
+
+                if self.do_train_BG:
+                    self.trainBG.track_logs(self.sample_pair['frame'],
+                                            self.sample_pair['mask_bg'],
+                                            epoch)
+
+                if self.do_train_HP:
+                    self.trainHP.track_logs(self.sample_pair['frame'],
+                                            self.sample_pair['mask_hp'],
+                                            epoch)
+                if self.do_train_KP:
+                    self.trainKP.track_logs(self.sample_pair['frame'],
+                                            self.sample_pair['kps'],
+                                            epoch)
 
                 self.lg.log(
-                    f"[{epoch}:{self.epochs + start}]: Training finished.")
+                    f"[{epoch}:{self.epochs + start}]: Training epoch finished.\n")
 
         self.trainBG.progress_tracker.log_on_train_end()
 

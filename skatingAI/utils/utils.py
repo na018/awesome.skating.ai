@@ -92,6 +92,16 @@ def mask2rgb(mask):
     return body_mask
 
 
+def kps2frame(mask, frame):
+    img = mask.numpy()
+
+    for i, key in enumerate(segmentation_class_colors.values()):
+        if i > 0:
+            frame[(img == i).all(axis=-1)] = key
+
+    return frame
+
+
 def kps_upscale_reshape(shape: Tuple[int, int], kps: np.array):
     kps = np.reshape(kps, (kps.size // 2, -1)).copy()
     kps[:, 0] *= shape[0]

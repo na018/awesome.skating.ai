@@ -11,9 +11,11 @@ BN_MOMENTUM = 0.01
 class HPNet(HPNetBase):
 
     def _build_model(self) -> tf.keras.Model:
+        input = self.conv3x3_block(self.bgnet_input, filter_counts=[16, 16, 33], name="input")
+        input = layers.concatenate([input, self.inputs])
         # --------------first-block-------------------#
         # input = self.stride_down(self.inputs, name="input")
-        block_l_1 = self.conv3x3_block(self.inputs, filter_counts=[16, 16, 16, 16], name="1bl")
+        block_l_1 = self.conv3x3_block(input, filter_counts=[16, 16, 16, 16], name="1bl")
         block_m_1 = self.stride_down(block_l_1, name="1bm")
         block_s_1 = self.stride_down(block_m_1, 1, k=4, name="1bs")
         block_xs_1 = self.stride_down(block_s_1, 1, k=4, name="1bxs")

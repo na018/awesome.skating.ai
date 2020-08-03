@@ -9,11 +9,11 @@ BN_MOMENTUM = 0.01
 
 
 class KPDetector(KPDetectorBase):
-    def __init__(self, input_shape, hrnet_input: tf.keras.Model, output_channels=15):
+    def __init__(self, input_shape, hrnet_input: tf.keras.Model, output_channels=12):
         super().__init__(input_shape, hrnet_input, output_channels)
 
     def _build_model(self):
-        # mask = tf.reduce_max(self.hrnet_input, axis=-1, keepdims=True)
+        # mask = tf.reduce_max(self.bgnet_input, axis=-1, keepdims=True)
         pool = layers.MaxPool2D(pool_size=[2, 2])(self.hrnet_input)
         pool = layers.BatchNormalization(momentum=BN_MOMENTUM)(pool)
         pool = layers.AlphaDropout(0.1)(pool)

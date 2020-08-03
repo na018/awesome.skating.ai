@@ -11,8 +11,8 @@ class BGNetBase(object):
     def __init__(self, input_shape, output_channels=2):
         self.inputs = tf.keras.Input(shape=input_shape, name='images')
         self.output_channels = output_channels
-        self.model = self._build_model()
         self.outputs = None
+        self.model = self._build_model()
 
     # noinspection PyDefaultArgument
     def conv3x3_block(self, inputs: tf.Tensor,

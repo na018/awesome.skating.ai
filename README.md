@@ -2,7 +2,7 @@
 
 > Next level figure skating ai analysis.
 
-<p style="text-align:center; background-color: gray;"><img src="axel_paf.gif" width="200px"></p>
+<p style="text-align:center; background-color: gray;"><img src="skatingAI/docs/img/alena-steps-predicted.gif" width="600px"></p>
 
 [Human Pose Recognition in Figure Ice Skating](#action-recognition-in-figure-ice-skating)
 
@@ -14,37 +14,37 @@
 
 ---
 
-In our research we investigated state-of-the art systems such as 
+This research investigates state-of-the art systems such as 
 [OpenPose](https://github.com/CMU-Perceptual-Computing-Lab/openpose)
 , [VideoPose3d](https://github.com/facebookresearch/VideoPose3D) or [wrnch.ai](https://wrnch.ai/) on 
 their performance on figure ice skating. 
-All systems we tested had problems with spins in figure ice skating. Especially the ones with 
+All tested systems had problems with spins in figure ice skating. Especially the ones with 
 elastic poses such as the Biellmann pirouette.
 
-This is why we called this investigative project into life to understand, how pose recognition works in depth 
-and how to increase performance of keypoint recognition in figure ice skating.  
-With the here presented project we love to further spurn research work in the figure ice skating pose recognition or
-general human pose estimation field of artistic sports, with a well structured, easy to understand and follow code project 
+This is why this investigative project was called into life to understand, how pose recognition works in depth 
+and understand how performance of keypoint recognition in figure ice skating can be improved.  
+With the here presented project further research work shall be brought forward in the figure ice skating pose recognition or
+general human pose estimation field of artistic sports, with a well structured, easy to understand and follow up code project 
 with Tensorflow 2.
 
-Altogether, we created three sub-projects:
+Altogether, three sub-projects were created:
 
 1) 🎓  exercises: 
-    - here we followed the [Image segmentation](https://www.tensorflow.org/tutorials/images/segmentation) 
+    - understand image segmentation with the Tensorflow tutorial: [Image segmentation](https://www.tensorflow.org/tutorials/images/segmentation) 
     tutorial from Tensorflow to understand key aspects of neural network creation with Tensorflow 2
 2) 🖥️  skatingAI
-    - the main Python module for our research code base
+    - the main Python module for this research
 3) 🖋️  thesis
-    - master thesis regarding this investigative research
+    - includes master thesis and excerpt regarding this investigative research
     
     
 
 # 🖥️  skatingAI
 
-<p style="text-align:center; background-color: gray;"><img src="skatingAI/docs/img/alena_step_labeled2.png" width="200px"></p>
+<p style="text-align:center; background-color: gray;"><img src="skatingAI/docs/img/skatingAImodules.gif" width="600px"></p>
 
 ## Installation
-We build our project upon [Tensorflow 2](https://www.tensorflow.org/) with Python 3.6. 
+This project was built upon [Tensorflow 2](https://www.tensorflow.org/) with Python 3.6. 
 The easiest way to get started is to run everything inside a [Docker](https://docs.docker.com/) container.
 
 1) Create `skating-ai` docker image from our Dockerfile
@@ -71,10 +71,10 @@ and log into container *(you can choose a different container name, and restrict
 
 
 ## Start training process
-We created three modules for background extraction, body part prediction and keypoint detection.
+Three modules were created for background extraction, body part prediction and keypoint detection.
 These complete training modules can be found in `skatingAI/modules`.
 
-For our ablation study we created several network architectures for the different networks in 
+For the ablation study several network architectures for the different networks were created in 
 `skatingAI/nets`.
 
 Start the training process inside the docker container:
@@ -82,7 +82,7 @@ Start the training process inside the docker container:
 python train.py
 ```
 After starting the training process a menu will appear in which you can choose the paramaters for the network.
-You can eiter choose the default ones, or define your custom parameters for gpu, batch_size etc.
+You can either choose the default ones, or define your custom parameters for gpu, batch_size etc.
 
 The second menu which appears allows you to choose between which module you want to train background extraction, 
 human part detection or keypoint detection.
@@ -111,8 +111,27 @@ Or with the `--video` parameter you can specify the path to a custom video file:
 python predict.py --video /path/to/file/video.avi
 ```
 
+## Evaluate different networks
+To get more insights on what the indiviudal convolutional layers have learned the *Evaluator* creates visualization of 
+the learned filters.
+
+```bash
+python evaluate/eval.py 
+```
+The resulting images can be found in *evaluate/img*
 
 
+## Further information
+If you find any bug 🐞, please feel free to create a pull request with a fix ✔️, or create an issue.
 
 
+This project accompanying the master thesis of Nadin-Katrin Apel at the Stuttgart Media University and 
+supervised by the Professors Johannes Maucher and Stefan Radicke.
 
+With this project the author strives to further strive research towards pose recognition or action recognition 
+towards artistic sports such as figure ice skating.
+
+And in general to provide other developers an easy understandable code base to play around with convolutional 
+networks and pose recognition architectures.
+
+This project stands under the MIT license.

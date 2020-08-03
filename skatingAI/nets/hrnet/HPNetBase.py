@@ -8,11 +8,14 @@ BN_MOMENTUM = 0.01
 
 class HPNetBase(object):
 
-    def __init__(self, input_shape, output_channels=15):
-        self.inputs = tf.keras.Input(shape=input_shape, name='images')
+    def __init__(self, input_shape, bgnet_input: tf.keras.Model, output_channels=15):
+        self.inputs = tf.keras.Input(shape=input_shape, name='bgnet_input')
+        self.img_input = bgnet_input.layers[0]
+        self.bgnet_input: tf.keras.Model = bgnet_input(self.inputs)
+        self.bgnet_output_layer = bgnet_input.get_layer('output')
         self.output_channels = output_channels
-        self.model = self._build_model()
         self.outputs = None
+        self.model = self._build_model()
 
     # noinspection PyDefaultArgument
     def conv3x3_block(self, inputs: tf.Tensor,
