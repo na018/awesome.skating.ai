@@ -77,7 +77,7 @@ class TrainProgram(object):
                 epoch_log_n) else general_train_params.epoch_log_n
 
         title = f'Which model do you want to train?'
-        options = ['background extraction', 'body part detection', 'key point detection', 'background & body part',
+        options = ['background extraction', 'background & body part',
                    'all together']
         option, index = pick(options, title)
 

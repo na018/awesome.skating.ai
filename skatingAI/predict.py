@@ -54,8 +54,8 @@ class Predictor(object):
         self.file_name = self._prepare_file_saving()
 
         self.bg_extractor = self._get_bg_model()
-        self.base_model = self._get_hrnet_model()
-        self.model = self._get_kps_model()
+        self.hp_model = self._get_hrnet_model()
+        self.kps_model = self._get_kps_model()
 
     def _prepare_file_saving(self) -> str:
         try:
@@ -177,9 +177,9 @@ class Predictor(object):
             frames_extracted_bg = np.array(fi)
             frames_extracted_bg[imgs == 0] = 0
             self.Logger.log('Start prediction fun:body_parts', block=True)
-            body_parts = self.base_model.predict([fi])
+            body_parts = self.hp_model.predict([fi])
             self.Logger.log('Start prediction fun:keypoints', block=True)
-            kps = self.model.predict([fi])
+            kps = self.kps_model.predict([fi])
 
             if len(pred_hp) > 0:
                 pred_bg = np.concatenate((pred_bg, frames_extracted_bg))
@@ -267,8 +267,8 @@ class Predictor(object):
                sample_pair['frame'], sample_pair['mask_hp'], sample_pair['kps']
 
     def _get_bg_model(self) -> tf.keras.Model:
-        hrnet = BGNet(self.IMG_SHAPE, 2)
-        model = hrnet.model
+        bgnet = BGNet(self.IMG_SHAPE, 2)
+        model = bgnet.model
 
         model.load_weights(self.bg_weight_path)
         model.trainable = False
@@ -285,8 +285,8 @@ class Predictor(object):
         return model
 
     def _get_kps_model(self) -> tf.keras.Model:
-        kp_detector = KPDetector(input_shape=self.IMG_SHAPE, hrnet_input=self.base_model,
-                                 output_channels=int(self.KPS_COUNT))
+        kp_detector = KPDetector(input_shape=self.IMG_SHAPE, hrnet_input=self.hp_model, bgnet_input=self.bg_extractor,
+                                 output_channels=12)
         model = kp_detector.model
 
         model.load_weights(self.kps_weight_path)
@@ -330,18 +330,17 @@ if __name__ == "__main__":
     # image sequence: /home/nadin-katrin/Videos/biellmann_sequence
     parser = argparse.ArgumentParser(
         description='Predict body parts from images or videos')
-    parser.add_argument('--wcounter_bg', default=6560, help='Number of weight')
-    parser.add_argument('--wcounter_hp', default=6560, help='Number of weight')
-    parser.add_argument('--wcounter_kps', default=6560, help='Number of weight')
+    parser.add_argument('--wcounter_bg', default=9130, help='Number of weight')
+    parser.add_argument('--wcounter_hp', default=9130, help='Number of weight')
+    parser.add_argument('--wcounter_kps', default=9130, help='Number of weight')
     parser.add_argument('--name', default='', help='unique name to save to save video/image')
-    parser.add_argument('--video', default='./edited/alena_biellmann_no_sound.avi',  # alina_biellmann_red_dress.avi',
-                        # /home/nadin-katrin/awesome.skating.ai/Biellmann_2.avi
+    parser.add_argument('--video', default='skatingAI/docs/img/alena_biellmann.avi',
                         help='absolute path to video file', type=str)
     parser.add_argument('--video_sequence', default='/home/nadin-katrin/Videos/biellmann_sequence',
                         # /home/nadin-katrin/awesome.skating.ai/Biellmann_2.avi
                         help='absolute path to video file', type=str)
     parser.add_argument('--image', default='/', help='absolute path to image file')
-    parser.add_argument('--random_video', default=True, help='Random video')
+    parser.add_argument('--random_video', default=False, help='Random video')
     parser.add_argument('--random_image', default=False, help='Random image', type=bool)
     parser.add_argument('--save', default='', help='Path to save prediction in')
     args: ArgsNamespace = parser.parse_args()
