@@ -140,12 +140,12 @@ class Evaluator():
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(
         description='Evaluate featuremaps of trained model')
-    parser.add_argument('--wcounter', default=9130, help='Number of weight')
+    parser.add_argument('--wcounter', default=9400, help='Number of weight')
     parser.add_argument('--v_bg', default='v0', help='version of hrnet')
     parser.add_argument('--v_hp', default='v7', help='version of hrnet')
     parser.add_argument('--v-kps', default='v3', help='version of hrnet')
     parser.add_argument('--c', default='1', help='gpu number the net has trained on')
-    parser.add_argument('--name', default='all_modules_hp', help='unique name to save images in')
+    parser.add_argument('--name', default='all_modules_hp_4', help='unique name to save images in')
     args = parser.parse_args()
 
     Evaluator(weight_counter=args.wcounter, nn_hp_version=args.v_hp,
