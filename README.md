@@ -2,7 +2,7 @@
 
 > Next level figure skating ai analysis.
 
-<p style="text-align:center; background-color: gray;"><img src="skatingAI/docs/img/alena-steps-predicted.gif" width="300px"></p>
+<p style="text-align:center; background-color: gray;"><img src="skatingAI/docs/img/alena-steps-predicted.gif" width="600px"></p>
 
 [Human Pose Recognition in Figure Ice Skating](#action-recognition-in-figure-ice-skating)
 
@@ -41,7 +41,7 @@ Altogether, three sub-projects were created:
 
 # 🖥️  skatingAI
 
-<p style="text-align:center; background-color: gray;"><img src="skatingAI/docs/img/skatingAImodules.gif" width="300px"></p>
+<p style="text-align:center; background-color: gray;"><img src="skatingAI/docs/img/skatingAImodules.gif" width="600px"></p>
 
 ## Installation
 This project was built upon [Tensorflow 2](https://www.tensorflow.org/) with Python 3.6. 
