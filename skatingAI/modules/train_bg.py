@@ -1,6 +1,5 @@
 from pathlib import Path
 
-import cv2
 import numpy as np
 import tensorflow as tf
 from matplotlib import pyplot as plt
@@ -64,7 +63,8 @@ class TrainBG(TrainBase):
             ax = fig.add_subplot(1, 3, i + 1)
 
             ax.set_title(title[i], fontsize='small', alpha=0.6, color='blue')
-            ax.imshow(cv2.cvtColor(img, cv2.COLOR_BGR2RGB))
+            # ax.imshow(cv2.cvtColor(img, cv2.COLOR_BGR2RGB))
+            ax.imshow(img)
 
         fig.savefig(f"{Path.cwd()}/img_train{self.gpu}/{epoch}_bg_train.png")
 

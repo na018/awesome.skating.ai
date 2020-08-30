@@ -1,6 +1,5 @@
 from pathlib import Path
 
-import cv2
 import numpy as np
 import tensorflow as tf
 from matplotlib import pyplot as plt
@@ -59,7 +58,7 @@ class TrainHP(TrainBase):
 
             predicted_hp = mask2rgb(create_mask(self.model.predict(sample_image[tf.newaxis, ...])[0]))
 
-            display_imgs = [cv2.cvtColor(frames_extracted_bg, cv2.COLOR_BGR2RGB),
+            display_imgs = [frames_extracted_bg,
                             np.reshape(sample_mask, sample_mask.shape[:-1]),
                             predicted_hp]
             title = ['Input Image', 'True Mask', 'Predicted Mask']

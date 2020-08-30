@@ -1,6 +1,5 @@
 from pathlib import Path
 
-import cv2
 import numpy as np
 import tensorflow as tf
 from matplotlib import pyplot as plt
@@ -8,7 +7,7 @@ from matplotlib import pyplot as plt
 from skatingAI.modules.TrainBase import TrainBase
 from skatingAI.nets.hrnet import HPNetBase
 from skatingAI.utils.DsGenerator import DsPair
-from skatingAI.utils.utils import Metric, create_mask, plot2img, kps_upscale_reshape, mask2rgb
+from skatingAI.utils.utils import Metric, plot2img
 
 
 class TrainKP(TrainBase):
@@ -56,20 +55,15 @@ class TrainKP(TrainBase):
         if self._train:
 
             extracted_bg = self.bg_extractor.predict(sample_image[tf.newaxis, ...])[0]
-            imgs = np.argmax(extracted_bg, axis=-1)
             frames_extracted_bg = sample_image.numpy()
 
             predicted_kp = self.model.predict(sample_image[tf.newaxis, ...])[0]
-            predicted_mask = mask2rgb(create_mask(self.hp_model.predict(sample_image[tf.newaxis, ...])[0]))
-            true_circles, predicted_circles = [], []
+            # predicted_mask = mask2rgb(create_mask(self.hp_model.predict(sample_image[tf.newaxis, ...])[0]))
 
-            sample_kp = kps_upscale_reshape(predicted_mask.shape, sample_kp.numpy())
-            for kp in sample_kp:
-                true_circles.append(plt.Circle(kp, 3, alpha=0.9, fill=False, linewidth=2., edgecolor='white'))
-
+            sample_kp = tf.argmax(sample_kp, axis=-1)
             predicted_kp_img = tf.argmax(predicted_kp, axis=-1)
-            display_imgs = [[cv2.cvtColor(frames_extracted_bg, cv2.COLOR_BGR2RGB), []],
-                            [predicted_mask, true_circles],
+            display_imgs = [[frames_extracted_bg, []],
+                            [sample_kp, []],
                             [predicted_kp_img, []]
                             ]
             title = ['Input Image', 'Predicted Mask & True Keypoints', 'Predicted Keypoints']

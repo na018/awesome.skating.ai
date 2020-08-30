@@ -7,6 +7,7 @@ from typing import NewType, Tuple, Generator, List
 import cv2
 import numpy as np
 import tensorflow as tf
+from scipy import signal
 from typing_extensions import TypedDict
 
 # declare new type information
@@ -83,6 +84,51 @@ class DsGenerator(object):
 
         return video, mask_bg, mask_hp, kps, self.file_names[random_n].split('.')[0]
 
+    def gkern(self, kernlen=18, std=3):
+        """Returns a 2D Gaussian kernel array."""
+        gkern1d = signal.gaussian(kernlen, std=std).reshape(kernlen, 1)
+        gkern2d = np.outer(gkern1d, gkern1d)
+        return gkern2d
+
+    def get_kps_maps(self, kps, mask_shape, gaussian_size=6):
+        map_shape = mask_shape[:2]
+
+        gs_h = gaussian_size // 2
+        gaussian_kernel = self.gkern(gaussian_size)
+
+        feature_maps = []
+        ii = 0
+        #  [0, 1, 5, 9, 10, 11, 12, 33, 34, 35, 36, 57, 58, 59, 61, 62, 63, 64, 66]
+        # joints = ["Hips", "Spine", "Head", "LeftShoulder","LeftArm","LeftForeArm","LeftHand","RightShoulder","RightArm","RightForeArm","RightHand",
+        #           "RightUpLeg","RightLeg", "RightFoot","RightToe_End", "LeftUpLeg","LeftLeg", "LeftFoot","LeftToe_End"]
+        joints = [[0], [1], [2], [3, 7], [4, 8], [5, 9], [6, 10], [11, 15],
+                  [12, 16], [13, 17], [14, 18]]
+        for joint in joints:
+            feature_map = np.zeros((map_shape[0] + gaussian_size, map_shape[1] + gaussian_size))
+            for idx in joint:
+                kps_joint = kps[idx]
+                # prevent errors if x or y is on the edges
+                x, y = np.int(kps_joint[0]) + gs_h, np.int(kps_joint[1]) + gs_h
+                feature_map[y - gs_h:y + gs_h, x - gs_h: x + gs_h] = gaussian_kernel
+            feature_maps.append(feature_map)
+
+        feature_maps = np.array(feature_maps)
+        feature_maps = np.transpose(feature_maps[:, gs_h: -gs_h, gs_h: -gs_h], (1, 2, 0))
+        all_keypoints = np.argmax(feature_maps, axis=-1)
+        all_keypoints[all_keypoints > 0] = 1
+        feature_map_bg = np.ones(map_shape) - all_keypoints
+        feature_maps = np.insert(feature_maps, 0, feature_map_bg, axis=-1)
+
+        left_cut = kps[4, 0].astype(int) - np.random.randint(0, 20, 1)[0] - 10
+        bottom_cut = kps[1, 1].astype(int) + np.random.randint(0, 70, 1)[0]
+
+        random_feature_maps = np.zeros(feature_maps.shape)
+        random_feature_maps[:bottom_cut, left_cut:] = feature_maps[:bottom_cut, left_cut:, ]
+
+        # img[0:fm2.shape[0],0:fm2.shape[1]]=fm2
+
+        return random_feature_maps, left_cut, bottom_cut
+
     def get_image_amount(self) -> int:
         img_counter = 0
         for i in range(self.video_amount):
@@ -126,7 +172,7 @@ class DsGenerator(object):
                     _frame_i]
 
             randKernel = np.random.randint(1, 15, size=1)
-            video_i_blur = cv2.blur(np.array(video_i), (randKernel, randKernel))
+            video_i_blur = cv2.blur(np.array(cv2.cvtColor(video_i, cv2.COLOR_BGR2RGB)), (randKernel, randKernel))
             frame_n: Frame = video_i_blur / 255
             mask_bg_n: Mask = mask_bg_i
             mask_hp_n: Mask = mask_hp_i
@@ -141,10 +187,16 @@ class DsGenerator(object):
                 kps_i = kps_i / self.resize_factor
 
             kps_n = np.reshape(kps_i, (kps_i.shape[0] // 2, 2))
-            kps_n_0 = kps_n[:, 0] / mask_hp_n.shape[0]
-            kps_n_1 = kps_n[:, 1] / mask_hp_n.shape[1]
-            kps_n_rs = tf.transpose([kps_n_0, kps_n_1], perm=[1, 0])
-            kps_n_rs = tf.reshape(kps_n_rs, [-1])
+            kps_maps, left_cut, bottom_cut = self.get_kps_maps(kps_n, mask_hp_n.shape)
+
+            random_frame_n = np.random.randint(0, 255, frame_n.shape) / 255
+            random_frame_n[:bottom_cut, left_cut:] = frame_n[:bottom_cut, left_cut:, ]
+
+            random_mask_bg_n = np.zeros(mask_bg_n.shape)
+            random_mask_bg_n[:bottom_cut, left_cut:] = mask_bg_n[:bottom_cut, left_cut:, ]
+
+            random_mask_hp_n = np.zeros(mask_hp_n.shape)
+            random_mask_hp_n[:bottom_cut, left_cut:] = mask_hp_n[:bottom_cut, left_cut:, ]
 
             self.seen_samples += 1
             self.batch_counter += 1
@@ -152,7 +204,8 @@ class DsGenerator(object):
             if self.batch_counter == self.batch_size:
                 self.batch_counter = 0
 
-            yield {'frame': frame_n, 'mask_bg': mask_bg_n, 'mask_hp': mask_hp_n, 'kps': kps_n_rs}
+            yield {'frame': tf.constant(random_frame_n), 'mask_bg': tf.constant(random_mask_bg_n),
+                   'mask_hp': tf.constant(random_mask_hp_n), 'kps': tf.constant(kps_maps)}
 
     def build_iterator(self, batch_size: int = 10,
                        prefetch_batch_buffer: int = 5) -> tf.data.Dataset:

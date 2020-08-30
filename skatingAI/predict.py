@@ -330,16 +330,16 @@ if __name__ == "__main__":
     # image sequence: /home/nadin-katrin/Videos/biellmann_sequence
     parser = argparse.ArgumentParser(
         description='Predict body parts from images or videos')
-    parser.add_argument('--wcounter_bg', default=9400, help='Number of weight')
-    parser.add_argument('--wcounter_hp', default=9400, help='Number of weight')
-    parser.add_argument('--wcounter_kps', default=9400, help='Number of weight')
+    parser.add_argument('--wcounter_bg', default=15200, help='Number of weight')
+    parser.add_argument('--wcounter_hp', default=15200, help='Number of weight')
+    parser.add_argument('--wcounter_kps', default=15200, help='Number of weight')
     parser.add_argument('--name', default='', help='unique name to save to save video/image')
-    parser.add_argument('--video', default='./docs/img/alena_biellmann.avi',
+    parser.add_argument('--video', default='/home/nadin-katrin/Documents/porsche_production4.mp4',
                         help='absolute path to video file', type=str)
     parser.add_argument('--video_sequence', default='/home/nadin-katrin/Videos/biellmann_sequence',
                         help='absolute path to video file', type=str)
     parser.add_argument('--image', default='/', help='absolute path to image file')
-    parser.add_argument('--random_video', default=True, help='Random video')
+    parser.add_argument('--random_video', default=False, help='Random video')
     parser.add_argument('--random_image', default=False, help='Random image', type=bool)
     parser.add_argument('--save', default='', help='Path to save prediction in')
     args: ArgsNamespace = parser.parse_args()
