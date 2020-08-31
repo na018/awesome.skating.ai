@@ -179,15 +179,13 @@ class DsGenerator(object):
                 video_i, mask_bg_i, mask_hp_i, kps_i = video[_frame_i], mask_bg[_frame_i], mask_hp[_frame_i], kps[
                     _frame_i]
 
-            random_kernel = np.random.randint(1, 15, size=1)
-            video_i_blur = cv2.blur(np.array(cv2.cvtColor(video_i, cv2.COLOR_BGR2RGB)), (random_kernel, random_kernel))
-            frame_n: Frame = video_i_blur
+            frame_n = np.array(cv2.cvtColor(video_i, cv2.COLOR_BGR2RGB))
             mask_bg_n: Mask = mask_bg_i
             mask_hp_n: Mask = mask_hp_i
 
             if self.resize_shape:
-                frame_n = tf.image.resize(
-                    frame_n, size=self.resize_shape)
+                frame_n = cv2.resize(
+                    frame_n, (self.resize_shape[1], self.resize_shape[0]))
                 mask_bg_n = tf.image.resize(
                     mask_bg_n, size=self.resize_shape)
                 mask_hp_n = tf.image.resize(
@@ -200,7 +198,9 @@ class DsGenerator(object):
             random_frame_n = np.random.randint(0, 255, frame_n.shape)
             random_frame_n[:bottom_cut, left_cut:] = frame_n[:bottom_cut, left_cut:, ]
             self._add_occlusion(random_frame_n, kps_n[np.random.randint(0, kps_n.shape[0] - 1)])
-            random_frame_n /= 255
+
+            random_kernel = np.random.randint(1, 15, size=1)
+            random_frame_n = cv2.blur(random_frame_n, (random_kernel, random_kernel)) / 255
 
             random_mask_bg_n = np.zeros(mask_bg_n.shape)
             random_mask_bg_n[:bottom_cut, left_cut:] = mask_bg_n[:bottom_cut, left_cut:, ]
