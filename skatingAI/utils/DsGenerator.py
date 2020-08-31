@@ -120,7 +120,9 @@ class DsGenerator(object):
         feature_maps = np.insert(feature_maps, 0, feature_map_bg, axis=-1)
 
         left_cut = kps[4, 0].astype(int) - np.random.randint(0, 20, 1)[0] - 10
+        left_cut = left_cut if left_cut >= 0 else 0
         bottom_cut = kps[1, 1].astype(int) + np.random.randint(0, 70, 1)[0]
+        bottom_cut = bottom_cut if bottom_cut <= map_shape[0] else map_shape[0]
 
         random_feature_maps = np.zeros(feature_maps.shape)
         random_feature_maps[:bottom_cut, left_cut:] = feature_maps[:bottom_cut, left_cut:, ]
@@ -136,6 +138,12 @@ class DsGenerator(object):
                 'arr_0'].shape[0]
 
         return img_counter
+
+    def _add_occlusion(self, img, random_joint):
+        random_joint_y, random_joint_x = random_joint.astype(int)
+        random_color = random.randint(0, 255)
+        cv2.line(img, (0, 0), (random_joint_y, random_joint_x), (0, random_color, 0), (10))
+        cv2.line(img, (0, random_joint_x), (img.shape[1], random_joint_x), (random_color, 0, 0), (2))
 
     def set_new_video(self, test: bool = False):
         self.video, self.mask_hp, self.mask_bg, self.kps, self.video_name = self._get_random_video_mask_kp(test)
@@ -171,9 +179,9 @@ class DsGenerator(object):
                 video_i, mask_bg_i, mask_hp_i, kps_i = video[_frame_i], mask_bg[_frame_i], mask_hp[_frame_i], kps[
                     _frame_i]
 
-            randKernel = np.random.randint(1, 15, size=1)
-            video_i_blur = cv2.blur(np.array(cv2.cvtColor(video_i, cv2.COLOR_BGR2RGB)), (randKernel, randKernel))
-            frame_n: Frame = video_i_blur / 255
+            random_kernel = np.random.randint(1, 15, size=1)
+            video_i_blur = cv2.blur(np.array(cv2.cvtColor(video_i, cv2.COLOR_BGR2RGB)), (random_kernel, random_kernel))
+            frame_n: Frame = video_i_blur
             mask_bg_n: Mask = mask_bg_i
             mask_hp_n: Mask = mask_hp_i
 
@@ -189,8 +197,10 @@ class DsGenerator(object):
             kps_n = np.reshape(kps_i, (kps_i.shape[0] // 2, 2))
             kps_maps, left_cut, bottom_cut = self.get_kps_maps(kps_n, mask_hp_n.shape)
 
-            random_frame_n = np.random.randint(0, 255, frame_n.shape) / 255
+            random_frame_n = np.random.randint(0, 255, frame_n.shape)
             random_frame_n[:bottom_cut, left_cut:] = frame_n[:bottom_cut, left_cut:, ]
+            self._add_occlusion(random_frame_n, kps_n[np.random.randint(0, kps_n.shape[0] - 1)])
+            random_frame_n /= 255
 
             random_mask_bg_n = np.zeros(mask_bg_n.shape)
             random_mask_bg_n[:bottom_cut, left_cut:] = mask_bg_n[:bottom_cut, left_cut:, ]
