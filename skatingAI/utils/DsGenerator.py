@@ -114,10 +114,6 @@ class DsGenerator(object):
 
         feature_maps = np.array(feature_maps)
         feature_maps = np.transpose(feature_maps[:, gs_h: -gs_h, gs_h: -gs_h], (1, 2, 0))
-        all_keypoints = np.argmax(feature_maps, axis=-1)
-        all_keypoints[all_keypoints > 0] = 1
-        feature_map_bg = np.ones(map_shape) - all_keypoints
-        feature_maps = np.insert(feature_maps, 0, feature_map_bg, axis=-1)
 
         left_cut = kps[4, 0].astype(int) - np.random.randint(0, 20, 1)[0] - 10
         left_cut = left_cut if left_cut >= 0 else 0
@@ -126,6 +122,10 @@ class DsGenerator(object):
 
         random_feature_maps = np.zeros(feature_maps.shape)
         random_feature_maps[:bottom_cut, left_cut:] = feature_maps[:bottom_cut, left_cut:, ]
+        all_keypoints = np.argmax(random_feature_maps, axis=-1)
+        all_keypoints[all_keypoints > 0] = 1
+        feature_map_bg = np.ones(all_keypoints.shape) - all_keypoints
+        random_feature_maps = np.insert(random_feature_maps, 0, feature_map_bg, axis=-1)
 
         # img[0:fm2.shape[0],0:fm2.shape[1]]=fm2
 
@@ -141,9 +141,10 @@ class DsGenerator(object):
 
     def _add_occlusion(self, img, random_joint):
         random_joint_y, random_joint_x = random_joint.astype(int)
-        random_color = random.randint(0, 255)
-        cv2.line(img, (0, 0), (random_joint_y, random_joint_x), (0, random_color, 0), (10))
-        cv2.line(img, (0, random_joint_x), (img.shape[1], random_joint_x), (random_color, 0, 0), (2))
+        random_color_1 = random.randint(0, 255)
+        random_color_2 = random.randint(0, 255)
+        img[random_joint_y:random_joint_y + 5, random_joint_x:] = (random_color_1, 255, random_color_2)
+        img[0:random_joint_y, random_joint_x:random_joint_x + 5] = (random_color_1, random_color_2, random_color_1)
 
     def set_new_video(self, test: bool = False):
         self.video, self.mask_hp, self.mask_bg, self.kps, self.video_name = self._get_random_video_mask_kp(test)
