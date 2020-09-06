@@ -120,16 +120,16 @@ class DsGenerator(object):
         bottom_cut = kps[1, 1].astype(int) + np.random.randint(0, 70, 1)[0]
         bottom_cut = bottom_cut if bottom_cut <= map_shape[0] else map_shape[0]
 
-        random_feature_maps = np.zeros(feature_maps.shape)
-        random_feature_maps[:bottom_cut, left_cut:] = feature_maps[:bottom_cut, left_cut:, ]
-        all_keypoints = np.argmax(random_feature_maps, axis=-1)
+        # random_feature_maps = np.zeros(feature_maps.shape)
+        # random_feature_maps[:bottom_cut, left_cut:] = feature_maps[:bottom_cut, left_cut:, ]
+        all_keypoints = np.argmax(feature_maps, axis=-1)
         all_keypoints[all_keypoints > 0] = 1
         feature_map_bg = np.ones(all_keypoints.shape) - all_keypoints
-        random_feature_maps = np.insert(random_feature_maps, 0, feature_map_bg, axis=-1)
+        feature_maps = np.insert(feature_maps, 0, feature_map_bg, axis=-1)
 
         # img[0:fm2.shape[0],0:fm2.shape[1]]=fm2
 
-        return random_feature_maps, left_cut, bottom_cut
+        return feature_maps, left_cut, bottom_cut
 
     def get_image_amount(self) -> int:
         img_counter = 0
@@ -196,18 +196,27 @@ class DsGenerator(object):
             kps_n = np.reshape(kps_i, (kps_i.shape[0] // 2, 2))
             kps_maps, left_cut, bottom_cut = self.get_kps_maps(kps_n, mask_hp_n.shape)
 
-            random_frame_n = np.random.randint(0, 255, frame_n.shape)
-            random_frame_n[:bottom_cut, left_cut:] = frame_n[:bottom_cut, left_cut:, ]
-            self._add_occlusion(random_frame_n, kps_n[np.random.randint(0, kps_n.shape[0] - 1)])
+            if (np.random.randint(1, 10, size=1)[0] > 4):
+                self._add_occlusion(frame_n, kps_n[np.random.randint(0, kps_n.shape[0] - 1)])
 
-            random_kernel = np.random.randint(1, 15, size=1)
-            random_frame_n = cv2.blur(random_frame_n, (random_kernel, random_kernel)) / 255
+            random_kernel = np.random.randint(1, 10, size=1)
+            frame_n = cv2.blur(frame_n, (random_kernel, random_kernel)) / 255
 
-            random_mask_bg_n = np.zeros(mask_bg_n.shape)
-            random_mask_bg_n[:bottom_cut, left_cut:] = mask_bg_n[:bottom_cut, left_cut:, ]
+            if (np.random.randint(1, 10, size=1)[0] > 4):
+                frame_n = frame_n[:bottom_cut, left_cut:, ]
+                frame_n = cv2.resize(frame_n, ((self.resize_shape[1], self.resize_shape[0])))
 
-            random_mask_hp_n = np.zeros(mask_hp_n.shape)
-            random_mask_hp_n[:bottom_cut, left_cut:] = mask_hp_n[:bottom_cut, left_cut:, ]
+                mask_bg_n = mask_bg_n[:bottom_cut, left_cut:, ]
+                mask_bg_n = tf.image.resize(
+                    mask_bg_n, size=self.resize_shape)
+
+                mask_hp_n = mask_hp_n[:bottom_cut, left_cut:, ]
+                mask_hp_n = tf.image.resize(
+                    mask_hp_n, size=self.resize_shape)
+
+                kps_maps = kps_maps[:bottom_cut, left_cut:, ]
+                kps_maps = cv2.resize(
+                    kps_maps, (self.resize_shape[1], self.resize_shape[0]))
 
             self.seen_samples += 1
             self.batch_counter += 1
@@ -215,8 +224,8 @@ class DsGenerator(object):
             if self.batch_counter == self.batch_size:
                 self.batch_counter = 0
 
-            yield {'frame': tf.constant(random_frame_n), 'mask_bg': tf.constant(random_mask_bg_n),
-                   'mask_hp': tf.constant(random_mask_hp_n), 'kps': tf.constant(kps_maps)}
+            yield {'frame': tf.constant(frame_n), 'mask_bg': tf.constant(mask_bg_n),
+                   'mask_hp': tf.constant(mask_hp_n), 'kps': tf.constant(kps_maps)}
 
     def build_iterator(self, batch_size: int = 10,
                        prefetch_batch_buffer: int = 5) -> tf.data.Dataset:

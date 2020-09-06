@@ -27,6 +27,10 @@ class MainLoop(object):
         self.lg = Logger()
 
         self.generator, self.iter, self.sample_pair = self._generate_dataset()
+        self.samples = [self.sample_pair]
+        self.samples.append(next(self.generator.get_next_pair()))
+        self.samples.append(next(self.generator.get_next_pair()))
+
         _, self.iter_test, _ = self._generate_dataset(test=True)
         self.test_batch = self._get_test_batch()
         self.img_shape = self.sample_pair['frame'].shape
@@ -103,19 +107,21 @@ class MainLoop(object):
                 for trainModule in self.trainModules:
                     trainModule.test_model(epoch, self.epoch_steps, self.test_batch)
 
-                if self.do_train_BG:
-                    self.trainBG.track_logs(self.sample_pair['frame'],
-                                            self.sample_pair['mask_bg'],
-                                            epoch)
+                for i, sample_pair in enumerate(self.samples):
 
-                if self.do_train_HP:
-                    self.trainHP.track_logs(self.sample_pair['frame'],
-                                            self.sample_pair['mask_hp'],
-                                            epoch)
-                if self.do_train_KP:
-                    self.trainKP.track_logs(self.sample_pair['frame'],
-                                            self.sample_pair['kps'],
-                                            epoch)
+                    if self.do_train_BG:
+                        self.trainBG.track_logs(sample_pair['frame'],
+                                                sample_pair['mask_bg'],
+                                                epoch, i)
+
+                    if self.do_train_HP:
+                        self.trainHP.track_logs(sample_pair['frame'],
+                                                sample_pair['mask_hp'],
+                                                epoch, i)
+                    if self.do_train_KP:
+                        self.trainKP.track_logs(sample_pair['frame'],
+                                                sample_pair['kps'],
+                                                epoch, i)
 
                 self.lg.log(
                     f"[{epoch}:{self.epochs + start}]: Training epoch finished.\n")

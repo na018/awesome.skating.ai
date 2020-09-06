@@ -49,7 +49,7 @@ class TrainBG(TrainBase):
 
         return model
 
-    def track_logs(self, sample_image, sample_mask, epoch, **kwargs):
+    def track_logs(self, sample_image, sample_mask, epoch, counter, **kwargs):
 
         predicted_bg = create_mask(self.model.predict(sample_image[tf.newaxis, ...])[0])
 
@@ -66,7 +66,7 @@ class TrainBG(TrainBase):
             # ax.imshow(cv2.cvtColor(img, cv2.COLOR_BGR2RGB))
             ax.imshow(img)
 
-        fig.savefig(f"{Path.cwd()}/img_train{self.gpu}/{epoch}_bg_train.png")
+        fig.savefig(f"{Path.cwd()}/img_train{self.gpu}/{epoch}_{counter}_bg_train.png")
 
         img = plot2img(fig)
 

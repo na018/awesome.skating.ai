@@ -32,7 +32,7 @@ class TrainBase(object):
     def _get_model(self, NN) -> tf.keras.Model:
         raise NotImplementedError
 
-    def track_logs(self, sample_image, sample_mask, epoch, sample_kp=None):
+    def track_logs(self, sample_image, sample_mask, epoch, counter, sample_kp=None):
         """
 
         Args:

@@ -50,7 +50,7 @@ class TrainHP(TrainBase):
 
         return model
 
-    def track_logs(self, sample_image, sample_mask, epoch, **kwargs):
+    def track_logs(self, sample_image, sample_mask, epoch, counter, **kwargs):
         if self._train:
             extracted_bg = self.bg_extractor.predict(sample_image[tf.newaxis, ...])[0]
             imgs = np.argmax(extracted_bg, axis=-1)
@@ -68,7 +68,7 @@ class TrainHP(TrainBase):
                 ax.set_title(title[i], fontsize='small', alpha=0.6, color='blue')
                 ax.imshow(img)
 
-            fig.savefig(f"{Path.cwd()}/img_train{self.gpu}/{epoch}_hp_train.png")
+            fig.savefig(f"{Path.cwd()}/img_train{self.gpu}/{epoch}_{counter}_hp_train.png")
 
             img = plot2img(fig)
 

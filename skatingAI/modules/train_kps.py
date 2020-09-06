@@ -51,7 +51,7 @@ class TrainKP(TrainBase):
 
         return model
 
-    def track_logs(self, sample_image, sample_kp, epoch, **kwargs):
+    def track_logs(self, sample_image, sample_kp, epoch, counter, **kwargs):
         if self._train:
 
             extracted_bg = self.bg_extractor.predict(sample_image[tf.newaxis, ...])[0]
@@ -75,7 +75,7 @@ class TrainKP(TrainBase):
                 ax.set_title(title[i], fontsize='small', alpha=0.6, color='blue')
                 ax.imshow(img[0])
 
-            fig.savefig(f"{Path.cwd()}/img_train{self.gpu}/{epoch}_kps_train.png")
+            fig.savefig(f"{Path.cwd()}/img_train{self.gpu}/{epoch}_{counter}_kps_train.png")
 
             img = plot2img(fig)
 
