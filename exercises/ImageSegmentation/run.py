@@ -14,7 +14,7 @@ from pathlib import Path
 
 
 sys.path.append(
-    '/home/nadin-katrin/CodeProjects/00_skating_ai/awesome.skating.ai/exercises')
+    '/awesome.skating.ai/exercises')
 tfds.disable_progress_bar()
 
 
